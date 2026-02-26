@@ -1,4 +1,8 @@
 
+# Python cache
+__pycache__/
+*.pyc
+
 # API usage logs (large, auto-generated)
 logs/api_usage.jsonl
 logs/cron.log
