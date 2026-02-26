@@ -1,0 +1,80 @@
+{
+  "project_id": "srx",
+  "migrated_from_legacy": true,
+  "migration_date": "2026-02-25",
+  "last_updated": "2026-02-25",
+  "tasks": [],
+  "completed_tasks": [],
+  "archived_tasks": [
+    {
+      "id": "srx_20260225_legacy_001",
+      "legacy_id": "206917ed",
+      "title": "排查服务器问题",
+      "description": "Mason 要求排查服务器问题",
+      "status": "archived",
+      "archive_reason": "过期无效，无后续记录，无完成标记",
+      "original_created_at": "2026-02-25T06:18:44Z",
+      "migrated_at": "2026-02-25"
+    },
+    {
+      "id": "srx_20260225_legacy_002",
+      "legacy_id": "2c538ecd",
+      "title": "发送今天的日报",
+      "description": "今天日报发一下",
+      "status": "archived",
+      "archive_reason": "与后续5个日报任务重复，均为同日重复下达",
+      "original_created_at": "2026-02-25T07:37:59Z",
+      "migrated_at": "2026-02-25"
+    },
+    {
+      "id": "srx_20260225_legacy_003",
+      "legacy_id": "0118c7c8",
+      "title": "写今天的日报",
+      "description": "今天日报",
+      "status": "archived",
+      "archive_reason": "重复日报任务",
+      "original_created_at": "2026-02-25T08:09:59Z",
+      "migrated_at": "2026-02-25"
+    },
+    {
+      "id": "srx_20260225_legacy_004",
+      "legacy_id": "e319a89b",
+      "title": "生成今日日报并发送链接",
+      "description": "生成今天的日报，保存到 /opt/surenxuan/reports/daily/2026-02-25.html，然后把链接发到 #daily-briefing",
+      "status": "archived",
+      "archive_reason": "重复日报任务",
+      "original_created_at": "2026-02-25T08:16:11Z",
+      "migrated_at": "2026-02-25"
+    },
+    {
+      "id": "srx_20260225_legacy_005",
+      "legacy_id": "1898e7a5",
+      "title": "生成日报并发送到频道",
+      "description": "生成今天的日报，保存到 /opt/surenxuan/reports/daily/2026-02-25.html，然后把链接发到 #daily-briefing",
+      "status": "archived",
+      "archive_reason": "重复日报任务",
+      "original_created_at": "2026-02-25T08:26:17Z",
+      "migrated_at": "2026-02-25"
+    },
+    {
+      "id": "srx_20260225_legacy_006",
+      "legacy_id": "80410219",
+      "title": "重新生成今天的日报",
+      "description": "用 generate_report 工具重新生成今天的日报",
+      "status": "archived",
+      "archive_reason": "重复日报任务",
+      "original_created_at": "2026-02-25T08:46:13Z",
+      "migrated_at": "2026-02-25"
+    },
+    {
+      "id": "srx_20260225_legacy_007",
+      "legacy_id": "812daff4",
+      "title": "重新生成今天的日报",
+      "description": "重新生成今天的日报",
+      "status": "archived",
+      "archive_reason": "重复日报任务",
+      "original_created_at": "2026-02-25T08:57:08Z",
+      "migrated_at": "2026-02-25"
+    }
+  ]
+}
