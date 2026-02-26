@@ -5,7 +5,7 @@
 - 日志路径：~/mason-hub/logs/api_usage.jsonl
 - 每日 11pm CST 自动生成消耗报告到 #system-alerts
 - 新增 API 调用点时，必须同步添加 logging
-- 子进程 agent 调用（via run-agent.sh）记录调用次数和耗时，token 数标记为 unknown
+- 子进程 agent 调用（via run-agent.sh）通过 --output-format json 获取精确 token 数据
 
 ## 组织架构
 
@@ -34,6 +34,18 @@ Mason (人类，最终决策者)
 - EMP_0004 SRE Agent — 全局基础设施运维
 - EMP_0001 素仁轩 PM — 素仁轩项目管理
 - EMP_0005 电商 Dev — 电商业务开发（/opt/surenxuan/ 专属）
+
+## Backlog 管理规则
+
+backlog 路径: ~/mason-hub/tasks/backlog.md
+
+1. 每次 Agent 会话开始时，先读取 backlog 了解当前状态
+2. 每次 Agent 会话结束前，必须更新 backlog：
+   - 完成的任务标记 [x] 并注明日期
+   - 新发现的问题添加到对应优先级
+   - 调整优先级（如有必要）
+3. 所有 Agent 都遵守此规则，不只是 Meta Manager
+4. backlog 是项目唯一的 source of truth
 
 ## Agent Teams 角色自动加载规则
 
