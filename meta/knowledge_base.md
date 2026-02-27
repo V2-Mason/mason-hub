@@ -94,6 +94,14 @@ Mason审批方向和关键决策。
 位置：domains/{domain}/projects/{project}/context.json + decisions.md
 更新者：Project Manager
 
+## 4.5、Agent 个人记忆层（v1, 2026-02-27 实施）
+位置：agents/memory/{EMP_ID}/
+- short_term.json：当前任务链上下文，用于中断恢复
+- long_term.md：跨任务经验沉淀，Agent 变聪明的载体
+- Dev (EMP_0005) 只有 short_term（无状态设计不变）
+- 读写时机嵌入各 Agent 启动流程 Step 1.5
+- 与 Layer 1-4 的关系：个人记忆是 Agent 级的，Layer 1-4 是系统/项目级的，互不替代
+
 ## 五、记忆的四种类型
 - 事实记忆：project目标、SKU信息、竞品列表（存context.json）
 - 决策记忆：为什么做这个决定、放弃了什么选项（存decisions.md）

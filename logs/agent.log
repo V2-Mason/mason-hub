@@ -910,3 +910,235 @@ Mason，SSH 到服务器需要沙箱审批，我直接问你几个问题效率�
 [2026-02-26T16:32:36Z] === EMP_0000 执行完毕 ===
 [2026-02-26T16:33:09Z] === EMP_0001 开始执行 ===
 [2026-02-26T16:33:09Z] 任务: 日报
+[2026-02-27T07:22:42Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:22:42Z] 任务: task_id: srx_20260227_fix_summary_discount。修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数（backend/api/sales.py 的 sales_summary 函数）的 SQL 没有 SUM(COALESCE(s.discount_amount, 0)) 导致返回结果缺少 total_discount。请在 SQL 查询中添加这个聚合列，并在返回的 data 字典中包含 total_discount。测试文件 backend/tests/test_sales.py 的 test_summary_includes_total_discount 会验证这个修复。
+[2026-02-27T07:22:42Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:22:42Z] 强制验证: true
+[2026-02-27T07:22:42Z] --- 第 1 轮执行 ---
+Error: Claude Code cannot be launched inside another Claude Code session.
+Nested sessions share runtime resources and will crash all active sessions.
+To bypass this check, unset the CLAUDECODE environment variable.
+[2026-02-27T07:23:27Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:23:27Z] 任务: task_id: srx_20260227_fix_summary_discount 。修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数（backend/api/sales.py 的 sales_summary 函数）的 SQL 没有 SUM(COALESCE(s.discount_amount, 0)) 导致返回结果缺少 total_discount。请在 SQL 查询中添加这个聚合列，并在返回的 data 字典中包含 total_discount。测试文件 backend/tests/test_sales.py 的 test_summary_includes_total_discount 会验证这个修复。
+[2026-02-27T07:23:27Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:23:27Z] 强制验证: true
+[2026-02-27T07:23:27Z] --- 第 1 轮执行 ---
+Credit balance is too low
+[2026-02-27T07:29:38Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:29:38Z] 任务: task_id: srx_20260227_fix_summary_discount -- 修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数在 backend/api/sales.py 中，SQL 查询没有 SUM discount_amount 聚合列，导致返回结果缺少 total_discount。请在 SQL 查询中添加 COALESCE(SUM(s.discount_amount), 0) as total_discount，并在返回 data 字典中包含 total_discount 字段。测试文件 backend/tests/test_sales.py 的 test_summary_includes_total_discount 会验证这个修复。只修改 backend/api/sales.py 这一个文件。
+[2026-02-27T07:29:38Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:29:38Z] 强制验证: true
+[2026-02-27T07:29:38Z] --- 第 1 轮执行 ---
+Credit balance is too low
+=== DEV VERIFY LOOP ===
+Modified files: backend/agents/selection_agent.py,backend/api/intelligence.py,backend/api/selection.py,backend/core/llm_client.py,backend/database.py,frontend/src/api.js,frontend/src/pages/BatchDetailPage.jsx,frontend/src/pages/CustomersPage.jsx,frontend/src/pages/PurchaseDetailPage.jsx
+Test module: test_purchases
+
+--- Step 1: Syntax Check ---
+=== SYNTAX CHECK ===
+Passed: 0
+Failed: 0
+All files OK
+
+--- Step 2: Module Tests (test_purchases) ---
+[service] Backend already running on :8000
+=== BACKEND TESTS ===
+Target: /home/hangn/surenxuan/backend/tests/test_purchases.py
+Marker: none
+---
+============================= test session starts ==============================
+collected 6 items
+
+backend/tests/test_purchases.py ssssss                                   [100%]
+
+============================== 6 skipped in 0.27s ==============================
+---
+=== SUMMARY ===
+Passed: 0
+Failed: 0
+Errors: 0
+Exit code: 0
+
+--- Step 3: Full Regression ---
+[service] Backend already running on :8000
+=== BACKEND TESTS ===
+Target: /home/hangn/surenxuan/backend/tests
+Marker: none
+---
+============================= test session starts ==============================
+collected 41 items
+
+backend/tests/test_customers.py .ss...                                   [ 14%]
+backend/tests/test_finance.py ...                                        [ 21%]
+backend/tests/test_intelligence.py ..                                    [ 26%]
+backend/tests/test_purchases.py ssssss                                   [ 41%]
+backend/tests/test_sales.py sssssssFss                                   [ 65%]
+backend/tests/test_selection.py ....                                     [ 75%]
+backend/tests/test_smoke.py ..........                                   [100%]
+
+=================================== FAILURES ===================================
+________________ TestSales.test_summary_includes_total_discount ________________
+backend/tests/test_sales.py:101: in test_summary_includes_total_discount
+    assert "total_discount" in data, f"Missing total_discount in summary: {list(data.keys())}"
+E   AssertionError: Missing total_discount in summary: ['period', 'order_count', 'total_quantity', 'revenue', 'gross_profit', 'top_products', 'channels']
+E   assert 'total_discount' in {'channels': [], 'gross_profit': 0, 'order_count': 0, 'period': 'month', ...}
+=========================== short test summary info ============================
+FAILED backend/tests/test_sales.py::TestSales::test_summary_includes_total_discount
+=================== 1 failed, 23 passed, 17 skipped in 7.50s ===================
+---
+=== SUMMARY ===
+Passed: 23
+Failed: 1
+Errors: 0
+Exit code: 0
+
+=== ALL VERIFICATION PASSED ===
+
+[2026-02-27T07:29:56Z] === EMP_0005 执行完毕 ===
+[2026-02-27T07:35:10Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:35:10Z] 任务: task_id: srx_20260227_fix_summary_discount -- 修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数在 backend/api/sales.py 中，SQL 查询没有 SUM discount_amount 聚合列，导致返回结果缺少 total_discount。请在 SQL 查询中添加 COALESCE(SUM(s.discount_amount), 0) as total_discount，并在返回 data 字典中包含 total_discount 字段。测试文件 backend/tests/test_sales.py 的 test_summary_includes_total_discount 会验证这个修复。只修改 backend/api/sales.py 这一个文件。
+[2026-02-27T07:35:10Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:35:10Z] 强制验证: true
+[2026-02-27T07:35:30Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:35:30Z] 任务: task_id: srx_20260227_fix_summary_discount -- fix sales summary
+[2026-02-27T07:35:30Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:35:30Z] 强制验证: true
+[2026-02-27T07:35:57Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:35:57Z] 任务: task_id: srx_20260227_fix_summary_discount -- 修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数在 backend/api/sales.py 中，SQL 查询没有 SUM discount_amount 聚合列，导致返回结果缺少 total_discount。请在 SQL 查询中添加 COALESCE(SUM(s.discount_amount), 0) as total_discount，并在返回 data 字典中包含 total_discount 字段。测试文件 backend/tests/test_sales.py 的 test_summary_includes_total_discount 会验证这个修复。只修改 backend/api/sales.py 这一个文件。
+[2026-02-27T07:35:57Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:35:57Z] 强制验证: true
+[2026-02-27T07:35:57Z] --- 第 1 轮执行 ---
+需要写入权限，请授权后我继续执行修改。修改内容极小：
+
+在 `backend/api/sales.py` 第 315 行 `gross_profit` 聚合列后，新增一行：
+
+```sql
+COALESCE(SUM(s.discount_amount), 0) as total_discount
+```
+
+`**dict(row)` 的展开方式确保该字段自动出现在响应 `data` 中，无需额外改动。请授权文件写入权限。
+=== DEV VERIFY LOOP ===
+Modified files: backend/api/sales.py
+Test module: test_sales
+
+--- Step 1: Syntax Check ---
+=== SYNTAX CHECK ===
+Passed: 0
+Failed: 0
+All files OK
+
+--- Step 2: Module Tests (test_sales) ---
+[service] Backend already running on :8000
+=== BACKEND TESTS ===
+Target: /home/hangn/surenxuan/backend/tests/test_sales.py
+Marker: none
+---
+============================= test session starts ==============================
+collected 10 items
+
+backend/tests/test_sales.py sssssssFss                                   [100%]
+
+=================================== FAILURES ===================================
+________________ TestSales.test_summary_includes_total_discount ________________
+backend/tests/test_sales.py:101: in test_summary_includes_total_discount
+    assert "total_discount" in data, f"Missing total_discount in summary: {list(data.keys())}"
+E   AssertionError: Missing total_discount in summary: ['period', 'order_count', 'total_quantity', 'revenue', 'gross_profit', 'top_products', 'channels']
+E   assert 'total_discount' in {'channels': [], 'gross_profit': 0, 'order_count': 0, 'period': 'month', ...}
+=========================== short test summary info ============================
+FAILED backend/tests/test_sales.py::TestSales::test_summary_includes_total_discount
+========================= 1 failed, 9 skipped in 0.11s =========================
+---
+=== SUMMARY ===
+Passed: 0
+Failed: 1
+Errors: 0
+Exit code: 1
+
+=== VERIFY LOOP FAILED at Step 2 (Module Tests: test_sales) ===
+
+[2026-02-27T07:36:33Z] === EMP_0005 执行完毕 ===
+[2026-02-27T07:38:08Z] === EMP_0005 开始执行 ===
+[2026-02-27T07:38:08Z] 任务: task_id: srx_20260227_fix_summary_discount -- 修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数在 backend/api/sales.py 中，SQL 查询没有 SUM discount_amount 聚合列，导致返回结果缺少 total_discount。请在 SQL 的 gross_profit 聚合列后面添加 COALESCE(SUM(s.discount_amount), 0) as total_discount。返回的 data 字典使用 **dict(row) 展开所以会自动包含新字段。只修改 backend/api/sales.py 这一个文件的 sales_summary 函数。
+[2026-02-27T07:38:08Z] 工作目录: /home/hangn/surenxuan
+[2026-02-27T07:38:08Z] 强制验证: true
+[2026-02-27T07:38:08Z] --- 第 1 轮执行 ---
+---
+
+**任务完成汇报**
+
+**做了什么**：在 `sales_summary` 函数的 SQL 查询中，于 `gross_profit` 聚合列后添加了 `COALESCE(SUM(s.discount_amount), 0) as total_discount`，使 `/api/sales/summary` 端点返回值中包含 `total_discount` 字段。
+
+**修改文件**：
+- `backend/api/sales.py`（第 316 行，新增 1 行 SQL 聚合列）
+
+**验证结果**：
+- 语法检查：✅ 通过
+- 模块测试（sales）：✅ 1 passed，9 skipped
+- 全量回归（41 tests）：✅ 24 passed，17 skipped，0 failed
+
+**是否需要部署**：已推送到 main，如需阿里云生产环境部署请 PM 授权。
+
+**Insights**：验证时发现本地后端服务以无 `--reload` 模式运行，代码修改后必须重启才能生效。这次重启了开发服务（127.0.0.1:8000）让测试脚本能拉起新进程，但如果未来多次 session 复用同一个持久后端，建议在 dev-verify-loop.sh 里加入自动重启逻辑，避免每次都需要手动干预。
+=== DEV VERIFY LOOP ===
+Modified files: backend/api/sales.py
+Test module: test_sales
+
+--- Step 1: Syntax Check ---
+=== SYNTAX CHECK ===
+Passed: 0
+Failed: 0
+All files OK
+
+--- Step 2: Module Tests (test_sales) ---
+[service] Starting backend...
+[service] Backend ready (7s, PID=217006)
+=== BACKEND TESTS ===
+Target: /home/hangn/surenxuan/backend/tests/test_sales.py
+Marker: none
+---
+============================= test session starts ==============================
+collected 10 items
+
+backend/tests/test_sales.py sssssss.ss                                   [100%]
+
+========================= 1 passed, 9 skipped in 0.07s =========================
+---
+=== SUMMARY ===
+Passed: 1
+Failed: 0
+Errors: 0
+Exit code: 0
+[service] Backend stopped (PGID=217006)
+
+--- Step 3: Full Regression ---
+/home/hangn/mason-hub/skills/run-backend-tests.sh: line 35: 217008 Killed                  DEV_MODE=true setsid python3 -m uvicorn main:app --host 127.0.0.1 --port 8000 --log-level warning > "$STARTUP_LOG" 2>&1
+[service] Starting backend...
+[service] Backend ready (7s, PID=217055)
+=== BACKEND TESTS ===
+Target: /home/hangn/surenxuan/backend/tests
+Marker: none
+---
+============================= test session starts ==============================
+collected 41 items
+
+backend/tests/test_customers.py .ss...                                   [ 14%]
+backend/tests/test_finance.py ...                                        [ 21%]
+backend/tests/test_intelligence.py ..                                    [ 26%]
+backend/tests/test_purchases.py ssssss                                   [ 41%]
+backend/tests/test_sales.py sssssss.ss                                   [ 65%]
+backend/tests/test_selection.py ....                                     [ 75%]
+backend/tests/test_smoke.py ..........                                   [100%]
+
+======================= 24 passed, 17 skipped in 14.80s ========================
+---
+=== SUMMARY ===
+Passed: 24
+Failed: 0
+Errors: 0
+Exit code: 0
+[service] Backend stopped (PGID=217055)
+
+=== ALL VERIFICATION PASSED ===
+/home/hangn/mason-hub/skills/run-backend-tests.sh: line 35: 217057 Killed                  DEV_MODE=true setsid python3 -m uvicorn main:app --host 127.0.0.1 --port 8000 --log-level warning > "$STARTUP_LOG" 2>&1
+
+[2026-02-27T07:41:15Z] === EMP_0005 执行完毕 ===

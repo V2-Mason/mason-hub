@@ -1,15 +1,15 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-02-26
-> 更新人: Mason (via Claude.ai 战略讨论)
+> 最后更新: 2026-02-27
+> 更新人: Team Lead (via Claude Code agent team)
 
 ---
 
-## 当前阶段: Phase 1 → Phase 2 过渡期
+## 当前阶段: Phase 2 完成 → Phase 3 过渡期
 
-Phase 1（系统骨架）已基本完成，正在向 Phase 2（云部署 + AI Agent）过渡。
-当前重点是**基础设施稳定化 + Agent 工作环境搭建**。
+Phase 1（系统骨架）已完成。Phase 2（云部署 + AI Agent）代码工作已全部完成。
+等待 Mason 验证三个完成标志后正式进入 Phase 3。
 
 ---
 
@@ -78,10 +78,10 @@ Phase 1（系统骨架）已基本完成，正在向 Phase 2（云部署 + AI Ag
 - [x] 选品→采购→入库→销售→客户 全链路基本跑通
 
 **未完成（带入 Phase 2）**:
-- [ ] 销售折扣/实付金额功能
-- [ ] 保质期数据贯穿全链路（选品→采购→库存→临期预警）
-- [ ] 客户-销售关联（客户详情页显示消费历史）
-- [ ] 退换货基本流程
+- [x] 销售折扣/实付金额功能 — 2026-02-27 完成，summary 增加 total_discount + CSV 导入补 original_price
+- [x] 保质期数据贯穿全链路（选品→采购→库存→临期预警）— 2026-02-27 完成，前端增加填写警告 + 补录脚本
+- [x] 客户-销售关联（客户详情页显示消费历史）— 2026-02-27 完成，增加折扣和渠道展示
+- [x] 退换货基本流程 — 2026-02-27 完成，SalesPage 新增退换货 tab + ReturnsPanel
 
 ### Phase 2: 云部署 + AI Agent — 当前阶段
 
@@ -97,10 +97,24 @@ Phase 1（系统骨架）已基本完成，正在向 Phase 2（云部署 + AI Ag
 - [x] api_usage.jsonl token 精确追踪 — 2026-02-26
 
 **待完成**:
-- [ ] 日报增强（接入 Chart.js 报告系统）
-- [ ] Agent #1 选品助手接入 LLM API（DeepSeek 为主）
-- [ ] Agent 记忆系统 v1（每个 Agent 独立 memory 表）
-- [ ] API 成本监控
+- [x] 日报增强（选品指标）— 2026-02-27 完成，generate_report.py 增加选品管线状态
+- [x] Agent #1 选品助手接入 LLM API（DeepSeek 为主）— 2026-02-27 完成，llm_client.py 多 provider 支持
+- [x] Agent 记忆系统 v1（每个 Agent 独立 memory 空间）— 2026-02-27 完成，agents/memory/ 目录 + 6 个角色 Step 1.5
+- [x] API 成本监控 — 2026-02-27 完成，GET /api/intelligence/api-costs 端点
+
+**2026-02-27 运维部署（已完成）**:
+- [x] 感知层 cron 实际部署 — 2026-02-27，3 条 cron 已添加到 GCP
+- [x] fix_expiry_dates.py 在阿里云执行 — 2026-02-27，dry-run 显示无需补录
+- [x] Slack webhook 安全修复 — 2026-02-27，4 脚本改环境变量
+- [x] 阿里云+GCP 设置 SLACK_WEBHOOK_URL 环境变量 — 2026-02-27
+- [x] DeepSeek API key 配置到系统 — 2026-02-27，provider 已切换
+- [x] 代码同步到阿里云生产 + 前端 build + 服务重启 — 2026-02-27
+
+**2026-02-27 代码收尾（已完成）**:
+- [x] 录单 UI 增加客户选择提示 — 2026-02-27
+- [x] 阿里云数据快照增加 selection 字段 — 2026-02-27，collector.py 已增加
+- [x] data_coo.receive_order() 与 purchases.py receive_order() 重复逻辑合并 — 2026-02-27
+- [x] 所有代码同步阿里云 + 前端 build + 服务重启 — 2026-02-27
 
 **完成标志**:
 - [ ] Mason 在美国通过浏览器正常使用系统
