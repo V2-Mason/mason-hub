@@ -240,15 +240,15 @@ esac
 Layer 1（执行历史，已实现）：
   audit.jsonl + logs/tasks/ — 不注入 prompt，供 PM/SRE 读取
 
-Layer 2（文件记忆，部分实现）：
+Layer 2（文件记忆，✅ 已实现）：
   lessons.md — 个人经验，bash 注入（✅ 已实现）
-  knowledge_base.md — 共享知识，bash 注入（⏳ 4.1 节激活）
-  decisions.md — 项目决策，bash 注入（⏳ 4.1 节激活）
+  knowledge_base.md — 共享知识，bash 注入（✅ 已激活 commit 9885082）
+  decisions.md — 项目决策，bash 注入（✅ 已激活 commit 9885082）
 
-Layer 3（语义搜索，未实现）：
-  Chroma 向量数据库 + 嵌入模型
-  run-agent.sh 用任务描述做语义搜索
-  只注入相关的 top-5 经验，不全量灌入
+Layer 3（语义搜索，✅ 已实现）：
+  ChromaDB + sentence-transformers（~/mason-hub/.venv/）
+  memory-store.py 写入 / memory-search.py 查询
+  run-agent.sh 自动判断：lessons >10KB 时用 Layer 3，否则 Layer 2
   当 Layer 3 不可用时 fallback 到 Layer 2 全量注入
 ```
 
@@ -291,19 +291,14 @@ Layer 3（语义搜索，未实现）：
   ## [COMPACTED] test_report: 需要seed数据,date_range可能None,与sales模块共享函数
 ```
 
-**实现：** 创建 skills/compact-memory.sh
-- 输入：agent ID + 天数阈值
-- 找到超过阈值的经验条目
-- 发给 claude -p 做总结
-- 用总结替换原始内容
-- 标记 [COMPACTED] 防止重复压缩
-- 可由 SRE 定期执行或加入 cron
-
-**同时对 audit.jsonl 做 compaction：**
-- 近期（7 天内）：完整的每轮 I/O 日志
-- 中期（7-30 天）：只保留 summary.json
-- 远期（30 天+）：compact 成一行审计记录
-- logs/tasks/ 中超过 30 天的日志归档到 logs/archive/
+**实现：** ✅ skills/compact-memory.sh 已创建
+- 输入：agent ID（或 all）+ --dry-run
+- 按日期阈值分类 sections（7d/30d）
+- 中期用 claude -p 压缩为关键信息
+- 远期用 claude -p 压缩为单行 [COMPACTED]
+- 同时归档 logs/tasks/ 超过 30 天的文件到 logs/archive/
+- audit.jsonl 超过 500 行时分离旧记录到 archive/
+- SRE (EMP_0004) skills 已添加 compact-memory
 
 ### 5.3 上下文预算机制 — 来自 Beads `bd ready` 的启发
 
@@ -334,11 +329,12 @@ Priority 4（最低）: 全局架构原则
 
 **优先级：** 在端到端验证稳定后增强
 
-### 5.5 SRE Agent 增强
+### 5.5 SRE Agent 增强 — ✅ 已实现
 
-- 给 SRE 加 agent-status-report.sh（读 audit.jsonl 汇总全局状态）
-- SRE 定期跑 compact-memory.sh 清理过期记忆
-- SRE 定期跑 agent-doctor.sh 检查系统健康
+- ✅ agent-status-report.sh 已创建（7 section 报告：调用统计、失败列表、token 趋势、记忆状态、skills 健康、系统资源、任务日志）
+- ✅ compact-memory.sh 已加入 SRE skills
+- ✅ agent-doctor.sh 已在 skills 中（之前实现）
+- EMP_0004 skills: run-smoke-tests, health-check-full, agent-doctor, agent-status-report, compact-memory
 
 ---
 
@@ -494,10 +490,9 @@ Mason 设定战略方向
   scout-anthropic.sh        ✅
   scout-search-topic.sh     ✅
 
-  # 待创建
-  compact-memory.sh         ⏳ (5.2 记忆衰减)
-  memory-search.py          ⏳ (5.1 Layer 3 语义搜索)
-  memory-store.py           ⏳ (5.1 Layer 3 写入)
+  # 运维
+  compact-memory.sh         ✅ (5.2 记忆衰减)
+  agent-status-report.sh    ✅ (5.5 SRE 全局状态报告)
 ```
 
 ### 记忆系统
@@ -505,7 +500,11 @@ Mason 设定战略方向
 ~/mason-hub/memory/
   EMP_0005_lessons.md — Dev 经验          ✅
   EMP_0002_lessons.md — Platform Dev 经验  ✅
-  chroma_db/          — 向量数据库        ⏳
+  chroma_db/          — 向量数据库        ✅
+
+~/mason-hub/scripts/
+  memory-store.py     — ChromaDB 写入      ✅
+  memory-search.py    — ChromaDB 语义搜索  ✅
 
 ~/mason-hub/meta/
   knowledge_base.md   — 全局知识库        ✅ (待注入激活)
@@ -574,8 +573,8 @@ Mason 设定战略方向
 | 应用点 | 设计 | 状态 |
 |--------|------|------|
 | Escalation 信息量 | 成功时一句话，失败时逐层展开 | ✅ 自然存在 |
-| Slack 汇报层次 | Level 1 通知 → Level 2 摘要 → Level 3 完整日志 | ⏳ 4.2 节 |
-| 记忆注入 | 相关经验 → 模块 decisions → 共享知识 → 全局原则 | ⏳ 5.3 节 |
-| 记忆衰减 | 新鲜完整 → 中期保留关键 → 远期 AI 总结 | ⏳ 5.2 节 |
-| SRE 监控 | 状态总览 → 告警摘要 → 详细分析 | ⏳ 未实现 |
+| Slack 汇报层次 | Level 1 通知 → Level 2 摘要 → Level 3 完整日志 | ✅ format_slack_message() |
+| 记忆注入 | 相关经验 → 模块 decisions → 共享知识 → 全局原则 | ✅ 预算控制 + Layer 3 |
+| 记忆衰减 | 新鲜完整 → 中期保留关键 → 远期 AI 总结 | ✅ compact-memory.sh |
+| SRE 监控 | 状态总览 → 告警摘要 → 详细分析 | ✅ agent-status-report.sh |
 | Agent 角色加载 | 简单任务轻量 prompt → 复杂任务完整 prompt | ⏳ 长期 |

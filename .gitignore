@@ -3,6 +3,15 @@
 __pycache__/
 *.pyc
 
+# Virtual environment
+.venv/
+
+# ChromaDB (large, auto-generated from lessons.md)
+memory/chroma_db/
+
 # API usage logs (large, auto-generated)
 logs/api_usage.jsonl
 logs/cron.log
+
+# Log archive (large, auto-generated)
+logs/archive/

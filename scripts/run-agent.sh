@@ -101,21 +101,76 @@ if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
 $(cat "$LESSONS_FILE")"
 fi
 
-# --- Phase 2.5: 共享知识层注入 ---
+# --- Phase 2.5: 共享知识层注入（含上下文预算控制）---
+# 预算：注入内容不超过 MAX_INJECT_CHARS 字符（约 MAX_INJECT_CHARS/4 tokens）
+MAX_INJECT_CHARS=16000  # ~4000 tokens
+INJECT_USED=0
+
+# 计算当前已注入的字符数（lessons 部分）
+INJECT_USED=${#SYSPROMPT}
+
 inject_if_exists() {
   local file="$1"
   local label="$2"
   if [ -f "$file" ] && [ -s "$file" ]; then
+    local file_size
+    file_size=$(stat -c %s "$file")
+    local total_after=$(( INJECT_USED + file_size + 50 ))
+    local budget=$(( ${#SYSPROMPT} + MAX_INJECT_CHARS ))
+
+    if [ "$total_after" -gt "$budget" ]; then
+      echo "[context-budget] SKIP $label (${file_size}B would exceed budget)" >&2
+      return
+    fi
+
     SYSPROMPT="${SYSPROMPT}
 
 ---
 ## ${label}
 
 $(cat "$file")"
+    INJECT_USED=${#SYSPROMPT}
   fi
 }
 
-# 根据 agent 角色注入对应的知识文件
+# 尝试语义搜索（Layer 3），如果 ChromaDB 可用且 lessons 大于 10KB
+VENV_PYTHON="$HUB_DIR/.venv/bin/python3"
+inject_semantic_search() {
+  local task_desc="$1"
+  if [ ! -x "$VENV_PYTHON" ]; then
+    return 1
+  fi
+  # 检查 ChromaDB 是否已初始化
+  if [ ! -d "$HUB_DIR/memory/chroma_db" ]; then
+    return 1
+  fi
+  local search_result
+  search_result=$("$VENV_PYTHON" "$HUB_DIR/scripts/memory-search.py" \
+    "$task_desc" --agent "$AGENT_NAME" --top 5 --format inject 2>/dev/null) || return 1
+  if [ -n "$search_result" ] && [ ${#search_result} -gt 20 ]; then
+    echo "$search_result"
+    return 0
+  fi
+  return 1
+}
+
+# 决定 lessons 注入策略：语义搜索（Layer 3）vs 全量注入（Layer 2）
+LESSONS_FILE_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
+if [ "$LESSONS_FILE_SIZE" -gt 10240 ]; then
+  # 大于 10KB：尝试语义搜索，只注入相关 top-5
+  SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
+  if [ -n "$SEMANTIC_RESULT" ]; then
+    SYSPROMPT="${SYSPROMPT}
+
+---
+${SEMANTIC_RESULT}"
+    INJECT_USED=${#SYSPROMPT}
+    echo "[context] Using Layer 3 semantic search for $AGENT_NAME lessons" >&2
+  fi
+  # 如果语义搜索失败，Layer 2 全量注入已在上面的 Phase 2 完成
+fi
+
+# 根据 agent 角色注入对应的知识文件（按优先级排列，高优先级先注入）
 case "$AGENT_NAME" in
   EMP_0000)  # Meta Manager — 全局知识
     inject_if_exists "$HUB_DIR/meta/knowledge_base.md" "系统知识库"
