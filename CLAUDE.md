@@ -24,7 +24,7 @@ Mason (人类，最终决策者)
 │     │
 │     └── EMP_0002 Platform Dev         ← 二级：平台基础设施开发
 │
-└── (Phase 3 预留) 斥候 Agent
+└── EMP_0006 斥候 Scout          ← 独立：技术情报搜集
 ```
 
 ### Agent 职责速览
@@ -34,6 +34,7 @@ Mason (人类，最终决策者)
 - EMP_0004 SRE Agent — 全局基础设施运维
 - EMP_0001 素仁轩 PM — 素仁轩项目管理
 - EMP_0005 电商 Dev — 电商业务开发（/opt/surenxuan/ 专属）
+- EMP_0006 斥候 Scout — 技术情报搜集（GitHub/Anthropic/趋势监控）
 
 ## Backlog 管理规则
 
@@ -70,3 +71,38 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 - 不得跨越工作目录边界
 - 不得替代其他角色做决策
 - 不得忽略配置文件中的"明确禁止"条款
+
+## 基础设施 / 部署
+
+### 阿里云 (106.14.44.68) 部署
+- **推荐方式**: `skills/deploy-to-aliyun.sh --git`（使用已配好的 SSH deploy key）
+- **备用方式**: `skills/deploy-to-aliyun.sh`（tar+scp，不依赖 git）
+- GitHub HTTPS 被 GFW 阻断，阿里云已改用 SSH remote（git@github.com:V2-Mason/surenxuan.git）
+- 后端通过 `python main.py` 运行（不是 uvicorn），kill 后会自动重启
+- Python 包安装必须用 venv（PEP 668 限制）
+- 阿里云没有 rsync
+
+### GCP (34.68.172.191)
+- mason-hub 和 surenxuan 都在这里开发
+- SSH 能连阿里云（反向不行）
+- Python 包安装同样需要 venv（~/mason-hub/.venv/）
+
+## 快捷命令
+
+| 命令 | 功能 |
+|------|------|
+| `/standup` | 晨会：git log + backlog + 系统状态 → 报告 |
+| `/deploy` | 一键部署 surenxuan 到阿里云 |
+| `/health` | 全局健康检查（agent + 基础设施 + 阿里云） |
+| `/dev-task <描述>` | 启动 EMP_0005 执行开发任务 |
+| `/scout` | 斥候情报巡逻 |
+
+## Cron 触发器（GCP 已部署）
+
+| 时间 (CST) | Agent | 任务 |
+|------------|-------|------|
+| 每日 08:00 | PM (EMP_0001) | 库存巡检 |
+| 每日 09:00 | SRE (EMP_0004) | 基础设施日报 |
+| 每日 09:30 | cron 脚本 | agent-status-report → Slack |
+| 每周一 10:00 | PM (EMP_0001) | 记忆压缩 |
+| 每周日 11:00 | cron 脚本 | compact-memory.sh 全量 |
