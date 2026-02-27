@@ -1,3 +1,8 @@
+---
+name: dev-task
+description: "派活给 Dev Agent：解析任务、记录 backlog、启动对应 Dev"
+---
+
 # /dev-task — 派活给 Dev Agent
 
 用户会在 /dev-task 后面跟一段任务描述。你需要：

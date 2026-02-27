@@ -1,3 +1,8 @@
+---
+name: scout
+description: "技术情报巡逻：搜索 GitHub 趋势、分析技术动态、生成情报简报"
+---
+
 # /scout — 技术情报巡逻
 
 执行技术情报搜集，聚焦与 Mason Hub agent 系统相关的技术动态。
