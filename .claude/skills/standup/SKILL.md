@@ -23,8 +23,8 @@ free -h | head -2
 # 检查关键服务
 systemctl is-active cron 2>/dev/null || echo "cron: 未运行"
 
-# 检查 crontab 任务是否注册
-crontab -l 2>/dev/null | grep -c mason-hub || echo "cron 任务: 0 条"
+# 检查 crontab 任务是否注册（包含 mason-hub 和 surenxuan 相关的所有条目）
+crontab -l 2>/dev/null | grep -v '^#' | grep -v '^$' | grep -cE 'mason-hub|surenxuan' || echo "cron 任务: 0 条"
 
 # 检查阿里云连通性
 timeout 5 ssh -o ConnectTimeout=3 root@106.14.44.68 "echo ok" 2>/dev/null && echo "阿里云: ✅ 连通" || echo "阿里云: ❌ 不通"
