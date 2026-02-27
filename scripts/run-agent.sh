@@ -6,7 +6,22 @@ SKILLS_DIR="$HUB_DIR/skills"
 LOG_FILE="$HUB_DIR/logs/agent.log"
 AUDIT_FILE="$HUB_DIR/domains/ecommerce/projects/srx/audit.jsonl"
 AUDIT_LOG="$HUB_DIR/logs/audit.jsonl"
+TASK_LOG_DIR="$HUB_DIR/logs/tasks"
+MEMORY_DIR="$HUB_DIR/memory"
 MAX_VERIFY_ROUNDS=3
+MAX_PM_RETRIES=2
+
+# --- Chain depth 限制（防止无限递归）---
+CHAIN_DEPTH=${CHAIN_DEPTH:-0}
+MAX_CHAIN_DEPTH=10
+
+if [ "$CHAIN_DEPTH" -ge "$MAX_CHAIN_DEPTH" ]; then
+  echo "🛑 Chain depth limit reached ($MAX_CHAIN_DEPTH). Force stopping."
+  if [ -x "$SLACK_NOTIFY" ]; then
+    "$SLACK_NOTIFY" "#mason-alerts" "🛑 自动 escalation 链达到深度上限 ($MAX_CHAIN_DEPTH)。需要 Mason 手动介入。" "QA Bot" ":warning:" 2>/dev/null || true
+  fi
+  exit 1
+fi
 
 # --- 参数检查 ---
 if [ $# -lt 2 ]; then
@@ -60,6 +75,27 @@ SKILLS_RAW=$(awk 'BEGIN{c=0; in_skills=0} /^---$/{c++; next} c>=2{exit} c==1{
 }' "$AGENT_FILE")
 if echo "$SKILLS_RAW" | grep -q "dev-verify-loop"; then
   HAS_VERIFY_LOOP=true
+fi
+
+# --- Phase 1: Task ID 提取 ---
+TASK_ID=$(echo "$TASK" | grep -oP '(?:task_id:\s*)\K\S+' | head -1)
+if [ -z "$TASK_ID" ]; then
+  TASK_ID=$(echo "$TASK" | grep -oP 'srx_\d{8}_\w+' | head -1)
+fi
+if [ -z "$TASK_ID" ]; then
+  TASK_ID="task_${AGENT_NAME}_$(date +%s)"
+fi
+mkdir -p "$TASK_LOG_DIR"
+
+# --- Phase 2: 经验记忆注入 ---
+LESSONS_FILE="$MEMORY_DIR/${AGENT_NAME}_lessons.md"
+if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
+  SYSPROMPT="${SYSPROMPT}
+
+---
+## 历史经验（来自过去任务的教训，请参考但不必完全遵循）
+
+$(cat "$LESSONS_FILE")"
 fi
 
 # --- 辅助函数：调用 claude -p 并记录 token ---
@@ -152,8 +188,14 @@ echo "<<<AGENT_START $AGENT_NAME>>>"
 
 if [ "$HAS_VERIFY_LOOP" = false ]; then
   # --- 非开发类 agent：直接执行，无验证 ---
+  # Phase 1: 保存输入日志
+  echo "$TASK" > "${TASK_LOG_DIR}/${TASK_ID}_round1_input.txt"
+
   JSON_OUTPUT=$(call_claude "$TASK")
   OUTPUT=$(extract_result "$JSON_OUTPUT")
+
+  # Phase 1: 保存输出日志
+  echo "$JSON_OUTPUT" > "${TASK_LOG_DIR}/${TASK_ID}_round1_output.json"
 
   echo "$OUTPUT"
   echo "$OUTPUT" >> "$LOG_FILE"
@@ -163,8 +205,51 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
   DURATION=$((END_EPOCH - START_EPOCH))
   TASK_SUMMARY=$(printf %s "$TASK" | head -c 50)
   TASK_SUMMARY=${TASK_SUMMARY//$'\n'/ }
-  echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\"}" >> "$AUDIT_FILE"
+
+  # Phase 1: 生成 summary
+  cat > "${TASK_LOG_DIR}/${TASK_ID}_summary.json" <<EOSUMMARY
+{"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":1,"final_status":"completed","task_log_dir":"$TASK_LOG_DIR"}
+EOSUMMARY
+
+  echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
+
+  # Phase 3: 非开发类 agent 的 ACTION 解析
+  ACTION_LINE=$(echo "$OUTPUT" | grep "^ACTION:" | tail -1)
+  if [ -n "$ACTION_LINE" ]; then
+    ACTION_JSON=$(echo "$ACTION_LINE" | sed 's/^ACTION://')
+    ACTION_TYPE=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('type',''))" 2>/dev/null || echo "")
+
+    case "$ACTION_TYPE" in
+      "reassign_to_dev")
+        NEW_TASK=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('new_task',''))" 2>/dev/null)
+        RETRY_COUNT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('retry_count',0))" 2>/dev/null)
+        echo "🔄 PM reassigning to Dev (retry $RETRY_COUNT, chain depth: $((CHAIN_DEPTH+1)))"
+        send_slack_notify "🔄 PM 重新分配任务给 Dev（第 ${RETRY_COUNT} 次重分配）"
+        CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
+          agents/EMP_0005.md "$NEW_TASK" "${SLACK_CHANNEL:-}"
+        ;;
+      "escalate_to_platform_dev")
+        CONTEXT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('context',''))" 2>/dev/null)
+        echo "⬆️ Escalating to Platform Dev (chain depth: $((CHAIN_DEPTH+1)))"
+        send_slack_notify "⬆️ PM escalate 给 Platform Dev"
+        CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
+          agents/EMP_0002.md "Escalation from PM. task_id: $TASK_ID. $CONTEXT" "${SLACK_CHANNEL:-}"
+        ;;
+      "escalate_to_mason")
+        CONTEXT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('context',''))" 2>/dev/null)
+        echo "🔴 Escalating to Mason"
+        if [ -x "$SLACK_NOTIFY" ]; then
+          "$SLACK_NOTIFY" "#mason-alerts" "🔴 需要 Mason 决策: 任务 $TASK_ID - $CONTEXT" "QA Bot" ":rotating_light:" 2>/dev/null || true
+        fi
+        ;;
+      "task_complete")
+        SUMMARY=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('summary',''))" 2>/dev/null)
+        echo "✅ Task chain completed: $SUMMARY"
+        send_slack_notify "✅ 任务 $TASK_ID 完成：$SUMMARY"
+        ;;
+    esac
+  fi
 
 else
   # --- 开发类 agent：执行 + 强制验证循环 ---
@@ -178,9 +263,15 @@ else
     echo "[$START_TIME] --- 第 $ROUND 轮执行 ---" >> "$LOG_FILE"
     echo "--- Round $ROUND / $MAX_VERIFY_ROUNDS ---"
 
+    # Phase 1: 保存本轮输入
+    echo "$CURRENT_PROMPT" > "${TASK_LOG_DIR}/${TASK_ID}_round${ROUND}_input.txt"
+
     # Step 1: Call claude -p
     JSON_OUTPUT=$(call_claude "$CURRENT_PROMPT")
     OUTPUT=$(extract_result "$JSON_OUTPUT")
+
+    # Phase 1: 保存本轮输出
+    echo "$JSON_OUTPUT" > "${TASK_LOG_DIR}/${TASK_ID}_round${ROUND}_output.json"
 
     ROUND_EPOCH=$(date +%s)
     ROUND_DURATION=$((ROUND_EPOCH - START_EPOCH))
@@ -249,7 +340,28 @@ $TASK"
   TASK_SUMMARY=${TASK_SUMMARY//$'\n'/ }
 
   if [ "$VERIFY_PASSED" = true ]; then
-    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND}" >> "$AUDIT_FILE"
+    # Phase 1: 生成 summary
+    cat > "${TASK_LOG_DIR}/${TASK_ID}_summary.json" <<EOSUMMARY
+{"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":$ROUND,"final_status":"completed","task_log_dir":"$TASK_LOG_DIR"}
+EOSUMMARY
+
+    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
+
+    # Phase 2: 成功时记录经验
+    LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
+    if [ -f "$LESSONS_FILE" ] && [ "$LESSONS_SIZE" -lt 51200 ]; then
+      LESSON_PROMPT="任务完成。请用 1-3 句话总结这次任务中值得记住的经验教训（遇到了什么坑、怎么解决的、下次该注意什么）。只输出经验内容，格式：## $(date +%Y-%m-%d): <模块名>\n- <经验1>\n- <经验2>"
+      LESSON_JSON=$(cd "$RUN_DIR" && claude -p \
+        --output-format json \
+        --system-prompt "你是一个代码开发助手。简洁地总结经验教训。" \
+        "$LESSON_PROMPT" 2>/dev/null) || true
+      LESSON=$(python3 -c "import sys,json; print(json.load(sys.stdin).get('result',''))" <<< "$LESSON_JSON" 2>/dev/null || echo "")
+      if [ -n "$LESSON" ] && [ ${#LESSON} -gt 10 ]; then
+        echo -e "\n$LESSON" >> "$LESSONS_FILE"
+      fi
+    elif [ "$LESSONS_SIZE" -ge 51200 ]; then
+      echo "⚠️ Lessons file for $AGENT_NAME exceeds 50KB limit. Skipping."
+    fi
   else
     # === 补丁 3：失败处理 ===
 
@@ -261,8 +373,7 @@ $TASK"
     # 3.2 生成失败摘要
     ROOT_CAUSE=$(echo "$OUTPUT" | grep -iE "root.?cause|根因|原因|problem|issue" | head -2 | tr '\n' ' ' | head -c 200)
     ROOT_CAUSE=${ROOT_CAUSE//\"/\\\"}
-    TASK_ID_EXTRACTED=$(echo "$TASK" | grep -oP 'srx_\d{8}_\d+' | head -1)
-    TASK_ID_EXTRACTED=${TASK_ID_EXTRACTED:-"unknown"}
+    TASK_ID_EXTRACTED="$TASK_ID"
 
     # 3.2.1 计算 PM 重试次数
     PM_RETRY_COUNT=0
@@ -287,9 +398,14 @@ print(count)
 
     FAIL_SUMMARY="{\"task_id\":\"$TASK_ID_EXTRACTED\",\"agent\":\"$AGENT_NAME\",\"status\":\"repair_failed\",\"pm_retry_count\":$PM_RETRY_COUNT,\"attempts\":$ATTEMPTS_JSON,\"root_cause_guess\":\"$ROOT_CAUSE\",\"code_restored\":true,\"timestamp\":\"$END_TIME\"}"
 
+    # Phase 1: 生成失败 summary
+    cat > "${TASK_LOG_DIR}/${TASK_ID}_summary.json" <<EOSUMMARY
+{"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":$ROUND,"final_status":"repair_failed","pm_retry_count":$PM_RETRY_COUNT,"task_log_dir":"$TASK_LOG_DIR"}
+EOSUMMARY
+
     # 3.3 写入审计日志
     echo "$FAIL_SUMMARY" >> "$AUDIT_LOG"
-    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"repair_failed\",\"verify_rounds\":$ROUND}" >> "$AUDIT_FILE"
+    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"repair_failed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
 
     # 3.4 Slack 通知
     # Build per-round error summary
@@ -309,6 +425,13 @@ print(count)
     fi
     send_slack_notify "$(echo -e "$SLACK_MSG")"
 
+    # Phase 2: 失败时记录经验
+    LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
+    if [ -f "$LESSONS_FILE" ] && [ "$LESSONS_SIZE" -lt 51200 ]; then
+      ERROR_HEAD=$(echo "$ATTEMPTS_JSON" | python3 -c "import sys,json; a=json.load(sys.stdin); print('; '.join([x.get('error','')[:60] for x in a]))" 2>/dev/null || echo "parse error")
+      echo -e "\n## $(date +%Y-%m-%d): [FAILED] $TASK_ID_EXTRACTED\n- ${ROUND}轮修复失败\n- 错误摘要：$ERROR_HEAD\n- 已 escalate" >> "$LESSONS_FILE"
+    fi
+
     echo ""
     echo "=== REPAIR FAILED ==="
     echo "Task: $TASK_ID_EXTRACTED"
@@ -317,6 +440,30 @@ print(count)
     echo "Code restored: yes"
     echo -e "Errors:$ROUND_SUMMARIES"
     echo "Failure summary written to: $AUDIT_LOG"
+
+    # Phase 3: 链式触发 — Dev 失败后自动触发 PM 或 Platform Dev
+    if [ "$AGENT_NAME" = "EMP_0005" ]; then
+      if [ "$PM_RETRY_COUNT" -lt "$MAX_PM_RETRIES" ]; then
+        echo "🔄 Auto-triggering PM evaluation (chain depth: $((CHAIN_DEPTH+1)), PM retry: $((PM_RETRY_COUNT+1))/$MAX_PM_RETRIES)"
+        send_slack_notify "🔄 任务 $TASK_ID_EXTRACTED Dev 修复失败，自动触发 PM 评估（第 $((PM_RETRY_COUNT+1))/$MAX_PM_RETRIES 次）"
+        CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
+          agents/EMP_0001.md \
+          "评估 Dev 失败任务。task_id: $TASK_ID_EXTRACTED。PM 重试次数: $PM_RETRY_COUNT/$MAX_PM_RETRIES。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json 和 $AUDIT_LOG。运行 ~/mason-hub/skills/check-escalation.sh --task $TASK_ID_EXTRACTED 查看完整历史。判断失败类型（A-E），决定下一步。在回复最后一行输出 ACTION。" \
+          "${SLACK_CHANNEL:-}"
+      else
+        echo "⬆️ PM retries exhausted. Auto-escalating to Platform Dev (chain depth: $((CHAIN_DEPTH+1)))"
+        send_slack_notify "⬆️ 任务 $TASK_ID_EXTRACTED 已耗尽 PM 重试次数（$MAX_PM_RETRIES/$MAX_PM_RETRIES），自动 escalate 给 Platform Dev"
+        CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
+          agents/EMP_0002.md \
+          "接收 escalation。task_id: $TASK_ID_EXTRACTED。Dev 3轮×$((PM_RETRY_COUNT+1))次均失败。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json，分析根因并尝试修复。" \
+          "${SLACK_CHANNEL:-}"
+      fi
+    elif [ "$AGENT_NAME" = "EMP_0002" ]; then
+      echo "🔴 Platform Dev also failed. Escalating to Mason."
+      if [ -x "$SLACK_NOTIFY" ]; then
+        "$SLACK_NOTIFY" "#mason-alerts" "🔴 任务 $TASK_ID_EXTRACTED 所有自动修复均失败（Dev + PM + Platform Dev）。需要 Mason 手动介入。完整日志：$TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*" "QA Bot" ":rotating_light:" 2>/dev/null || true
+      fi
+    fi
   fi
 fi
 
