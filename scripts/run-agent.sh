@@ -101,6 +101,39 @@ if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
 $(cat "$LESSONS_FILE")"
 fi
 
+# --- Phase 2.5: 共享知识层注入 ---
+inject_if_exists() {
+  local file="$1"
+  local label="$2"
+  if [ -f "$file" ] && [ -s "$file" ]; then
+    SYSPROMPT="${SYSPROMPT}
+
+---
+## ${label}
+
+$(cat "$file")"
+  fi
+}
+
+# 根据 agent 角色注入对应的知识文件
+case "$AGENT_NAME" in
+  EMP_0000)  # Meta Manager — 全局知识
+    inject_if_exists "$HUB_DIR/meta/knowledge_base.md" "系统知识库"
+    ;;
+  EMP_0001)  # PM — 项目决策 + 电商知识
+    inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
+    inject_if_exists "$HUB_DIR/domains/ecommerce/knowledge_base.md" "电商知识库"
+    ;;
+  EMP_0003)  # Domain Manager — 电商知识 + 决策
+    inject_if_exists "$HUB_DIR/domains/ecommerce/knowledge_base.md" "电商知识库"
+    inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
+    ;;
+  EMP_0005)  # Dev — 项目决策（轻量）
+    inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
+    ;;
+  # EMP_0002 (Platform Dev), EMP_0004 (SRE), EMP_0006 (Scout) — 无额外知识注入
+esac
+
 # --- 提取 launcher_args（从 YAML frontmatter）---
 LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
   if(/^launcher_args:/){in_la=1; next}
@@ -184,6 +217,35 @@ send_slack_notify() {
   if [ -n "$channel" ] && [ -x "$SLACK_NOTIFY" ]; then
     "$SLACK_NOTIFY" "$channel" "$message" "QA Bot" ":test_tube:" 2>/dev/null || true
   fi
+}
+
+# --- 辅助函数：格式化 Slack 结构化消息 ---
+format_slack_message() {
+  local status="$1"   # success | failed | escalated
+  local agent="$2"
+  local task_id="$3"
+  local rounds="$4"
+  local details="$5"  # extra info (error summary, etc.)
+  local duration="$6"
+
+  local emoji duration_str
+  case "$status" in
+    success)   emoji="✅" ;;
+    failed)    emoji="❌" ;;
+    escalated) emoji="⬆️" ;;
+    *)         emoji="ℹ️" ;;
+  esac
+
+  if [ -n "$duration" ] && [ "$duration" -gt 0 ] 2>/dev/null; then
+    local mins=$((duration / 60))
+    local secs=$((duration % 60))
+    duration_str="${mins}m${secs}s"
+  else
+    duration_str="N/A"
+  fi
+
+  echo "${emoji} *${task_id}* | ${agent} | ${rounds} 轮 | ${duration_str}
+${details}"
 }
 
 # --- 记录开始 ---
@@ -361,6 +423,10 @@ EOSUMMARY
 
     echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
 
+    # Slack 结构化成功通知
+    SLACK_SUCCESS_MSG=$(format_slack_message "success" "$AGENT_NAME" "$TASK_ID" "$ROUND" "修改文件: ${MODIFIED:-none}" "$DURATION")
+    send_slack_notify "$SLACK_SUCCESS_MSG"
+
     # Phase 2: 成功时记录经验
     LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
     if [ -f "$LESSONS_FILE" ] && [ "$LESSONS_SIZE" -lt 51200 ]; then
@@ -433,11 +499,13 @@ EOSUMMARY
     if [ "$PM_RETRIES_LEFT" -lt 0 ]; then PM_RETRIES_LEFT=0; fi
 
     if [ "$PM_RETRY_COUNT" -ge "$MAX_PM_RETRIES" ]; then
-      SLACK_MSG="🔴 任务 ${TASK_ID_EXTRACTED} 已耗尽所有自动修复机会（Dev 3轮 × PM ${MAX_PM_RETRIES}次 = 共 $((MAX_VERIFY_ROUNDS * (PM_RETRY_COUNT + 1))) 轮尝试）\n自动 escalate 给 Platform Dev (EMP_0002)\n失败摘要：${ROUND_SUMMARIES}\n根因判断：${ROOT_CAUSE:-无}"
+      FAIL_DETAIL="自动 escalate → Platform Dev\n$(echo -e "$ROUND_SUMMARIES")\n根因: ${ROOT_CAUSE:-无}"
+      SLACK_MSG=$(format_slack_message "escalated" "$AGENT_NAME" "$TASK_ID_EXTRACTED" "$ROUND" "$(echo -e "$FAIL_DETAIL")" "$DURATION")
     else
-      SLACK_MSG="⚠️ 任务 ${TASK_ID_EXTRACTED} 3 轮修复失败（PM 第 $((PM_RETRY_COUNT))/2 次分配）\n剩余 PM 重试次数：${PM_RETRIES_LEFT}\n失败摘要：${ROUND_SUMMARIES}\n根因判断：${ROOT_CAUSE:-无}\n请 PM 评估下一步。"
+      FAIL_DETAIL="PM 重试 ${PM_RETRY_COUNT}/${MAX_PM_RETRIES}，剩余 ${PM_RETRIES_LEFT} 次\n$(echo -e "$ROUND_SUMMARIES")\n根因: ${ROOT_CAUSE:-无}"
+      SLACK_MSG=$(format_slack_message "failed" "$AGENT_NAME" "$TASK_ID_EXTRACTED" "$ROUND" "$(echo -e "$FAIL_DETAIL")" "$DURATION")
     fi
-    send_slack_notify "$(echo -e "$SLACK_MSG")"
+    send_slack_notify "$SLACK_MSG"
 
     # Phase 2: 失败时记录经验
     LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
