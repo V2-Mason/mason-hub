@@ -40,15 +40,24 @@ if [ -z "$SYSPROMPT" ]; then
   exit 1
 fi
 
+# --- 提取 working_directory（从 YAML frontmatter）---
+WORK_DIR=$(awk 'BEGIN{c=0} /^---$/{c++; next} c==1 && /^working_directory:/{gsub(/^working_directory:\s*/, ""); gsub(/~/, ENVIRON["HOME"]); print; exit}' "$AGENT_FILE")
+if [ -n "$WORK_DIR" ] && [ -d "$WORK_DIR" ]; then
+  RUN_DIR="$WORK_DIR"
+else
+  RUN_DIR="$HUB_DIR"
+fi
+
 # --- 记录开始 ---
 START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 START_EPOCH=$(date +%s)
 echo "[$START_TIME] === $AGENT_NAME 开始执行 ===" >> "$LOG_FILE"
 echo "[$START_TIME] 任务: $TASK" >> "$LOG_FILE"
+echo "[$START_TIME] 工作目录: $RUN_DIR" >> "$LOG_FILE"
 echo "<<<AGENT_START $AGENT_NAME>>>"
 
 # --- 调用 claude -p（JSON 输出以获取 token 用量）---
-JSON_OUTPUT=$(cd "$HUB_DIR" && claude -p \
+JSON_OUTPUT=$(cd "$RUN_DIR" && claude -p \
   --output-format json \
   --system-prompt "$SYSPROMPT" \
   "$TASK" 2>&1)
