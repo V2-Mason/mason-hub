@@ -264,7 +264,28 @@ $TASK"
     TASK_ID_EXTRACTED=$(echo "$TASK" | grep -oP 'srx_\d{8}_\d+' | head -1)
     TASK_ID_EXTRACTED=${TASK_ID_EXTRACTED:-"unknown"}
 
-    FAIL_SUMMARY="{\"task_id\":\"$TASK_ID_EXTRACTED\",\"agent\":\"$AGENT_NAME\",\"status\":\"repair_failed\",\"attempts\":$ATTEMPTS_JSON,\"root_cause_guess\":\"$ROOT_CAUSE\",\"code_restored\":true,\"timestamp\":\"$END_TIME\"}"
+    # 3.2.1 计算 PM 重试次数
+    PM_RETRY_COUNT=0
+    MAX_PM_RETRIES=2
+    if [ -f "$AUDIT_LOG" ] && [ "$TASK_ID_EXTRACTED" != "unknown" ]; then
+      PM_RETRY_COUNT=$(python3 -c "
+import json, sys
+count = 0
+with open('$AUDIT_LOG') as f:
+    for line in f:
+        line = line.strip()
+        if not line: continue
+        try:
+            r = json.loads(line)
+            if r.get('task_id') == '$TASK_ID_EXTRACTED' and r.get('status') == 'repair_failed':
+                count = max(count, r.get('pm_retry_count', 0) + 1)
+        except: continue
+print(count)
+" 2>/dev/null || echo "0")
+      PM_RETRY_COUNT=${PM_RETRY_COUNT:-0}
+    fi
+
+    FAIL_SUMMARY="{\"task_id\":\"$TASK_ID_EXTRACTED\",\"agent\":\"$AGENT_NAME\",\"status\":\"repair_failed\",\"pm_retry_count\":$PM_RETRY_COUNT,\"attempts\":$ATTEMPTS_JSON,\"root_cause_guess\":\"$ROOT_CAUSE\",\"code_restored\":true,\"timestamp\":\"$END_TIME\"}"
 
     # 3.3 写入审计日志
     echo "$FAIL_SUMMARY" >> "$AUDIT_LOG"
@@ -278,13 +299,21 @@ $TASK"
       ROUND_SUMMARIES="${ROUND_SUMMARIES}\n- 第${i}轮: ${ERR}"
     done
 
-    SLACK_MSG="⚠️ 任务 ${TASK_ID_EXTRACTED} 经过 ${MAX_VERIFY_ROUNDS} 轮修复均失败，代码已恢复原状。\n失败摘要：${ROUND_SUMMARIES}\n根因判断：${ROOT_CAUSE:-无}\n请 PM 评估下一步。"
+    PM_RETRIES_LEFT=$((MAX_PM_RETRIES - PM_RETRY_COUNT))
+    if [ "$PM_RETRIES_LEFT" -lt 0 ]; then PM_RETRIES_LEFT=0; fi
+
+    if [ "$PM_RETRY_COUNT" -ge "$MAX_PM_RETRIES" ]; then
+      SLACK_MSG="🔴 任务 ${TASK_ID_EXTRACTED} 已耗尽所有自动修复机会（Dev 3轮 × PM ${MAX_PM_RETRIES}次 = 共 $((MAX_VERIFY_ROUNDS * (PM_RETRY_COUNT + 1))) 轮尝试）\n自动 escalate 给 Platform Dev (EMP_0002)\n失败摘要：${ROUND_SUMMARIES}\n根因判断：${ROOT_CAUSE:-无}"
+    else
+      SLACK_MSG="⚠️ 任务 ${TASK_ID_EXTRACTED} 3 轮修复失败（PM 第 $((PM_RETRY_COUNT))/2 次分配）\n剩余 PM 重试次数：${PM_RETRIES_LEFT}\n失败摘要：${ROUND_SUMMARIES}\n根因判断：${ROOT_CAUSE:-无}\n请 PM 评估下一步。"
+    fi
     send_slack_notify "$(echo -e "$SLACK_MSG")"
 
     echo ""
     echo "=== REPAIR FAILED ==="
     echo "Task: $TASK_ID_EXTRACTED"
     echo "Rounds: $ROUND / $MAX_VERIFY_ROUNDS"
+    echo "PM retry: $PM_RETRY_COUNT / $MAX_PM_RETRIES"
     echo "Code restored: yes"
     echo -e "Errors:$ROUND_SUMMARIES"
     echo "Failure summary written to: $AUDIT_LOG"
