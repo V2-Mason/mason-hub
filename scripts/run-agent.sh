@@ -50,6 +50,9 @@ AGENT_NAME=$(basename "$1" .md)
 source ~/slack-bot/.env
 export ANTHROPIC_API_KEY
 
+# --- 允许从 Claude Code session 内嵌套调用 ---
+unset CLAUDECODE 2>/dev/null || true
+
 # --- 提取 markdown body（跳过 YAML frontmatter）---
 SYSPROMPT=$(awk "BEGIN{c=0} /^---$/{c++; next} c>=2{print}" "$AGENT_FILE")
 
@@ -78,7 +81,7 @@ if echo "$SKILLS_RAW" | grep -q "dev-verify-loop"; then
 fi
 
 # --- Phase 1: Task ID 提取 ---
-TASK_ID=$(echo "$TASK" | grep -oP '(?:task_id:\s*)\K\S+' | head -1)
+TASK_ID=$(echo "$TASK" | grep -oP '(?:task_id:\s*)\K[A-Za-z0-9_\-]+' | head -1)
 if [ -z "$TASK_ID" ]; then
   TASK_ID=$(echo "$TASK" | grep -oP 'srx_\d{8}_\w+' | head -1)
 fi
@@ -98,12 +101,20 @@ if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
 $(cat "$LESSONS_FILE")"
 fi
 
+# --- 提取 launcher_args（从 YAML frontmatter）---
+LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
+  if(/^launcher_args:/){in_la=1; next}
+  if(in_la && /^  - /){gsub(/^  - /,""); printf "%s ", $0; next}
+  if(in_la && !/^  /){in_la=0}
+}' "$AGENT_FILE")
+
 # --- 辅助函数：调用 claude -p 并记录 token ---
 call_claude() {
   local prompt="$1"
   local json_out
   json_out=$(cd "$RUN_DIR" && claude -p \
     --output-format json \
+    $LAUNCHER_ARGS \
     --system-prompt "$SYSPROMPT" \
     "$prompt" 2>&1)
   echo "$json_out"
@@ -126,19 +137,19 @@ log_api_usage() {
 }
 
 # --- 辅助函数：从 agent 输出中提取修改的文件 ---
+# 使用 GIT_BASELINE（调用前快照）来只检测 agent 实际造成的改动
 extract_modified_files() {
   local output="$1"
-  # Look for common patterns: file paths ending in .py/.jsx/.js/.ts that were modified
-  # Patterns: "Edit file: path", "modified: path", "Write path", common tool output patterns
+  # Method 1: Parse agent output for file path patterns
   local files
-  files=$(echo "$output" | grep -oP '(?:~/surenxuan/|/home/hangn/surenxuan/|(?:backend|frontend)/)\S+\.(?:py|jsx|js|ts)' | sort -u | head -20)
-  # Normalize to relative paths
-  files=$(echo "$files" | sed "s|$HOME/surenxuan/||g" | sed 's|~/surenxuan/||g' | sort -u)
-  # Also check git diff for actual changes
-  local git_files
-  git_files=$(cd "$RUN_DIR" && git diff --name-only 2>/dev/null | grep -E '\.(py|jsx|js|ts)$' | head -20)
+  files=$(echo "$output" | grep -oP '(?:~/surenxuan/|/home/hangn/surenxuan/|(?:backend|frontend)/)\S+\.(?:py|jsx|js|ts)' | sort -u | head -20 || true)
+  files=$(echo "$files" | sed "s|$HOME/surenxuan/||g" | sed 's|~/surenxuan/||g' | sort -u || true)
+  # Method 2: Compare git diff against pre-agent baseline (only new changes)
+  local git_files_now git_new_files
+  git_files_now=$(cd "$RUN_DIR" && git diff --name-only 2>/dev/null | grep -E '\.(py|jsx|js|ts)$' | sort || true)
+  git_new_files=$(comm -13 <(echo "$GIT_BASELINE") <(echo "$git_files_now") 2>/dev/null || true)
   # Combine and deduplicate
-  echo -e "${files}\n${git_files}" | sort -u | grep -v '^$' | paste -sd',' -
+  echo -e "${files}\n${git_new_files}" | sort -u | grep -v '^$' | paste -sd',' - || true
 }
 
 # --- 辅助函数：用 test-map.json 查找测试模块 ---
@@ -185,6 +196,9 @@ echo "[$START_TIME] 强制验证: $HAS_VERIFY_LOOP" >> "$LOG_FILE"
 echo "<<<AGENT_START $AGENT_NAME>>>"
 
 # === 主执行逻辑 ===
+
+# 记录 agent 调用前的 git diff baseline（用于只检测 agent 新增的改动）
+GIT_BASELINE=$(cd "$RUN_DIR" && git diff --name-only 2>/dev/null | grep -E '\.(py|jsx|js|ts)$' | sort || true)
 
 if [ "$HAS_VERIFY_LOOP" = false ]; then
   # --- 非开发类 agent：直接执行，无验证 ---
@@ -295,8 +309,8 @@ else
 
     # Step 4: Run dev-verify-loop
     echo "[verify] Running verification..."
-    VERIFY_OUTPUT=$("$SKILLS_DIR/dev-verify-loop.sh" "$MODIFIED" "$TEST_MODULE" 2>&1) || true
-    VERIFY_EXIT=$?
+    VERIFY_EXIT=0
+    VERIFY_OUTPUT=$("$SKILLS_DIR/dev-verify-loop.sh" "$MODIFIED" "$TEST_MODULE" 2>&1) || VERIFY_EXIT=$?
 
     echo "$VERIFY_OUTPUT" >> "$LOG_FILE"
 

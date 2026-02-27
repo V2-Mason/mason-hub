@@ -1,0 +1,1 @@
+task_id: srx_20260227_fix_summary_discount -- 修复 /api/sales/summary 端点缺少 total_discount 字段的 bug。当前 sales_summary 函数在 backend/api/sales.py 中，SQL 查询没有 SUM discount_amount 聚合列，导致返回结果缺少 total_discount。请在 SQL 的 gross_profit 聚合列后面添加 COALESCE(SUM(s.discount_amount), 0) as total_discount。返回的 data 字典使用 **dict(row) 展开所以会自动包含新字段。只修改 backend/api/sales.py 这一个文件的 sales_summary 函数。

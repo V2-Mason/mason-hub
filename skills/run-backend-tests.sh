@@ -107,8 +107,8 @@ echo "Target: $TARGET"
 echo "Marker: ${MARKER:-none}"
 echo "---"
 
-OUTPUT=$(cd "$PROJECT_DIR" && timeout "$TIMEOUT" python3 -m pytest "$TARGET" $PYTEST_ARGS 2>&1) || true
-EXIT_CODE=$?
+EXIT_CODE=0
+OUTPUT=$(cd "$PROJECT_DIR" && timeout "$TIMEOUT" python3 -m pytest "$TARGET" $PYTEST_ARGS 2>&1) || EXIT_CODE=$?
 
 echo "$OUTPUT"
 echo "---"

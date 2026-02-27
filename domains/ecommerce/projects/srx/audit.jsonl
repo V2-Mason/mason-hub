@@ -24,3 +24,6 @@
 {"timestamp":"2026-02-26T16:28:40Z","agent":"EMP_0000","task":"你今天有什么任务吗","status":"completed"}
 {"timestamp":"2026-02-26T16:29:54Z","agent":"EMP_0000","task":"日报呢，为什么没有派送？你的任务�","status":"completed"}
 {"timestamp":"2026-02-26T16:32:36Z","agent":"EMP_0000","task":"可以，我在哪里看","status":"completed"}
+{"timestamp":"2026-02-27T07:29:56Z","agent":"EMP_0005","task":"task_id: srx_20260227_fix_summary_discount -- 修�","status":"completed","verify_rounds":1,"task_log_dir":"/home/hangn/mason-hub/logs/tasks/srx_20260227_fix_summary_discount_*"}
+{"timestamp":"2026-02-27T07:36:33Z","agent":"EMP_0005","task":"task_id: srx_20260227_fix_summary_discount -- 修�","status":"completed","verify_rounds":1,"task_log_dir":"/home/hangn/mason-hub/logs/tasks/srx_20260227_fix_summary_discount_*"}
+{"timestamp":"2026-02-27T07:41:15Z","agent":"EMP_0005","task":"task_id: srx_20260227_fix_summary_discount -- 修�","status":"completed","verify_rounds":1,"task_log_dir":"/home/hangn/mason-hub/logs/tasks/srx_20260227_fix_summary_discount_*"}
