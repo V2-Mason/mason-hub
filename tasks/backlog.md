@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-02-28
-> 更新人: Mason + Meta Manager（Scout 重构 + 小红书 API 对接 + Agent 基础设施修复）
+> 最后更新: 2026-03-01
+> 更新人: Mason + Meta Manager（XHS 采集分析管道上线 + Scout 重构 + 小红书 API 对接 + Agent 基础设施修复）
 
 ---
 
@@ -247,16 +247,18 @@ P1 — 模块 A：店铺运营 API 对接（官方 API，全部 EMP_0005）:
 P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
 - [x] 部署 MediaCrawler 到阿里云 /opt/mediacrawler/（Python 3.11 + Playwright + Chromium + Node.js 16+）— 2026-02-28 完成，venv + SQLite 初始化 + 1GB swap 添加，等 Mason 提供 XHS cookie 即可采集
 - [x] 配置代理 IP — 2026-03-01 完成，快代理隧道代理（TPS）已配置，出口 IP 验证通过（182.34.xx.xx），阿里云真实 IP 已隐藏
-- [ ] 采集任务配置 — 4 类任务按需采集，数据存阿里云 SQLite（EMP_0005）:
-  - 任务 1 内容灵感：韩国护肤/好物/教程/零食/代购，每周 2 次，月产 1,280 摘要 + 160 详情 → 喂给 Content Creator
-  - 任务 2 选品情报：水乳/精华/面膜/防晒/探索品类，每周 1 次，月产 1,120 摘要 + 12 详情 → 喂给 PM + 电商 Manager
-  - 任务 3 竞品监控：3-5 个竞品店铺/品牌名，每周 1 次，月产 120 摘要 + 100 详情 → 喂给电商 Manager
-  - 任务 4 趋势发现：成分趋势/爆款/新品类试探，每月 2-4 次，月产 480 摘要 + 20 详情 → 喂给号 2 试品类
+- [x] 采集任务配置 — 2026-03-01 完成，4 类任务 cron 调度 + cookie 检测 + 分析 + 策略简报全管道:
+  - xhs-cookie-check.sh: Cookie 有效性检测，过期自动 Slack 通知
+  - xhs-crawl.sh --task 1~4: 采集调度器（内容灵感/选品情报/竞品监控/趋势发现）
+  - xhs-analyze.sh: 数字归一化 + 假流量过滤 + 互动评分 + 爆帖排行 + 关键词统计
+  - xhs-strategy-briefing.sh: 规则策略推荐（3 号各自内容建议）+ Slack 摘要
+  - Cron: 周二+周五 Task1, 周三 Task2, 周四 Task3, 1+15号 Task4, 周六分析+简报
+  - 待 Mason: Task 3 竞品关键词待提供
 
 P1 — 模块 C：china-hub 分析看板（阿里云本地 :8080）:
 - [ ] 看板后端 — FastAPI 查询采集数据库，提供品类热度/爆款排行/竞品分析/关键词监控 API（EMP_0005）
 - [ ] 看板前端 — Mason 从美国浏览器直接访问阿里云看板（数据不出境，等同访问中国网站）（EMP_0005）
-- [ ] Slack 通知集成 — 定期推送一句话摘要到 Slack + 阿里云看板链接（EMP_0005）
+- [x] Slack 通知集成 — 2026-03-01 完成，采集/分析/简报每步都推送 Slack 摘要到 #socialmesh
 - [ ] DeepSeek 分析集成 — 在阿里云本地调 DeepSeek API 分析采集内容（EMP_0005）
 
 P2 — 模块 A 增强:

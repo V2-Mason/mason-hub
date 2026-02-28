@@ -56,3 +56,11 @@
 
 ### 输出给 EMP_0010 Creator
 - 每周产出"本周内容策略简报"：爆帖规律 + 推荐内容方向 + 3 个号的差异化建议
+
+### 自动化管道已上线 (2026-03-01)
+- 采集→分析→策略简报完整管道已部署（GCP cron 触发）
+- 每周六自动生成 weekly_analysis.json + briefings/YYYY-MM-DD.json
+- 策略简报自动推 Slack #socialmesh，含 3 号内容建议
+- 当前用规则引擎（藏赞比→教程类，评赞比→话题类），DeepSeek 增强待后续
+- 策略简报路径：阿里云 /opt/mediacrawler/analysis/briefings/
+- Schema 定义：~/mason-hub/shared/xhs-briefing-schema.json

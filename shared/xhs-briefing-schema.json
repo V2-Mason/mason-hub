@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "XHS Weekly Strategy Briefing",
+  "description": "小红书采集分析策略简报结构",
+  "type": "object",
+  "required": ["generated_at", "period", "hot_posts", "keyword_insights", "content_recommendations", "fake_traffic_report"],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "description": "生成时间 ISO 8601"
+    },
+    "period": {
+      "type": "object",
+      "properties": {
+        "start": { "type": "string" },
+        "end": { "type": "string" }
+      },
+      "required": ["start", "end"]
+    },
+    "hot_posts": {
+      "type": "array",
+      "description": "爆帖排行 Top 20",
+      "items": {
+        "type": "object",
+        "required": ["note_id", "title", "score", "liked", "collected", "comment", "share", "type", "source_keyword", "note_url"],
+        "properties": {
+          "note_id": { "type": "string" },
+          "title": { "type": "string" },
+          "score": { "type": "number", "description": "互动评分 = 赞 + 藏×3 + 评×5 + 转×8" },
+          "liked": { "type": "integer" },
+          "collected": { "type": "integer" },
+          "comment": { "type": "integer" },
+          "share": { "type": "integer" },
+          "engagement_ratio": { "type": "number", "description": "互动比 (藏+评+转)/赞" },
+          "type": { "type": "string", "enum": ["video", "normal"] },
+          "source_keyword": { "type": "string" },
+          "note_url": { "type": "string" },
+          "fake_traffic_flags": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "假流量标记列表"
+          },
+          "learn_reason": { "type": "string", "description": "值得学习的原因" }
+        }
+      }
+    },
+    "keyword_insights": {
+      "type": "array",
+      "description": "各关键词趋势洞察",
+      "items": {
+        "type": "object",
+        "required": ["keyword", "note_count", "avg_score", "video_ratio"],
+        "properties": {
+          "keyword": { "type": "string" },
+          "note_count": { "type": "integer" },
+          "avg_score": { "type": "number" },
+          "top3_titles": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "video_ratio": { "type": "number", "description": "视频笔记占比 0-1" },
+          "trend_direction": { "type": "string", "enum": ["rising", "stable", "declining", "new"] }
+        }
+      }
+    },
+    "content_recommendations": {
+      "type": "array",
+      "description": "3 个号各自的内容建议",
+      "items": {
+        "type": "object",
+        "required": ["account", "suggestions"],
+        "properties": {
+          "account": { "type": "string", "description": "号 1 品牌号 / 号 2 种草号 / 号 3 人设号" },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "topic": { "type": "string" },
+                "format": { "type": "string", "enum": ["video", "image_text"] },
+                "reason": { "type": "string" },
+                "reference_notes": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "参考笔记 note_id 列表"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "fake_traffic_report": {
+      "type": "object",
+      "description": "假流量概况",
+      "required": ["total_checked", "flagged_count", "flag_rate"],
+      "properties": {
+        "total_checked": { "type": "integer" },
+        "flagged_count": { "type": "integer" },
+        "flag_rate": { "type": "number", "description": "标记率 0-1" },
+        "common_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

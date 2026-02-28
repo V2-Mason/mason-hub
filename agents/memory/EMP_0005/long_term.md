@@ -36,11 +36,37 @@
 - 采集引擎：/opt/mediacrawler/（EMP_0004 部署，我配置）
 
 ### 内容→转化追踪系统（待建）(2026-03-01, Mason 确认)
-- 需要建：帖子 ID ↔ 商品 ID ↔ 订单时间窗 的关联追踪
-- 帖子发布后 3 天窗口期内，相关商品订单增量
+- 需要建：帖子 ID ↔ 商品 ID ↔ 订单时间窗 的自动关联追踪
+- 帖子发布后 72h 窗口期内，相关商品订单增量自动归因
 - 数据源：MediaCrawler（帖子数据）+ 官方 API（订单数据）
 - 消费方：EMP_0008 用来判断内容→转化效果
-- 等官方 API 接通后实现
+- **不做手动标记**，跟官方 API 签名鉴权一起建（同一条依赖链）
+- 前置：Mason 注册开发者账号 → 接通 API → 拉订单 → 关联
+
+## XHS 采集分析管道 (2026-03-01)
+
+### 管道组件
+- `skills/xhs-cookie-check.sh`: Cookie 有效性检测（SSH→阿里云→XHS API），过期自动 Slack 通知
+- `skills/xhs-crawl.sh --task 1~4`: 采集调度器，先 cookie 检查再跑 MediaCrawler
+- `skills/xhs-analyze.sh`: 数字归一化 + 假流量过滤 + 互动评分 + 爆帖 Top20 + 关键词统计 → JSON
+- `skills/xhs-strategy-briefing.sh`: 规则策略推荐（3 号各自内容建议）→ JSON + Slack 摘要
+
+### Cron 调度 (GCP, UTC 时间)
+- 周一+周四 22:00 UTC: Task 1 内容灵感
+- 周二 22:00 UTC: Task 2 选品情报
+- 周三 22:00 UTC: Task 3 竞品监控（关键词待 Mason 提供）
+- 每天 22:00 UTC: Task 4 趋势发现（脚本内判断 CST 1号/15号才执行）
+- 周六 00:00 UTC: 分析
+- 周六 02:00 UTC: 策略简报
+
+### 数据文件路径（阿里云）
+- 分析 JSON: /opt/mediacrawler/analysis/weekly_analysis.json
+- 策略简报: /opt/mediacrawler/analysis/briefings/YYYY-MM-DD.json
+- Schema: ~/mason-hub/shared/xhs-briefing-schema.json
+
+### 待办
+- Task 3 竞品关键词待 Mason 提供
+- DeepSeek 分析增强待后续加入
 
 ## 踩坑记录
 
