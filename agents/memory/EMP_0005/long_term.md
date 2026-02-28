@@ -1,0 +1,35 @@
+# EMP_0005 电商 Dev — 长期记忆
+
+## 小红书对接架构 (2026-02-28, Mason 确认)
+
+### 模块 A：店铺运营 API（我负责全部）
+- 签名+鉴权模块代码放 /opt/surenxuan/，不做跨项目依赖
+- 签名算法：参数字母排序拼接 + method + appSecret → MD5
+- OAuth 自研模式：添加店铺 ID → 授权链接 → code → accessToken（10 分钟有效）→ refreshToken 续期
+- 商品/库存双向同步 + 订单/售后自动处理
+
+### 模块 B：MediaCrawler 采集（我负责任务配置）
+- MediaCrawler 部署由 EMP_0004 (SRE) 负责
+- 我负责：K-Beauty 关键词配置、采集频率、数据入库逻辑
+- 数据存阿里云 SQLite，不出境
+
+### 模块 C：china-hub 分析看板（我负责后端+前端）
+- FastAPI 看板部署在阿里云 :8080
+- 功能：品类热度趋势、爆款排行、竞品分析、关键词监控
+- Mason 从美国浏览器直接访问（数据不出境）
+- 定期推送 Slack 一句话摘要 + 看板链接
+- DeepSeek API 在阿里云本地调用做分析
+
+### 月预算
+- 代理 IP: ¥150（~3000 个 IP/月）
+- DeepSeek 分析: ¥30
+- 总计 ¥200 以内
+
+## 部署环境
+
+### 工作目录
+- 电商代码：/opt/surenxuan/（我的专属）
+- 看板代码：/opt/china-hub/（新增，也归我）
+- 采集引擎：/opt/mediacrawler/（EMP_0004 部署，我配置）
+
+## 踩坑记录

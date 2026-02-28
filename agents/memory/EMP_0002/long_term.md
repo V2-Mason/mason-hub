@@ -28,9 +28,15 @@
 - 执行引擎：接收 GCP agent 指令（只含 ID 引用），本地查询敏感数据后调 API 执行
 - PII 加密存储：手机号/姓名/地址 AES 加密，与脱敏业务数据分开存储
 - 多租户架构预留：appKey/appSecret/token 不硬编码，按商家 ID 动态选用
-- 小红书 API 签名机制：参数字母排序拼接 + 路径 + appSecret → MD5，封装为通用中间件
+- 小红书 API 签名机制：参数字母排序拼接 + 路径 + appSecret → MD5。**签名模块放 /opt/surenxuan/（EMP_0005 负责），不做跨项目依赖**。自用单项目，未来需要共享时迁移成本极低（几十行代码提取）
 - **跨境通信协议**：GCP↔阿里云之间用标准化 JSON 消息，通过反向 SSH 隧道传输。未来加 japan-hub 等区域节点用同样协议
 - **未来 employee 结构**：EMP_1000 中国区总管 / EMP_1001 数据管家 / EMP_1002 CRM / EMP_1003 物流
+
+### china-hub 第一个真实用例：分析看板 (2026-02-28)
+- 大使馆模式 Phase 1 的落地：MediaCrawler 采集 → 阿里云 SQLite 存储 → FastAPI 看板 → Mason 浏览器直接访问
+- 数据合规原则「数据不动，人来看」：原始数据不出境，Mason 通过浏览器访问阿里云看板（等同访问中国网站）
+- GCP 只收 Slack 通知（一句话趋势摘要 + 阿里云看板链接）
+- 目录结构：/opt/mediacrawler/（采集）+ /opt/china-hub/（看板+分析）
 
 ## 部署与运维 Pattern
 
