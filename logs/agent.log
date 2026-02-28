@@ -1156,3 +1156,8 @@ Exit code: 0
 {"timestamp":"2026-02-28T20:14:20Z","agent_id":"xhs-analyzer","task_id":"weekly-analysis","event_type":"end","message":"Analyzed 80 notes, 4 keywords, 2 flagged "}
 {"timestamp":"2026-02-28T20:15:05Z","agent_id":"xhs-strategy","task_id":"briefing","event_type":"start","message":"Generating strategy briefing "}
 {"timestamp":"2026-02-28T20:15:08Z","agent_id":"xhs-strategy","task_id":"briefing","event_type":"end","message":"Briefing generated: 20 hot posts, 4 keywords, 4 recommendations "}
+{"timestamp":"2026-02-28T21:43:42Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
+{"timestamp":"2026-02-28T22:00:04Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
+{"timestamp":"2026-02-28T22:00:05Z","agent_id":"xhs-crawler","task_id":"crawl-task-4","event_type":"error","message":"Aborted: cookie expired "}
+{"timestamp":"2026-02-28T22:09:00Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
+{"timestamp":"2026-02-28T22:10:27Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
