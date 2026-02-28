@@ -1,4 +1,4 @@
-# Agent 经验记录
+# EMP_0009 Content-Tech Dev 经验记录
 
 本文件记录该 agent 在任务中积累的经验教训。
 格式：每条经验以 ## 日期: 模块/主题 开头，包含具体的发现和建议。
@@ -8,4 +8,4 @@
 
 ## 2026-02-28: Python 中文字符串
 
-Python 代码中避免使用中文全角引号 `""`，会导致 SyntaxError。用英文引号或 Unicode escape `\u201c\u201d`。
+`adapter_engine.py` 里用了中文全角引号 `""` 导致 SyntaxError。Python prompt 字符串里避免中文引号，用英文引号或 Unicode escape `\u201c\u201d`。
