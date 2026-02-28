@@ -1,0 +1,68 @@
+{
+  "project_id": "socialmesh",
+  "last_updated": "2026-02-27",
+  "tasks": [
+    {
+      "task_id": "socialmesh_20260227_001",
+      "title": "验证 ContentEditor 一体化流程",
+      "description": "bug-fixer 重写了 ContentEditor.jsx，新增 /adapt-raw 端点。需要端到端验证：写内容 → 选平台 → 适配预览 → 发布/排程 全流程通畅",
+      "priority": "P0",
+      "status": "pending",
+      "type": "qa",
+      "created_at": "2026-02-27"
+    },
+    {
+      "task_id": "socialmesh_20260227_002",
+      "title": "XHS 全流程验证（QR 登录 → 发帖）",
+      "description": "Mason 已成功连接 XHS，但发帖流程还未验证。需要：1) 确认连接状态持久化 2) 测试通过 Playwright 发帖 3) 发帖后抓取确认",
+      "priority": "P0",
+      "status": "pending",
+      "type": "qa",
+      "created_at": "2026-02-27"
+    },
+    {
+      "task_id": "socialmesh_20260227_003",
+      "title": "配置 Reddit/LinkedIn OAuth API Keys",
+      "description": "Reddit 和 LinkedIn 的 CLIENT_ID/CLIENT_SECRET 为空。需要 Mason 在平台开发者控制台注册应用获取。PM 提醒 Mason 操作步骤",
+      "priority": "P1",
+      "status": "pending",
+      "type": "config",
+      "created_at": "2026-02-27",
+      "blocked_by": "Mason 操作"
+    },
+    {
+      "task_id": "socialmesh_20260227_004",
+      "title": "Twitter/X CLIENT_SECRET 配置",
+      "description": "已有 CLIENT_ID (7JKP0ToX5YeInFLY829iGOHZW)，但 CLIENT_SECRET 为空。需要 Mason 从 X Developer Portal 复制 secret",
+      "priority": "P1",
+      "status": "pending",
+      "type": "config",
+      "created_at": "2026-02-27",
+      "blocked_by": "Mason 操作"
+    },
+    {
+      "task_id": "socialmesh_20260227_005",
+      "title": "Feedback 功能端到端验证",
+      "description": "feedback-dev 新增了浮动反馈按钮 + API + 数据库。需要验证：提交 bug → 列表显示 → 状态更新",
+      "priority": "P1",
+      "status": "pending",
+      "type": "qa",
+      "created_at": "2026-02-27"
+    }
+  ],
+  "completed_tasks": [
+    {
+      "task_id": "socialmesh_20260227_init",
+      "title": "MVP 全栈搭建",
+      "completed_at": "2026-02-27",
+      "insights": "一天内从 0 到 MVP，20 个文件 +1787/-637 行变更。关键决策：OpenAI 替代 Anthropic 作为主力 LLM、XHS 用 Playwright 而非 API"
+    },
+    {
+      "task_id": "socialmesh_20260227_bugfix",
+      "title": "第一轮 QA + Bug 修复（7 个）",
+      "completed_at": "2026-02-27",
+      "insights": "关键发现：适配结果从未显示过（dict vs array 格式问题）、OAuth 按钮静默失效（字段名不一致）。新增 /adapt-raw 端点消除'先保存再适配'痛点"
+    }
+  ],
+  "archived_tasks": []
+}
