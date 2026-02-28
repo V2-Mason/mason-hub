@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-02-27
-> 更新人: Meta Manager (via Claude Code)
+> 最后更新: 2026-02-28
+> 更新人: EMP_0008 PM 巡检 + Bug 修复
 
 ---
 
@@ -22,7 +22,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 - 隧道保活: tunnel-keepalive.sh (cron */5, 2026-02-26 部署)
 - 日志: /var/log/surenxuan.log
 
-### GCP (34.68.172.191) — 指挥中心
+### GCP (34.63.188.198) — 指挥中心
 - slack-bot (systemd)
 - reports (:8080)
 - 反向SSH隧道入口 (:2222)
@@ -173,6 +173,52 @@ P2 — UX 持续优化:
 - [x] 新增 3 个 Scout skill — 2026-02-28，scout-find-skill.sh + scout-xhs-trends.sh + scout-ecom-compete.sh
 - [x] CLAUDE.md 组织架构更新 — 2026-02-28
 - [x] Creator 记忆空间初始化 — 2026-02-28，agents/memory/EMP_0010/
+
+**2026-02-28 PM 巡检 + Bug 修复（已完成）**:
+- [x] adapted_title 列 Alembic 迁移 — 2026-02-28，Celery 定时任务崩溃已修复
+- [x] XHS disconnect 安全修复 — 2026-02-28，关闭浏览器+清除 cookies+清理引用
+- [x] XHS session 竞态条件修复 — 2026-02-28，stale context 重建 + 重复 poll 容错 + 错误日志
+- [x] Feedback API 权限修复 — 2026-02-28，按 user_id 过滤
+- [x] GEO analyze-raw 端点加认证 — 2026-02-28
+- [x] datetime.utcnow() 弃用替换 — 2026-02-28，2 处
+- [x] cleanup_stale_pending 注册到 Celery beat — 2026-02-28
+- [x] .env.example 同步 + config.py 旧 IP 修复 — 2026-02-28
+- [x] 全量代码提交（之前 2302 行裸跑无版本控制） — 2026-02-28，按功能分 8 个 commit
+
+**SocialMesh Sprint 1 — 核心流程打通（2026-02-28 排入）**:
+
+P0 — 阻断核心流程:
+- [ ] 内容编辑器增加图片上传 — 小红书不允许纯文本发帖，目前自动生成占位纯色图。需前端上传组件 + 后端存储 API + adapter 传递 image_paths（EMP_0009 Dev）
+- [ ] 内容列表/草稿管理 — Save Draft 后找不回来，后端 API 已有但前端未接。增加内容列表页或编辑器左侧列表（EMP_0009 Dev）
+- [ ] 界面中文化 — 所有 label/placeholder/button 全英文，素仁轩用户无法使用。先硬编码中文（EMP_0009 Dev）
+
+P1 — 提升体验:
+- [ ] 增加"立即发布"按钮 — 后端 `/schedule/{id}/publish-now` 已支持，前端编辑器只有 Schedule 没有 Publish Now（EMP_0009 Dev）
+- [ ] 移动端导航优化 — 7 个 tab 横向排列手机端溢出，需改为汉堡菜单或底部 tab bar（EMP_0009 Dev）
+- [ ] Dashboard 内容列表可点击 — 近期内容 `<li>` 无 onClick，点击应跳转编辑器加载对应内容（EMP_0009 Dev）
+- [ ] 精简导航栏 — GEO 独立页已内嵌在编辑器中（重复），Feedback 有浮动按钮入口，可隐藏/合并到 5 个核心 tab（EMP_0009 Dev）
+- [x] 发布结果截图展示 — 2026-02-28，Schedule 页面已发布帖子增加"查看截图"按钮，modal 展示 base64 截图 + 创作中心链接
+- [ ] 错误提示可关闭 + 自动消失时间延长 — 错误类消息 4 秒消失太快，应保持直到用户关闭（EMP_0009 Dev）
+
+P2 — 锦上添花:
+- [ ] 新用户引导 onboarding — 0 账号/0 内容时显示步骤引导（EMP_0009 Dev）
+- [ ] i18n 框架接入 — react-i18next，为多语言做准备（EMP_0009 Dev）
+- [ ] 内容编辑器富文本 — textarea 升级为 TipTap 等（EMP_0009 Dev）
+- [x] AI 适配内容可编辑 — 2026-02-28，`<pre>` 改为 `<textarea>`，用户可直接修改文案，排程时自动保存编辑版本到 DB
+- [ ] XHS 标题长度实时校验 — 限制 20 字，编辑器无字数提示（EMP_0009 Dev）
+- [x] 发布失败后跳转编辑 — 2026-02-28，Failed 帖子增加"编辑内容"按钮，跳转 `/content?id=xxx`
+
+**SocialMesh Sprint 2 — 发布状态闭环（从 team agents 残留任务提取）**:
+
+P1 — 发布状态:
+- [ ] Content.status 发布后更新 — publish_post 成功后检查是否所有 PlatformPost 已发布，更新 Content.status 为 published；collect_metrics 只更新 metrics 键，不覆盖 screenshot/post_id（EMP_0009 Dev）
+- [ ] 内容列表显示发布状态 — ContentEditor 内容列表每条显示各平台发布状态 badge（已发布/已排程/失败），后端 content list API 需附带 platform_posts 摘要（EMP_0009 Dev）
+
+**待 Mason 手动处理**:
+- [ ] SECRET_KEY 替换为强密钥 — `python3 -c "import secrets; print(secrets.token_urlsafe(64))"`
+- [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
+- [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
+- [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 
