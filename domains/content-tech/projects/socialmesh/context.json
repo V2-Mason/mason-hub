@@ -74,7 +74,7 @@
   },
   "relation_to_srx": "素仁轩是 SocialMesh 的第一个 dogfooding 客户，未来素仁轩的营销引擎可调用 SocialMesh API",
   "agents": {
-    "domain_manager": "EMP_0007",
+    "domain_manager": "archived (EMP_0007 → EMP_0008 reports to EMP_0000 directly)",
     "pm": "EMP_0008",
     "dev": "EMP_0009"
   },
