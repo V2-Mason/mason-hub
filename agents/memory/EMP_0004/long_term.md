@@ -10,10 +10,12 @@
 - 架构可扩展：未来 japan-hub/korea-hub 等区域节点用同样模式，同样通过标准化 JSON 协议与 GCP 总部通信
 
 ### MediaCrawler 部署职责 (2026-02-28)
+- **架构定位**：基础设施层数据管道（跟 SQLite、SSH 隧道同级），不归任何业务 Agent 所有，我负责部署维护
 - 在阿里云 /opt/mediacrawler/ 部署 MediaCrawler（Python 3.11 + Playwright + Chromium + Node.js 16+）
-- 配置代理 IP 服务（提取代理模式，~¥150/月），确保采集流量不走阿里云本机 IP
+- 配置代理 IP 服务（提取代理模式，~¥20/月），确保采集流量不走阿里云本机 IP
 - **关键**：采集用代理 IP，店铺官方 API 用本机 IP，两者必须隔离。否则采集被封可能连带店铺 API 受影响
 - china-hub 看板服务（:8080）的端口/nginx 配置
+- 数据流：MediaCrawler 定时采集 → SQLite 存库 → 各业务 Agent 被动查询（不是实时工具调用）
 
 ### 阿里云新增服务规划 (2026-02-28)
 ```

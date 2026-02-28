@@ -42,6 +42,14 @@
 - 新增 READY 状态：排程到时 → 标记 READY → Mason 复制内容 → 手动发 → 点"已手动发布"
 - 其他有官方 API 的平台（Reddit/LinkedIn/Twitter）维持自动发布
 
+### 阿里云基础设施资源架构定位 (2026-02-28, Mason 确认)
+- MediaCrawler 和 china-hub 看板属于**基础设施层资源**，不归任何业务 Agent 所有
+- 类比：跟 SQLite 数据库、SSH 隧道、Slack Webhook 同一层级 — 谁都可以消费，但谁都不拥有
+- EMP_0004 (SRE) 负责部署维护，业务 Agent 按需取用数据
+- MediaCrawler 是**数据管道**（定时采集→存库→被动查询），不是 MCP 式的实时工具
+- china-hub 看板是 MediaCrawler 数据的消费接口
+- 消费方：EMP_0005（选品+看板）、EMP_0010（内容参考）、EMP_0003（竞品决策）、EMP_0001（进货决策）、EMP_0008（排程策略）
+
 ### MediaCrawler 集成决策 (2026-02-28)
 - 开源项目（44.5k stars），Python + Playwright，支持 XHS 等 7 个平台
 - 部署在阿里云 /opt/mediacrawler/，通过代理 IP 采集（保护店铺 API 的 IP）
