@@ -1,98 +1,114 @@
 #!/bin/bash
 # scout-products.sh — Search for trending products, tools, and market movements
-# Usage: scout-products.sh [--track "social media"] [--sources "github,hn"]
-# Exit: 0=results found, 1=no results, 2=error
+# Usage: scout-products.sh [--track "social media"] [--since "30"]
+# Uses GitHub REST API (no auth needed for basic search)
 set -uo pipefail
 
-TRACK="${1:-}"
-SOURCES="${2:-all}"
+TRACK="social media management"
+SINCE_DAYS=30
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --track) TRACK="$2"; shift 2;;
-    --sources) SOURCES="$2"; shift 2;;
-    --help) echo "Usage: scout-products.sh [--track \"social media\"] [--sources \"github,hn\"]"; exit 0;;
+    --since) SINCE_DAYS="$2"; shift 2;;
+    --help) echo "Usage: scout-products.sh [--track \"social media\"] [--since 30]"; exit 0;;
     *) shift;;
   esac
 done
 
-TRACK="${TRACK:-social media management}"
+SINCE=$(date -d "$SINCE_DAYS days ago" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
 
 echo "=== Product Scout Report ==="
 echo "Track: $TRACK"
+echo "Since: $SINCE"
 echo "Date: $(date +%Y-%m-%d)"
 echo ""
 
 HAS_RESULTS=false
 
-# 1. GitHub — new tools in the space
-echo "--- New Tools (GitHub, last 30 days) ---"
-SINCE=$(date -d "30 days ago" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
-SEARCH_QUERIES=(
-  "social+media+management+tool"
-  "social+media+scheduler"
-  "content+publishing+platform"
-  "geo+optimization+seo"
-  "ai+content+creation+tool"
+github_search() {
+  local query="$1"
+  local extra="${2:-}"
+  local encoded=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$query $extra'))")
+  curl -s "https://api.github.com/search/repositories?q=${encoded}&sort=stars&per_page=5" 2>/dev/null
+}
+
+# 1. New & trending tools in the space
+echo "--- Social Media Management Tools ---"
+QUERIES=(
+  "social media management tool"
+  "social media scheduler open source"
+  "content publishing platform"
+  "multi platform posting"
 )
 
-for Q in "${SEARCH_QUERIES[@]}"; do
-  RESULTS=$(gh search repos "$Q" --sort stars --limit 3 --json name,owner,description,stargazersCount,createdAt 2>/dev/null)
-  if [[ -n "$RESULTS" && "$RESULTS" != "[]" ]]; then
-    echo "$RESULTS" | python3 -c "
+for Q in "${QUERIES[@]}"; do
+  RESULT=$(github_search "$Q")
+  echo "$RESULT" | python3 -c "
 import sys, json
-repos = json.load(sys.stdin)
-for r in repos:
-    stars = r.get('stargazersCount', 0)
-    if stars > 20:
-        print(f\"  [{stars}★] {r['owner']['login']}/{r['name']}: {r.get('description','')[:100]}\")
+try:
+    data = json.load(sys.stdin)
+    for r in data.get('items', [])[:3]:
+        stars = r.get('stargazers_count', 0)
+        if stars > 50:
+            lang = r.get('language', '?')
+            print(f\"  [{stars}★] {r['full_name']} ({lang}): {(r.get('description') or '')[:100]}\")
+except: pass
 " 2>/dev/null && HAS_RESULTS=true
-  fi
+  sleep 2
 done
 
 echo ""
 
-# 2. Search for GEO / AI SEO related tools
+# 2. GEO / AI SEO tools
 echo "--- GEO & AI SEO Tools ---"
 GEO_QUERIES=(
-  "generative+engine+optimization"
-  "ai+seo+tool"
-  "llm+citation+tracking"
-  "ai+search+optimization"
+  "generative engine optimization"
+  "ai seo tool"
+  "llm search optimization"
+  "ai content optimization"
 )
 
 for Q in "${GEO_QUERIES[@]}"; do
-  RESULTS=$(gh search repos "$Q" --sort stars --limit 3 --json name,owner,description,stargazersCount 2>/dev/null)
-  if [[ -n "$RESULTS" && "$RESULTS" != "[]" ]]; then
-    echo "$RESULTS" | python3 -c "
+  RESULT=$(github_search "$Q")
+  echo "$RESULT" | python3 -c "
 import sys, json
-repos = json.load(sys.stdin)
-for r in repos:
-    stars = r.get('stargazersCount', 0)
-    if stars > 10:
-        print(f\"  [{stars}★] {r['owner']['login']}/{r['name']}: {r.get('description','')[:100]}\")
+try:
+    data = json.load(sys.stdin)
+    for r in data.get('items', [])[:3]:
+        stars = r.get('stargazers_count', 0)
+        if stars > 20:
+            print(f\"  [{stars}★] {r['full_name']}: {(r.get('description') or '')[:100]}\")
+except: pass
 " 2>/dev/null && HAS_RESULTS=true
-  fi
+  sleep 2
 done
 
 echo ""
 
-# 3. Competitor landscape — major players
-echo "--- Competitor Landscape ---"
-COMPETITORS=(
-  "buffer/buffer:Buffer"
-  "publer/publer:Publer"
-  "typefully/typefully:Typefully"
+# 3. Key competitors — direct stats
+echo "--- Key Competitor Repos ---"
+COMP_REPOS=(
+  "inovector/mixpost"
+  "postiz-app/postiz"
+  "typefully/typefully"
+  "giso-official/giso"
 )
 
-for ENTRY in "${COMPETITORS[@]}"; do
-  REPO="${ENTRY%%:*}"
-  NAME="${ENTRY##*:}"
-  STARS=$(gh repo view "$REPO" --json stargazersCount -q '.stargazersCount' 2>/dev/null)
-  if [[ -n "$STARS" ]]; then
-    echo "  $NAME: ${STARS}★"
-    HAS_RESULTS=true
-  fi
+for REPO in "${COMP_REPOS[@]}"; do
+  RESULT=$(curl -s "https://api.github.com/repos/$REPO" 2>/dev/null)
+  echo "$RESULT" | python3 -c "
+import sys, json
+try:
+    r = json.load(sys.stdin)
+    if 'stargazers_count' in r:
+        stars = r['stargazers_count']
+        pushed = r.get('pushed_at', '')[:10]
+        desc = (r.get('description') or '')[:80]
+        print(f\"  [{stars}★] {r['full_name']} (updated {pushed}): {desc}\")
+except: pass
+" 2>/dev/null && HAS_RESULTS=true
+  sleep 1
 done
 
 echo ""

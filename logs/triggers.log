@@ -1,0 +1,46 @@
+=== AGENT STATUS REPORT ===
+Generated: 2026-02-28T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  ⚠️ EMP_0005: 1 calls, 0 ok, 1 failed (0%)
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:       69 in /      159 out | $-1.000
+  Total: $-24.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0002: 0KB
+  ✅ EMP_0005: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+
+--- 6. System Resources ---
+  Disk usage: 33%
+  Memory available: 2.8Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===

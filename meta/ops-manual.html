@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mason Hub — 日常运营手册</title>
+<style>
+  @page { margin: 2cm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    color: #1a1a1a;
+    line-height: 1.7;
+    background: #fff;
+  }
+  h1 {
+    font-size: 28px;
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 22px;
+    color: #2563eb;
+    margin-top: 36px;
+    border-left: 4px solid #2563eb;
+    padding-left: 12px;
+  }
+  h3 {
+    font-size: 17px;
+    color: #374151;
+    margin-top: 24px;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 28px 0;
+  }
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+  }
+  th {
+    background: #f1f5f9;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+  }
+  td {
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 16px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  code.inline {
+    background: #f1f5f9;
+    color: #dc2626;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  ol, ul {
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  ul.sublist {
+    margin-top: 4px;
+    padding-left: 20px;
+  }
+  strong {
+    color: #111827;
+  }
+  p {
+    margin: 8px 0;
+  }
+  @media print {
+    body { padding: 0; }
+    .code-block { background: #f3f4f6 !important; color: #1e293b !important; border: 1px solid #d1d5db; }
+    h2 { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+<h1>Mason Hub — 日常运营手册</h1>
+
+<p><strong>版本：</strong> 1.0</p>
+<p><strong>日期：</strong> 2026-02-27</p>
+<p><strong>读者：</strong> Mason（人类操作者）</p>
+
+<hr>
+
+<h2>你每天要做的事</h2>
+
+<h3>早上（5 分钟）</h3>
+
+<ol>
+<li>打开 Claude Code，<code class="inline">cd ~/mason-hub</code></li>
+<li>输入 <code class="inline">/standup</code></li>
+<li>看 Slack：</li>
+<ul class='sublist'>
+<li><strong>#system-alerts</strong> — 系统自动在 08:00/09:00/09:30 发了 3 条报告</li>
+<li><strong>#srx-alerts</strong> — 有没有库存/临期预警</li>
+</ul>
+<li>有问题就处理，没问题就去忙别的</li>
+
+</ol>
+<h3>需要改代码时</h3>
+
+<pre class="code-block"><code>
+/dev-task 修复 XXX 的 bug，具体描述...
+</code></pre>
+
+<p>然后等。Dev 会自己改代码、跑测试、最多修 3 轮。成功了自动 commit + Slack 通知你。失败了会一路 escalate 到你的 Slack。</p>
+
+<h3>需要部署时</h3>
+
+<pre class="code-block"><code>
+/deploy
+</code></pre>
+
+<p>一键搞定：推代码到阿里云 → 编译前端 → 重启后端 → 健康检查。</p>
+
+<h3>觉得系统不对劲时</h3>
+
+<pre class="code-block"><code>
+/health
+</code></pre>
+
+<p>会检查所有 agent、GCP 资源、阿里云端点，只报告异常。</p>
+
+<h3>每周一看情报</h3>
+
+<pre class="code-block"><code>
+/scout
+</code></pre>
+
+<p>斥候会扫 GitHub、Anthropic、技术趋势，生成情报简报发到 <strong>#scout</strong>。</p>
+
+<hr>
+
+<h2>五个命令，够用了</h2>
+
+<div class="table-wrapper"><table>
+<tr><th>命令</th><th>干嘛的</th><th>频率</th></tr>
+<tr><td><code class="inline">/standup</code></td><td>晨会：昨天做了啥、系统状态、今天待办</td><td>每天早上</td></tr>
+<tr><td><code class="inline">/deploy</code></td><td>部署到阿里云生产</td><td>改完代码后</td></tr>
+<tr><td><code class="inline">/health</code></td><td>全局健康检查</td><td>有疑问时</td></tr>
+<tr><td><code class="inline">/dev-task <描述></code></td><td>派活给 Dev</td><td>需要改代码时</td></tr>
+<tr><td><code class="inline">/scout</code></td><td>技术情报巡逻</td><td>每周一次</td></tr>
+</table></div>
+
+<hr>
+
+<h2>你不需要做的事（系统自动做）</h2>
+
+<div class="table-wrapper"><table>
+<tr><th>事情</th><th>谁做</th><th>什么时候</th></tr>
+<tr><td>库存/临期/滞销巡检</td><td>PM (EMP_0001)</td><td>每天 08:00</td></tr>
+<tr><td>基础设施日报</td><td>SRE (EMP_0004)</td><td>每天 09:00</td></tr>
+<tr><td>Agent 状态报告</td><td>自动脚本</td><td>每天 09:30</td></tr>
+<tr><td>记忆压缩（PM 经验）</td><td>PM (EMP_0001)</td><td>每周一 10:00</td></tr>
+<tr><td>全量记忆清理</td><td>自动脚本</td><td>每周日 11:00</td></tr>
+<tr><td>API token 消耗报告</td><td>自动脚本</td><td>每天 23:00</td></tr>
+</table></div>
+
+<p>所有报告发到 Slack，你看 Slack 就行。</p>
+
+<hr>
+
+<h2>当事情出问题时</h2>
+
+<h3>Dev 改代码失败了</h3>
+
+<p>你什么都不用做。系统会自动：</p>
+
+<pre class="code-block"><code>
+Dev 3 轮修复 → 失败 → PM 评估 → 重新分配 Dev
+                       ↓ 还是失败（最多 2 次）
+                 Platform Dev 介入 → 3 轮修复
+                       ↓ 还是失败
+                 Slack 通知你：🔴 需要 Mason 手动介入
+</code></pre>
+
+<p><strong>只有收到 🔴 通知时你才需要介入。</strong> 其他层级的失败系统会自己处理。</p>
+
+<h3>Slack 告警分级</h3>
+
+<div class="table-wrapper"><table>
+<tr><th>标记</th><th>含义</th><th>你要做什么</th></tr>
+<tr><td>✅</td><td>任务完成</td><td>不用管</td></tr>
+<tr><td>⚠️</td><td>失败但还在自动修复</td><td>不用管，等结果</td></tr>
+<tr><td>🔄</td><td>PM 重新分配中</td><td>不用管</td></tr>
+<tr><td>⬆️</td><td>Escalate 到 Platform Dev</td><td>关注但不用急</td></tr>
+<tr><td>🔴</td><td>需要你决策</td><td><strong>打开看，做决定</strong></td></tr>
+</table></div>
+
+<hr>
+
+<h2>你的 Agent 团队</h2>
+
+<pre class="code-block"><code>
+你 (Mason)
+│
+├── 直接对话 → EMP_0000 Meta Manager
+│   他是你的 AI COO，负责跨域协调
+│   找他：不确定该找谁的时候
+│
+├── 电商业务 → EMP_0003 Domain Manager → EMP_0001 PM → EMP_0005 Dev
+│   PM 管项目，Dev 写代码，Domain Manager 做行业判断
+│   找 PM：素仁轩项目的事
+│   找 Domain Manager：电商行业的事
+│
+├── 技术运维 → EMP_0004 SRE
+│   他看 Slack 告警、查日志、重启服务
+│   找他：系统挂了或者变慢了
+│
+├── 平台开发 → EMP_0002 Platform Dev
+│   他改 mason-hub 本身的代码
+│   找他：agent 系统需要新功能
+│
+└── 情报搜集 → EMP_0006 Scout
+    他扫 GitHub 和 Anthropic 的动态
+    找他：/scout 或者想了解技术趋势
+</code></pre>
+
+<hr>
+
+<h2>Slack 频道地图</h2>
+
+<div class="table-wrapper"><table>
+<tr><th>频道</th><th>看什么</th><th>谁发</th></tr>
+<tr><td><strong>#system-alerts</strong></td><td>基础设施日报、系统告警、部署通知</td><td>SRE、自动脚本</td></tr>
+<tr><td><strong>#srx-alerts</strong></td><td>库存预警、临期预警、销售异常</td><td>PM</td></tr>
+<tr><td><strong>#srx-business</strong></td><td>项目进展、日常沟通</td><td>PM</td></tr>
+<tr><td><strong>#scout</strong></td><td>技术情报简报</td><td>Scout</td></tr>
+<tr><td><strong>#mason-alerts</strong></td><td>🔴 需要你决策的事</td><td>任何 agent escalate</td></tr>
+</table></div>
+
+<p><strong>优先看 #mason-alerts</strong>，这是唯一需要你行动的频道。</p>
+
+<hr>
+
+<h2>文件在哪</h2>
+
+<p>你日常可能需要看的文件：</p>
+
+<pre class="code-block"><code>
+~/mason-hub/
+  tasks/backlog.md          ← 所有待办事项（唯一的 source of truth）
+  meta/roadmap.md           ← 系统演化路线图
+  logs/audit.jsonl          ← agent 做了什么（审计记录）
+  intel/watchlist.md        ← 技术关注列表
+  intel/digests/            ← 每周情报简报
+</code></pre>
+
+<p>你一般不需要看的（agent 自己用）：</p>
+
+<pre class="code-block"><code>
+  agents/EMP_*.md           ← agent 角色定义
+  skills/*.sh               ← 可执行脚本
+  scripts/run-agent.sh      ← agent 调度引擎
+  memory/                   ← agent 经验记忆
+</code></pre>
+
+<hr>
+
+<h2>成本</h2>
+
+<h3>自动化成本（每月）</h3>
+
+<div class="table-wrapper"><table>
+<tr><th>触发器</th><th>频率</th><th>预估单次</th><th>月度</th></tr>
+<tr><td>PM 库存巡检</td><td>30次/月</td><td>$0.05</td><td>$1.50</td></tr>
+<tr><td>SRE 基础设施日报</td><td>30次/月</td><td>$0.03</td><td>$0.90</td></tr>
+<tr><td>PM 记忆压缩</td><td>4次/月</td><td>$0.05</td><td>$0.20</td></tr>
+<tr><td>agent-status-report</td><td>30次/月</td><td>$0 (无 API)</td><td>$0</td></tr>
+<tr><td>compact-memory</td><td>4次/月</td><td>$0.05</td><td>$0.20</td></tr>
+<tr><td><strong>小计</strong></td><td></td><td></td><td><strong>~$2.80/月</strong></td></tr>
+</table></div>
+
+<h3>手动任务成本</h3>
+
+<div class="table-wrapper"><table>
+<tr><th>操作</th><th>预估</th></tr>
+<tr><td><code class="inline">/dev-task</code> 成功（1 轮通过）</td><td>~$0.15</td></tr>
+<tr><td><code class="inline">/dev-task</code> 失败（3 轮 + PM）</td><td>~$0.45</td></tr>
+<tr><td>最坏情况（全链 escalation）</td><td>~$2.00</td></tr>
+<tr><td><code class="inline">/scout</code> 情报巡逻</td><td>~$0.10</td></tr>
+<tr><td><code class="inline">/standup</code> 晨会</td><td>~$0.05</td></tr>
+</table></div>
+
+<p><strong>总预算目标：< ¥50/月</strong>（按当前使用频率绰绰有余）</p>
+
+<hr>
+
+<h2>快速排障</h2>
+
+<div class="table-wrapper"><table>
+<tr><th>症状</th><th>怎么办</th></tr>
+<tr><td><code class="inline">/deploy</code> 失败</td><td>看输出的哪个 Step 失败。通常是阿里云 SSH 断了，等几分钟重试</td></tr>
+<tr><td>Dev 改了代码但测试全 skip</td><td>GCP 数据库是空的（0 条数据），不影响功能，只影响集成测试</td></tr>
+<tr><td>Slack 没收到通知</td><td><code class="inline">cat ~/slack-bot/.env</code> 确认 webhook URL 还有效</td></tr>
+<tr><td>阿里云打不开</td><td>检查 tunnel：<code class="inline">ssh root@106.14.44.68 "echo ok"</code></td></tr>
+<tr><td>Agent 报 "Credit balance too low"</td><td>去 Anthropic console 充值 API key</td></tr>
+<tr><td>cron 没触发</td><td><code class="inline">crontab -l</code> 检查还在不在；<code class="inline">tail ~/mason-hub/logs/triggers.log</code> 看最近执行</td></tr>
+</table></div>
+
+<hr>
+
+<h2>一句话总结</h2>
+
+<p><strong>你是审批者，不是操作者。</strong> 系统自动跑，Slack 自动报，出问题自动修。你只需要：</p>
+<ol>
+<li>早上看 Slack</li>
+<li>有任务就 <code class="inline">/dev-task</code></li>
+<li>要部署就 <code class="inline">/deploy</code></li>
+<li>收到 🔴 才需要动手</li>
+
+</ol>
+<footer style="margin-top:48px; padding-top:16px; border-top:1px solid #e5e7eb; color:#9ca3af; font-size:13px;">
+Mason Hub v1.0 · 生成于 2026-02-27 · 保密文件
+</footer>
+</body>
+</html>

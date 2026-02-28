@@ -142,23 +142,65 @@ else
   echo "--- Step 6: Restart Backend (skipped) ---"
 fi
 
-# --- Step 7: Verify ---
+# --- Step 7: Health Check ---
 echo "--- Step 7: Health Check ---"
 sleep 2
+HEALTH_PASS=0
+HEALTH_FAIL=0
+
+# 7a. Basic health endpoint
 HTTP_CODE=$(ssh "$REMOTE" "curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8000/api/health" 2>/dev/null || echo "000")
 if [ "$HTTP_CODE" = "200" ]; then
   echo "  ✅ /api/health → 200"
+  HEALTH_PASS=$((HEALTH_PASS + 1))
 else
   echo "  ❌ /api/health → $HTTP_CODE"
+  HEALTH_FAIL=$((HEALTH_FAIL + 1))
 fi
 
-# External check
-EXT_CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 http://106.14.44.68:8000/api/health 2>/dev/null || echo "000")
-if [ "$EXT_CODE" = "200" ]; then
-  echo "  ✅ External health check → 200"
+# 7b. Key API endpoints smoke test (auth-free endpoints only)
+for ENDPOINT in "/api/auth/me" "/api/dashboard/overview"; do
+  EP_CODE=$(ssh "$REMOTE" "curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8000${ENDPOINT}" 2>/dev/null || echo "000")
+  # 401 is expected (auth required) — means the app is responding correctly
+  if [ "$EP_CODE" = "200" ] || [ "$EP_CODE" = "401" ] || [ "$EP_CODE" = "403" ]; then
+    echo "  ✅ $ENDPOINT → $EP_CODE (app responding)"
+    HEALTH_PASS=$((HEALTH_PASS + 1))
+  else
+    echo "  ❌ $ENDPOINT → $EP_CODE"
+    HEALTH_FAIL=$((HEALTH_FAIL + 1))
+  fi
+done
+
+# 7c. Check for errors in backend log (last 20 lines since restart)
+echo "  --- Post-restart log scan ---"
+RECENT_ERRORS=$(ssh "$REMOTE" "tail -50 $REMOTE_DIR/logs/surenxuan.log 2>/dev/null | grep -i 'ERROR\|Traceback\|CRITICAL' | tail -5" 2>/dev/null || echo "")
+if [ -z "$RECENT_ERRORS" ]; then
+  echo "  ✅ No errors in recent logs"
 else
-  echo "  ⚠️ External health check → $EXT_CODE (may be firewall)"
+  echo "  ⚠️ Errors found in recent logs:"
+  echo "$RECENT_ERRORS" | while read -r line; do
+    echo "    $line"
+  done
+  HEALTH_FAIL=$((HEALTH_FAIL + 1))
 fi
+
+# 7d. Check nginx is proxying correctly
+EXT_CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 http://106.14.44.68/api/health 2>/dev/null || echo "000")
+if [ "$EXT_CODE" = "200" ]; then
+  echo "  ✅ External (nginx) → 200"
+  HEALTH_PASS=$((HEALTH_PASS + 1))
+else
+  echo "  ⚠️ External (nginx) → $EXT_CODE (may be firewall)"
+fi
+
+# 7e. Summary verdict
+echo ""
+if [ "$HEALTH_FAIL" -eq 0 ]; then
+  VERDICT="✅ ALL CHECKS PASSED ($HEALTH_PASS/$((HEALTH_PASS + HEALTH_FAIL)))"
+else
+  VERDICT="⚠️ $HEALTH_FAIL CHECK(S) FAILED ($HEALTH_PASS passed, $HEALTH_FAIL failed)"
+fi
+echo "  $VERDICT"
 
 # --- Cleanup ---
 rm -f "$TMP_FILE"
@@ -167,9 +209,9 @@ rm -f "$TMP_FILE"
 echo ""
 echo "=== DEPLOY COMPLETE ==="
 echo "Commit: $LOCAL_COMMIT"
-echo "Health: $HTTP_CODE (internal) / $EXT_CODE (external)"
+echo "Health: $VERDICT"
 
 # Slack notification
 if [ -x "$SLACK_NOTIFY" ]; then
-  "$SLACK_NOTIFY" "C0AHCMUC057" "🚀 *部署完成* | $LOCAL_COMMIT | Health: $HTTP_CODE" "Deploy Bot" ":rocket:" 2>/dev/null || true
+  "$SLACK_NOTIFY" "C0AHCMUC057" "🚀 *部署完成* | $LOCAL_COMMIT | $VERDICT" "Deploy Bot" ":rocket:" 2>/dev/null || true
 fi
