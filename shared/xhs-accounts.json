@@ -1,0 +1,23 @@
+{
+  "project": "surenxuan",
+  "accounts": [
+    {
+      "id": "brand",
+      "label": "号 1 素仁轩品牌号",
+      "type": "brand",
+      "pillars": ["产品教程", "开箱上新", "客户反馈"]
+    },
+    {
+      "id": "seeding",
+      "label": "号 2 韩国好物种草号",
+      "type": "seeding",
+      "pillars": ["品类合集", "使用体验", "热点借势"]
+    },
+    {
+      "id": "persona",
+      "label": "号 3 韩国生活人设号",
+      "type": "persona",
+      "pillars": ["代购日常", "韩国生活", "粉丝互动"]
+    }
+  ]
+}

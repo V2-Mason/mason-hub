@@ -13,13 +13,28 @@ ALIYUN="root@106.14.44.68"
 MC_DIR="/opt/mediacrawler"
 SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh
 
+# --- 账号配置（从项目配置读取，不硬编码品牌名）---
+ACCOUNTS_CONFIG="$HUB_DIR/shared/xhs-accounts.json"
+if [ ! -f "$ACCOUNTS_CONFIG" ]; then
+  echo "WARN: $ACCOUNTS_CONFIG not found, using default account labels"
+  ACCOUNT_1="号 1 品牌号"
+  ACCOUNT_2="号 2 种草号"
+  ACCOUNT_3="号 3 人设号"
+else
+  ACCOUNT_1=$(python3 -c "import json; d=json.load(open('$ACCOUNTS_CONFIG')); print(d['accounts'][0]['label'])" 2>/dev/null || echo "号 1 品牌号")
+  ACCOUNT_2=$(python3 -c "import json; d=json.load(open('$ACCOUNTS_CONFIG')); print(d['accounts'][1]['label'])" 2>/dev/null || echo "号 2 种草号")
+  ACCOUNT_3=$(python3 -c "import json; d=json.load(open('$ACCOUNTS_CONFIG')); print(d['accounts'][2]['label'])" 2>/dev/null || echo "号 3 人设号")
+fi
+
 echo "=== XHS Strategy Briefing ==="
 echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
 
 log_event "xhs-strategy" "briefing" "start" "Generating strategy briefing"
 
 # --- Generate briefing on Aliyun ---
-BRIEFING_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" bash -s << 'REMOTE_SCRIPT'
+BRIEFING_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
+  ACCOUNT_1="$ACCOUNT_1" ACCOUNT_2="$ACCOUNT_2" ACCOUNT_3="$ACCOUNT_3" \
+  bash -s << 'REMOTE_SCRIPT'
 MC_DIR="/opt/mediacrawler"
 ANALYSIS_FILE="$MC_DIR/analysis/weekly_analysis.json"
 TODAY=$(date '+%Y-%m-%d')
@@ -34,8 +49,12 @@ if [ ! -f "$ANALYSIS_FILE" ]; then
 fi
 
 python3 << 'PYEOF'
-import json
+import json, os
 from datetime import datetime
+
+ACCOUNT_1 = os.environ.get('ACCOUNT_1', '号 1 品牌号')
+ACCOUNT_2 = os.environ.get('ACCOUNT_2', '号 2 种草号')
+ACCOUNT_3 = os.environ.get('ACCOUNT_3', '号 3 人设号')
 
 ANALYSIS_FILE = "/opt/mediacrawler/analysis/weekly_analysis.json"
 TODAY = datetime.now().strftime('%Y-%m-%d')
@@ -110,7 +129,7 @@ if korea_kws:
         'reference_notes': []
     })
 recommendations.append({
-    'account': '号 1 素仁轩品牌号',
+    'account': ACCOUNT_1,
     'suggestions': brand_suggestions[:3]
 })
 
@@ -133,7 +152,7 @@ if topic_posts:
         'reference_notes': [p['note_id'] for p in topic_posts[:3]]
     })
 recommendations.append({
-    'account': '号 2 韩国好物种草号',
+    'account': ACCOUNT_2,
     'suggestions': seed_suggestions[:3]
 })
 
@@ -155,7 +174,7 @@ persona_suggestions.append({
     'reference_notes': []
 })
 recommendations.append({
-    'account': '号 3 韩国生活人设号',
+    'account': ACCOUNT_3,
     'suggestions': persona_suggestions[:3]
 })
 
