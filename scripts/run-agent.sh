@@ -3,6 +3,7 @@ set -euo pipefail
 
 HUB_DIR="$HOME/mason-hub"
 SKILLS_DIR="$HUB_DIR/skills"
+NOTIFY_MASON="$SKILLS_DIR/notify-mason.sh"
 LOG_FILE="$HUB_DIR/logs/agent.log"
 AUDIT_FILE="$HUB_DIR/domains/ecommerce/projects/srx/audit.jsonl"
 AUDIT_LOG="$HUB_DIR/logs/audit.jsonl"
@@ -20,6 +21,7 @@ if [ "$CHAIN_DEPTH" -ge "$MAX_CHAIN_DEPTH" ]; then
   if [ -x "$SLACK_NOTIFY" ]; then
     "$SLACK_NOTIFY" "#mason-alerts" "🛑 自动 escalation 链达到深度上限 ($MAX_CHAIN_DEPTH)。需要 Mason 手动介入。" "QA Bot" ":warning:" 2>/dev/null || true
   fi
+  [ -x "$NOTIFY_MASON" ] && "$NOTIFY_MASON" "Escalation 链超限" "自动 escalation 达到深度上限 ($MAX_CHAIN_DEPTH)，需要手动介入" "alert" 2>/dev/null || true
   exit 1
 fi
 
@@ -303,13 +305,23 @@ format_slack_message() {
 ${details}"
 }
 
+# --- 结构化日志函数 ---
+log_structured() {
+  local event_type="$1"
+  local message="$2"
+  local ts
+  ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  local safe_msg
+  safe_msg=$(printf '%s' "$message" | tr '"' "'" | tr '\n' ' ' | head -c 500)
+  printf '{"timestamp":"%s","agent_id":"%s","task_id":"%s","event_type":"%s","message":"%s"}\n' \
+    "$ts" "$AGENT_NAME" "$TASK_ID" "$event_type" "$safe_msg" >> "$LOG_FILE"
+}
+
 # --- 记录开始 ---
 START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 START_EPOCH=$(date +%s)
-echo "[$START_TIME] === $AGENT_NAME 开始执行 ===" >> "$LOG_FILE"
-echo "[$START_TIME] 任务: $TASK" >> "$LOG_FILE"
-echo "[$START_TIME] 工作目录: $RUN_DIR" >> "$LOG_FILE"
-echo "[$START_TIME] 强制验证: $HAS_VERIFY_LOOP" >> "$LOG_FILE"
+TASK_BRIEF=$(printf '%s' "$TASK" | head -c 200 | tr '\n' ' ')
+log_structured "start" "Task started. Work dir: $RUN_DIR. Verify: $HAS_VERIFY_LOOP. Task: $TASK_BRIEF"
 echo "<<<AGENT_START $AGENT_NAME>>>"
 
 # === 主执行逻辑 ===
@@ -373,6 +385,7 @@ EOSUMMARY
         if [ -x "$SLACK_NOTIFY" ]; then
           "$SLACK_NOTIFY" "#mason-alerts" "🔴 需要 Mason 决策: 任务 $TASK_ID - $CONTEXT" "QA Bot" ":rotating_light:" 2>/dev/null || true
         fi
+        [ -x "$NOTIFY_MASON" ] && "$NOTIFY_MASON" "需要决策: $TASK_ID" "$CONTEXT" "alert" 2>/dev/null || true
         ;;
       "task_complete")
         SUMMARY=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('summary',''))" 2>/dev/null)
@@ -391,7 +404,7 @@ else
 
   while [ $ROUND -lt $MAX_VERIFY_ROUNDS ]; do
     ROUND=$((ROUND + 1))
-    echo "[$START_TIME] --- 第 $ROUND 轮执行 ---" >> "$LOG_FILE"
+    log_structured "info" "Round $ROUND / $MAX_VERIFY_ROUNDS started"
     echo "--- Round $ROUND / $MAX_VERIFY_ROUNDS ---"
 
     # Phase 1: 保存本轮输入
@@ -600,11 +613,11 @@ EOSUMMARY
       if [ -x "$SLACK_NOTIFY" ]; then
         "$SLACK_NOTIFY" "#mason-alerts" "🔴 任务 $TASK_ID_EXTRACTED 所有自动修复均失败（Dev + PM + Platform Dev）。需要 Mason 手动介入。完整日志：$TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*" "QA Bot" ":rotating_light:" 2>/dev/null || true
       fi
+      [ -x "$NOTIFY_MASON" ] && "$NOTIFY_MASON" "所有自动修复失败: $TASK_ID_EXTRACTED" "Dev + PM + Platform Dev 均失败，需要手动介入" "alert" 2>/dev/null || true
     fi
   fi
 fi
 
-echo "" >> "$LOG_FILE"
-echo "[$END_TIME] === $AGENT_NAME 执行完毕 ===" >> "$LOG_FILE"
+log_structured "end" "Task finished. Duration: ${DURATION}s"
 echo "<<<AGENT_END>>>"
 echo "任务完成，结果已记录"
