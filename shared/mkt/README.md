@@ -13,6 +13,7 @@
 | [customer-language.md](customer-language.md) | 客户原话采集和应用方法 | 提炼卖点话术、写走心文案 |
 | [competitor-analysis.md](competitor-analysis.md) | 竞品分析框架：定位对比 + 差异化提炼 | 竞品监控、差异化策略 |
 | [scoring.md](scoring.md) | 内容优先级 4 维评分公式 | 选题排序、复盘内容效果 |
+| [geo-optimization.md](geo-optimization.md) | GEO（AI 搜索引擎优化）方法论 | 搜索型内容的 AI 引用优化 |
 
 ## PM 内化流程
 

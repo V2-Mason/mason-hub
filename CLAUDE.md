@@ -20,17 +20,17 @@ Mason (人类，最终决策者)
 │     │           │
 │     │           └── EMP_0005 电商 Dev  ← 四级：业务执行层
 │     │
-│     ├── EMP_0007 Content-Tech Domain Manager  ← 二级：内容技术专家 + 品牌调性审核
+│     ├── EMP_0008 SocialMesh 内容运营总监  ← 二级：内容策略 + 项目管理
 │     │     │
-│     │     └── EMP_0008 SocialMesh 内容运营总监  ← 三级：内容策略 + 项目管理
-│     │           │
-│     │           ├── EMP_0010 Content Creator   ← 四级：内容生产 + 社区互动
-│     │           │
-│     │           └── EMP_0009 Content-Tech Dev  ← 四级：业务执行层
+│     │     ├── EMP_0010 Content Creator   ← 三级：内容生产 + 社区互动
+│     │     │
+│     │     └── EMP_0009 Content-Tech Dev  ← 三级：业务执行层
 │     │
 │     ├── EMP_0004 SRE Agent            ← 二级：基础设施运维
 │     │
 │     └── EMP_0002 Platform Dev         ← 二级：平台基础设施开发
+│
+├── EMP_0011 Account Manager     ← 独立：品牌上下文管理，桥接品牌与内容团队
 │
 └── EMP_0006 斥候 Scout          ← 独立：全域情报搜集（技术/内容/电商/技术选型）
 ```
@@ -43,10 +43,11 @@ Mason (人类，最终决策者)
 - EMP_0001 素仁轩 PM — 素仁轩项目管理
 - EMP_0005 电商 Dev — 电商业务开发（/opt/surenxuan/ 专属）
 - EMP_0006 斥候 Scout — 全域情报搜集（技术/内容趋势/电商/技术选型）
-- EMP_0007 Content-Tech Domain Manager — 内容营销和 GEO 优化行业判断 + 品牌调性审核
-- EMP_0008 SocialMesh 内容运营总监 — 内容策略、发布排程、效果复盘、调度 Dev + Creator
+- ~~EMP_0007 Content-Tech Domain Manager~~ — 已归档，知识沉淀到 knowledge_base.md + shared/mkt/geo-optimization.md
+- EMP_0008 SocialMesh 内容运营总监 — 内容策略、发布排程、效果复盘、调度 Dev + Creator（直接向 Meta Manager 汇报）
 - EMP_0009 Content-Tech Dev — 内容技术开发（~/socialmesh/ 专属）
 - EMP_0010 Content Creator — 多平台内容生产、社区互动（有状态，有品牌风格记忆）
+- EMP_0011 Account Manager — 品牌上下文管理，产出 brief，桥接品牌与内容团队
 
 ## Backlog 管理规则
 
@@ -72,10 +73,10 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | 电商 Manager | agents/EMP_0003.md | 电商 domain 决策 |
 | SRE | agents/EMP_0004.md | 系统监控和运维 |
 | 电商 Dev | agents/EMP_0005.md | 仅限 /opt/surenxuan/ |
-| Content-Tech Manager | agents/EMP_0007.md | Content-Tech domain 决策 + 品牌审核 |
 | SocialMesh PM / 内容运营总监 | agents/EMP_0008.md | SocialMesh 内容运营 |
 | Content Creator | agents/EMP_0010.md | 内容生产（~/socialmesh/ + 记忆文件） |
 | Content-Tech Dev | agents/EMP_0009.md | 仅限 ~/socialmesh/ |
+| Account Manager | agents/EMP_0011.md | 品牌上下文管理，跨域桥梁 |
 
 **加载流程**：
 1. 识别自己被分配的角色名称
