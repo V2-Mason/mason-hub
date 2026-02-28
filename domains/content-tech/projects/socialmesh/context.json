@@ -9,13 +9,13 @@
   "objective": "开源的 AI 多渠道社媒管理 + GEO 优化工具，先自用（dogfooding），验证后产品化为多租户 SaaS",
   "servers": {
     "dev": {
-      "host": "GCP 34.68.172.191",
+      "host": "GCP 34.63.188.198",
       "stack": "FastAPI + PostgreSQL + React + Tailwind CSS + Celery + Redis + Playwright",
       "app_path": "~/socialmesh/",
       "api_port": 8001,
       "frontend_port": 5173,
       "nginx_port": 8888,
-      "access_url": "http://34.68.172.191:8888"
+      "access_url": "http://34.63.188.198:8888"
     }
   },
   "services": {

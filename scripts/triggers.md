@@ -7,7 +7,7 @@
 run-agent.sh 已支持 `<agent配置文件> <任务内容>` 格式。
 触发器通过给 Agent 发送特定的"巡检指令"实现，Agent 读完角色定义后按指令执行。
 
-## GCP Cron 表达式（部署到 GCP 34.68.172.191）
+## GCP Cron 表达式（部署到 GCP 34.63.188.198）
 
 ```crontab
 # === 感知层触发器 ===
@@ -24,7 +24,7 @@ run-agent.sh 已支持 `<agent配置文件> <任务内容>` 格式。
 
 ## 部署步骤
 
-1. SSH 到 GCP：`ssh 34.68.172.191`
+1. SSH 到 GCP：`ssh 34.63.188.198`
 2. 编辑 crontab：`crontab -e`
 3. 添加上述三条 cron 表达式
 4. 确认：`crontab -l | grep triggers`

@@ -16,7 +16,7 @@
       "app_path": "/opt/surenxuan/"
     },
     "agent_hub": {
-      "host": "GCP 34.68.172.191",
+      "host": "GCP 34.63.188.198",
       "report_path": "/opt/surenxuan/reports/daily/",
       "cache_path": "/opt/surenxuan/cache/",
       "web_port": 8080
@@ -28,7 +28,7 @@
       "business_data": "#srx-business (text + JSON snapshot)",
       "alerts": "#srx-alerts (低库存、过期预警)"
     },
-    "report": "generate_report.py → Chart.js HTML → http://34.68.172.191:8080/daily/latest.html",
+    "report": "generate_report.py → Chart.js HTML → http://34.63.188.198:8080/daily/latest.html",
     "constraint": "GCP无法直连阿里云API（跨境不通），所有数据通过Slack中转"
   },
   "business": {

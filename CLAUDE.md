@@ -98,7 +98,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 - Python 包安装必须用 venv（PEP 668 限制）
 - 阿里云没有 rsync
 
-### GCP (34.68.172.191)
+### GCP (34.63.188.198)
 - mason-hub 和 surenxuan 都在这里开发
 - SSH 能连阿里云（反向不行）
 - Python 包安装同样需要 venv（~/mason-hub/.venv/）

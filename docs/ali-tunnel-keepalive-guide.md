@@ -27,7 +27,7 @@ mkdir -p /opt/surenxuan/logs
 
 # 通过隧道反向连接 GCP 来验证隧道是否真正通畅
 # 如果 SSH 进程活着但隧道实际已死，这个检测会失败
-if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -i /root/.ssh/id_ed25519 hangn@34.68.172.191 "echo ok" >/dev/null 2>&1; then
+if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -i /root/.ssh/id_ed25519 hangn@34.63.188.198 "echo ok" >/dev/null 2>&1; then
     echo "[$TS] ✅ 隧道正常" >> "$LOG"
     exit 0
 fi
@@ -36,7 +36,7 @@ echo "[$TS] ❌ 隧道不通，重启 reverse-tunnel.service" >> "$LOG"
 systemctl restart reverse-tunnel
 sleep 5
 
-if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -i /root/.ssh/id_ed25519 hangn@34.68.172.191 "echo ok" >/dev/null 2>&1; then
+if ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -i /root/.ssh/id_ed25519 hangn@34.63.188.198 "echo ok" >/dev/null 2>&1; then
     echo "[$TS] ✅ 重启后恢复" >> "$LOG"
 else
     echo "[$TS] 🚨 重启后仍不通，可能是网络问题" >> "$LOG"

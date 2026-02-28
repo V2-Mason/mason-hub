@@ -550,7 +550,7 @@ Mason 设定战略方向
 ### Git 仓库
 ```
 代码真相源：git@github.com:V2-Mason/surenxuan.git
-开发环境：GCP (mason-hub at 34.68.172.191)
+开发环境：GCP (mason-hub at 34.63.188.198)
 生产环境：阿里云 106.14.44.68（SSH 待修复）
 ```
 
