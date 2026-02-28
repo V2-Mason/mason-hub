@@ -12,8 +12,9 @@
 ### MediaCrawler 部署职责 (2026-02-28)
 - **架构定位**：基础设施层数据管道（跟 SQLite、SSH 隧道同级），不归任何业务 Agent 所有，我负责部署维护
 - 在阿里云 /opt/mediacrawler/ 部署 MediaCrawler（Python 3.11 + Playwright + Chromium + Node.js 16+）
-- 配置代理 IP 服务（提取代理模式，~¥20/月），确保采集流量不走阿里云本机 IP
+- 代理 IP 已配置（快代理隧道代理 TPS，~¥20/月），采集流量走代理出口，不走阿里云本机 IP
 - **关键**：采集用代理 IP，店铺官方 API 用本机 IP，两者必须隔离。否则采集被封可能连带店铺 API 受影响
+- **已验证**：代理出口 IP 182.34.xx.xx，阿里云真实 IP 106.14.44.68 已隐藏
 - china-hub 看板服务（:8080）的端口/nginx 配置
 - 数据流：MediaCrawler 定时采集 → SQLite 存库 → 各业务 Agent 被动查询（不是实时工具调用）
 
@@ -26,5 +27,18 @@
 ```
 
 ## 故障排查 Pattern
+
+### MediaCrawler .env 不生效 (2026-03-01)
+- MediaCrawler 依赖 python-dotenv 但代码中从未调用 `load_dotenv()`
+- .env 文件存在但 `os.getenv()` 读不到值，环境变量为空
+- 修复：在 `config/db_config.py` 头部加 `from dotenv import load_dotenv; load_dotenv()`
+- 教训：部署第三方项目时，不要假设 .env 会被自动加载，先验证
+
+### 快代理隧道代理 vs 提取代理 (2026-03-01)
+- MediaCrawler 内置的 kuaidaili provider 是 DPS（提取代理）模式：调 API 获取 IP 列表
+- Mason 买的是 TPS（隧道代理）模式：固定 host:port + 用户名密码，服务端自动轮换 IP
+- 两者 API 完全不同，不能混用
+- 修复：新建 `proxy/providers/kuaidl_tunnel_proxy.py` 适配器，注册为 `kuaidaili_tunnel` provider
+- 教训：买代理前确认产品类型（DPS/TPS），或买了之后确认代码支持哪种
 
 ## 监控与告警教训

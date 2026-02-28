@@ -18,6 +18,8 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 ### 阿里云 (106.14.44.68) — 生产环境
 - surenxuan FastAPI (:8000) — **systemd 管理，Restart=always**
 - 数据库: /opt/surenxuan/data/kbeauty.db
+- MediaCrawler: /opt/mediacrawler/（Python 3.11 venv + Playwright Chromium + SQLite）— 2026-02-28 部署
+- Swap: 1GB /swapfile（fstab 持久化）— 2026-02-28 添加
 - 反向SSH隧道: reverse-tunnel.service → GCP:2222
 - 隧道保活: tunnel-keepalive.sh (cron */5, 2026-02-26 部署)
 - 日志: /var/log/surenxuan.log
@@ -62,7 +64,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 ### P2 — 排入本周
 
 - [ ] agent.log 结构化 — 当前日志只有纯文本对话输出，不利于审计
-- [ ] swap 配置评估 — GCP 内存 47%，暂时不急，但没有 swap 缓冲
+- [x] swap 配置评估 — 2026-02-28 完成，阿里云已添加 1GB swap（/swapfile, fstab 持久化）；GCP 暂不需要
 - [x] FIX: /standup cron 检测逻辑修复 — 2026-02-27 完成，改为 grep -cE 'mason-hub|surenxuan'，现在正确显示 10 条
 
 ---
@@ -173,7 +175,7 @@ P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 P2 — UX 持续优化:
 - [ ] 根据 system_feedback 表持续迭代
 - [x] agent.log 结构化 — 2026-02-28 完成，run-agent.sh 新增 log_structured() JSONL 格式
-- [ ] swap 配置评估
+- [x] swap 配置评估 — 2026-02-28（同上）
 - [x] 产品去重/合并功能 — 2026-02-28 完成，find-similar API（SequenceMatcher 0.6）+ merge API（9 张关联表）+ 前端 InventoryPage 查找相似 Tab + BatchDetailPage 自动检测警告 badge
 
 **2026-02-28 组织架构调整（已完成）**:
@@ -243,8 +245,8 @@ P1 — 模块 A：店铺运营 API 对接（官方 API，全部 EMP_0005）:
 - [ ] 订单+售后自动处理 — 定时拉取新订单，收件人信息解密（调批量解密 API），发货回传快递单号，售后单同步+Slack 通知
 
 P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
-- [ ] 部署 MediaCrawler 到阿里云 /opt/mediacrawler/（Python 3.11 + Playwright + Chromium + Node.js 16+）（EMP_0004）
-- [ ] 配置代理 IP（提取代理模式，保护店铺 API 的 IP 不被封）（EMP_0004）
+- [x] 部署 MediaCrawler 到阿里云 /opt/mediacrawler/（Python 3.11 + Playwright + Chromium + Node.js 16+）— 2026-02-28 完成，venv + SQLite 初始化 + 1GB swap 添加，等 Mason 提供 XHS cookie 即可采集
+- [x] 配置代理 IP — 2026-03-01 完成，快代理隧道代理（TPS）已配置，出口 IP 验证通过（182.34.xx.xx），阿里云真实 IP 已隐藏
 - [ ] 采集任务配置 — 4 类任务按需采集，数据存阿里云 SQLite（EMP_0005）:
   - 任务 1 内容灵感：韩国护肤/好物/教程/零食/代购，每周 2 次，月产 1,280 摘要 + 160 详情 → 喂给 Content Creator
   - 任务 2 选品情报：水乳/精华/面膜/防晒/探索品类，每周 1 次，月产 1,120 摘要 + 12 详情 → 喂给 PM + 电商 Manager
@@ -272,6 +274,9 @@ P2 — 模块 A 增强:
 **待 Mason 手动处理**:
 - [x] SECRET_KEY 替换为强密钥 — 2026-02-28 完成，JWT_SECRET 已配到阿里云 systemd service，服务已重启验证
 - [ ] 小红书开发者账号注册（需中国手机号 + 素仁轩营业执照 + 法人信息）
+- [x] XHS 采集 cookie 配置 — 2026-03-01 完成，cookie 已填入 MediaCrawler config
+- [x] 快代理账号购买 + 隧道代理配置 — 2026-03-01 完成
+- [x] MediaCrawler 首次采集测试 — 2026-03-01 完成，"韩国护肤" 关键词成功采集 20 条笔记入库
 - [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册

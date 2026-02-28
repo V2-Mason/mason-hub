@@ -36,3 +36,11 @@
 - 采集引擎：/opt/mediacrawler/（EMP_0004 部署，我配置）
 
 ## 踩坑记录
+
+### MediaCrawler 首次采集成功 (2026-03-01)
+- "韩国护肤" 关键词成功采集 20 条笔记，数据存 `/opt/mediacrawler/database/sqlite_tables.db`
+- 表名 `xhs_note`，字段包含：note_id, title, desc, liked_count, collected_count, comment_count, nickname, tag_list, source_keyword, note_url
+- Cookie 登录方式可用，无需扫码
+- 代理隧道 + cookie 组合正常工作
+- 注意：CRAWLER_MAX_NOTES_COUNT 设 5 但实际抓了一页 20 条（搜索结果按页返回，非精确控制）
+- Cookie 会过期（几天到几周），过期后需 Mason 重新从浏览器提取

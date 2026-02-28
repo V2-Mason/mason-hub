@@ -40,4 +40,14 @@
 
 ## 部署与运维 Pattern
 
+### 第三方项目 .env 加载不能想当然 (2026-03-01)
+- MediaCrawler 声明 python-dotenv 依赖但从未 import/调用
+- 部署任何第三方项目时，必须验证 .env 是否真的被加载（看 import 语句，不是看 .env 文件存不存在）
+
+### 代理服务产品类型区分 (2026-03-01)
+- DPS（提取代理）：调 API 获取临时 IP 列表，每个 IP 有过期时间
+- TPS（隧道代理）：固定 host:port + auth，服务端自动轮换出口 IP
+- 同一服务商（如快代理）两种产品的 API 和接入方式完全不同
+- MediaCrawler 内置只支持 DPS，需写适配器支持 TPS
+
 ## 踩坑记录
