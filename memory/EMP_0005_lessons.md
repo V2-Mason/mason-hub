@@ -6,6 +6,6 @@
 
 ---
 
-## 2026-02-28: Python 中文字符串
+## 2026-02-28: Python 中文字符串（强化）
 
-Python 代码中避免使用中文全角引号 `""`，会导致 SyntaxError。用英文引号或 Unicode escape `\u201c\u201d`。
+生成 Python 代码时**禁止出现任何中文标点**（引号 `""''`、括号 `（）`、逗号 `，`、冒号 `：`）。写完代码后第一件事检查非 ASCII 字符。踩坑记录：中文全角引号导致 SyntaxError: unexpected EOF，浪费了 1 轮修复机会。

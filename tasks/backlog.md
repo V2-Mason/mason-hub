@@ -57,7 +57,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
   - api_logger.py (Python + CLI 双接口)
   - claude-logged.sh (交互式 session 包装)
   - run-agent.sh 已接入，精确 token 追踪（非 unknown）
-- [ ] shared/ 目录创建 — 角色文件引用了这个路径但不存在
+- [x] shared/ 目录创建 — 2026-02-28 完成，shared/common.sh 共享函数库 + README
 
 ### P2 — 排入本周
 
@@ -145,25 +145,25 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 **关键任务**:
 
 P0 — 选品准确率追踪闭环:
-- [ ] 建立追踪表：记录 Agent 推荐得分 → Mason 采购决策 → 实际销量/毛利/周转
-- [ ] 每月回溯报告：Agent 推荐且采购的品表现如何、未推荐但自选的品表现如何
-- [ ] 用销售数据反馈优化 Agent 评估模型的权重
+- [x] 建立追踪表 — 2026-02-28 完成，selection_tracking.py + DB schema + BatchDetailPage 集成
+- [x] 每月回溯报告 — 2026-02-28 完成，selection_monthly_report.py（190 行）+ AI trust ratio 设置
+- [ ] 用销售数据反馈优化 Agent 评估模型的权重 — 等销售数据积累
 
 P1 — Agent 上线:
-- [ ] Agent #0（数据COO）: 每日库存巡检 + 每周报告
-- [ ] Agent #2（营销引擎）: 每日客户跟进建议 + 话术生成
-- [ ] 风险提示行动指引：风险卡片 → 行动报告 → 跳转操作页（轻量版先做跳转，完整版靠 Agent #0）
+- [x] Agent #0（数据COO）— 2026-02-28 完成，skills/data-coo-daily.sh + cron 08:30 CST，调现有 API 汇总发 Slack
+- [x] Agent #2（营销引擎）— 2026-02-28 完成，skills/marketing-daily.sh 数据采集层，现有 cron（CST 10:00）已覆盖话术生成
+- [x] 风险提示行动指引 — 2026-02-28 完成，5 种风险类型动态 action_suggestions + 前端可展开跳转
 
 P1 — 通知 + 稳定性:
-- [ ] 通知系统: Server酱或企业微信 webhook → Mason 手机
-- [ ] 记忆系统 v2: 三个 Agent 独立记忆 + 共享知识层
-- [ ] 连续运行 7 天无崩溃
+- [ ] 通知系统: 推送通道待定（Server酱已排除，企业微信/飞书待 Mason 选择）。脚本框架 notify-mason.sh 已就绪，配 key 即可用
+- [ ] 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计
+- [ ] 连续运行 7 天无崩溃 — 观察中
 
 P2 — UX 持续优化:
 - [ ] 根据 system_feedback 表持续迭代
-- [ ] agent.log 结构化
+- [x] agent.log 结构化 — 2026-02-28 完成，run-agent.sh 新增 log_structured() JSONL 格式
 - [ ] swap 配置评估
-- [ ] 产品去重/合并功能 — 同款产品不同批次导入时翻译不同（如"高级蜗牛96黏液强效精华" vs "先进蜗牛96粘液强效精华"），需要：1) 上传选品时自动提示已有相似产品并支持合并；2) 产品库增加手动合并功能。当前 63 个产品人工可控，品类扩大后需要此功能
+- [x] 产品去重/合并功能 — 2026-02-28 完成，find-similar API（SequenceMatcher 0.6）+ merge API（9 张关联表）+ 前端 InventoryPage 查找相似 Tab + BatchDetailPage 自动检测警告 badge
 
 **2026-02-28 组织架构调整（已完成）**:
 - [x] 新增 EMP_0010 Content Creator 角色 — 2026-02-28，多平台内容生产+社区互动，有状态有记忆
@@ -215,7 +215,7 @@ P1 — 发布状态:
 - [ ] 内容列表显示发布状态 — ContentEditor 内容列表每条显示各平台发布状态 badge（已发布/已排程/失败），后端 content list API 需附带 platform_posts 摘要（EMP_0009 Dev）
 
 **待 Mason 手动处理**:
-- [ ] SECRET_KEY 替换为强密钥 — `python3 -c "import secrets; print(secrets.token_urlsafe(64))"`
+- [x] SECRET_KEY 替换为强密钥 — 2026-02-28 完成，JWT_SECRET 已配到阿里云 systemd service，服务已重启验证
 - [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册

@@ -17,3 +17,15 @@
 并行派活给前端+后端 worker 时，必须把接口 schema 写成明确的字段定义（Pydantic model / TypeScript type）传给两边。自然语言描述不够，SocialMesh M1 和 M2 都因此踩坑：
 1. M1: backend 返回 flat dict，前端期望 `{value, label}` 嵌套结构
 2. M2: import 脚本传 `list[dict]`，API 期望 `list[str]`
+
+## 2026-02-28: 晨会汇报需交叉比对数据源
+
+audit.jsonl 可能只记录中间轮次的失败状态，不一定反映最终结果。晨会汇报任务状态时，必须同时查 audit.jsonl + agent.log + backlog，三者交叉验证。本次差点把已修复的 sales summary 任务误报为失败。
+
+## 2026-02-28: 拆任务前先查现有 cron/skill 是否已覆盖
+
+派活前必须先 `crontab -l` 核对现有定时任务，避免功能重叠。本次 Agent #2 营销引擎 skill 创建后发现现有 crontab 已有"每日客户跟进"cron（CST 10:00），功能重复。应在任务拆解阶段就排查，而不是让 worker 执行时自行判断。
+
+## 2026-02-28: 重启生产服务后必须立即验证连通性
+
+修改生产环境配置并重启服务后，必须立即执行验证三件套：1) `curl health` 确认后端 200；2) `curl 首页` 确认前端加载时间正常（<2s）；3) 确认 SSH 连通。不能改完就告诉 Mason 去访问——本次重启后阿里云出现短暂网络波动（TCP 连接 36s），Mason 直接撞上了慢加载。
