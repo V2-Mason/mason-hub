@@ -2,7 +2,7 @@
 
 > **Meta Manager 每日晨会必读此文件**
 > 最后更新: 2026-02-28
-> 更新人: EMP_0008 PM 巡检 + Bug 修复
+> 更新人: Mason + Meta Manager（Scout 重构 + 小红书 API 对接 + Agent 基础设施修复）
 
 ---
 
@@ -159,6 +159,17 @@ P1 — 通知 + 稳定性:
 - [ ] 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计
 - [ ] 连续运行 7 天无崩溃 — 观察中
 
+P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
+- [ ] run-agent.sh 嵌套检测 — 检测 CLAUDECODE=1 时直接报错退出，不再静默挂死（EMP_0002）
+- [ ] Skills 去重 — user 级 (~/.claude/skills/) 和 project 级 (mason-hub/.claude/skills/) 同名 skill 共存，统一保留一套（EMP_0002）
+- [ ] Scout cron 首次执行验证 — 今晚 23:00 CST 首次触发，明天确认 triggers.log 有输出（EMP_0004）
+
+P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
+- [ ] Scout 去重机制 — 维护 intel/seen.jsonl（repo name + 首次报告日期 + 上次 star 数），新项目标 🆕，已知项目仅 star 显著变化时标 📈，无变化不报（EMP_0002）
+- [ ] Scout 简报格式改进 — 每条标题直接是可点击链接 + 具体日期，禁止"本周""最近"等模糊表述（EMP_0002 实现 + EMP_0006 遵守）
+- [ ] Scout 多数据源 — 当前 9 个脚本全部只用 GitHub API，需引入真正的多渠道：Google→Gemini, X→Grok, 小红书→DeepSeek。scout-xhs-trends.sh 当前搜的是 GitHub 不是小红书（EMP_0002）
+- [ ] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用，Mason 手动触发必须有 /skill 替代方案（EMP_0002）
+
 P2 — UX 持续优化:
 - [ ] 根据 system_feedback 表持续迭代
 - [x] agent.log 结构化 — 2026-02-28 完成，run-agent.sh 新增 log_structured() JSONL 格式
@@ -214,8 +225,27 @@ P1 — 发布状态:
 - [ ] Content.status 发布后更新 — publish_post 成功后检查是否所有 PlatformPost 已发布，更新 Content.status 为 published；collect_metrics 只更新 metrics 键，不覆盖 screenshot/post_id（EMP_0009 Dev）
 - [ ] 内容列表显示发布状态 — ContentEditor 内容列表每条显示各平台发布状态 badge（已发布/已排程/失败），后端 content list API 需附带 platform_posts 摘要（EMP_0009 Dev）
 
+**小红书 API 对接 (2026-02-28 讨论产出)**:
+
+P0 — 准入 (Mason 手动):
+- [ ] 用素仁轩中国营业执照注册 open.xiaohongshu.com 开发者账号，选「商家后台系统」类目（零成本、权限全）
+- [ ] 拿到 appKey / appSecret
+
+P1 — 技术对接:
+- [ ] 签名中间件 — 实现小红书 API 签名算法（参数排序+MD5），封装为通用模块（EMP_0002）
+- [ ] 阿里云数据网关 — 接收 XHS 原始数据 → PII 加密存储 → 脱敏聚合 → 推送到 GCP。敏感数据不出境（EMP_0002）
+- [ ] 对接 P0 API — 订单列表 + 商品列表 + 库存数据拉取（EMP_0005）
+- [ ] Webhook 回调端点 — 阿里云公网端点接收 XHS 事件推送（订单创建/发货/售后）（EMP_0004 + EMP_0005）
+- [ ] 数据加解密模块 — PII（姓名/手机号/地址）AES 加密存储，与脱敏业务数据分开（EMP_0002）
+
+P2 — 扩展:
+- [ ] 对接 P1 API — 售后数据 + 物流轨迹（EMP_0005）
+- [ ] 内容发布 API 调研 — 确认 open.xiaohongshu.com 内容发布 API 的权限要求和能力范围，评估替代 Playwright 方案（EMP_0007 调研 + EMP_0009 实现）
+- [ ] 多租户架构预留 — appKey/token 不硬编码，按商家 ID 动态选用，为未来 SaaS 转型准备（EMP_0002）
+
 **待 Mason 手动处理**:
 - [x] SECRET_KEY 替换为强密钥 — 2026-02-28 完成，JWT_SECRET 已配到阿里云 systemd service，服务已重启验证
+- [ ] 小红书开发者账号注册（需中国手机号 + 素仁轩营业执照 + 法人信息）
 - [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册

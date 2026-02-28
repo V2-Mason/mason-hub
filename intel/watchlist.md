@@ -12,6 +12,9 @@
 | OpenClaw 框架 | 2026-02-27 | 架构参考，部分 pattern 已采纳 | 2026-04 |
 | superset (AI Agent IDE) | 2026-02-27 | 多 agent 并行运行 IDE ⭐2046，观察成熟度 | 2026-03-13 |
 | quoroom-ai/room (Swarm Engine) | 2026-02-27 | queen/worker 蜂群架构参考 ⭐440 | 2026-03-13 |
+| kibitz (Agent 实时监控) | 2026-02-28 | 多 agent session 实时解码面板 ⭐304，triggers.log 替代方案 | 2026-03-14 |
+| FastSkills (Skills→MCP) | 2026-02-28 | Agent Skills 标准化为 MCP server ⭐102，趋势信号 | 2026-03-14 |
+| memorix (跨 Agent 记忆桥) | 2026-02-28 | 跨 Cursor/Claude Code 共享记忆 ⭐138，记忆 v2 参考 | 2026-03-14 |
 
 ## Active — UI/UX 情报 (Design)
 
