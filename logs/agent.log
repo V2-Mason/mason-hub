@@ -1142,3 +1142,17 @@ Exit code: 0
 /home/hangn/mason-hub/skills/run-backend-tests.sh: line 35: 217057 Killed                  DEV_MODE=true setsid python3 -m uvicorn main:app --host 127.0.0.1 --port 8000 --log-level warning > "$STARTUP_LOG" 2>&1
 
 [2026-02-27T07:41:15Z] === EMP_0005 执行完毕 ===
+{"timestamp":"2026-02-28T19:58:47Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"error","message":"Aborted: cookie expired "}
+{"timestamp":"2026-02-28T19:59:56Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie expired, HTTP code: 406 "}
+{"timestamp":"2026-02-28T20:00:57Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
+{"timestamp":"2026-02-28T20:08:19Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-02-28T20:08:30Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-02-28T20:08:33Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"start","message":"Starting task 3 (竞品监控), keywords: COSRX测评,SOME BY MI测评,SKIN1004测评,ANUA测评,ROUND LAB测评,韩国代购店铺,oliveyoung代购,韩国护肤代购 "}
+{"timestamp":"2026-02-28T20:08:39Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"end","message":"Task 3 done, new notes: 0, total: 20 "}
+{"timestamp":"2026-02-28T20:09:09Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-02-28T20:09:12Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"start","message":"Starting task 3 (竞品监控), keywords: COSRX测评,SOME BY MI测评,SKIN1004测评,ANUA测评,ROUND LAB测评,韩国代购店铺,oliveyoung代购,韩国护肤代购 "}
+{"timestamp":"2026-02-28T20:13:08Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"end","message":"Task 3 done, new notes: 60, total: 80 "}
+{"timestamp":"2026-02-28T20:14:17Z","agent_id":"xhs-analyzer","task_id":"weekly-analysis","event_type":"start","message":"Analyzing last 7 days "}
+{"timestamp":"2026-02-28T20:14:20Z","agent_id":"xhs-analyzer","task_id":"weekly-analysis","event_type":"end","message":"Analyzed 80 notes, 4 keywords, 2 flagged "}
+{"timestamp":"2026-02-28T20:15:05Z","agent_id":"xhs-strategy","task_id":"briefing","event_type":"start","message":"Generating strategy briefing "}
+{"timestamp":"2026-02-28T20:15:08Z","agent_id":"xhs-strategy","task_id":"briefing","event_type":"end","message":"Briefing generated: 20 hot posts, 4 keywords, 4 recommendations "}
