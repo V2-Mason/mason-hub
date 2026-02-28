@@ -225,23 +225,29 @@ P1 — 发布状态:
 - [ ] Content.status 发布后更新 — publish_post 成功后检查是否所有 PlatformPost 已发布，更新 Content.status 为 published；collect_metrics 只更新 metrics 键，不覆盖 screenshot/post_id（EMP_0009 Dev）
 - [ ] 内容列表显示发布状态 — ContentEditor 内容列表每条显示各平台发布状态 badge（已发布/已排程/失败），后端 content list API 需附带 platform_posts 摘要（EMP_0009 Dev）
 
-**小红书 API 对接 (2026-02-28 讨论产出)**:
+**小红书对接 (2026-02-28 讨论产出，API 文档审读后优化)**:
+
+> 官方 API（ARK 平台）只覆盖电商运营（商品/订单/库存/售后/物流/素材）。
+> 无笔记发布 API、无公开内容搜索 API、无数据分析 API。
+> 签名模块放 /opt/surenxuan/，自用单项目不做跨项目依赖，未来需要时迁移成本极低。
 
 P0 — 准入 (Mason 手动):
 - [ ] 用素仁轩中国营业执照注册 open.xiaohongshu.com 开发者账号，选「商家后台系统」类目（零成本、权限全）
 - [ ] 拿到 appKey / appSecret
 
-P1 — 技术对接:
-- [ ] 签名中间件 — 实现小红书 API 签名算法（参数排序+MD5），封装为通用模块（EMP_0002）
-- [ ] 阿里云数据网关 — 接收 XHS 原始数据 → PII 加密存储 → 脱敏聚合 → 推送到 GCP。敏感数据不出境（EMP_0002）
-- [ ] 对接 P0 API — 订单列表 + 商品列表 + 库存数据拉取（EMP_0005）
-- [ ] Webhook 回调端点 — 阿里云公网端点接收 XHS 事件推送（订单创建/发货/售后）（EMP_0004 + EMP_0005）
-- [ ] 数据加解密模块 — PII（姓名/手机号/地址）AES 加密存储，与脱敏业务数据分开（EMP_0002）
+P1 — 模块 A：店铺运营 API 对接（官方 API，全部 EMP_0005）:
+- [ ] 签名+鉴权模块 — 签名算法（参数排序+MD5）+ OAuth token 获取/自动刷新，代码放 /opt/surenxuan/
+- [ ] 商品+库存双向同步 — 拉取 XHS 商品列表对应素仁轩产品 ID，库存增减双向同步
+- [ ] 订单+售后自动处理 — 定时拉取新订单，收件人信息解密（调批量解密 API），发货回传快递单号，售后单同步+Slack 通知
 
-P2 — 扩展:
-- [ ] 对接 P1 API — 售后数据 + 物流轨迹（EMP_0005）
-- [ ] 内容发布 API 调研 — 确认 open.xiaohongshu.com 内容发布 API 的权限要求和能力范围，评估替代 Playwright 方案（EMP_0007 调研 + EMP_0009 实现）
-- [ ] 多租户架构预留 — appKey/token 不硬编码，按商家 ID 动态选用，为未来 SaaS 转型准备（EMP_0002）
+P2 — 模块 A 增强:
+- [ ] Webhook 实时推送 — 阿里云公网端点接收 XHS 事件推送，替代定时轮询（EMP_0004 配置端口/nginx + EMP_0005 写业务逻辑）
+
+P2 — 模块 B：内容收集（Playwright，无官方 API）:
+- [ ] 公开笔记采集增强 — Playwright 采集公开笔记（标题/正文/互动数据），存入阿里云本地 SQLite，作为爆款分析数据源（EMP_0009）
+
+P2 — 模块 C：自建爆款分析引擎:
+- [ ] 爆款分析引擎 v1 — 数据源：模块 B 采集的公开笔记 + 模块 A 的订单销量。分析品类热度/竞品定价/内容互动率，定期生成趋势报告（EMP_0005 引擎 + EMP_0006 数据采集）
 
 **待 Mason 手动处理**:
 - [x] SECRET_KEY 替换为强密钥 — 2026-02-28 完成，JWT_SECRET 已配到阿里云 systemd service，服务已重启验证
