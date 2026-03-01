@@ -247,7 +247,9 @@ P1 — 模块 A：店铺运营 API 对接（官方 API，全部 EMP_0005）:
 P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
 - [x] 部署 MediaCrawler 到阿里云 /opt/mediacrawler/（Python 3.11 + Playwright + Chromium + Node.js 16+）— 2026-02-28 完成，venv + SQLite 初始化 + 1GB swap 添加，等 Mason 提供 XHS cookie 即可采集
 - [x] 配置代理 IP — 2026-03-01 完成，快代理隧道代理（TPS）已配置，出口 IP 验证通过（182.34.xx.xx），阿里云真实 IP 已隐藏
-- [x] 采集任务配置 — 2026-03-01 完成，4 类任务 + cookie 检测 + 分析 + 策略简报全管道
+- [x] 采集任务配置 — 2026-03-01 完成，4 类任务（内容灵感/选品情报/竞品监控/趋势发现）
+  - xhs-cookie-check.sh: Cookie 有效性检测（多账号），过期按账号 Slack 通知
+  - xhs-crawl.sh --task 1~4 --account A|B: 两层采集调度器
 - [x] 两层采集架构 — 2026-03-02 完成，搜索 API 广撒网 + Feed API 仅 Top N 深挖，避免风控
 - [x] 多账号隔离 + 拟人化 — 2026-03-02 完成:
   - accounts.json 多账号配置（A 号内容博主 + B 号选品生意，主号不碰自动化）
@@ -255,6 +257,10 @@ P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
   - 关键词每次随机选子集、cron 随机偏移 0-45 分钟
   - Cookie 过期按账号通知
   - 待 Mason: 注册 2 个小号 → 养号 3-5 天 → 提供 cookie
+- [ ] 分析管道 — 采集稳定后实现:
+  - xhs-analyze.sh: 数字归一化（"1.2万"→12000）+ 假流量过滤（评赞比/藏赞比异常检测）+ 互动评分（赞+藏×3+评×5+转×8）+ 爆帖排行 Top 20 + 关键词统计
+  - xhs-strategy-briefing.sh: 规则策略推荐（藏赞比高→教程类，评赞比高→话题类）+ 3 号差异化内容建议 + Slack 周报
+  - 周六自动跑（分析 08:00 CST + 简报 10:00 CST）
 
 P1 — 模块 C：china-hub 分析看板（阿里云本地 :8080）:
 - [ ] 看板后端 — FastAPI 查询采集数据库，提供品类热度/爆款排行/竞品分析/关键词监控 API（EMP_0005）
@@ -288,7 +294,6 @@ P2 — 模块 A 增强:
 - [x] MediaCrawler 首次采集测试 — 2026-03-01 完成，"韩国护肤" 关键词成功采集 20 条笔记入库
 - [ ] XHS 爬虫小号注册（2 个）— 用不同手机号，养号 3-5 天后提供 cookie
 - [ ] XHS 采集 cron 注册 — 等小号 cookie 就绪后注册（晚高峰 A 号 + 午休 B 号 + 每天 cookie 检测）
-- [ ] xhs-analyze.sh + xhs-strategy-briefing.sh — 采集稳定后实现分析管道
 - [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册
