@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-03-01
-> 更新人: Mason + Meta Manager（XHS 采集分析管道上线 + Scout 重构 + 小红书 API 对接 + Agent 基础设施修复）
+> 最后更新: 2026-03-02
+> 更新人: Mason + Session（多账号采集架构 + 拟人化 + 两层采集）
 
 ---
 
@@ -247,13 +247,14 @@ P1 — 模块 A：店铺运营 API 对接（官方 API，全部 EMP_0005）:
 P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
 - [x] 部署 MediaCrawler 到阿里云 /opt/mediacrawler/（Python 3.11 + Playwright + Chromium + Node.js 16+）— 2026-02-28 完成，venv + SQLite 初始化 + 1GB swap 添加，等 Mason 提供 XHS cookie 即可采集
 - [x] 配置代理 IP — 2026-03-01 完成，快代理隧道代理（TPS）已配置，出口 IP 验证通过（182.34.xx.xx），阿里云真实 IP 已隐藏
-- [x] 采集任务配置 — 2026-03-01 完成，4 类任务 cron 调度 + cookie 检测 + 分析 + 策略简报全管道:
-  - xhs-cookie-check.sh: Cookie 有效性检测，过期自动 Slack 通知
-  - xhs-crawl.sh --task 1~4: 采集调度器（内容灵感/选品情报/竞品监控/趋势发现）
-  - xhs-analyze.sh: 数字归一化 + 假流量过滤 + 互动评分 + 爆帖排行 + 关键词统计
-  - xhs-strategy-briefing.sh: 规则策略推荐（3 号各自内容建议）+ Slack 摘要
-  - Cron: 周二+周五 Task1, 周三 Task2, 周四 Task3, 1+15号 Task4, 周六分析+简报
-  - 待 Mason: Task 3 竞品关键词待提供
+- [x] 采集任务配置 — 2026-03-01 完成，4 类任务 + cookie 检测 + 分析 + 策略简报全管道
+- [x] 两层采集架构 — 2026-03-02 完成，搜索 API 广撒网 + Feed API 仅 Top N 深挖，避免风控
+- [x] 多账号隔离 + 拟人化 — 2026-03-02 完成:
+  - accounts.json 多账号配置（A 号内容博主 + B 号选品生意，主号不碰自动化）
+  - 独立浏览器指纹（UA/分辨率）、随机延迟（30-90s 搜索间 / 10-30s 阅读）
+  - 关键词每次随机选子集、cron 随机偏移 0-45 分钟
+  - Cookie 过期按账号通知
+  - 待 Mason: 注册 2 个小号 → 养号 3-5 天 → 提供 cookie
 
 P1 — 模块 C：china-hub 分析看板（阿里云本地 :8080）:
 - [ ] 看板后端 — FastAPI 查询采集数据库，提供品类热度/爆款排行/竞品分析/关键词监控 API（EMP_0005）
@@ -264,8 +265,14 @@ P1 — 模块 C：china-hub 分析看板（阿里云本地 :8080）:
 P2 — 模块 A 增强:
 - [ ] Webhook 实时推送 — 阿里云公网端点接收 XHS 事件推送，替代定时轮询（EMP_0004 配置端口/nginx + EMP_0005 写业务逻辑）
 
-> **月度成本预算 ~¥30**：代理 IP ~¥20（~87 个 IP/月，按需采集 3,000 摘要+292 详情）+ DeepSeek ~¥3 + 代理服务最低消费预留
-> 写 1 条帖子参考 10-20 篇高质量详情就够，信息密度在 20 篇后递减，不需要粗放扫描
+> **月度成本预算 ~¥30**：代理 IP ~¥20（待切换 DPS 按 session 绑定 IP）+ DeepSeek ~¥3
+> 每个号每天 200-300 次请求，2-3 个关键词 × 1-2 页 + Top 10 详情
+>
+> **采集时间窗口**（对齐国内用户活跃时段 + Mason 东部时间方便）:
+> - 晚高峰 20:00-22:00 CST（= Mason 07:00-09:00 ET）→ A 号
+> - 午休 12:00-13:30 CST（= Mason 23:00-00:30 ET）→ B 号
+> - Cron 设窗口起点 + 脚本内随机延迟 0-45 分钟，每天实际时间不同
+> - 任务不绑死星期几，每周每号跑 2-3 次，关键词自动轮换
 >
 > **XHS 账号矩阵（3 台手机 + 3 张 SIM 卡）**:
 > - 号 1 素仁轩品牌号：产品介绍/教程/开箱 → 直接导购
@@ -279,6 +286,9 @@ P2 — 模块 A 增强:
 - [x] XHS 采集 cookie 配置 — 2026-03-01 完成，cookie 已填入 MediaCrawler config
 - [x] 快代理账号购买 + 隧道代理配置 — 2026-03-01 完成
 - [x] MediaCrawler 首次采集测试 — 2026-03-01 完成，"韩国护肤" 关键词成功采集 20 条笔记入库
+- [ ] XHS 爬虫小号注册（2 个）— 用不同手机号，养号 3-5 天后提供 cookie
+- [ ] XHS 采集 cron 注册 — 等小号 cookie 就绪后注册（晚高峰 A 号 + 午休 B 号 + 每天 cookie 检测）
+- [ ] xhs-analyze.sh + xhs-strategy-briefing.sh — 采集稳定后实现分析管道
 - [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册

@@ -71,3 +71,29 @@
 - 当前用规则引擎（藏赞比→教程类，评赞比→话题类），DeepSeek 增强待后续
 - 策略简报路径：阿里云 /opt/mediacrawler/analysis/briefings/
 - Schema 定义：~/mason-hub/shared/xhs-briefing-schema.json
+
+### 多账号 + 拟人化采集架构 (2026-03-02, Mason 确认)
+
+**账号隔离**:
+- A 号（内容博主）→ Task 1 内容灵感 + Task 4 趋势发现
+- B 号（选品生意）→ Task 2 选品情报 + Task 3 竞品监控
+- 主号（素仁轩运营号）→ 绝不碰自动化，只用手机 APP 手动
+- 每个号有独立浏览器指纹（UA、分辨率）
+
+**拟人化策略**:
+- Cron 触发后随机延迟 0-45 分钟
+- 关键词每次随机选子集（不全搜），隔 2-3 天才重搜同一个词
+- 搜索间 30-90 秒随机延迟，详情间模拟阅读 10-30 秒
+- 启动先逛首页暖场（随机滚动）
+- 采集时间窗口对齐国内用户活跃时段（晚 20-22 CST = Mason 早 7-9 ET）
+
+**配置文件**:
+- 账号配置：阿里云 /opt/mediacrawler/accounts.json（cookie + 指纹）
+- 模板：~/mason-hub/shared/accounts.template.json
+- Cookie 不再存 base_config.py，改存 accounts.json
+
+**数据量控制**:
+- 每个号每天 200-300 次请求（正常用户刷 1-2 小时的量）
+- 每次只搜 2-3 个关键词 × 1-2 页 = 40-120 条搜索结果
+- 详情深挖只取 Top 10
+- 一天跑 1 个 session（~30 分钟）

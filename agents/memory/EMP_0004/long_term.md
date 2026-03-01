@@ -53,6 +53,13 @@
 - 搜索 API 和 selfinfo 不受影响
 - 风控解除时间：数小时到一天
 - **监控要点**：如果 cron 采集报 0 新笔记但无 SSH 错误，大概率是 feed API 被风控
-- 当前数据库 148 条笔记（韩国护肤 35 + 竞品 60 + Task 1 新增 57 — 但 Task 1 其实应该更多，部分被风控截断）
+- 当前数据库 167 条笔记
+
+### 多账号采集架构 (2026-03-02)
+- Cookie 不再存 base_config.py，改存 /opt/mediacrawler/accounts.json
+- 模板：~/mason-hub/shared/accounts.template.json（SCP 初始化）
+- 采集脚本 _two_tier_crawl.py 每次从 GCP SCP 到阿里云再执行
+- Cookie 过期检测改为按账号检测（xhs-cookie-check.sh --account A）
+- **监控要点**：Slack 通知会指明哪个账号过期，不再是笼统的"cookie 过期"
 
 ## 监控与告警教训

@@ -70,7 +70,17 @@
 - **搜索 API**（`/api/sns/web/v1/search/notes`）：风控较松，正常可用
 - **笔记详情 API**（`/api/sns/web/v1/feed`）：风控严格，~50-60 次调用后触发 461 `账号异常，请稍后重试`（code 300011）
 - 被风控后搜索和 selfinfo 仍正常，只有 feed API 被封
-- **方案**：改用搜索结果直存，搜索返回已含标题、互动数据、作者、日期、类型，足够分析
-- xhs-crawl.sh 需改造：跳过 `get_note_detail_async_task`，直接从搜索结果提取数据存库
+- **方案**：两层采集 — 搜索 API 广撒网（安全），Feed API 只深挖 Top 10（控量）
+
+### 多账号采集架构 (2026-03-02, Mason 确认)
+- **不再用 MediaCrawler 的 main.py**，改用自建 _two_tier_crawl.py 直接调 Playwright + signing
+- Cookie 从 accounts.json 读（不再依赖 base_config.py）
+- 每个账号独立浏览器指纹（UA/viewport/locale/timezone）
+- xhs-crawl.sh 支持 --account 参数，按 task 自动选默认账号
+- 关键词轮换：每次从完整池随机选子集（shuf | head），不全搜
+- 拟人化延迟：首页暖场 + 搜索间 30-90s + 详情间 10-30s + cron 随机偏移 0-45min
+- 文件路径：
+  - GCP: skills/_two_tier_crawl.py + skills/xhs-crawl.sh
+  - 阿里云: /opt/mediacrawler/two_tier_crawl.py（每次 SCP 覆盖）+ accounts.json
 
 ## 踩坑记录
