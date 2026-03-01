@@ -161,6 +161,13 @@ P1 — 通知 + 稳定性:
 - [ ] 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计
 - [ ] 连续运行 7 天无崩溃 — 观察中
 
+P1 — 开发流程强化 (2026-03-02 superpowers 参考):
+- [x] CLAUDE.md 开发铁律 — 2026-03-02 完成，3 条铁律 + 执行检查点 + 反合理化清单 + code review + 设计文档
+- [x] Code reviewer agent — 2026-03-02 完成，agents/code-reviewer.md，两阶段审查（spec + quality）
+- [x] 设计文档目录 — 2026-03-02 完成，docs/plans/，首份文档：多账号采集架构
+- [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
+- [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
+
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [ ] run-agent.sh 嵌套检测 — 检测 CLAUDECODE=1 时直接报错退出，不再静默挂死（EMP_0002）
 - [ ] Skills 去重 — user 级 (~/.claude/skills/) 和 project 级 (mason-hub/.claude/skills/) 同名 skill 共存，统一保留一套（EMP_0002）
