@@ -10,7 +10,7 @@ source "$HUB_DIR/shared/common.sh"
 
 ALIYUN="root@106.14.44.68"
 MC_DIR="/opt/mediacrawler"
-SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh
+SLACK_CHANNEL="C0AHB976R9V"  # #rednote
 QR_REMOTE="/tmp/xhs_qr.png"
 QR_LOCAL="/tmp/xhs_qr.png"
 STATUS_REMOTE="/tmp/xhs_login_status"
@@ -119,36 +119,63 @@ echo "Downloaded: $QR_LOCAL ($(wc -c < "$QR_LOCAL") bytes)"
 echo ""
 echo "--- Sending QR to Slack ---"
 
-# 先尝试 files.upload，如果缺权限则用 HTTP 临时服务
-UPLOAD_RESP=$(curl -s -X POST "https://slack.com/api/files.upload" \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-  -F "channels=$SLACK_CHANNEL" \
-  -F "file=@$QR_LOCAL" \
-  -F "filename=xhs_qr.png" \
-  -F "title=XHS QR Code — 请扫码登录" \
-  -F "initial_comment=🍪 *XHS Cookie 刷新* — 请用小红书 APP 扫描此二维码登录。扫码后自动保存 cookie。")
+# Slack 新版文件上传 API (3-step)
+upload_to_slack() {
+  local FILE="$1" CHANNEL="$2" MSG="$3"
+  local FSIZE
+  FSIZE=$(wc -c < "$FILE")
 
-UPLOAD_OK=$(echo "$UPLOAD_RESP" | jq -r '.ok')
-if [ "$UPLOAD_OK" = "true" ]; then
-  echo "QR code sent to Slack #socialmesh"
+  # Step 1: 获取上传 URL
+  local URL_RESP
+  URL_RESP=$(curl -s -X POST "https://slack.com/api/files.getUploadURLExternal" \
+    -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    --data-urlencode "filename=xhs_qr.png" \
+    --data-urlencode "length=$FSIZE")
+
+  local URL_OK
+  URL_OK=$(echo "$URL_RESP" | jq -r '.ok')
+  if [ "$URL_OK" != "true" ]; then
+    echo "ERROR: getUploadURLExternal failed: $(echo "$URL_RESP" | jq -r '.error')"
+    return 1
+  fi
+
+  local UPLOAD_URL FILE_ID
+  UPLOAD_URL=$(echo "$URL_RESP" | jq -r '.upload_url')
+  FILE_ID=$(echo "$URL_RESP" | jq -r '.file_id')
+
+  # Step 2: 上传文件内容
+  curl -s -X POST "$UPLOAD_URL" -F "file=@$FILE" > /dev/null
+
+  # Step 3: 完成上传并分享到频道
+  local COMPLETE_RESP
+  COMPLETE_RESP=$(curl -s -X POST "https://slack.com/api/files.completeUploadExternal" \
+    -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"files\":[{\"id\":\"$FILE_ID\",\"title\":\"XHS QR Code\"}],\"channel_id\":\"$CHANNEL\",\"initial_comment\":\"$MSG\"}")
+
+  local COMPLETE_OK
+  COMPLETE_OK=$(echo "$COMPLETE_RESP" | jq -r '.ok')
+  if [ "$COMPLETE_OK" = "true" ]; then
+    echo "File uploaded to Slack successfully"
+    return 0
+  else
+    echo "ERROR: completeUploadExternal failed: $(echo "$COMPLETE_RESP" | jq -r '.error')"
+    return 1
+  fi
+}
+
+upload_to_slack "$QR_LOCAL" "$SLACK_CHANNEL" "🍪 *XHS Cookie 刷新* — 请用小红书 APP 扫描此二维码登录。扫码后自动保存 cookie。"
+if [ $? -eq 0 ]; then
+  echo "QR code sent to Slack #rednote"
 else
-  UPLOAD_ERR=$(echo "$UPLOAD_RESP" | jq -r '.error // "unknown"')
-  echo "Slack file upload failed ($UPLOAD_ERR)"
-
-  # Fallback: 用 python HTTP server 临时提供图片
-  # 在 GCP 上启动一个 30 秒的 HTTP server
-  echo "Starting temp HTTP server for QR image..."
-  cp "$QR_LOCAL" /tmp/qr_serve/index.png 2>/dev/null || (mkdir -p /tmp/qr_serve && cp "$QR_LOCAL" /tmp/qr_serve/index.png)
+  echo "WARNING: Slack upload failed, trying HTTP fallback..."
+  mkdir -p /tmp/qr_serve && cp "$QR_LOCAL" /tmp/qr_serve/index.png
   python3 -m http.server 9876 --directory /tmp/qr_serve &>/dev/null &
   HTTP_PID=$!
-
   QR_URL="http://34.63.188.198:9876/index.png"
   notify_slack "$SLACK_CHANNEL" "🍪 *XHS Cookie 刷新* — 请扫描二维码登录：\n$QR_URL\n(链接 3 分钟后失效)" "XHS Crawler" ":cookie:"
-
   echo "QR image available at: $QR_URL"
-  echo "(will be cleaned up after script ends)"
-
-  # 3 分钟后自动关闭
   (sleep 180 && kill $HTTP_PID 2>/dev/null && rm -rf /tmp/qr_serve) &
 fi
 

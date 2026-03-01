@@ -1,10 +1,14 @@
 #!/bin/bash
-# xhs-crawl.sh — XHS 采集调度器
-# 用法: xhs-crawl.sh --task <1|2|3|4>
+# xhs-crawl.sh — XHS 两层采集调度器
+# 用法: xhs-crawl.sh --task <1|2|3|4> [--pages 1] [--top-n 10]
 #   1 = 内容灵感 (周二+周五)
 #   2 = 选品情报 (周三)
 #   3 = 竞品监控 (周四) — 自动从素仁轩产品库提取品牌名
 #   4 = 趋势发现 (每月 1+15 号)
+#
+# 两层采集:
+#   第一层: 搜索 API 广撒网（标题+互动数据），风控安全
+#   第二层: Feed API 精准深挖 Top N（正文+标签+图片），控制调用量
 
 set -uo pipefail
 
@@ -17,15 +21,19 @@ SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh
 
 # --- Parse args ---
 TASK=""
+PAGES=1
+TOP_N=10
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --task) TASK="$2"; shift 2 ;;
+    --pages) PAGES="$2"; shift 2 ;;
+    --top-n) TOP_N="$2"; shift 2 ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
   esac
 done
 
 if [ -z "$TASK" ]; then
-  echo "Usage: xhs-crawl.sh --task <1|2|3|4>"
+  echo "Usage: xhs-crawl.sh --task <1|2|3|4> [--pages 1] [--top-n 10]"
   exit 1
 fi
 
@@ -41,13 +49,10 @@ case "$TASK" in
     ;;
   3)
     TASK_NAME="竞品监控"
-    # 自动从素仁轩产品库提取 Top 品牌（按产品数量排序，取前 5）
-    # 每个品牌搜 "品牌名+测评" 更容易找到竞品对比内容
     TOP_BRANDS=$(ssh -o ConnectTimeout=10 "$ALIYUN" bash -c \
       "'sqlite3 /opt/surenxuan/data/kbeauty.db \"SELECT brand_cn FROM products WHERE brand_cn IS NOT NULL AND length(brand_cn)>0 GROUP BY UPPER(brand_cn) ORDER BY COUNT(*) DESC LIMIT 5\"'" 2>/dev/null \
       | while read -r b; do echo "${b}测评"; done \
       | paste -sd, -)
-    # 固定竞品维度关键词
     FIXED_KEYWORDS="韩国代购店铺,oliveyoung代购,韩国护肤代购"
     if [ -n "$TOP_BRANDS" ]; then
       KEYWORDS="${TOP_BRANDS},${FIXED_KEYWORDS}"
@@ -68,9 +73,10 @@ esac
 echo "=== XHS Crawl: Task $TASK — $TASK_NAME ==="
 echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
 echo "Keywords: $KEYWORDS"
+echo "Pages: $PAGES, Top-N detail: $TOP_N"
 
 if [ -z "$KEYWORDS" ]; then
-  echo "SKIP: Task $TASK ($TASK_NAME) — 关键词未配置，等 Mason 提供"
+  echo "SKIP: Task $TASK ($TASK_NAME) — 关键词未配置"
   log_event "xhs-crawler" "crawl-task-$TASK" "info" "Skipped: keywords not configured"
   notify_slack "$SLACK_CHANNEL" "⏭️ *XHS 采集跳过*: Task $TASK ($TASK_NAME) — 关键词未配置" "XHS Crawler" ":fast_forward:"
   exit 0
@@ -92,35 +98,22 @@ BEFORE_COUNT=$(ssh -o ConnectTimeout=10 "$ALIYUN" \
 echo ""
 echo "Notes before crawl: $BEFORE_COUNT"
 
-# --- Run MediaCrawler ---
-log_event "xhs-crawler" "crawl-task-$TASK" "start" "Starting task $TASK ($TASK_NAME), keywords: $KEYWORDS"
+# --- Sync two_tier_crawl.py ---
+echo ""
+echo "--- Syncing crawl script ---"
+scp -o ConnectTimeout=10 "$HUB_DIR/skills/_two_tier_crawl.py" "$ALIYUN:$MC_DIR/two_tier_crawl.py"
+
+# --- Run two-tier crawl ---
+log_event "xhs-crawler" "crawl-task-$TASK" "start" "Starting task $TASK ($TASK_NAME), keywords: $KEYWORDS, pages: $PAGES, top-n: $TOP_N"
 
 echo ""
-echo "--- Running MediaCrawler ---"
-CRAWL_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=30 "$ALIYUN" bash -s << REMOTE_EOF
-cd $MC_DIR
-source venv/bin/activate
-
-# Run crawler with keywords
-python main.py \
-  --platform xhs \
-  --lt cookie \
-  --type search \
-  --keywords "$KEYWORDS" \
-  --save_data_option sqlite \
-  --headless true \
-  --enable_ip_proxy true \
-  --ip_proxy_provider_name kuaidaili_tunnel \
-  2>&1 | tail -50
-
-echo "EXIT_CODE=\${PIPESTATUS[0]}"
-REMOTE_EOF
-)
+echo "--- Running two-tier crawl ---"
+CRAWL_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
+  "cd $MC_DIR && source venv/bin/activate && python two_tier_crawl.py --keywords '$KEYWORDS' --pages $PAGES --top-n $TOP_N 2>&1")
 
 SSH_EXIT=$?
 echo "$CRAWL_OUTPUT"
 
-# Check exit
 if [ $SSH_EXIT -ne 0 ]; then
   echo "ERROR: SSH connection failed"
   log_event "xhs-crawler" "crawl-task-$TASK" "error" "SSH failed (exit $SSH_EXIT)"
@@ -133,17 +126,21 @@ AFTER_COUNT=$(ssh -o ConnectTimeout=10 "$ALIYUN" \
   "sqlite3 $MC_DIR/database/sqlite_tables.db 'SELECT COUNT(*) FROM xhs_note'" 2>/dev/null || echo "0")
 NEW_COUNT=$((AFTER_COUNT - BEFORE_COUNT))
 
+# --- Extract detail stats from output ---
+DETAIL_OK=$(echo "$CRAWL_OUTPUT" | grep -c '  OK   ' || echo "0")
+
 echo ""
 echo "Notes after crawl: $AFTER_COUNT"
-echo "New notes: $NEW_COUNT"
+echo "New notes: $NEW_COUNT (${DETAIL_OK} with full detail)"
 
-log_event "xhs-crawler" "crawl-task-$TASK" "end" "Task $TASK done, new notes: $NEW_COUNT, total: $AFTER_COUNT"
+log_event "xhs-crawler" "crawl-task-$TASK" "end" "Task $TASK done, new: $NEW_COUNT, detail: $DETAIL_OK, total: $AFTER_COUNT"
 
 # --- Slack report ---
 MSG="📥 *XHS 采集完成*: Task $TASK ($TASK_NAME)
 • 关键词: $KEYWORDS
-• 新增笔记: $NEW_COUNT 条
+• 新增笔记: $NEW_COUNT 条（${DETAIL_OK} 条含完整内容）
 • 数据库总量: $AFTER_COUNT 条
+• 采集模式: 搜索 ${PAGES} 页/词 + Top ${TOP_N} 深挖
 • 时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
 
 notify_slack "$SLACK_CHANNEL" "$MSG" "XHS Crawler" ":inbox_tray:"

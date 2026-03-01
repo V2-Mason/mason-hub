@@ -116,41 +116,49 @@ async def main():
 
             await page.screenshot(path=SCREENSHOT)
 
-            # 选择国家码
-            # 找到国家码选择器并点击
-            country_selector = page.locator(
-                "[class*='country'], "
-                "[class*='area-code'], "
-                "text=+86, "
-                "span:has-text('+86')"
-            )
-            if await country_selector.count() > 0:
-                await country_selector.first.click()
-                await asyncio.sleep(1)
-                print("Country code selector opened")
-
-                # 搜索或选择美国 +1
-                # 先试搜索框
-                search_input = page.locator(
-                    "input[placeholder*='搜索'], "
-                    "input[placeholder*='search'], "
-                    "input[placeholder*='国家']"
+            # 选择国家码（如果不是默认的 +86 且需要切换）
+            if COUNTRY_CODE != "+86":
+                # 找到国家码选择器并点击
+                country_selector = page.locator(
+                    "[class*='country'], "
+                    "[class*='area-code'], "
+                    "[class*='area_code'], "
+                    "span:has-text('86')"
                 )
-                if await search_input.count() > 0:
-                    await search_input.first.fill("美国")
+                if await country_selector.count() > 0:
+                    await country_selector.first.click()
                     await asyncio.sleep(1)
-                    us_option = page.locator("text=美国, text=+1, text=United States")
-                    if await us_option.count() > 0:
-                        await us_option.first.click()
-                        print("Selected US +1 via search")
-                else:
-                    # 直接找 +1 选项
-                    us_option = page.locator("text=+1")
-                    if await us_option.count() > 0:
-                        await us_option.first.click()
-                        print("Selected US +1 directly")
+                    print("Country code selector opened")
+                    await page.screenshot(path=SCREENSHOT)
 
-                await asyncio.sleep(1)
+                    # 查找目标国家码
+                    target_code = COUNTRY_CODE.lstrip("+")
+                    # 先试搜索框
+                    search_input = page.locator(
+                        "input[placeholder*='搜索'], "
+                        "input[placeholder*='search'], "
+                        "input[placeholder*='国家']"
+                    )
+                    if await search_input.count() > 0:
+                        # 用国家码数字搜索
+                        await search_input.first.fill(target_code)
+                        await asyncio.sleep(1)
+                        await page.screenshot(path=SCREENSHOT)
+
+                    # 点击包含目标国家码的选项
+                    # 用 XPath 文本匹配，避免 CSS 选择器中 + 号的问题
+                    option = page.locator(
+                        f"xpath=//span[contains(text(),'+{target_code}')] | "
+                        f"//div[contains(text(),'+{target_code}')] | "
+                        f"//li[contains(text(),'+{target_code}')]"
+                    )
+                    if await option.count() > 0:
+                        await option.first.click()
+                        print(f"Selected country code +{target_code}")
+                    else:
+                        print(f"WARNING: Could not find +{target_code} option")
+
+                    await asyncio.sleep(1)
 
             await page.screenshot(path=SCREENSHOT)
 
