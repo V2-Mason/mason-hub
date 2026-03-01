@@ -57,6 +57,13 @@
 ### 输出给 EMP_0010 Creator
 - 每周产出"本周内容策略简报"：爆帖规律 + 推荐内容方向 + 3 个号的差异化建议
 
+### 采集数据可用范围 (2026-03-02)
+- **搜索结果已含**：标题(display_title)、互动数据(liked_count/collected_count/comment_count/shared_count)、作者(nickname)、发布日期(corner_tag_info)、内容类型(video/normal)
+- **笔记详情额外有**：正文(desc)、标签(tag_list)、视频URL — 但 feed API 容易触发风控
+- **结论**：搜索结果足够做内容分析（爆帖排行、互动比、关键词趋势），不依赖笔记详情
+- **影响**：分析脚本(xhs-analyze.sh)如果只用搜索结果数据，需调整字段名映射
+- 采集不能一次跑完所有任务，必须按 cron 分散（每天一个任务），否则触发账号风控
+
 ### 自动化管道已上线 (2026-03-01)
 - 采集→分析→策略简报完整管道已部署（GCP cron 触发）
 - 每周六自动生成 weekly_analysis.json + briefings/YYYY-MM-DD.json

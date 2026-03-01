@@ -50,4 +50,27 @@
 - 同一服务商（如快代理）两种产品的 API 和接入方式完全不同
 - MediaCrawler 内置只支持 DPS，需写适配器支持 TPS
 
+### MediaCrawler 源码 Bug 修复 (2026-03-02, 已在阿里云 patch)
+
+1. **`login_by_cookies` 只加载 `web_session`**（login.py）
+   - 原代码 `if key != "web_session": continue` 导致浏览器上下文只有 web_session
+   - API 签名需要 `a1` 等 cookie，缺失导致签名无效
+   - 修复：去掉 `if key != "web_session": continue`，加载全部 cookie
+
+2. **`get_note_detail_async_task` 单条失败导致整批崩溃**（core.py）
+   - 原代码对获取失败的笔记 `raise Exception`，`asyncio.gather` 传播异常导致整页 20 条全丢
+   - 修复：改为 `logger.warning` + `return None`，跳过失败笔记，保留成功的
+
+3. **`request` 方法 `data["success"]` KeyError**（client.py）
+   - XHS API 异常时可能返回不含 `success` 字段的 JSON，触发 KeyError → 被 `@retry` 重试 3 次 → RetryError
+   - 修复：加 `if "success" not in data:` 检查，抛 `DataFetchError` 替代 KeyError
+
+### XHS 内部 API 风控规则 (2026-03-02)
+- XHS 没有公开 API，MediaCrawler 用的全是逆向的网页内部接口
+- **搜索 API**（`/api/sns/web/v1/search/notes`）：风控较松，正常可用
+- **笔记详情 API**（`/api/sns/web/v1/feed`）：风控严格，~50-60 次调用后触发 461 `账号异常，请稍后重试`（code 300011）
+- 被风控后搜索和 selfinfo 仍正常，只有 feed API 被封
+- **方案**：改用搜索结果直存，搜索返回已含标题、互动数据、作者、日期、类型，足够分析
+- xhs-crawl.sh 需改造：跳过 `get_note_detail_async_task`，直接从搜索结果提取数据存库
+
 ## 踩坑记录

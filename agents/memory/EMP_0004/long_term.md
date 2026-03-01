@@ -41,4 +41,18 @@
 - 修复：新建 `proxy/providers/kuaidl_tunnel_proxy.py` 适配器，注册为 `kuaidaili_tunnel` provider
 - 教训：买代理前确认产品类型（DPS/TPS），或买了之后确认代码支持哪种
 
+### MediaCrawler 源码已 Patch (2026-03-02)
+- 阿里云 `/opt/mediacrawler/` 有 3 处代码修改（未提交 git，直接改的线上文件）：
+  - `media_platform/xhs/login.py`：login_by_cookies 加载全部 cookie（原来只加载 web_session）
+  - `media_platform/xhs/core.py`：get_note_detail_async_task 失败时跳过而非崩溃
+  - `media_platform/xhs/client.py`：request 方法处理缺少 `success` 字段的响应
+- **注意**：这些是直接改的线上文件，如果 MediaCrawler 升级会被覆盖
+
+### XHS Feed API 风控阈值 (2026-03-02)
+- `/api/sns/web/v1/feed`（笔记详情）：连续调用 ~50-60 次后触发 461 `账号异常`（code 300011）
+- 搜索 API 和 selfinfo 不受影响
+- 风控解除时间：数小时到一天
+- **监控要点**：如果 cron 采集报 0 新笔记但无 SSH 错误，大概率是 feed API 被风控
+- 当前数据库 148 条笔记（韩国护肤 35 + 竞品 60 + Task 1 新增 57 — 但 Task 1 其实应该更多，部分被风控截断）
+
 ## 监控与告警教训
