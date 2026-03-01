@@ -1,8 +1,9 @@
 #!/bin/bash
-# xhs-cookie-check.sh — XHS Cookie 有效性检测
-# 用法: xhs-cookie-check.sh [--notify]
-#   --notify  过期时发 Slack 通知 Mason 更换 cookie
-# Exit code: 0=有效, 1=过期/无效
+# xhs-cookie-check.sh — XHS Cookie 有效性检测（多账号）
+# 用法: xhs-cookie-check.sh [--notify] [--account A]
+#   --notify   过期时发 Slack 通知
+#   --account  只检测指定账号（不传则检测所有账号）
+# Exit code: 0=全部有效, 1=有过期的
 
 set -uo pipefail
 
@@ -10,81 +11,118 @@ HUB_DIR="$HOME/mason-hub"
 source "$HUB_DIR/shared/common.sh"
 
 ALIYUN="root@106.14.44.68"
-SLACK_CHANNEL_SOCIALMESH="C0AHTA97EAY"
+MC_DIR="/opt/mediacrawler"
+SLACK_CHANNEL="C0AHTA97EAY"
 DO_NOTIFY=false
+CHECK_ACCOUNT=""
 
-if [ "${1:-}" = "--notify" ]; then
-  DO_NOTIFY=true
-fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --notify) DO_NOTIFY=true; shift ;;
+    --account) CHECK_ACCOUNT="$2"; shift 2 ;;
+    *) shift ;;
+  esac
+done
 
 echo "=== XHS Cookie Check ==="
 echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
 
-# SSH 到阿里云，用 cookie 请求 XHS 主站检测有效性
-# 注意：创作者中心和主站 session 分开，MediaCrawler 用主站 cookie，所以检测主站
-RESULT=$(ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no "$ALIYUN" bash -s << 'REMOTE_EOF'
-# 直接从 base_config.py 用 grep 提取 cookie（不依赖 venv python）
-COOKIE=$(grep -oP "^COOKIES\s*=\s*['\"](.+)['\"]" /opt/mediacrawler/config/base_config.py | sed "s/^COOKIES\s*=\s*['\"]//;s/['\"]$//")
+# SCP check script to Aliyun (避免 SSH heredoc 转义问题)
+cat > /tmp/_xhs_cookie_check.py << 'PYEOF'
+import json, sys, os
 
-if [ -z "$COOKIE" ]; then
-  echo "NO_COOKIE"
-  exit 1
-fi
+accounts_file = '/opt/mediacrawler/accounts.json'
+if not os.path.exists(accounts_file):
+    print("NO_ACCOUNTS_FILE")
+    sys.exit(1)
 
-# 检测方式：请求用户主页，检查返回 HTML 是否包含登录态标志
-# web_session 有效时页面包含用户昵称等数据；过期时会跳转登录页
-RESP=$(curl -s \
-  -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-  -H "Cookie: $COOKIE" \
-  --connect-timeout 10 \
-  --max-time 15 \
-  "https://www.xiaohongshu.com/user/profile/5d42d8820000000012030bd6" 2>/dev/null)
+with open(accounts_file) as f:
+    accounts = json.load(f)
 
-HTTP_LEN=${#RESP}
+check_id = sys.argv[1] if len(sys.argv) > 1 else ""
 
-# 有效 cookie: 返回完整页面 (>5000 字符，包含用户数据)
-# 过期 cookie: 返回短页面或跳转登录 (<2000 字符)
-if [ "$HTTP_LEN" -gt 5000 ]; then
-  # 二次确认：页面是否包含用户ID或个人资料标志
-  if echo "$RESP" | grep -q 'user-id\|userPageData\|"nickname"'; then
-    echo "VALID"
-  else
-    echo "EXPIRED"
-  fi
-elif [ "$HTTP_LEN" -gt 0 ]; then
-  echo "EXPIRED"
-else
-  echo "NETWORK_ERROR"
-fi
-REMOTE_EOF
-)
+results = []
+for aid, acct in accounts.items():
+    if check_id and aid != check_id:
+        continue
+    cookie = acct.get("cookie", "")
+    name = acct.get("name", "?")
+    if not cookie:
+        results.append(f"{aid}|{name}|NO_COOKIE")
+    elif len(cookie) < 50:
+        results.append(f"{aid}|{name}|TOO_SHORT")
+    else:
+        # 简单检测: cookie 包含关键字段
+        has_session = "web_session" in cookie
+        has_a1 = "a1=" in cookie
+        if has_session and has_a1:
+            results.append(f"{aid}|{name}|HAS_COOKIE")
+        else:
+            results.append(f"{aid}|{name}|INCOMPLETE")
+
+for r in results:
+    print(r)
+PYEOF
+
+scp -o ConnectTimeout=10 -q /tmp/_xhs_cookie_check.py "$ALIYUN:$MC_DIR/_cookie_check.py"
+
+CHECK_OUTPUT=$(ssh -o ConnectTimeout=10 "$ALIYUN" \
+  "cd $MC_DIR && python3 _cookie_check.py '$CHECK_ACCOUNT'" 2>/dev/null)
 
 SSH_EXIT=$?
-
 if [ $SSH_EXIT -ne 0 ]; then
-  echo "ERROR: SSH connection failed (exit $SSH_EXIT)"
+  echo "ERROR: SSH failed (exit $SSH_EXIT)"
   exit 1
 fi
 
-echo "Cookie status: $RESULT"
+if [ -z "$CHECK_OUTPUT" ] || echo "$CHECK_OUTPUT" | grep -q "NO_ACCOUNTS_FILE"; then
+  echo "accounts.json not found on Aliyun"
+  echo "Run: scp shared/accounts.template.json $ALIYUN:$MC_DIR/accounts.json"
+  exit 1
+fi
 
-if [ "$RESULT" = "VALID" ]; then
-  echo "Cookie is valid"
-  log_event "xhs-crawler" "cookie-check" "info" "XHS cookie valid"
-  exit 0
-else
-  echo "Cookie expired or invalid"
-  log_event "xhs-crawler" "cookie-check" "error" "XHS cookie status: $RESULT"
+# Parse results
+ANY_BAD=false
+EXPIRED_LIST=""
+
+while IFS='|' read -r aid name status; do
+  case "$status" in
+    HAS_COOKIE)
+      echo "  $aid ($name): ✓ cookie present"
+      log_event "xhs-crawler" "cookie-check" "info" "Account $aid cookie present"
+      ;;
+    NO_COOKIE)
+      echo "  $aid ($name): ✗ no cookie configured"
+      ANY_BAD=true
+      EXPIRED_LIST="${EXPIRED_LIST}• 账号 $aid ($name): 未配置 cookie\n"
+      ;;
+    INCOMPLETE)
+      echo "  $aid ($name): ✗ cookie incomplete (missing web_session or a1)"
+      ANY_BAD=true
+      EXPIRED_LIST="${EXPIRED_LIST}• 账号 $aid ($name): cookie 不完整\n"
+      ;;
+    TOO_SHORT)
+      echo "  $aid ($name): ✗ cookie too short"
+      ANY_BAD=true
+      EXPIRED_LIST="${EXPIRED_LIST}• 账号 $aid ($name): cookie 太短\n"
+      ;;
+    *)
+      echo "  $aid ($name): ? unknown status: $status"
+      ;;
+  esac
+done <<< "$CHECK_OUTPUT"
+
+if [ "$ANY_BAD" = true ]; then
+  log_event "xhs-crawler" "cookie-check" "error" "Some accounts have invalid cookies"
 
   if [ "$DO_NOTIFY" = true ]; then
-    MSG="🍪 *XHS Cookie 已过期*
-采集脚本检测到 cookie 失效 (HTTP $RESULT)。
-请在电脑浏览器登录 web.xiaohongshu.com → F12 → Application → Cookies → 复制整串 cookie。
-然后更新阿里云 /opt/mediacrawler/config/base_config.py 中的 COOKIES 值。
-手机 APP 正常使用不影响。"
-    notify_slack "$SLACK_CHANNEL_SOCIALMESH" "$MSG" "XHS Crawler" ":cookie:"
+    MSG="🍪 *XHS Cookie 需要更新*\n${EXPIRED_LIST}请登录对应账号的小红书网页版 → F12 → Cookies → 复制整串 cookie，然后告诉我更新。"
+    notify_slack "$SLACK_CHANNEL" "$MSG" "XHS Crawler" ":cookie:"
     echo "Slack notification sent"
   fi
 
   exit 1
+else
+  echo "All accounts OK"
+  exit 0
 fi
