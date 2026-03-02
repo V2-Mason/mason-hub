@@ -135,11 +135,17 @@ async def fetch_creator_profile(page, cookie_str, a1, ua, user_id: str) -> dict:
         print(f'    API error: {data.get("msg", "unknown")} for {user_id}')
         return None
 
-    info = data.get('data', {}).get('basic_info', {})
+    api_data = data.get('data', {})
+    info = api_data.get('basic_info', {})
+
+    # Parse interactions array: [{type: "fans", count: "309756"}, ...]
+    interactions = {item['type']: item.get('count', '0')
+                    for item in api_data.get('interactions', [])}
+
     return {
-        'fans': parse_fans_count(info.get('fans', '0')),
-        'follows': parse_fans_count(info.get('follows', '0')),
-        'interaction': parse_fans_count(info.get('interaction', '0')),
+        'fans': parse_fans_count(interactions.get('fans', '0')),
+        'follows': parse_fans_count(interactions.get('follows', '0')),
+        'interaction': parse_fans_count(interactions.get('interaction', '0')),
         'desc': info.get('desc', ''),
         'gender': str(info.get('gender', '')),
         'nickname': info.get('nickname', ''),
@@ -192,12 +198,20 @@ async def enrich(analysis_path: str, top_n: int):
             with open(ACCOUNTS_FILE) as f:
                 accounts = json.load(f)
 
-            # Use account A by default
-            account = accounts.get('A', {})
-            cookie_str_raw = account.get('cookie', '')
-            if not cookie_str_raw:
-                print('WARNING: No cookie for account A, skipping API enrichment')
+            # Use first account with a valid cookie (prefer A, fallback to MAIN)
+            account = None
+            for acct_id in ['A', 'MAIN']:
+                acct = accounts.get(acct_id, {})
+                if acct.get('cookie', ''):
+                    account = acct
+                    print(f'Using account: {acct_id} ({acct.get("name", "?")})')
+                    break
+            if not account:
+                print('WARNING: No account with valid cookie, skipping API enrichment')
                 to_fetch = []
+                cookie_str_raw = ''
+            else:
+                cookie_str_raw = account.get('cookie', '')
 
     if to_fetch:
         ua = account.get('user_agent',
@@ -218,8 +232,8 @@ async def enrich(analysis_path: str, top_n: int):
 
         await ctx.add_init_script(path='/opt/mediacrawler/libs/stealth.min.js')
         page = await ctx.new_page()
-        await page.goto('https://www.xiaohongshu.com')
-        await asyncio.sleep(3)
+        await page.goto('https://www.xiaohongshu.com', wait_until='domcontentloaded', timeout=60000)
+        await asyncio.sleep(5)
 
         all_cookies = await ctx.cookies()
         cookie_str = '; '.join(f'{c["name"]}={c["value"]}' for c in all_cookies)
