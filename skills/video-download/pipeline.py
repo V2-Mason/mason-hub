@@ -103,9 +103,9 @@ def main():
         'analysis': {
             'drive_id': a_result['id'],
             'drive_link': drive_analysis_link,
-            'products_count': len(analysis.get('products', [])),
-            'tone': analysis.get('overall_tone', ''),
-            'reusable_patterns': analysis.get('reusable_patterns', []),
+            'products_count': len(analysis.get('product_catalog', [])),
+            'content_type': analysis.get('basic_info', {}).get('content_type', ''),
+            'content_formula': analysis.get('replicable_template', {}).get('content_formula', ''),
         },
         'model': args.model,
     }
@@ -118,7 +118,8 @@ def main():
     print(f"Video: {drive_video_link}")
     print(f"Analysis: {drive_analysis_link}")
     print(f"Products: {summary['analysis']['products_count']}")
-    print(f"Tone: {summary['analysis']['tone']}")
+    print(f"Type: {summary['analysis']['content_type']}")
+    print(f"Formula: {summary['analysis']['content_formula']}")
 
     # Clean up local files unless --keep-local
     if not args.keep_local and not args.output_dir:

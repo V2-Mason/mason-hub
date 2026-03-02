@@ -1,20 +1,11 @@
-"""用 Gemini 分析竞品视频，输出结构化拆解 JSON
+"""用 Gemini 分析竞品视频，输出结构化拆解 JSON（v2 严格版）
 
 用法：
-  python gemini_analyze.py <video_file> [--model gemini-2.5-flash] [--output analysis.json]
+  python gemini_analyze.py <video_file> [--model gemini-3-flash-preview] [--output analysis.json]
 
-输出 JSON 结构：
-{
-  "hook": { "type": "...", "text": "...", "duration_sec": 5 },
-  "products": [{ "name": "...", "intro_method": "...", "duration_sec": 20 }],
-  "persuasion_techniques": ["从众效应", ...],
-  "visual_style": { "lighting": "...", "editing_pace": "...", "text_overlay": "..." },
-  "cta": { "type": "...", "text": "..." },
-  "target_audience": { "age_range": "...", "gender": "...", "concerns": [...] },
-  "overall_tone": "...",
-  "reusable_patterns": ["...", ...],
-  "estimated_duration_sec": 90
-}
+输出 JSON 结构：basic_info / hook_analysis / product_catalog / content_structure /
+visual_analysis / audio_analysis / copywriting_analysis / engagement_triggers /
+replicable_template — 详见 ANALYSIS_PROMPT
 """
 import argparse
 import json
@@ -25,18 +16,152 @@ import time
 
 CRED_DIR = os.path.expanduser('~/mason-hub/.credentials')
 
-ANALYSIS_PROMPT = """你是一个专业的社交媒体内容分析师。请仔细观看这个视频，然后用 JSON 格式输出以下拆解：
+ANALYSIS_PROMPT = """你是一位资深小红书内容运营专家，专注于美妆/护肤赛道的爆款内容逆向工程。你必须按要求严格执行。
 
-1. **hook**（开头钩子）：类型（痛点共鸣/震撼展示/经验权威/悬念提问）、原文、时长
-2. **products**：提到的每个产品，包括名称、介绍方式（亲测分享/成分科普/效果对比/场景植入）、分配时长
-3. **persuasion_techniques**：使用的说服技巧（从众效应/稀缺感/权威背书/效果对比/情绪渲染/真实体验）
-4. **visual_style**：灯光风格、剪辑节奏（快/中/慢）、字幕/贴纸风格、画面构图
-5. **cta**（行动号召）：类型（收藏/关注/评论/私信/购买链接）、原文
-6. **target_audience**：目标受众年龄范围、性别、核心关注点
-7. **overall_tone**：整体调性（闺蜜安利/专业测评/日常分享/激情带货）
-8. **reusable_patterns**：可以复用的内容模式或话术结构（列出 3-5 个）
-9. **estimated_duration_sec**：视频总时长估计（秒）
-10. **口播文字**：尽可能还原视频中的口播完整文字
+请从"内容创作者"的视角（不是观众视角）拆解这个视频，目标是提取出可复用的内容创作模板。
+
+⚠️ 重要输出规则（必须严格遵守）：
+1. 产品品牌名可以不记录，但必须记录【产品品类】和【核心功效/卖点】。例如：不需要写"XXX品牌喷雾"，但必须写"妆前定妆喷雾，主打保湿不卡粉"。
+2. timeline 必须完整覆盖视频中提到的每一个产品/片段，不允许省略任何一个。如果视频推荐了19个产品，timeline 就必须有19个产品条目+开头和结尾。
+3. 视频标题：如果在画面中不可见，标注为 null，不要自行推测。
+4. 所有口播内容请尽量精确转录原文，不要意译或概括。
+5. 时间戳精确到秒，格式为 MM:SS。
+6. 不要对任何内容打码或用星号替代。
+7. 对于35+、100-300元消费区间的客群来说，价格是核心决策因素之一。她们不像年轻人那样容易被"种草"就冲动下单，她们会想知道"这个东西多少钱、值不值"。在 product_catalog 的每个产品条目中，如果视频中提到了价格信号（直接报价、模糊区间如"百元价位"/"不到两百"、性价比判断如"比同类产品便宜"、用量换算等），必须在 key_claim 或单独的 price_signal 字段中记录。如果视频完全没有提及价格相关信息，标注为"未提及价格"。
+
+请按以下结构输出 JSON：
+
+{
+  "basic_info": {
+    "video_duration": "视频总时长",
+    "content_type": "图文轮播 / 真人出镜口播 / 产品展示 / 教程演示 / 混合（请具体描述混合方式）",
+    "estimated_target_audience": "目标用户画像（年龄、肤质、消费水平、核心痛点）",
+    "product_category": "涉及的产品大品类",
+    "total_products_mentioned": "视频中总共推荐/提及了多少个产品"
+  },
+
+  "hook_analysis": {
+    "first_3_seconds": "前3秒的具体内容描述（画面+文字+口播，分别说明）",
+    "hook_type": "痛点型 / 悬念型 / 数据型 / 对比型 / 争议型 / 种草型 / 复合型（如复合请列出组合）",
+    "hook_text": "口播原文转录",
+    "hook_visual": "画面具体内容",
+    "hook_effectiveness": "为什么这个hook能留住用户（分析心理机制）"
+  },
+
+  "product_catalog": [
+    {
+      "sequence": "出场顺序编号（1, 2, 3...）",
+      "timestamp": "MM:SS - MM:SS",
+      "product_type": "产品品类（如：定妆喷雾、面霜、唇釉、痘痘贴、卧蚕笔等）",
+      "core_function": "核心功效/卖点（如：妆前保湿防卡粉、隔夜吸脓消痘、一笔成型妈生卧蚕等）",
+      "target_skin_concern": "针对什么肤质/问题（如：大干皮、敏感肌、爱长痘、混油皮等）",
+      "demo_method": "展示方式（如：上脸实测、手臂试色、质地特写、before/after对比等）",
+      "key_claim": "博主对这个产品的核心评价原文（1句话）",
+      "price_signal": "价格相关信息（直接报价/模糊区间/性价比判断/用量换算，如未提及标注'未提及价格'）",
+      "persuasion_technique": "用了什么说服技巧（如：从众背书、稀缺感、痛点对号入座、视觉证言等）",
+      "duration_seconds": "这个产品占了多少秒"
+    }
+  ],
+
+  "content_structure": {
+    "overall_framework": "总体结构（如：总-分-总、问题-方案-效果、递进式等）",
+    "timeline": [
+      {
+        "timestamp": "MM:SS - MM:SS",
+        "segment_type": "hook / 过渡 / 产品介绍 / 使用演示 / 效果展示 / 互动引导 / outro",
+        "description": "这个片段具体做了什么",
+        "key_technique": "用了什么内容技巧"
+      }
+    ],
+    "pacing_pattern": "节奏模式描述（语速、每个产品平均时长、是否有喘息空间、信息密度评估）",
+    "transition_style": "产品之间的转场方式（如：硬切、口播过渡、视觉分隔等）",
+    "total_segments": "总共分几个段落"
+  },
+
+  "visual_analysis": {
+    "cover_design": {
+      "layout": "封面构图方式",
+      "text_on_cover": "封面文字内容（原文，如不可见标注 null）",
+      "font_style": "字体风格（大小、颜色、位置、是否有描边/阴影）",
+      "color_palette": "主色调和整体色彩风格",
+      "product_placement": "产品在封面中的展示方式"
+    },
+    "filming_techniques": [
+      {
+        "technique": "拍摄手法名称（如：怼脸特写、桌面平铺、手持探店、微距质地等）",
+        "usage_context": "在什么环节使用",
+        "effect": "达到了什么视觉效果"
+      }
+    ],
+    "lighting": "打光方式及对画面质感的影响",
+    "filter_tone": "滤镜/调色风格及对品牌调性的作用",
+    "text_overlay_style": "字幕/贴纸的设计系统（字体、颜色、位置规律、强调方式）"
+  },
+
+  "audio_analysis": {
+    "voiceover_style": "口播风格（用一个精准的标签定义，如：闺蜜激动安利型、冷静专业测评型等）",
+    "speaking_pace": "语速评估（快/中/慢，以及节奏特征）",
+    "emotional_arc": "情绪变化曲线（全程高能？还是有起伏？）",
+    "tone_keywords": ["3-5个形容这个口播调性的关键词"],
+    "bgm_style": "背景音乐风格及音量层次",
+    "signature_phrases": [
+      {
+        "phrase": "原文话术",
+        "function": "这句话的功能（如：制造紧迫感、建立信任、引导行动等）",
+        "frequency": "出现频率（高频/偶尔）"
+      }
+    ]
+  },
+
+  "copywriting_analysis": {
+    "title": "视频标题原文（如画面中不可见，标注 null）",
+    "title_formula": "标题公式拆解（如可见）",
+    "selling_point_expression_patterns": [
+      {
+        "pattern_name": "卖点表达模式名称（如：痛点前置型、效果可视化型、从众背书型）",
+        "example": "视频中的具体例子（口播原文）",
+        "why_effective": "为什么有效"
+      }
+    ],
+    "persuasion_techniques_summary": ["使用的说服技巧清单及每个的具体运用方式"],
+    "call_to_action": {
+      "text": "结尾引导话术原文",
+      "type": "引导类型（收藏/关注/评论/私信/购买链接）",
+      "placement": "出现在什么位置"
+    },
+    "hashtags": ["使用的标签（如可见，否则标注 null）"]
+  },
+
+  "engagement_triggers": {
+    "comment_bait": {
+      "strategy": "引导评论的策略",
+      "mechanism": "为什么能引发评论"
+    },
+    "save_trigger": {
+      "strategy": "引导收藏的策略",
+      "mechanism": "为什么能引发收藏"
+    },
+    "share_trigger": {
+      "strategy": "引导分享的策略",
+      "mechanism": "为什么能引发分享"
+    },
+    "primary_engagement_goal": "这个视频的核心互动目标是什么（完播率/收藏率/评论率/分享率），以及为什么"
+  },
+
+  "replicable_template": {
+    "content_formula": "用一句话概括这个视频的内容公式（要具体到可以直接复用）",
+    "formula_breakdown": {
+      "opening": "开头公式",
+      "body": "主体公式",
+      "closing": "结尾公式"
+    },
+    "applicable_scenarios": ["这个模板适合用在哪些场景/品类"],
+    "adaptation_for_small_creator": "如果是小博主/预算有限，怎么简化复制",
+    "minimum_viable_version": "这个内容的最小可行版本是什么（最少需要几个产品、什么设备、什么场景）",
+    "difficulty_level": "复制难度（低/中/高）及原因",
+    "required_resources": ["复制这个内容需要的核心资源"]
+  }
+}
 
 只输出 JSON，不要其他文字。确保 JSON 格式正确。"""
 
@@ -130,9 +255,11 @@ def main():
         json.dump(result, f, indent=2, ensure_ascii=False)
 
     print(f"\nAnalysis saved to {output_path}")
-    print(f"Products found: {len(result.get('products', []))}")
-    print(f"Tone: {result.get('overall_tone', 'N/A')}")
-    print(f"Reusable patterns: {len(result.get('reusable_patterns', []))}")
+    print(f"Products found: {len(result.get('product_catalog', []))}")
+    print(f"Content type: {result.get('basic_info', {}).get('content_type', 'N/A')}")
+    tpl = result.get('replicable_template', {})
+    print(f"Formula: {tpl.get('content_formula', 'N/A')}")
+    print(f"Difficulty: {tpl.get('difficulty_level', 'N/A')}")
 
     return 0
 
