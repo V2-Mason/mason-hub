@@ -107,6 +107,84 @@ a:hover { text-decoration: underline; }
 .question-tag { background: #e3f2fd; color: #1565c0; font-size: 11px; padding: 1px 6px; border-radius: 6px; margin-left: 6px; }
 .freq-word { display: inline-block; padding: 4px 12px; margin: 3px; border-radius: 16px; background: #f0f0f0; font-size: 13px; }
 .freq-word .count { color: #e74c3c; font-weight: bold; margin-left: 4px; }
+
+/* Action checklist */
+.action-checklist { background: #fff; border: 2px solid #1a73e8; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.action-checklist h2 { font-size: 18px; margin-bottom: 12px; color: #1a73e8; border-bottom: 2px solid #e3f2fd; padding-bottom: 8px; }
+.action-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: flex-start; gap: 10px; }
+.action-item:last-child { border-bottom: none; }
+.action-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.action-text { flex: 1; }
+.action-main { font-size: 15px; font-weight: 500; }
+.action-source { font-size: 12px; color: #888; margin-top: 2px; }
+.action-verify { font-size: 12px; color: #1a73e8; margin-top: 2px; }
+
+/* Topic suggestions */
+.topic-card { background: #f0f7ff; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; border-left: 3px solid #1a73e8; }
+.topic-title { font-weight: bold; font-size: 15px; color: #1a73e8; }
+.topic-type { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e3f2fd; color: #1565c0; margin-left: 8px; }
+.topic-detail { font-size: 13px; color: #666; margin-top: 4px; }
+.topic-source { font-size: 12px; color: #999; margin-top: 4px; }
+
+/* Signal action row */
+.signal-action { margin-top: 6px; padding: 6px 10px; background: #e8f5e9; border-radius: 6px; font-size: 13px; color: #2e7d32; }
+.signal-action .arrow { margin-right: 4px; }
+.signal-verify { font-size: 12px; color: #888; margin-top: 2px; }
+
+/* Reference posts */
+.ref-posts { margin-top: 6px; }
+.ref-posts summary { font-size: 12px; color: #1a73e8; cursor: pointer; }
+.ref-posts ul { margin: 4px 0 0 16px; font-size: 12px; }
+.ref-posts li { margin-bottom: 2px; color: #555; }
+.ref-posts a { color: #1a73e8; }
+
+/* Competition tags */
+.tag-blue-ocean { background: #e3f2fd; color: #0d47a1; font-weight: bold; }
+.tag-red-ocean { background: #ffebee; color: #b71c1c; font-weight: bold; }
+.tag-watch { background: #f5f5f5; color: #757575; }
+
+/* Age warning */
+.age-warning { color: #e65100; font-weight: bold; font-size: 13px; }
+
+/* Collapsible more actions */
+.more-actions { margin-top: 8px; }
+.more-actions summary { font-size: 13px; color: #888; cursor: pointer; padding: 6px 0; }
+.more-actions summary:hover { color: #1a73e8; }
+
+/* User persona */
+.persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.persona-box { background: #f8f9fa; border-radius: 8px; padding: 12px; }
+.persona-box h3 { font-size: 14px; margin-bottom: 8px; color: #555; }
+.persona-tag { display: inline-block; padding: 3px 10px; margin: 2px; border-radius: 12px; font-size: 12px; background: #e8eaf6; color: #283593; }
+.persona-tag .cnt { font-weight: bold; margin-left: 4px; color: #e74c3c; }
+.tone-bar { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 13px; }
+.tone-bar-fill { height: 12px; border-radius: 4px; background: #42a5f5; min-width: 4px; }
+
+/* Card description */
+.card-desc { font-size: 13px; color: #888; margin-bottom: 12px; }
+
+/* Pain point clusters */
+.pain-cluster { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+.pain-cluster-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+.pain-cluster-title { font-weight: bold; font-size: 15px; }
+.pain-cluster-title a { color: #333; text-decoration: none; border-bottom: 1px dashed #bbb; }
+.pain-cluster-title a:hover { color: #e74c3c; border-bottom-color: #e74c3c; }
+.pain-cluster-type { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #ffe082; color: #795548; }
+.pain-cluster-rank { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; background: #e3f2fd; color: #1565c0; font-weight: bold; }
+.pain-cluster-conf { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+.pain-cluster-conf-high { background: #c8e6c9; color: #2e7d32; }
+.pain-cluster-conf-medium { background: #fff3e0; color: #e65100; }
+.pain-cluster-meta { font-size: 12px; color: #888; margin-bottom: 6px; }
+.pain-cluster-comment { font-size: 13px; color: #555; padding: 4px 0; border-bottom: 1px solid #f5f0e0; }
+.pain-cluster-comment:last-child { border-bottom: none; }
+.pain-cluster-judgment { margin-top: 8px; padding: 8px 10px; background: #e3f2fd; border-radius: 6px; font-size: 13px; color: #1565c0; }
+.pain-cluster-opportunity { margin-top: 6px; padding: 8px 10px; background: #e8f5e9; border-radius: 6px; font-size: 13px; color: #2e7d32; }
+
+/* Comment quality */
+.cq-table th, .cq-table td { font-size: 13px; padding: 6px 8px; }
+.cq-score { font-weight: bold; }
+.cq-insight { font-size: 11px; color: #1565c0; display: block; margin-top: 2px; }
+.cq-bar { display: inline-block; height: 10px; border-radius: 3px; background: #42a5f5; }
 </style>
 </head>
 <body>
@@ -132,6 +210,7 @@ a:hover { text-decoration: underline; }
 
 <!-- Tab 1: 市场信号 -->
 <div id="signals-section" class="section active">
+  <div class="action-checklist" id="action-checklist" style="display:none"><h2>本周行动清单</h2><div id="action-list"></div></div>
   <div class="stat-grid" id="stats"></div>
   <div class="card"><h2>信号</h2><div id="signal-list"></div></div>
   <div class="card"><h2>热帖 Top 20</h2><table id="hot-table"><thead><tr>
@@ -150,15 +229,19 @@ a:hover { text-decoration: underline; }
 
 <!-- Tab 3: 评论 -->
 <div id="comments-section" class="section">
+  <div class="card" id="pain-cluster-card" style="display:none"><h2>热帖痛点聚焦</h2><p class="card-desc">当热帖评论中出现围绕同一痛点的集中提问时，说明帖子触达了需求但没有完全满足——这里是内容机会。</p><div id="pain-clusters"></div></div>
+  <div class="card" id="persona-card" style="display:none"><h2>用户画像速写</h2><div id="user-persona"></div></div>
   <div class="card"><h2>高频词</h2><div id="comment-freq-words"><p style="color:#999;padding:20px;text-align:center">暂无评论数据</p></div></div>
   <div class="card"><h2>用户提问</h2><div id="comment-questions"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
+  <div class="card" id="topic-suggestions-card" style="display:none"><h2>基于用户提问的选题建议</h2><div id="topic-suggestions"></div></div>
   <div class="card"><h2>热门评论</h2><div id="comment-top-liked"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
   <div class="card"><h2>按帖子分布</h2><div id="comment-by-note"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
+  <div class="card" id="comment-quality-card" style="display:none"><h2>评论质量分</h2><p class="card-desc">提问比例高=用户有执行困惑 | 争议比例高=话题有对立面 | 选品比例高=有对比需求</p><div id="comment-quality"></div></div>
 </div>
 
 <!-- Tab 4: 原始数据 -->
 <div id="rawdata-section" class="section">
-  <div class="card"><h2>关键词洞察</h2><table id="kw-table"><thead><tr><th>关键词</th><th>数量</th><th>平均互动分</th><th>视频占比</th></tr></thead><tbody></tbody></table></div>
+  <div class="card"><h2>关键词洞察</h2><table id="kw-table"><thead><tr><th>关键词</th><th>数量</th><th>平均互动分</th><th>竞争密度</th><th>视频占比</th></tr></thead><tbody></tbody></table></div>
   <div class="card"><h2>内容类型对比</h2><div id="content-type"></div></div>
   <div class="card"><h2>爆款模式识别</h2><div id="patterns"></div></div>
   <div class="card"><h2>标题模式</h2><div id="title-patterns"></div></div>
@@ -184,6 +267,7 @@ function ageTag(days) {
   if (days <= 7) return '<span class="tag tag-age-fresh">' + days + '天</span>';
   if (days <= 30) return '<span class="tag tag-age-fresh">' + days + '天</span>';
   if (days <= 90) return '<span class="tag tag-age-old">' + days + '天</span>';
+  if (days > 365) return '<span class="tag tag-age-stale">' + days + '天</span> <span class="age-warning" title="发布超过1年，数据参考价值降低">&#9888;</span>';
   return '<span class="tag tag-age-stale">' + days + '天</span>';
 }
 
@@ -321,7 +405,13 @@ function renderData(d) {
     var pubDate = p.pub_date || '-';
     var nickname = p.nickname || '-';
     var rowClass = flags.length ? ' style="background:#fff5f5"' : '';
-    var age = p.post_age_days != null && p.post_age_days >= 0 ? ageTag(p.post_age_days) : '<span style="color:#ccc">-</span>';
+    var ageDays = p.post_age_days;
+    // Fallback: calculate from pub_date if post_age_days missing
+    if ((ageDays == null || ageDays < 0) && p.pub_date) {
+      var pd = new Date(p.pub_date);
+      if (!isNaN(pd)) ageDays = Math.round((Date.now() - pd.getTime()) / 86400000);
+    }
+    var age = ageDays != null && ageDays >= 0 ? ageTag(ageDays) : '<span style="color:#ccc">-</span>';
 
     hotBody.innerHTML += '<tr' + rowClass + '><td>' + (i+1) + '</td><td>' + title + flagHtml + '</td><td>' + esc(nickname) + sizeHtml + '</td><td class="pub-date">' + pubDate + '</td><td>' + age + '</td><td class="score">' + fmt(p.score) + '</td><td>' + fmt(p.liked) + '</td><td>' + fmt(p.collected) + '</td><td>' + fmt(p.comment || 0) + '</td><td>' + saveRate + '</td><td>' + typeTag + '</td></tr>';
   });
@@ -353,7 +443,12 @@ function renderData(d) {
     var barW = Math.round(k.avg_score / kwMax * 120);
     var vr = k.video_ratio;
     if (vr < 1) vr = Math.round(vr * 100);
-    kwBody.innerHTML += '<tr><td><b>' + esc(k.keyword) + '</b></td><td>' + (k.count || 0) + '</td><td><span class="kw-bar" style="width:' + barW + 'px"></span> ' + fmt(k.avg_score) + '</td><td>' + vr + '%</td></tr>';
+    var comp = k.competition || '';
+    var compTag = '';
+    if (comp === '蓝海') compTag = '<span class="tag tag-blue-ocean">蓝海</span>';
+    else if (comp === '红海') compTag = '<span class="tag tag-red-ocean">红海</span>';
+    else if (comp === '待观察') compTag = '<span class="tag tag-watch">待观察</span>';
+    kwBody.innerHTML += '<tr><td><b>' + esc(k.keyword) + '</b></td><td>' + (k.count || 0) + '</td><td><span class="kw-bar" style="width:' + barW + 'px"></span> ' + fmt(k.avg_score) + '</td><td>' + compTag + '</td><td>' + vr + '%</td></tr>';
   });
 
   // Content type
@@ -440,15 +535,94 @@ async function loadBriefing(dateStr) {
       sigHtml += '<span class="conf-badge ' + conf + '">' + conf + '</span>';
       sigHtml += '<span class="signal-obs">' + esc(s.observation) + '</span>';
       sigHtml += '</div>';
+      if (s.action) {
+        sigHtml += '<div class="signal-action"><span class="arrow">&rarr;</span> ' + esc(s.action) + '</div>';
+        if (s.action_verify) {
+          sigHtml += '<div class="signal-verify">' + esc(s.action_verify) + '</div>';
+        }
+      }
       if (s.blind_spots && s.blind_spots.length) {
         sigHtml += '<div class="signal-blindspots"><ul>';
         s.blind_spots.forEach(function(bs) { sigHtml += '<li>' + esc(bs) + '</li>'; });
         sigHtml += '</ul></div>';
       }
+      var refs = s.ref_posts || [];
+      if (refs.length) {
+        sigHtml += '<div class="ref-posts"><details><summary>参考帖子 (' + refs.length + ')</summary><ul>';
+        refs.forEach(function(r) {
+          var t = r.url ? '<a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a>' : esc(r.title);
+          sigHtml += '<li>' + t + ' (互动分 ' + fmt(r.score) + ')</li>';
+        });
+        sigHtml += '</ul></details></div>';
+      }
       sigHtml += '<div class="signal-meta">' + esc(s.category) + ' | 样本: ' + (s.sample_size || '?') + '</div>';
       sigHtml += '</div>';
     });
     document.getElementById('signal-list').innerHTML = sigHtml;
+
+    // Action checklist (primary top 3 + collapsible secondary)
+    var checklist = b.action_checklist || {};
+    var primary = checklist.primary || [];
+    var secondary = checklist.secondary || [];
+    // Backward compat: if action_checklist is an array (old format)
+    if (Array.isArray(b.action_checklist)) { primary = b.action_checklist.slice(0, 3); secondary = b.action_checklist.slice(3); }
+    var actionCard = document.getElementById('action-checklist');
+    if (primary.length > 0) {
+      actionCard.style.display = 'block';
+      var acHtml = '';
+      function renderActionItem(a) {
+        var conf = a.confidence || 'low';
+        var icon = conf === 'high' ? '🟢' : (conf === 'medium' ? '🟡' : '⚪');
+        var h = '<div class="action-item"><div class="action-icon">' + icon + '</div><div class="action-text">';
+        h += '<div class="action-main">' + esc(a.action) + ' <span class="conf-badge ' + conf + '" style="font-size:10px;vertical-align:middle">' + conf + '</span></div>';
+        if (a.source) h += '<div class="action-source">' + esc(a.source) + '</div>';
+        if (a.verify) h += '<div class="action-verify">' + esc(a.verify) + '</div>';
+        var refs = a.ref_posts || [];
+        if (refs.length) {
+          h += '<div class="ref-posts"><details><summary>参考帖子 (' + refs.length + ')</summary><ul>';
+          refs.forEach(function(r) {
+            var t = r.url ? '<a href="' + esc(r.url) + '" target="_blank">' + esc(r.title) + '</a>' : esc(r.title);
+            h += '<li>' + t + ' (互动分 ' + fmt(r.score) + ')</li>';
+          });
+          h += '</ul></details></div>';
+        }
+        h += '</div></div>';
+        return h;
+      }
+      primary.forEach(function(a) { acHtml += renderActionItem(a); });
+      if (secondary.length > 0) {
+        acHtml += '<details class="more-actions"><summary>更多建议 (' + secondary.length + ')</summary>';
+        secondary.forEach(function(a) { acHtml += renderActionItem(a); });
+        acHtml += '</details>';
+      }
+      document.getElementById('action-list').innerHTML = acHtml;
+    } else {
+      actionCard.style.display = 'none';
+    }
+
+    // Topic suggestions
+    var topics = b.topic_suggestions || [];
+    var topicCard = document.getElementById('topic-suggestions-card');
+    if (topics.length > 0) {
+      topicCard.style.display = 'block';
+      var tsHtml = '';
+      topics.forEach(function(t) {
+        var conf = (t.confidence || 'MEDIUM').toUpperCase();
+        var confCls = conf === 'HIGH' ? 'pain-cluster-conf-high' : (conf === 'LOW' ? 'tag-control' : 'pain-cluster-conf-medium');
+        tsHtml += '<div class="topic-card">';
+        tsHtml += '<div class="topic-title">' + esc(t.topic_title) + '<span class="topic-type">' + esc(t.content_type) + '</span>';
+        tsHtml += ' <span class="pain-cluster-conf ' + confCls + '">' + conf + '</span>';
+        tsHtml += '</div>';
+        tsHtml += '<div class="topic-detail">预期互动: ' + esc(t.expected_engagement) + '</div>';
+        tsHtml += '<div class="topic-detail">' + esc(t.reasoning) + '</div>';
+        var sourceText = t.source_tag ? esc(t.source_tag) : ('用户提问（' + (t.source_likes || 0) + '赞）');
+        tsHtml += '<div class="topic-source">来源：' + sourceText + ' — ' + esc(t.source_question) + '</div>';
+        tsHtml += '</div>';
+      });
+      document.getElementById('topic-suggestions').innerHTML = tsHtml;
+    } else {
+      topicCard.style.display = 'none';
+    }
 
     var lims = b.known_limitations || [];
     if (lims.length) {
@@ -479,9 +653,32 @@ async function loadTrends(dateStr) {
     var t = await res.json();
 
     if (t.type === 'baseline') {
-      document.getElementById('trend-list').innerHTML = '<div style="padding:20px;text-align:center;color:#999">' + esc(t.message) + '</div>';
-      document.getElementById('format-changes').innerHTML = '<p style="color:#999;padding:20px;text-align:center">首次分析，无对比</p>';
-      document.getElementById('volume-changes').innerHTML = '<p style="color:#999;padding:20px;text-align:center">首次分析，无对比</p>';
+      var baseDate = t.date || currentDate || '?';
+      var nextDate = '';
+      try {
+        var bd = new Date(baseDate); bd.setDate(bd.getDate() + 7);
+        nextDate = bd.toISOString().split('T')[0];
+      } catch(e) { nextDate = '下次采集后'; }
+      var baseHtml = '<div style="padding:30px;text-align:center">';
+      baseHtml += '<div style="font-size:40px;margin-bottom:12px">📅</div>';
+      baseHtml += '<div style="font-size:16px;font-weight:bold;margin-bottom:8px">基准期已建立: ' + esc(baseDate) + '</div>';
+      baseHtml += '<div style="color:#888;font-size:14px">下期数据预计 ' + esc(nextDate) + ' 采集</div>';
+      baseHtml += '<div style="color:#aaa;font-size:13px;margin-top:4px">届时将自动显示关键词涨跌、内容格式变化趋势</div>';
+      baseHtml += '</div>';
+      document.getElementById('trend-list').innerHTML = baseHtml;
+      // Show baseline stats
+      var bStats = t.baseline || {};
+      if (bStats.total_notes) {
+        var bsHtml = '<div class="stat-grid">';
+        bsHtml += '<div class="stat-box"><div class="stat-num">' + bStats.total_notes + '</div><div class="stat-label">基准期笔记数</div></div>';
+        bsHtml += '<div class="stat-box"><div class="stat-num">' + (bStats.keyword_count || '?') + '</div><div class="stat-label">关键词数</div></div>';
+        bsHtml += '<div class="stat-box"><div class="stat-num">' + (bStats.video_ratio || '?') + '%</div><div class="stat-label">视频占比</div></div>';
+        bsHtml += '</div>';
+        document.getElementById('format-changes').innerHTML = bsHtml;
+      } else {
+        document.getElementById('format-changes').innerHTML = '<p style="color:#999;padding:20px;text-align:center">基准期数据，下期对比后显示变化</p>';
+      }
+      document.getElementById('volume-changes').innerHTML = '<p style="color:#999;padding:20px;text-align:center">基准期数据，下期对比后显示变化</p>';
       return;
     }
 
@@ -554,6 +751,118 @@ async function loadComments(dateStr) {
     if (!res || !res.ok) throw new Error('No comments');
     var c = await res.json();
 
+    // User persona
+    var persona = c.user_persona;
+    var personaCard = document.getElementById('persona-card');
+    if (persona && (persona.scenarios.length || persona.concerns.length)) {
+      personaCard.style.display = 'block';
+      var pHtml = '<div class="persona-grid">';
+      // Scenarios
+      pHtml += '<div class="persona-box"><h3>使用场景</h3>';
+      if (persona.scenarios.length) {
+        persona.scenarios.forEach(function(s) { pHtml += '<span class="persona-tag">' + esc(s.label) + '<span class="cnt">' + s.mention_count + '</span></span>'; });
+      } else { pHtml += '<span style="color:#999;font-size:13px">暂无数据</span>'; }
+      pHtml += '</div>';
+      // Concerns
+      pHtml += '<div class="persona-box"><h3>关注点/痛点</h3>';
+      if (persona.concerns.length) {
+        persona.concerns.forEach(function(s) { pHtml += '<span class="persona-tag">' + esc(s.label) + '<span class="cnt">' + s.mention_count + '</span></span>'; });
+      } else { pHtml += '<span style="color:#999;font-size:13px">暂无数据</span>'; }
+      pHtml += '</div>';
+      // Barriers
+      pHtml += '<div class="persona-box"><h3>决策障碍</h3>';
+      if (persona.barriers.length) {
+        persona.barriers.forEach(function(s) { pHtml += '<span class="persona-tag">' + esc(s.label) + '<span class="cnt">' + s.mention_count + '</span></span>'; });
+      } else { pHtml += '<span style="color:#999;font-size:13px">暂无数据</span>'; }
+      pHtml += '</div>';
+      // Emotional tone
+      pHtml += '<div class="persona-box"><h3>情绪基调</h3>';
+      if (persona.emotional_tone.length) {
+        var maxTone = Math.max.apply(null, persona.emotional_tone.map(function(t) { return t.count; }));
+        persona.emotional_tone.forEach(function(t) {
+          var w = Math.max(20, Math.round(t.count / maxTone * 100));
+          pHtml += '<div class="tone-bar"><span style="width:80px;flex-shrink:0">' + esc(t.label) + '</span><div class="tone-bar-fill" style="width:' + w + 'px"></div><span>' + t.count + '</span></div>';
+        });
+      } else { pHtml += '<span style="color:#999;font-size:13px">暂无数据</span>'; }
+      pHtml += '</div>';
+      pHtml += '</div>';
+      pHtml += '<div style="font-size:11px;color:#aaa;margin-top:8px">基于 ' + (persona.sample_size || '?') + ' 条评论的关键词匹配，非 AI 分析</div>';
+      document.getElementById('user-persona').innerHTML = pHtml;
+    } else {
+      personaCard.style.display = 'none';
+    }
+
+    // Pain point clusters (热帖痛点聚焦)
+    var clusters = c.pain_point_clusters || [];
+    var clusterCard = document.getElementById('pain-cluster-card');
+    if (clusters.length > 0) {
+      clusterCard.style.display = 'block';
+      var pcHtml = '';
+      clusters.forEach(function(cl) {
+        pcHtml += '<div class="pain-cluster">';
+        pcHtml += '<div class="pain-cluster-header">';
+        // Title with link
+        var titleText = esc(cl.note_title);
+        if (cl.note_url) {
+          pcHtml += '<span class="pain-cluster-title"><a href="' + esc(cl.note_url) + '" target="_blank">' + titleText + '</a></span>';
+        } else {
+          pcHtml += '<span class="pain-cluster-title">' + titleText + '</span>';
+        }
+        pcHtml += '<span class="pain-cluster-type">' + esc(cl.pain_type) + '</span>';
+        // Rank badge
+        if (cl.rank) pcHtml += '<span class="pain-cluster-rank">全场 #' + cl.rank + '</span>';
+        // Confidence badge
+        var confClass = (cl.confidence === 'HIGH') ? 'pain-cluster-conf-high' : 'pain-cluster-conf-medium';
+        pcHtml += '<span class="pain-cluster-conf ' + confClass + '">' + (cl.confidence || 'MEDIUM') + '</span>';
+        pcHtml += '</div>';
+        // Stats line
+        var statsLine = '互动分: ' + fmt(cl.interaction_score || 0);
+        if (cl.rank) statsLine += '（全场 #' + cl.rank + '/' + (cl.rank_total || '?') + '）';
+        statsLine += ' | 评论提问密度: ' + (cl.question_density || 0) + '%';
+        statsLine += ' | 痛点评论: ' + cl.comment_count + '/' + cl.total_comments + ' (' + cl.pain_ratio + '%)';
+        statsLine += ' · 总赞 ' + fmt(cl.total_likes);
+        pcHtml += '<div class="pain-cluster-meta">' + statsLine + '</div>';
+        // Representative comments
+        var reps = cl.representative_comments || [];
+        reps.forEach(function(r) {
+          pcHtml += '<div class="pain-cluster-comment">"' + esc(r.content) + '"';
+          if (r.like_count > 0) pcHtml += ' <span class="comment-likes">' + r.like_count + '赞</span>';
+          pcHtml += '</div>';
+        });
+        // Market judgment
+        if (cl.market_judgment) pcHtml += '<div class="pain-cluster-judgment">' + esc(cl.market_judgment) + '</div>';
+        // Opportunity
+        if (cl.opportunity) pcHtml += '<div class="pain-cluster-opportunity">内容机会：' + esc(cl.opportunity) + '</div>';
+        pcHtml += '</div>';
+      });
+      document.getElementById('pain-clusters').innerHTML = pcHtml;
+    } else {
+      clusterCard.style.display = 'none';
+    }
+
+    // Comment quality scores
+    var cq = c.comment_quality || [];
+    var cqCard = document.getElementById('comment-quality-card');
+    if (cq.length > 0) {
+      cqCard.style.display = 'block';
+      var cqHtml = '<table class="cq-table"><thead><tr><th>帖子</th><th>评论数</th><th>提问%</th><th>争议%</th><th>选品%</th><th>质量分</th><th>洞察</th></tr></thead><tbody>';
+      cq.forEach(function(r) {
+        var insights = (r.insights || []).map(function(i) { return '<span class="cq-insight">' + esc(i) + '</span>'; }).join('');
+        var cqTitle = esc(r.note_title);
+        if (r.note_url) cqTitle = '<a href="' + esc(r.note_url) + '" target="_blank" style="color:#333;text-decoration:none;border-bottom:1px dashed #bbb">' + cqTitle + '</a>';
+        cqHtml += '<tr><td>' + cqTitle + '</td><td>' + r.total_comments + '</td>';
+        cqHtml += '<td><span class="cq-bar" style="width:' + Math.min(r.question_ratio, 50) + 'px"></span> ' + r.question_ratio + '%</td>';
+        cqHtml += '<td><span class="cq-bar" style="width:' + Math.min(r.controversy_ratio, 50) + 'px;background:#ef5350"></span> ' + r.controversy_ratio + '%</td>';
+        cqHtml += '<td><span class="cq-bar" style="width:' + Math.min(r.product_alt_ratio, 50) + 'px;background:#66bb6a"></span> ' + r.product_alt_ratio + '%</td>';
+        cqHtml += '<td class="cq-score">' + r.quality_score + '</td>';
+        cqHtml += '<td>' + (insights || '<span style="color:#ccc">-</span>') + '</td></tr>';
+      });
+      cqHtml += '</tbody></table>';
+      document.getElementById('comment-quality').innerHTML = cqHtml;
+    } else {
+      cqCard.style.display = 'none';
+    }
+
     // High frequency words
     var words = c.high_frequency_words || [];
     if (words.length) {
@@ -573,7 +882,7 @@ async function loadComments(dateStr) {
     if (questions.length) {
       var qHtml = '<table><thead><tr><th>提问</th><th>赞</th><th>来源帖子</th></tr></thead><tbody>';
       questions.forEach(function(q) {
-        qHtml += '<tr><td>' + esc(q.content) + ' <span class="question-tag">提问</span></td><td class="comment-likes">' + fmt(q.liked_count || 0) + '</td><td style="font-size:12px;color:#888">' + esc((q.note_title || '').substring(0, 30)) + '</td></tr>';
+        qHtml += '<tr><td>' + esc(q.content) + ' <span class="question-tag">提问</span></td><td class="comment-likes">' + fmt(q.like_count || 0) + '</td><td style="font-size:12px;color:#888">' + esc((q.note_title || '').substring(0, 30)) + '</td></tr>';
       });
       qHtml += '</tbody></table>';
       questEl.innerHTML = qHtml;
@@ -588,7 +897,7 @@ async function loadComments(dateStr) {
       topLiked.forEach(function(cm, i) {
         tHtml += '<div class="comment-item">';
         tHtml += '<div class="comment-text">' + (i + 1) + '. ' + esc(cm.content) + '</div>';
-        tHtml += '<div class="comment-meta"><span class="comment-likes">' + fmt(cm.liked_count || 0) + ' 赞</span> · ' + esc((cm.note_title || '').substring(0, 30)) + '</div>';
+        tHtml += '<div class="comment-meta"><span class="comment-likes">' + fmt(cm.like_count || 0) + ' 赞</span> · ' + esc((cm.note_title || '').substring(0, 30)) + '</div>';
         tHtml += '</div>';
       });
       topEl.innerHTML = tHtml;
@@ -599,9 +908,13 @@ async function loadComments(dateStr) {
     // By note
     var notes = c.note_summaries || [];
     if (notes.length) {
-      var nHtml = '<table><thead><tr><th>帖子</th><th>评论数</th><th>提问</th><th>总赞</th><th>热评</th></tr></thead><tbody>';
+      var nHtml = '<table><thead><tr><th>帖子</th><th>互动分</th><th>评论数</th><th>提问</th><th>总赞</th><th>热评</th></tr></thead><tbody>';
       notes.forEach(function(n) {
-        nHtml += '<tr><td>' + esc((n.note_title || '').substring(0, 30)) + '</td><td>' + (n.comment_count || 0) + '</td><td>' + (n.question_count || 0) + '</td><td class="comment-likes">' + fmt(n.total_likes || 0) + '</td><td style="font-size:12px;color:#666">' + esc((n.top_comment || '').substring(0, 40)) + '</td></tr>';
+        var noteTitle = esc((n.note_title || '').substring(0, 30));
+        if (n.note_url) {
+          noteTitle = '<a href="' + esc(n.note_url) + '" target="_blank" style="color:#333;text-decoration:none;border-bottom:1px dashed #bbb">' + noteTitle + '</a>';
+        }
+        nHtml += '<tr><td>' + noteTitle + '</td><td class="score">' + fmt(n.interaction_score || 0) + '</td><td>' + (n.comment_count || 0) + '</td><td>' + (n.question_count || 0) + '</td><td class="comment-likes">' + fmt(n.total_likes || 0) + '</td><td style="font-size:12px;color:#666">' + esc((n.top_comment || '').substring(0, 40)) + '</td></tr>';
       });
       nHtml += '</tbody></table>';
       noteEl.innerHTML = nHtml;

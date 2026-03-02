@@ -138,14 +138,35 @@ def build_report(notes):
             kw_stats[kw]['top_title'] = n['title'][:40]
             kw_stats[kw]['top_url'] = n['url']
 
+    # Compute global median score for competition density
+    all_scores = [n['score'] for n in notes]
+    global_median = sorted(all_scores)[len(all_scores) // 2] if all_scores else 0
+
     keyword_insights = []
     for kw, stats in sorted(kw_stats.items(), key=lambda x: sum(x[1]['scores'])/len(x[1]['scores']), reverse=True):
         avg = sum(stats['scores']) / len(stats['scores'])
+        count = stats['count']
+        scores = stats['scores']
+
+        # Competition density: 蓝海/红海/待观察
+        # 蓝海: count < 5 AND avg_score > global_median (few posts, high engagement)
+        # 红海: count > 15 AND score spread dispersed (many posts, competitive)
+        # 待观察: everything else
+        if count < 5 and avg > global_median:
+            competition = '蓝海'
+        elif count > 15:
+            competition = '红海'
+        elif count >= 5 and avg < global_median * 0.5:
+            competition = '红海'
+        else:
+            competition = '待观察'
+
         keyword_insights.append({
-            'keyword': kw, 'count': stats['count'],
+            'keyword': kw, 'count': count,
             'avg_score': round(avg), 'top_score': stats['top_score'],
-            'video_ratio': round(stats['video'] / stats['count'] * 100),
+            'video_ratio': round(stats['video'] / count * 100),
             'top_title': stats['top_title'], 'top_url': stats['top_url'],
+            'competition': competition,
         })
 
     # --- 爆款模式 ---

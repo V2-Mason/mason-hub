@@ -181,8 +181,16 @@ echo ""
 echo "--- [5/6] Market signals ---"
 scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_strategy_briefing.py" "$ALIYUN:$MC_DIR/xhs_briefing.py" 2>/dev/null
 
+# Check if comments JSON exists for this date
+COMMENTS_ARG=""
+COMMENTS_JSON="$ANALYSIS_DIR/comments/${TODAY}.json"
+COMMENTS_EXISTS=$(ssh -o ConnectTimeout=10 "$ALIYUN" "test -f '$COMMENTS_JSON' && echo yes || echo no" 2>/dev/null)
+if [ "$COMMENTS_EXISTS" = "yes" ]; then
+  COMMENTS_ARG="--comments '$COMMENTS_JSON'"
+fi
+
 BRIEFING_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
-  "cd $MC_DIR && source venv/bin/activate && python xhs_briefing.py '$SIGNAL_INPUT' '$ANALYSIS_DIR' $TRENDS_ARG 2>&1")
+  "cd $MC_DIR && source venv/bin/activate && python xhs_briefing.py '$SIGNAL_INPUT' '$ANALYSIS_DIR' $TRENDS_ARG $COMMENTS_ARG 2>&1")
 
 BRIEFING_EXIT=$?
 echo "$BRIEFING_OUTPUT"
