@@ -252,21 +252,48 @@ def step_script(project, work_dir, state):
 
 
 def step_review(project, work_dir, state):
-    """Step 5: Generate storyboard document (.docx) + upload to Google Drive for review."""
+    """Step 5: AI分镜图 + 分镜文档(.docx) + Google Drive 上传审核。"""
     import subprocess as _sp
 
     script_path = state.get('artifacts', {}).get('shooting_script')
     if not script_path or not os.path.exists(script_path):
         raise FileNotFoundError("No shooting script found. Run script step first.")
 
+    # Step 5a: Generate AI storyboard images
+    storyboard_dir = os.path.join(work_dir, 'storyboard')
+    print("  Generating AI storyboard images...")
+    try:
+        from storyboard import generate_storyboard_from_script
+        generate_storyboard_from_script(script_path, storyboard_dir)
+        import glob as _glob
+        img_count = len(_glob.glob(os.path.join(storyboard_dir, 'shot_*.png')))
+        state['artifacts']['storyboard_dir'] = storyboard_dir
+        state['artifacts']['storyboard_count'] = img_count
+        print(f"  Storyboard images: {img_count}")
+    except Exception as e:
+        print(f"  WARNING: Storyboard image generation failed: {e}", file=sys.stderr)
+        print("  Continuing with placeholder images in document...")
+        storyboard_dir = None
+
+    # Step 5b: Generate .docx with images + products + project context
     docx_path = os.path.join(work_dir, 'storyboard_review.docx')
     generator = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              'generate_storyboard_doc.js')
 
-    # Generate .docx
+    cmd = ['node', generator, script_path, docx_path]
+    if storyboard_dir and os.path.isdir(storyboard_dir):
+        cmd += ['--storyboard-dir', storyboard_dir]
+
+    rec_path = state.get('artifacts', {}).get('product_recommendations')
+    if rec_path and os.path.exists(rec_path):
+        cmd += ['--products', rec_path]
+
+    project_path = os.path.join(work_dir, 'project.json')
+    if os.path.exists(project_path):
+        cmd += ['--project', project_path]
+
     print("  Generating storyboard document...")
-    result = _sp.run(['node', generator, script_path, docx_path],
-                     capture_output=True, text=True, timeout=30)
+    result = _sp.run(cmd, capture_output=True, text=True, timeout=30)
     if result.returncode != 0:
         raise RuntimeError(f"Docx generation failed: {result.stderr[:300]}")
     print(f"  {result.stdout.strip()}")
@@ -279,6 +306,17 @@ def step_review(project, work_dir, state):
     except Exception as e:
         print(f"  WARNING: Drive upload failed: {e}", file=sys.stderr)
         print(f"  Local file: {docx_path}")
+
+    # Register in content board (素材明细 Sheet)
+    try:
+        from content_board import register_review_content
+        project_id = project.get('project_id', 'unknown')
+        topic = project.get('topic', '')
+        channels = project.get('target_platforms', ['xhs'])
+        register_review_content(project_id, topic=topic, drive_link=drive_link or '',
+                                channels=channels)
+    except Exception as e:
+        print(f"  WARNING: Board registration failed: {e}", file=sys.stderr)
 
     # Slack notification
     from slack_review import _get_slack_token, _post_slack, CH_SOCIALMESH

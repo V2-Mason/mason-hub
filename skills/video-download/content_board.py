@@ -49,6 +49,11 @@ FOLDER_DEFAULT_STATUS = {
     '已确认-待排期': '✅已确认',
 }
 
+# Column layout: A-L
+# A:内容ID B:主题 C:渠道 D:内容形式 E:文案状态 F:图片/视频状态
+# G:Drive链接 H:计划发布日 I:实际发布日 J:发布链接 K:状态 L:生成日期
+COL_RANGE = 'A:L'
+
 
 def get_sheets_service():
     """Build Sheets API service using existing OAuth credentials."""
@@ -74,24 +79,31 @@ def get_sheets_service():
     return build('sheets', 'v4', credentials=creds)
 
 
-def _ensure_status_column(sheets):
-    """Add 状态 column (K) header if missing, and set dropdown validation."""
+def _ensure_columns(sheets):
+    """Ensure 状态(K) and 生成日期(L) columns exist with proper formatting."""
     result = sheets.spreadsheets().values().get(
         spreadsheetId=SPREADSHEET_ID,
-        range='素材明细!A1:K1',
+        range='素材明细!A1:L1',
     ).execute()
     headers = result.get('values', [[]])[0]
 
-    if len(headers) < 11 or headers[10] != '状态':
-        # Add header
-        sheets.spreadsheets().values().update(
+    # Pad headers to at least 12 columns
+    while len(headers) < 12:
+        headers.append('')
+
+    updates = []
+    if headers[10] != '状态':
+        updates.append({'range': '素材明细!K1', 'values': [['状态']]})
+    if headers[11] != '生成日期':
+        updates.append({'range': '素材明细!L1', 'values': [['生成日期']]})
+
+    if updates:
+        sheets.spreadsheets().values().batchUpdate(
             spreadsheetId=SPREADSHEET_ID,
-            range='素材明细!K1',
-            valueInputOption='RAW',
-            body={'values': [['状态']]},
+            body={'valueInputOption': 'RAW', 'data': updates},
         ).execute()
 
-    # Set dropdown validation for column K (rows 2-200)
+    # Set dropdown validation for column K + bold headers K-L
     sheets.spreadsheets().batchUpdate(
         spreadsheetId=SPREADSHEET_ID,
         body={'requests': [
@@ -114,7 +126,7 @@ def _ensure_status_column(sheets):
                     },
                 }
             },
-            # Bold the K1 header
+            # Bold headers K-L
             {
                 'repeatCell': {
                     'range': {
@@ -122,7 +134,7 @@ def _ensure_status_column(sheets):
                         'startRowIndex': 0,
                         'endRowIndex': 1,
                         'startColumnIndex': 10,
-                        'endColumnIndex': 11,
+                        'endColumnIndex': 12,
                     },
                     'cell': {
                         'userEnteredFormat': {
@@ -199,17 +211,18 @@ def _read_details_tab(sheets):
     """Read all rows from 素材明细 tab. Returns list of row lists."""
     result = sheets.spreadsheets().values().get(
         spreadsheetId=SPREADSHEET_ID,
-        range='素材明细!A:K',
+        range='素材明细!' + COL_RANGE,
     ).execute()
     return result.get('values', [])
 
 
 def sync_drive_to_sheet(project_id=None):
     """Pass 1: Scan Drive folders, add new content to Sheet."""
+    from datetime import datetime
     drive = get_drive_service()
     sheets = get_sheets_service()
 
-    _ensure_status_column(sheets)
+    _ensure_columns(sheets)
 
     # Read existing content IDs from Sheet
     rows = _read_details_tab(sheets)
@@ -220,6 +233,7 @@ def sync_drive_to_sheet(project_id=None):
 
     # Scan all content creation folders
     new_rows = []
+    today = datetime.now().strftime('%Y-%m-%d')
     scan_folders = ['初版-待反馈', '修改版-待确认', '已确认-待排期']
 
     for folder_name in scan_folders:
@@ -254,6 +268,7 @@ def sync_drive_to_sheet(project_id=None):
                 '',              # I: 实际发布日
                 '',              # J: 发布链接
                 status,          # K: 状态
+                today,           # L: 生成日期
             ])
 
             existing_ids.add(proj_name)
@@ -261,7 +276,7 @@ def sync_drive_to_sheet(project_id=None):
     if new_rows:
         sheets.spreadsheets().values().append(
             spreadsheetId=SPREADSHEET_ID,
-            range='素材明细!A:K',
+            range='素材明细!' + COL_RANGE,
             valueInputOption='RAW',
             insertDataOption='INSERT_ROWS',
             body={'values': new_rows},
@@ -272,6 +287,86 @@ def sync_drive_to_sheet(project_id=None):
     else:
         print("Drive→Sheet: No new content found")
 
+    return len(new_rows)
+
+
+def register_review_content(project_id, topic='', drive_link='', channels=None):
+    """Register a new review item directly in the Sheet.
+
+    Called by content_pipeline step_review after uploading storyboard doc.
+    This writes the row immediately — no folder scan needed.
+
+    Args:
+        project_id: Content ID (e.g., '2026-03-02_cleanmakeup-base-makeup').
+        topic: Content topic.
+        drive_link: Google Docs link for review.
+        channels: List of target platforms (default: ['xhs']).
+
+    Returns:
+        Number of rows added.
+    """
+    from datetime import datetime
+    sheets = get_sheets_service()
+
+    _ensure_columns(sheets)
+
+    # Check if already registered
+    rows = _read_details_tab(sheets)
+    existing_ids = set()
+    for row in rows[1:]:
+        if row:
+            existing_ids.add(row[0])
+
+    if project_id in existing_ids:
+        # Already exists — update Drive link and status if needed
+        for i, row in enumerate(rows[1:], start=2):
+            if row and row[0] == project_id:
+                # Update drive link (G) and status (K) if currently empty
+                updates = []
+                if drive_link and (len(row) < 7 or not row[6]):
+                    updates.append({'range': f'素材明细!G{i}', 'values': [[drive_link]]})
+                if len(row) < 11 or not row[10]:
+                    updates.append({'range': f'素材明细!K{i}', 'values': [['🔄审核中']]})
+                if updates:
+                    sheets.spreadsheets().values().batchUpdate(
+                        spreadsheetId=SPREADSHEET_ID,
+                        body={'valueInputOption': 'RAW', 'data': updates},
+                    ).execute()
+                    print(f"Board: Updated existing row for {project_id}")
+                else:
+                    print(f"Board: {project_id} already registered, no update needed")
+                return 0
+        return 0
+
+    channels = channels or ['xhs']
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    new_rows = []
+    for ch in channels:
+        new_rows.append([
+            project_id,          # A: 内容ID
+            topic,               # B: 主题
+            ch,                  # C: 渠道
+            '短视频',             # D: 内容形式
+            '',                  # E: 文案状态
+            '',                  # F: 图片/视频状态
+            drive_link,          # G: Drive链接
+            '',                  # H: 计划发布日
+            '',                  # I: 实际发布日
+            '',                  # J: 发布链接
+            '🔄审核中',           # K: 状态
+            today,               # L: 生成日期
+        ])
+
+    sheets.spreadsheets().values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range='素材明细!' + COL_RANGE,
+        valueInputOption='RAW',
+        insertDataOption='INSERT_ROWS',
+        body={'values': new_rows},
+    ).execute()
+
+    print(f"Board: Registered {project_id} ({len(new_rows)} channels) as 🔄审核中")
     return len(new_rows)
 
 
@@ -408,15 +503,17 @@ def show_status():
         return
 
     print(f"Content Board ({len(rows) - 1} items):")
-    print(f"{'ID':<40} {'Channel':<8} {'Status':<12}")
-    print('-' * 62)
+    print(f"{'ID':<40} {'Channel':<8} {'Status':<12} {'Generated':<12} {'Scheduled':<12}")
+    print('-' * 86)
     for row in rows[1:]:
         if not row:
             continue
         cid = row[0] if len(row) > 0 else ''
         ch = row[2] if len(row) > 2 else ''
         status = row[10] if len(row) > 10 else ''
-        print(f"{cid:<40} {ch:<8} {status:<12}")
+        gen_date = row[11] if len(row) > 11 else ''
+        plan_date = row[7] if len(row) > 7 else ''
+        print(f"{cid:<40} {ch:<8} {status:<12} {gen_date:<12} {plan_date:<12}")
 
 
 def sync():
