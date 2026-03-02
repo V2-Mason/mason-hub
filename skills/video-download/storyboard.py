@@ -78,7 +78,7 @@ def _build_segment_prompt(segment, analysis):
     )
 
 
-def generate_storyboard(analysis_path, output_dir, model='nano-banana-2', delay=2):
+def generate_storyboard(analysis_path, output_dir, model='gemini-3.1-flash-image-preview', delay=2):
     """Generate storyboard images from localized analysis JSON."""
     from google import genai
     from google.genai import types
@@ -179,8 +179,8 @@ def main():
     parser.add_argument('analysis', help='Path to localized analysis JSON')
     parser.add_argument('--output-dir', default=None,
                         help='Output directory (default: {analysis_dir}/storyboard/)')
-    parser.add_argument('--model', default='nano-banana-2',
-                        help='Image generation model (default: nano-banana-2)')
+    parser.add_argument('--model', default='gemini-3.1-flash-image-preview',
+                        help='Image generation model (default: gemini-3.1-flash-image-preview / Nano Banana 2)')
     parser.add_argument('--delay', type=int, default=2,
                         help='Seconds between API calls (default: 2)')
     args = parser.parse_args()
