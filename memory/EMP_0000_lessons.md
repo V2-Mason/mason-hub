@@ -41,3 +41,20 @@ SocialMesh 是内容运营**平台**，素仁轩是它服务的**品牌**。EMP_
 ## 2026-02-28: 重启生产服务后必须立即验证连通性
 
 修改生产环境配置并重启服务后，必须立即执行验证三件套：1) `curl health` 确认后端 200；2) `curl 首页` 确认前端加载时间正常（<2s）；3) 确认 SSH 连通。不能改完就告诉 Mason 去访问——本次重启后阿里云出现短暂网络波动（TCP 连接 36s），Mason 直接撞上了慢加载。
+
+## 2026-03-02: Gemini 视频拆解 v2 prompt 设计决策
+
+Mason 要求竞品视频拆解必须从"内容创作者视角"（不是观众视角），输出 9 大模块：basic_info / hook_analysis / product_catalog / content_structure / visual_analysis / audio_analysis / copywriting_analysis / engagement_triggers / replicable_template。
+
+关键设计要求：
+- 35+ 年龄客群对价格高度敏感，product_catalog 每个条目必须有 `price_signal` 字段
+- 产品品牌名可以不记录，但必须记录品类+功效（"定妆喷雾，主打保湿不卡粉"）
+- timeline 必须覆盖视频中每一个产品/片段，不允许省略
+- 口播内容要精确转录原文，不要意译
+- prompt 开头加"你必须按要求严格执行"强制 LLM 遵守规则
+
+教训：v1 prompt 只有 10 个基础字段，Mason 认为"表面量化毫无价值"——缺少产品目录、音频分析、封面设计拆解、拍摄手法、具体说服技巧实例。prompt 设计必须从"下游消费者（Mason 团队）能拿来直接复用"出发。
+
+## 2026-03-02: 第三方 API 响应不可信 — 必须校验字段值
+
+greenvideo.cc 的 videoItemVoList API 响应中，某些 item 的 `baseUrl` 字段装的是视频标题文字而非 URL（fileType=video, canDownload=True 但 baseUrl="💓 cleanmakeup｜完美底妆的诞生"）。教训：**任何第三方 API 的字段值都必须做类型/格式校验**，不能假设字段名 = 字段内容。修复方法：`url.startswith('http')` + break on first valid match。

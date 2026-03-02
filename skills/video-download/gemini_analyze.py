@@ -10,6 +10,7 @@ replicable_template — 详见 ANALYSIS_PROMPT
 import argparse
 import json
 import os
+import re
 import sys
 import tempfile
 import time
@@ -166,6 +167,57 @@ ANALYSIS_PROMPT = """你是一位资深小红书内容运营专家，专注于�
 只输出 JSON，不要其他文字。确保 JSON 格式正确。"""
 
 
+def _parse_gemini_json(text):
+    """从 Gemini 响应中健壮地提取 JSON。
+
+    处理常见问题：markdown code fences、trailing commas、
+    响应前后有多余文字等。
+    """
+    # Strip markdown code fences
+    text = text.strip()
+    if text.startswith('```'):
+        text = text.split('\n', 1)[1]
+    if text.endswith('```'):
+        text = text[:-3]
+    text = text.strip()
+
+    # Try direct parse first
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Extract outermost {} block (skip any preamble/postamble text)
+    depth = 0
+    start = None
+    for i, ch in enumerate(text):
+        if ch == '{':
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == '}':
+            depth -= 1
+            if depth == 0 and start is not None:
+                block = text[start:i + 1]
+                # Try parse the extracted block
+                try:
+                    return json.loads(block)
+                except json.JSONDecodeError:
+                    # Fix trailing commas before } or ]
+                    fixed = re.sub(r',\s*([}\]])', r'\1', block)
+                    try:
+                        return json.loads(fixed)
+                    except json.JSONDecodeError:
+                        pass
+                # Reset and keep scanning (unlikely but safe)
+                start = None
+
+    raise json.JSONDecodeError(
+        "Could not extract valid JSON from Gemini response",
+        text[:200], 0
+    )
+
+
 def analyze_video(video_path, model='gemini-2.5-flash'):
     """上传视频到 Gemini 并分析"""
     from google import genai
@@ -212,16 +264,9 @@ def analyze_video(video_path, model='gemini-2.5-flash'):
         ],
     )
 
-    # Parse JSON from response
+    # Parse JSON from response (robust: handle markdown fences, trailing commas, etc.)
     text = response.text.strip()
-    # Remove markdown code fences if present
-    if text.startswith('```'):
-        text = text.split('\n', 1)[1]
-        if text.endswith('```'):
-            text = text[:-3]
-        text = text.strip()
-
-    result = json.loads(text)
+    result = _parse_gemini_json(text)
 
     # Clean up uploaded file
     try:
