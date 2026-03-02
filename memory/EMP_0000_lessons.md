@@ -58,3 +58,10 @@ Mason 要求竞品视频拆解必须从"内容创作者视角"（不是观众视
 ## 2026-03-02: 第三方 API 响应不可信 — 必须校验字段值
 
 greenvideo.cc 的 videoItemVoList API 响应中，某些 item 的 `baseUrl` 字段装的是视频标题文字而非 URL（fileType=video, canDownload=True 但 baseUrl="💓 cleanmakeup｜完美底妆的诞生"）。教训：**任何第三方 API 的字段值都必须做类型/格式校验**，不能假设字段名 = 字段内容。修复方法：`url.startswith('http')` + break on first valid match。
+
+## 2026-03-02: 内容制作管线架构决策
+
+端到端管线跑通：Gemini 拆解 → 品牌本地化 → Nano Banana 2 分镜 → VEO 3.1 视频 → ffmpeg 组装 → Drive 上传 → Sheet 同步。关键架构决策：
+1. **Sheet 作为统一看板**：Mason 在 Sheet 下拉菜单改状态，系统自动移 Drive 文件到对应文件夹。无需额外项目管理工具。
+2. **双向同步**：Drive→Sheet 发现新内容，Sheet→Drive 响应状态变更。Sheet 本身就是 state store，不需要额外状态文件。
+3. **模型命名坑**：Google AI 模型的 display name ≠ API model ID（Nano Banana 2 = `gemini-3.1-flash-image-preview`，不是 `nano-banana-2`）。调用前必须 `client.models.list()` 确认。

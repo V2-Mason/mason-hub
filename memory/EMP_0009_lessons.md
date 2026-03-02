@@ -19,3 +19,17 @@
 LLM（Gemini/GPT 等）生成的 JSON 常有问题：markdown fences 包裹、trailing commas、前后多余文字。不能直接 `json.loads()`。
 
 标准处理链：去 markdown fences → 提取最外层 `{}` → regex 去 trailing commas → json.loads。见 `gemini_analyze.py::_parse_gemini_json()` 实现。
+
+## 2026-03-02: Google AI 模型 ID 查询
+
+Google 模型 display name ≠ API model ID。用 `client.models.list()` 查确切 ID：
+- Nano Banana 2 → `gemini-3.1-flash-image-preview`（图片生成，`response_modalities=['IMAGE']`）
+- VEO 3.1 → `veo-3.1-generate-preview`（视频生成，异步 operation）
+- 用 display name 调 API 会 404
+
+## 2026-03-02: Sheets API 实用模式
+
+- **下拉菜单**：`setDataValidation` + `ONE_OF_LIST` + `showCustomUi: True`
+- **追加行**：`values().append()` + `insertDataOption='INSERT_ROWS'`
+- **清空数据保留表头**：`values().clear(range='Sheet!A2:Z200')`
+- **Drive 文件移动不改链接**：`files().update(addParents=, removeParents=)`，fileId 和 webViewLink 保持不变

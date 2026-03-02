@@ -39,3 +39,26 @@ greenvideo.cc 的 `videoItemVoList` 中部分 item 虽然 `fileType=video` + `ca
 ## 2026-03-02: Pipeline 基础 — 输出目录必须 makedirs
 
 `pipeline.py` 的 `--output-dir` 参数对应的目录可能不存在。写文件前必须 `os.makedirs(work_dir, exist_ok=True)`，否则 `FileNotFoundError`。这是基本功，但忘了就炸。
+
+## 2026-03-02: Google AI 模型 ID ≠ Display Name
+
+Google Gemini 生态的模型 display name 和 API model ID 不同。必须用 `client.models.list()` 查确切 ID：
+- Nano Banana 2（图片生成）→ `gemini-3.1-flash-image-preview`
+- VEO 3.1（视频生成）→ `veo-3.1-generate-preview`
+- 直接用 display name 调用会 404
+
+## 2026-03-02: VEO 3.1 视频生成 API 模式
+
+VEO 是异步 API：`client.models.generate_videos()` 返回 operation → 轮询 `client.operations.get(operation)` → `operation.done` 后取结果。关键点：
+- `duration_seconds` 只接受字符串 `'4'`/`'6'`/`'8'`
+- image-to-video 用 `types.Image(image_bytes=bytes, mime_type='image/png')`
+- 每段视频约 60-75 秒生成，轮询间隔 15 秒够用
+- 下载用 `client.files.download(file=video)` + `video.save(path)`
+
+## 2026-03-02: Google Sheets API 下拉菜单
+
+用 `setDataValidation` + `ONE_OF_LIST` 设置下拉菜单。`showCustomUi: True` 显示下拉箭头。范围用 `sheetId`（非 sheet name）+ row/column index。Sheet tab 的 sheetId 在创建时由 `properties.sheetId` 指定。
+
+## 2026-03-02: Drive 文件夹移动
+
+`files().update(fileId=id, addParents=new, removeParents=old)` 原子移动。文件 ID 和 webViewLink 不变，Sheet 里的链接仍有效。

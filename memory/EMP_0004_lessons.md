@@ -17,3 +17,7 @@
 2. **临时文件用完必须清理** — tempfile.mkdtemp() 创建的目录、symlink 等，用 try/finally 确保清理
 3. **LLM JSON 输出不可靠** — Gemini/GPT 返回的 JSON 可能有 trailing comma、markdown 包裹等，必须做健壮解析（见 `gemini_analyze.py::_parse_gemini_json()`）
 4. **第三方 API 字段值不可信** — 字段名 ≠ 字段内容，必须做值校验（如 URL 字段检查 `startswith('http')`）
+
+## 2026-03-02: GCP 系统依赖 checklist
+
+内容制作管线需要 ffmpeg（拼接视频片段）。GCP 实例默认未安装。上线新管道前检查系统依赖：`sudo apt install ffmpeg`。应加入部署 checklist：管线上线 → 验证 ffmpeg/imagemagick 等多媒体工具是否就位。

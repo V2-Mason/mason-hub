@@ -35,3 +35,16 @@ Mason 定义的竞品视频拆解标准为 9 大模块（basic_info / hook_analy
 - **产品记录**：品牌名可不记，品类+功效必须记（如"定妆喷雾，主打保湿不卡粉"）
 
 prompt 文件：`skills/video-download/gemini_analyze.py` ANALYSIS_PROMPT 变量。在策划内容时可直接参考这个结构作为拆解框架。
+
+## 2026-03-02: 内容制作管线全链路
+
+端到端管线已就位（`skills/video-download/content_pipeline.py`）：
+1. Gemini 拆解参照视频 → 9 模块 JSON（timeline = 脚本）
+2. 品牌本地化（`localize.py`）→ 同格式 JSON，只改调性/话术
+3. Nano Banana 2 分镜（`storyboard.py`）→ 每个 segment 一张 9:16 图
+4. VEO 3.1 视频（`videogen.py`）→ 每个分镜一段视频
+5. ffmpeg 组装（`assemble.py`）→ 成片
+
+**内容看板**（`content_board.py`）：Drive ↔ Sheet 双向同步。Mason 在 Sheet 下拉菜单改状态 → 文件自动移到对应文件夹。状态流：🔄审核中 → ✅已确认 → 📋排期 → 🚀已发布。
+
+Sheet: `2026-03_内容排期表`（02-排期看板/）。素材明细 tab K 列是状态下拉菜单。

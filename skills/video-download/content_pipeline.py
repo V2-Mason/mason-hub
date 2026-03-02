@@ -308,6 +308,13 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             return 1
         print()
 
+    # --- Sync to Board ---
+    try:
+        from content_board import sync_drive_to_sheet
+        sync_drive_to_sheet(project_id=project_id)
+    except Exception:
+        pass  # Board sync is best-effort
+
     # --- Notify ---
     try:
         from slack_review import notify_pipeline_status
