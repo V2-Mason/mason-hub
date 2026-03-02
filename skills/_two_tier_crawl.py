@@ -154,7 +154,7 @@ def update_note_detail(note_id: str, detail: Dict):
             "desc" = ?, video_url = ?, time = ?, last_update_time = ?,
             user_id = ?, nickname = ?, avatar = ?,
             liked_count = ?, collected_count = ?, comment_count = ?, share_count = ?,
-            ip_location = ?, image_list = ?, tag_list = ?, last_modify_ts = ?
+            image_list = ?, tag_list = ?, last_modify_ts = ?
         WHERE note_id = ?
     ''', (
         detail.get('desc', ''), video_url,
@@ -162,7 +162,7 @@ def update_note_detail(note_id: str, detail: Dict):
         user.get('user_id', ''), user.get('nickname', ''), user.get('avatar', ''),
         str(interact.get('liked_count', '0')), str(interact.get('collected_count', '0')),
         str(interact.get('comment_count', '0')), str(interact.get('share_count', '0')),
-        detail.get('ip_location', ''), ','.join(img_urls), ','.join(tags), now_ts,
+        ','.join(img_urls), ','.join(tags), now_ts,  # ip_location 不采集 — Mason 明确要求
         note_id,
     ))
 
