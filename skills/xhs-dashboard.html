@@ -24,6 +24,11 @@ tr:hover { background: #fafafa; }
 .tag-small { background: #e8f5e9; color: #2e7d32; font-weight: bold; }
 .tag-medium { background: #fff3e0; color: #e65100; }
 .tag-large { background: #fce4ec; color: #c62828; }
+.tag-viral { background: #fce4ec; color: #c62828; font-size: 11px; }
+.tag-control { background: #e0e0e0; color: #616161; font-size: 11px; }
+.tag-age-fresh { background: #e8f5e9; color: #2e7d32; font-size: 11px; }
+.tag-age-old { background: #fff3e0; color: #e65100; font-size: 11px; }
+.tag-age-stale { background: #ffebee; color: #c62828; font-size: 11px; }
 .kw-bar { height: 8px; border-radius: 4px; background: #e74c3c; display: inline-block; }
 a { color: #1a73e8; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -32,7 +37,7 @@ a:hover { text-decoration: underline; }
 .stat-num { font-size: 28px; font-weight: bold; color: #e74c3c; }
 .stat-label { font-size: 13px; color: #888; margin-top: 4px; }
 .error { color: #c62828; padding: 40px; text-align: center; }
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 .tab { padding: 8px 16px; border-radius: 8px; cursor: pointer; background: #e0e0e0; font-size: 14px; border: none; }
 .tab.active { background: #1a73e8; color: #fff; }
 .pub-date { color: #999; font-size: 12px; white-space: nowrap; }
@@ -91,6 +96,17 @@ a:hover { text-decoration: underline; }
 .pattern-section { margin: 12px 0; }
 .pattern-title { font-weight: bold; margin: 8px 0 4px; }
 .pattern-item { padding: 4px 0; font-size: 14px; color: #555; }
+
+/* Comment styles */
+.comment-note { margin-bottom: 20px; }
+.comment-note-title { font-weight: bold; font-size: 15px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+.comment-item { padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+.comment-text { font-size: 14px; }
+.comment-meta { font-size: 12px; color: #999; margin-top: 2px; }
+.comment-likes { color: #e74c3c; font-weight: bold; }
+.question-tag { background: #e3f2fd; color: #1565c0; font-size: 11px; padding: 1px 6px; border-radius: 6px; margin-left: 6px; }
+.freq-word { display: inline-block; padding: 4px 12px; margin: 3px; border-radius: 16px; background: #f0f0f0; font-size: 13px; }
+.freq-word .count { color: #e74c3c; font-weight: bold; margin-left: 4px; }
 </style>
 </head>
 <body>
@@ -110,6 +126,7 @@ a:hover { text-decoration: underline; }
 <div class="tabs">
   <button class="tab active" onclick="showTab('signals', this)">市场信号</button>
   <button class="tab" onclick="showTab('trends', this)">趋势</button>
+  <button class="tab" onclick="showTab('comments', this)">评论</button>
   <button class="tab" onclick="showTab('rawdata', this)">原始数据</button>
 </div>
 
@@ -117,7 +134,9 @@ a:hover { text-decoration: underline; }
 <div id="signals-section" class="section active">
   <div class="stat-grid" id="stats"></div>
   <div class="card"><h2>信号</h2><div id="signal-list"></div></div>
-  <div class="card"><h2>热帖 Top 20</h2><table id="hot-table"><thead><tr><th>#</th><th>标题</th><th>作者</th><th>发布日期</th><th>互动分</th><th>赞</th><th>藏</th><th>评</th><th>藏赞比</th><th>类型</th></tr></thead><tbody></tbody></table></div>
+  <div class="card"><h2>热帖 Top 20</h2><table id="hot-table"><thead><tr>
+    <th>#</th><th>标题</th><th>作者</th><th>发布日期</th><th>年龄</th><th>互动分</th><th>赞</th><th>藏</th><th>评</th><th>藏赞比</th><th>类型</th>
+  </tr></thead><tbody></tbody></table></div>
   <div class="card" id="small-signals-card" style="display:none"><h2>小号高互动信号</h2><div id="small-signals"></div></div>
   <div class="limitations" id="limitations"></div>
 </div>
@@ -129,7 +148,15 @@ a:hover { text-decoration: underline; }
   <div class="card"><h2>数据量变化</h2><div id="volume-changes"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
 </div>
 
-<!-- Tab 3: 原始数据 -->
+<!-- Tab 3: 评论 -->
+<div id="comments-section" class="section">
+  <div class="card"><h2>高频词</h2><div id="comment-freq-words"><p style="color:#999;padding:20px;text-align:center">暂无评论数据</p></div></div>
+  <div class="card"><h2>用户提问</h2><div id="comment-questions"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
+  <div class="card"><h2>热门评论</h2><div id="comment-top-liked"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
+  <div class="card"><h2>按帖子分布</h2><div id="comment-by-note"><p style="color:#999;padding:20px;text-align:center">暂无</p></div></div>
+</div>
+
+<!-- Tab 4: 原始数据 -->
 <div id="rawdata-section" class="section">
   <div class="card"><h2>关键词洞察</h2><table id="kw-table"><thead><tr><th>关键词</th><th>数量</th><th>平均互动分</th><th>视频占比</th></tr></thead><tbody></tbody></table></div>
   <div class="card"><h2>内容类型对比</h2><div id="content-type"></div></div>
@@ -151,6 +178,21 @@ function showTab(name, el) {
 
 function fmt(n) { return typeof n === 'number' ? n.toLocaleString() : n; }
 function esc(s) { var d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+function ageTag(days) {
+  if (days < 0) return '';
+  if (days <= 7) return '<span class="tag tag-age-fresh">' + days + '天</span>';
+  if (days <= 30) return '<span class="tag tag-age-fresh">' + days + '天</span>';
+  if (days <= 90) return '<span class="tag tag-age-old">' + days + '天</span>';
+  return '<span class="tag tag-age-stale">' + days + '天</span>';
+}
+
+function tierTag(tier) {
+  if (!tier || tier === 'unknown') return '';
+  if (tier === 'viral') return '<span class="tag tag-viral">爆款</span>';
+  if (tier === 'control') return '<span class="tag tag-control">对照</span>';
+  return '';
+}
 
 async function discoverDates() {
   var dates = [];
@@ -196,7 +238,6 @@ async function loadDate(dateStr) {
   document.getElementById('date-input').value = dateStr;
   renderDateChips();
 
-  // Try enriched first, then base
   var enrichedRes = await fetch('/xhs/analysis_' + dateStr + '_enriched.json');
   var res;
   if (enrichedRes.ok) {
@@ -213,6 +254,7 @@ async function loadDate(dateStr) {
   renderData(d);
   loadBriefing(dateStr);
   loadTrends(dateStr);
+  loadComments(dateStr);
 }
 
 async function loadLatest() {
@@ -232,6 +274,7 @@ function renderData(d) {
   var patterns = d.patterns || {};
   var titlePatterns = d.title_patterns || {};
   var date = (d.meta && d.meta.date) || '';
+  var ageDist = (d.meta && d.meta.age_distribution) || {};
 
   document.getElementById('meta').textContent = '数据: ' + totalNotes + ' 条笔记 | 日期: ' + date;
 
@@ -249,31 +292,38 @@ function renderData(d) {
   if (enrichedCount > 0) {
     statsHtml += '<div class="stat-box"><div class="stat-num">' + enrichedCount + '</div><div class="stat-label">作者已富化</div></div>';
   }
+  // Age distribution stats
+  if (ageDist.age_known_count) {
+    statsHtml += '<div class="stat-box"><div class="stat-num">' + (ageDist.within_7d || 0) + '</div><div class="stat-label">7天内帖子</div></div>';
+    statsHtml += '<div class="stat-box"><div class="stat-num">' + (ageDist.within_30d || 0) + '</div><div class="stat-label">30天内帖子</div></div>';
+    statsHtml += '<div class="stat-box"><div class="stat-num">' + (ageDist.median_age_days || 0) + '天</div><div class="stat-label">中位年龄</div></div>';
+  }
   document.getElementById('stats').innerHTML = statsHtml;
 
-  // Hot posts table (signals tab)
+  // Hot posts table
   var hotBody = document.querySelector('#hot-table tbody');
   hotBody.innerHTML = '';
   posts.forEach(function(p, i) {
     var flags = (p.fake_flags || []);
     var flagHtml = flags.length ? ' <span class="tag tag-flag">' + esc(flags.join(', ')) + '</span>' : '';
 
-    // Account size tag
     var sizeHtml = '';
     if (p.account_size) {
       var sizeClass = {'小号':'tag-small','中号':'tag-medium','大号':'tag-large'}[p.account_size] || '';
       sizeHtml = ' <span class="tag ' + sizeClass + '">' + esc(p.account_size) + '</span>';
     }
 
-    var typeTag = '<span class="tag tag-' + p.type + '">' + (p.type === 'video' ? '视频' : '图文') + '</span>';
+    var tHtml = tierTag(p.content_tier);
+    var typeTag = '<span class="tag tag-' + p.type + '">' + (p.type === 'video' ? '视频' : '图文') + '</span>' + (tHtml ? ' ' + tHtml : '');
     var url = p.url || '';
     var title = url ? '<a href="' + esc(url) + '" target="_blank">' + esc((p.title || '').substring(0, 35)) + '</a>' : esc((p.title || '').substring(0, 35));
     var saveRate = p.save_rate != null ? p.save_rate + '%' : '-';
     var pubDate = p.pub_date || '-';
     var nickname = p.nickname || '-';
     var rowClass = flags.length ? ' style="background:#fff5f5"' : '';
+    var age = p.post_age_days != null && p.post_age_days >= 0 ? ageTag(p.post_age_days) : '<span style="color:#ccc">-</span>';
 
-    hotBody.innerHTML += '<tr' + rowClass + '><td>' + (i+1) + '</td><td>' + title + flagHtml + '</td><td>' + esc(nickname) + sizeHtml + '</td><td class="pub-date">' + pubDate + '</td><td class="score">' + fmt(p.score) + '</td><td>' + fmt(p.liked) + '</td><td>' + fmt(p.collected) + '</td><td>' + fmt(p.comment || 0) + '</td><td>' + saveRate + '</td><td>' + typeTag + '</td></tr>';
+    hotBody.innerHTML += '<tr' + rowClass + '><td>' + (i+1) + '</td><td>' + title + flagHtml + '</td><td>' + esc(nickname) + sizeHtml + '</td><td class="pub-date">' + pubDate + '</td><td>' + age + '</td><td class="score">' + fmt(p.score) + '</td><td>' + fmt(p.liked) + '</td><td>' + fmt(p.collected) + '</td><td>' + fmt(p.comment || 0) + '</td><td>' + saveRate + '</td><td>' + typeTag + '</td></tr>';
   });
 
   // Small account signals
@@ -281,7 +331,7 @@ function renderData(d) {
   var smallCard = document.getElementById('small-signals-card');
   if (smallSignals.length > 0) {
     smallCard.style.display = 'block';
-    var ssHtml = '<p style="color:#666;margin-bottom:12px">粉丝 &lt;1 万的小号，互动高 → 更可能是内容本身驱动</p><table><thead><tr><th>标题</th><th>互动分</th><th>粉丝</th><th>类型</th></tr></thead><tbody>';
+    var ssHtml = '<p style="color:#666;margin-bottom:12px">粉丝 &lt;1 万的小号，互动高 &rarr; 更可能是内容本身驱动</p><table><thead><tr><th>标题</th><th>互动分</th><th>粉丝</th><th>类型</th></tr></thead><tbody>';
     smallSignals.forEach(function(p) {
       var url = p.url || '';
       var title = url ? '<a href="' + esc(url) + '" target="_blank">' + esc((p.title || '').substring(0, 40)) + '</a>' : esc((p.title || '').substring(0, 40));
@@ -364,7 +414,6 @@ async function loadBriefing(dateStr) {
   try {
     var res = await fetch('/xhs/briefings/' + dateStr + '.json');
     if (!res.ok) {
-      // Try recent dates
       var today = new Date(Date.now() + 8 * 3600000);
       for (var i = 1; i < 7; i++) {
         var d = new Date(today); d.setDate(d.getDate() - i);
@@ -376,11 +425,9 @@ async function loadBriefing(dateStr) {
     if (!res || !res.ok) throw new Error('No briefing');
     var b = await res.json();
 
-    // Disclaimer
     var disc = b.disclaimer || '以下为市场观察，非内容建议。';
     document.getElementById('disclaimer').textContent = disc;
 
-    // Market signals
     var signals = b.market_signals || [];
     var sigHtml = '';
     if (signals.length === 0) {
@@ -403,7 +450,6 @@ async function loadBriefing(dateStr) {
     });
     document.getElementById('signal-list').innerHTML = sigHtml;
 
-    // Limitations
     var lims = b.known_limitations || [];
     if (lims.length) {
       var limHtml = '<b>已知局限</b><ul>';
@@ -421,7 +467,6 @@ async function loadTrends(dateStr) {
   try {
     var res = await fetch('/xhs/trends/' + dateStr + '.json');
     if (!res.ok) {
-      // Try recent
       var today = new Date(Date.now() + 8 * 3600000);
       for (var i = 1; i < 7; i++) {
         var d = new Date(today); d.setDate(d.getDate() - i);
@@ -440,7 +485,6 @@ async function loadTrends(dateStr) {
       return;
     }
 
-    // Keyword trends
     var kwTrends = t.keyword_trends || [];
     if (kwTrends.length === 0) {
       document.getElementById('trend-list').innerHTML = '<p style="color:#999;padding:20px;text-align:center">暂无关键词趋势</p>';
@@ -463,7 +507,6 @@ async function loadTrends(dateStr) {
       document.getElementById('trend-list').innerHTML = tHtml;
     }
 
-    // Format changes
     var fc = t.format_changes || {};
     if (fc.video_ratio) {
       var vr = fc.video_ratio;
@@ -476,7 +519,6 @@ async function loadTrends(dateStr) {
       document.getElementById('format-changes').innerHTML = fcHtml;
     }
 
-    // Volume changes
     var vol = t.volume_changes || {};
     if (vol.current_notes != null) {
       var volHtml = '<div class="stat-grid">';
@@ -486,7 +528,92 @@ async function loadTrends(dateStr) {
       document.getElementById('volume-changes').innerHTML = volHtml;
     }
   } catch (e) {
-    // Keep default "暂无" messages
+    // Keep default messages
+  }
+}
+
+async function loadComments(dateStr) {
+  var freqEl = document.getElementById('comment-freq-words');
+  var questEl = document.getElementById('comment-questions');
+  var topEl = document.getElementById('comment-top-liked');
+  var noteEl = document.getElementById('comment-by-note');
+  var noData = '<p style="color:#999;padding:20px;text-align:center">暂无评论数据</p>';
+
+  try {
+    var res = await fetch('/xhs/comments/' + dateStr + '.json');
+    if (!res.ok) {
+      // Try recent dates
+      var today = new Date(Date.now() + 8 * 3600000);
+      for (var i = 1; i < 7; i++) {
+        var d = new Date(today); d.setDate(d.getDate() - i);
+        var ds = d.toISOString().split('T')[0];
+        res = await fetch('/xhs/comments/' + ds + '.json');
+        if (res.ok) break;
+      }
+    }
+    if (!res || !res.ok) throw new Error('No comments');
+    var c = await res.json();
+
+    // High frequency words
+    var words = c.high_frequency_words || [];
+    if (words.length) {
+      var wHtml = '<div style="padding:8px 0">';
+      words.forEach(function(w) {
+        var size = Math.max(13, Math.min(22, 13 + w.count));
+        wHtml += '<span class="freq-word" style="font-size:' + size + 'px">' + esc(w.word) + '<span class="count">' + w.count + '</span></span>';
+      });
+      wHtml += '</div>';
+      freqEl.innerHTML = wHtml;
+    } else {
+      freqEl.innerHTML = noData;
+    }
+
+    // Questions
+    var questions = c.questions || [];
+    if (questions.length) {
+      var qHtml = '<table><thead><tr><th>提问</th><th>赞</th><th>来源帖子</th></tr></thead><tbody>';
+      questions.forEach(function(q) {
+        qHtml += '<tr><td>' + esc(q.content) + ' <span class="question-tag">提问</span></td><td class="comment-likes">' + fmt(q.liked_count || 0) + '</td><td style="font-size:12px;color:#888">' + esc((q.note_title || '').substring(0, 30)) + '</td></tr>';
+      });
+      qHtml += '</tbody></table>';
+      questEl.innerHTML = qHtml;
+    } else {
+      questEl.innerHTML = '<p style="color:#999;padding:20px;text-align:center">暂无提问</p>';
+    }
+
+    // Top liked
+    var topLiked = c.top_liked_comments || [];
+    if (topLiked.length) {
+      var tHtml = '';
+      topLiked.forEach(function(cm, i) {
+        tHtml += '<div class="comment-item">';
+        tHtml += '<div class="comment-text">' + (i + 1) + '. ' + esc(cm.content) + '</div>';
+        tHtml += '<div class="comment-meta"><span class="comment-likes">' + fmt(cm.liked_count || 0) + ' 赞</span> · ' + esc((cm.note_title || '').substring(0, 30)) + '</div>';
+        tHtml += '</div>';
+      });
+      topEl.innerHTML = tHtml;
+    } else {
+      topEl.innerHTML = noData;
+    }
+
+    // By note
+    var notes = c.note_summaries || [];
+    if (notes.length) {
+      var nHtml = '<table><thead><tr><th>帖子</th><th>评论数</th><th>提问</th><th>总赞</th><th>热评</th></tr></thead><tbody>';
+      notes.forEach(function(n) {
+        nHtml += '<tr><td>' + esc((n.note_title || '').substring(0, 30)) + '</td><td>' + (n.comment_count || 0) + '</td><td>' + (n.question_count || 0) + '</td><td class="comment-likes">' + fmt(n.total_likes || 0) + '</td><td style="font-size:12px;color:#666">' + esc((n.top_comment || '').substring(0, 40)) + '</td></tr>';
+      });
+      nHtml += '</tbody></table>';
+      noteEl.innerHTML = nHtml;
+    } else {
+      noteEl.innerHTML = noData;
+    }
+
+  } catch (e) {
+    freqEl.innerHTML = noData;
+    questEl.innerHTML = '<p style="color:#999;padding:20px;text-align:center">暂无</p>';
+    topEl.innerHTML = '<p style="color:#999;padding:20px;text-align:center">暂无</p>';
+    noteEl.innerHTML = '<p style="color:#999;padding:20px;text-align:center">暂无</p>';
   }
 }
 
