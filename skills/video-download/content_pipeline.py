@@ -165,15 +165,47 @@ def step_storyboard(project, work_dir, state, localized_path=None):
 
 
 def step_videogen(project, work_dir, state):
-    """Step 4: VEO3 video generation (Phase 2 - not yet implemented)."""
-    print("  [Phase 2] VEO3 video generation not yet implemented.")
-    print("  Waiting for VEO3 API access from Mason.")
-    return None
+    """Step 4: VEO 3.1 video generation from storyboard images."""
+    from videogen import generate_video_clips
+
+    storyboard_dir = state.get('artifacts', {}).get('storyboard_dir')
+    localized_path = state.get('artifacts', {}).get('localized_analysis')
+
+    if not storyboard_dir or not os.path.isdir(storyboard_dir):
+        raise FileNotFoundError("No storyboard directory found. Run storyboard first.")
+    if not localized_path or not os.path.exists(localized_path):
+        raise FileNotFoundError("No localized analysis found. Run localize first.")
+
+    clips_dir = os.path.join(work_dir, 'video_clips')
+    print(f"  Generating video clips from storyboard...")
+
+    results = generate_video_clips(localized_path, storyboard_dir, clips_dir)
+
+    generated = sum(1 for r in results if r['status'] == 'ok')
+    state['artifacts']['clips_dir'] = clips_dir
+    state['artifacts']['clips_count'] = generated
+    return clips_dir
 
 
 def step_assemble(project, work_dir, state):
-    """Step 5: ffmpeg assembly + Drive upload (Phase 2 - not yet implemented)."""
-    print("  [Phase 2] Assembly not yet implemented.")
+    """Step 5: ffmpeg assembly."""
+    from assemble import assemble_clips
+
+    clips_dir = state.get('artifacts', {}).get('clips_dir')
+    if not clips_dir or not os.path.isdir(clips_dir):
+        raise FileNotFoundError("No video clips directory found. Run videogen first.")
+
+    final_dir = os.path.join(work_dir, 'final')
+    output_path = os.path.join(final_dir, 'final.mp4')
+
+    print(f"  Assembling video clips...")
+    result = assemble_clips(clips_dir, output_path)
+
+    if result:
+        state['artifacts']['final_video'] = result
+        return result
+    else:
+        raise RuntimeError("ffmpeg assembly failed")
     return None
 
 
@@ -249,17 +281,31 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 4: Video Generation (Phase 2) ---
+    # --- Step 4: Video Generation ---
     if _should_run('videogen', resume_from, state):
-        print("--- [4/5] Video Generation: VEO3 ---")
-        step_videogen(project, work_dir, state)
-        # Don't mark as completed - Phase 2
-        print()
+        print("--- [4/5] Video Generation: VEO 3.1 ---")
+        try:
+            step_videogen(project, work_dir, state)
+            state['completed_steps'].append('videogen')
+            _save_state(state_path, state)
+            print()
+        except Exception as e:
+            print(f"  FAILED: {e}", file=sys.stderr)
+            _save_state(state_path, state)
+            return 1
 
-    # --- Step 5: Assembly (Phase 2) ---
+    # --- Step 5: Assembly ---
     if _should_run('assemble', resume_from, state):
-        print("--- [5/5] Assembly: ffmpeg + Drive Upload ---")
-        step_assemble(project, work_dir, state)
+        print("--- [5/5] Assembly: ffmpeg ---")
+        try:
+            step_assemble(project, work_dir, state)
+            state['completed_steps'].append('assemble')
+            _save_state(state_path, state)
+            print()
+        except Exception as e:
+            print(f"  FAILED: {e}", file=sys.stderr)
+            _save_state(state_path, state)
+            return 1
         print()
 
     # --- Notify ---
