@@ -42,7 +42,7 @@ def analyze():
 
     rows = cur.execute('''
         SELECT note_id, title, "desc", type, liked_count, collected_count,
-               comment_count, share_count, tag_list, source_keyword, note_url, nickname
+               comment_count, share_count, tag_list, source_keyword, note_url, nickname, time
         FROM xhs_note
     ''').fetchall()
 
@@ -64,6 +64,12 @@ def analyze():
         if liked > 1000 and save_rate < 5:
             fake_flags.append('藏赞比过低')
 
+        # 时间戳转日期
+        ts = r['time']
+        pub_date = ''
+        if ts and int(ts) > 0:
+            pub_date = datetime.fromtimestamp(int(ts) / 1000).strftime('%Y-%m-%d')
+
         notes.append({
             'note_id': r['note_id'],
             'title': r['title'] or '',
@@ -78,6 +84,7 @@ def analyze():
             'keyword': r['source_keyword'] or '',
             'url': r['note_url'] or '',
             'nickname': r['nickname'] or '',
+            'pub_date': pub_date,
             'fake_flags': fake_flags,
         })
 
@@ -151,16 +158,20 @@ def build_report(notes):
             'save_rate': n['save_rate'], 'engage_rate': n['engage_rate'],
             'share_rate': n['share_rate'],
             'url': n['url'], 'nickname': n['nickname'],
+            'pub_date': n['pub_date'],
             'fake_flags': n['fake_flags'],
         } for n in notes[:20]],
         'keyword_insights': keyword_insights,
         'patterns': {
             'high_save': [{'title': n['title'], 'save_rate': n['save_rate'],
-                           'type': n['type'], 'nickname': n['nickname'], 'url': n['url']} for n in high_save],
+                           'type': n['type'], 'nickname': n['nickname'], 'url': n['url'],
+                           'pub_date': n['pub_date']} for n in high_save],
             'high_engage': [{'title': n['title'], 'engage_rate': n['engage_rate'],
-                             'type': n['type'], 'nickname': n['nickname'], 'url': n['url']} for n in high_engage],
+                             'type': n['type'], 'nickname': n['nickname'], 'url': n['url'],
+                             'pub_date': n['pub_date']} for n in high_engage],
             'high_share': [{'title': n['title'], 'share_rate': n['share_rate'],
-                            'type': n['type'], 'nickname': n['nickname'], 'url': n['url']} for n in high_share],
+                            'type': n['type'], 'nickname': n['nickname'], 'url': n['url'],
+                            'pub_date': n['pub_date']} for n in high_share],
         },
         'content_type': {
             'video_avg_score': round(avg_video),

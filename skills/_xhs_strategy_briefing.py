@@ -115,6 +115,7 @@ def generate_briefing(analysis_json_path, output_dir):
             'liked': p['liked'],
             'collected': p['collected'],
             'save_rate': p['save_rate'],
+            'pub_date': p.get('pub_date', ''),
             'type': p['type'],
             'why_hot': (
                 '干货型(高收藏)' if p['save_rate'] > 50
@@ -122,7 +123,8 @@ def generate_briefing(analysis_json_path, output_dir):
                 else '传播型(高转发)' if p['share_rate'] > 10
                 else '综合热门'
             ),
-        } for p in report['top_posts'][:10]],
+        } for p in report['top_posts'][:20]
+          if not p.get('fake_flags')],  # 过滤假流量，不推荐学习
         'keyword_insights': report.get('keyword_insights', []),
         'content_recommendations': recs,
         'fake_traffic': report.get('fake_traffic', {}),
