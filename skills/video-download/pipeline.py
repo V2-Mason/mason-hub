@@ -19,11 +19,10 @@ import tempfile
 # Add parent to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from download import detect_platform, make_filename, extract_download_url, download_file
-from gdrive_upload import get_drive_service, resolve_target_folder, upload_file, MIME_TYPES
+from download import detect_platform, make_filename, extract_video_info, download_file  # noqa
+from gdrive_upload import get_drive_service, resolve_target_folder
 from gemini_analyze import analyze_video
 from googleapiclient.http import MediaFileUpload
-from playwright.sync_api import sync_playwright
 
 
 def main():
@@ -41,6 +40,7 @@ def main():
         return 1
 
     work_dir = args.output_dir or tempfile.mkdtemp(prefix='vidpipe_')
+    os.makedirs(work_dir, exist_ok=True)
     print(f"=== Video Intelligence Pipeline ===")
     print(f"Source: {args.url}")
     print(f"Platform: {platform}")
@@ -49,18 +49,11 @@ def main():
 
     # --- Step 1: Download ---
     print("--- [1/4] Downloading video ---")
-    filename = make_filename(args.url, platform)
+    video_url, title, cover_url = extract_video_info(args.url, platform)
+    print(f"Title: {title}")
+    filename = make_filename(args.url, platform, title)
     local_path = os.path.join(work_dir, filename)
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        try:
-            download_url = extract_download_url(page, args.url, platform)
-        finally:
-            browser.close()
-
-    download_file(download_url, local_path)
+    download_file(video_url, local_path)
     print()
 
     # --- Step 2: Upload video to Drive ---

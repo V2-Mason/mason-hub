@@ -20,6 +20,7 @@ import argparse
 import json
 import os
 import sys
+import tempfile
 import time
 
 CRED_DIR = os.path.expanduser('~/mason-hub/.credentials')
@@ -50,8 +51,20 @@ def analyze_video(video_path, model='gemini-2.5-flash'):
     file_size = os.path.getsize(video_path) / (1024 * 1024)
     print(f"Uploading {os.path.basename(video_path)} ({file_size:.1f}MB) to Gemini...")
 
-    # Upload file
-    uploaded = client.files.upload(file=video_path)
+    # Upload file (use ASCII-safe temp path to avoid header encoding errors)
+    upload_path = video_path
+    temp_link = None
+    if not os.path.basename(video_path).isascii():
+        temp_dir = tempfile.mkdtemp()
+        temp_link = os.path.join(temp_dir, 'video.mp4')
+        os.symlink(os.path.abspath(video_path), temp_link)
+        upload_path = temp_link
+
+    uploaded = client.files.upload(file=upload_path)
+
+    if temp_link:
+        os.unlink(temp_link)
+        os.rmdir(os.path.dirname(temp_link))
     print(f"Uploaded: {uploaded.name}, state={uploaded.state}")
 
     # Wait for processing

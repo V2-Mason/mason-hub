@@ -4,12 +4,12 @@
   python download.py <url> [--platform xhs|douyin|ins|tiktok] [--output-dir ./]
 
 流程：
-  1. 打开 greenvideo.cc/{platform} 页面
-  2. 粘贴链接，点击"开始"
-  3. 等待解析完成，提取下载链接
-  4. 下载视频到本地
+  1. Playwright 打开 greenvideo.cc，粘贴链接，点"开始"
+  2. 拦截 cnSimpleExtract API 响应，提取 CDN 视频链接
+  3. 直接 requests 下载视频（不需要操作页面下载按钮）
 """
 import argparse
+import json
 import os
 import re
 import sys
@@ -19,7 +19,7 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 
 
-PLATFORM_URLS = {
+PLATFORM_PAGES = {
     'xhs': 'https://greenvideo.cc/xiaohongshu',
     'douyin': 'https://greenvideo.cc/douyin',
     'ins': 'https://greenvideo.cc/ins',
@@ -41,72 +41,74 @@ def detect_platform(url):
     return None
 
 
-def extract_download_url(page, source_url, platform):
-    """在 greenvideo.cc 解析视频并提取下载链接"""
-    site_url = PLATFORM_URLS.get(platform)
+def extract_video_info(source_url, platform):
+    """用 Playwright 触发 greenvideo.cc 解析，拦截 API 响应拿视频 URL"""
+    site_url = PLATFORM_PAGES.get(platform)
     if not site_url:
         raise ValueError(f"Unknown platform: {platform}")
 
-    print(f"Opening {site_url} ...")
-    page.goto(site_url, wait_until='networkidle', timeout=30000)
-    time.sleep(2)
+    results = []
 
-    # Find input field and paste URL
-    input_sel = 'input[type="text"], input[type="url"], input[type="search"], textarea'
-    page.wait_for_selector(input_sel, timeout=10000)
-    input_el = page.query_selector(input_sel)
-    input_el.fill(source_url)
-    time.sleep(0.5)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
 
-    # Click start/parse button
-    # Try common button patterns
-    btn = (page.query_selector('button:has-text("开始")') or
-           page.query_selector('button:has-text("解析")') or
-           page.query_selector('button:has-text("Start")') or
-           page.query_selector('button:has-text("Download")') or
-           page.query_selector('button[type="submit"]'))
+        def capture_response(response):
+            if '/api/video/cnSimpleExtract' in response.url:
+                try:
+                    data = response.json()
+                    if data.get('code') == 200:
+                        results.append(data)
+                except Exception:
+                    pass
 
-    if not btn:
-        raise RuntimeError("Cannot find parse/start button")
+        page.on('response', capture_response)
 
-    btn.click()
-    print("Parsing...")
+        page.goto(site_url, wait_until='networkidle', timeout=30000)
+        time.sleep(2)
 
-    # Wait for download link to appear (poll for up to 30s)
-    download_url = None
-    for _ in range(30):
-        time.sleep(1)
-        # Look for download links/buttons that appeared after parsing
-        links = page.query_selector_all('a[href*=".mp4"], a[download], a:has-text("下载"), a:has-text("Download")')
-        for link in links:
-            href = link.get_attribute('href')
-            if href and ('mp4' in href or 'video' in href):
-                download_url = href
+        # Clean URL (strip tracking params)
+        clean_url = source_url.split('?')[0]
+        page.fill('input[type=text]', clean_url)
+        time.sleep(0.5)
+
+        # Click "开始"
+        page.click('button:has-text("开始")')
+        time.sleep(8)
+
+        # Try clicking "下载" if it appeared
+        dl_btn = page.query_selector('button.n-button--primary-type:has-text("下载")')
+        if dl_btn and dl_btn.is_visible():
+            dl_btn.click()
+            time.sleep(8)
+
+        browser.close()
+
+    if not results:
+        raise RuntimeError("No successful API response captured")
+
+    resp = results[-1]
+    if resp.get('code') != 200:
+        raise RuntimeError(f"API error: {resp.get('message', 'unknown')}")
+
+    info = resp['data']
+    title = info.get('displayTitle', '')
+
+    video_url = None
+    cover_url = None
+    for item in info.get('videoItemVoList', []):
+        if item.get('fileType') == 'video' and item.get('canDownload'):
+            url = item.get('baseUrl', '')
+            if url.startswith('http'):
+                video_url = url
                 break
-        if download_url:
-            break
+        elif item.get('fileType') == 'image':
+            cover_url = item.get('baseUrl', '')
 
-        # Also check for video elements that loaded
-        videos = page.query_selector_all('video source[src]')
-        for v in videos:
-            src = v.get_attribute('src')
-            if src:
-                download_url = src
-                break
-        if download_url:
-            break
+    if not video_url:
+        raise RuntimeError("No downloadable video found in API response")
 
-    if not download_url:
-        # Try intercepting network requests as fallback
-        raise RuntimeError("Could not find download URL after 30s")
-
-    # Handle relative URLs
-    if download_url.startswith('//'):
-        download_url = 'https:' + download_url
-    elif download_url.startswith('/'):
-        download_url = 'https://greenvideo.cc' + download_url
-
-    return download_url
+    return video_url, title, cover_url
 
 
 def download_file(url, output_path):
@@ -114,7 +116,6 @@ def download_file(url, output_path):
     print(f"Downloading to {output_path} ...")
     resp = requests.get(url, stream=True, timeout=120, headers={
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'https://greenvideo.cc/',
     })
     resp.raise_for_status()
 
@@ -132,64 +133,59 @@ def download_file(url, output_path):
     return output_path
 
 
-def make_filename(source_url, platform):
-    """生成文件名: YYYY-MM-DD_{platform}_{id}.mp4"""
+def make_filename(source_url, platform, title=''):
+    """生成文件名: YYYY-MM-DD_{title_short}_{id}.mp4"""
     from datetime import datetime
     date_str = datetime.now().strftime('%Y-%m-%d')
 
-    # Extract ID from URL
     path = urlparse(source_url).path
     note_id = path.rstrip('/').split('/')[-1]
-    # Clean non-alphanumeric
-    note_id = re.sub(r'[^a-zA-Z0-9]', '', note_id)[:20]
+    note_id = re.sub(r'[^a-zA-Z0-9]', '', note_id)[:16]
 
-    return f"{date_str}_{platform}_{note_id}.mp4"
+    title_short = re.sub(r'[^\w\u4e00-\u9fff]', '', title)[:20] if title else platform
+
+    return f"{date_str}_{title_short}_{note_id}.mp4"
 
 
 def main():
     parser = argparse.ArgumentParser(description='Download social media videos via greenvideo.cc')
-    parser.add_argument('url', help='Source video URL (XHS, Douyin, INS, TikTok)')
+    parser.add_argument('url', help='Source video URL')
     parser.add_argument('--platform', choices=['xhs', 'douyin', 'ins', 'tiktok'],
-                        help='Platform (auto-detected from URL if not specified)')
+                        help='Platform (auto-detected if not specified)')
     parser.add_argument('--output-dir', default='.', help='Output directory')
-    parser.add_argument('--output', help='Output filename (auto-generated if not specified)')
+    parser.add_argument('--output', help='Output filename')
     args = parser.parse_args()
 
     platform = args.platform or detect_platform(args.url)
     if not platform:
-        print(f"ERROR: Cannot detect platform from URL. Use --platform.", file=sys.stderr)
+        print("ERROR: Cannot detect platform. Use --platform.", file=sys.stderr)
         return 1
 
     print(f"Platform: {platform}")
     print(f"Source: {args.url}")
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+    video_url, title, cover_url = extract_video_info(args.url, platform)
+    print(f"Title: {title}")
+    print(f"Video CDN: {video_url[:80]}...")
 
-        try:
-            download_url = extract_download_url(page, args.url, platform)
-            print(f"Download URL: {download_url[:80]}...")
-        finally:
-            browser.close()
-
-    # Download
     os.makedirs(args.output_dir, exist_ok=True)
-    filename = args.output or make_filename(args.url, platform)
+    filename = args.output or make_filename(args.url, platform, title)
     output_path = os.path.join(args.output_dir, filename)
-    download_file(download_url, output_path)
+    download_file(video_url, output_path)
 
-    # Output metadata as JSON for pipeline consumption
-    import json
+    # Metadata
     meta = {
         'source_url': args.url,
         'platform': platform,
+        'title': title,
+        'video_url': video_url,
+        'cover_url': cover_url,
         'local_path': os.path.abspath(output_path),
         'filename': filename,
         'file_size': os.path.getsize(output_path),
     }
     meta_path = output_path.replace('.mp4', '_meta.json')
-    with open(meta_path, 'w') as f:
+    with open(meta_path, 'w', encoding='utf-8') as f:
         json.dump(meta, f, indent=2, ensure_ascii=False)
     print(f"Metadata: {meta_path}")
 
