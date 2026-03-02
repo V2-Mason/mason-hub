@@ -128,7 +128,7 @@ def generate_video_clips_from_script(script_path, storyboard_dir, output_dir,
     print(f"Generating {len(shots)} video clips from script with {model}...")
 
     for i, shot in enumerate(shots):
-        shot_type = shot.get('shot_type', 'unknown')
+        shot_type = shot.get('shot_type', 'unknown').replace('/', '_')
         shot_num = f"{i + 1:03d}"
         duration_str = shot.get('duration_seconds', '')
         duration_secs = _parse_shot_duration(duration_str)

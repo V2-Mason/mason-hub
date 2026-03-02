@@ -167,7 +167,7 @@ def generate_storyboard_from_script(script_path, output_dir,
     print(f"Generating {len(shots)} storyboard frames from script with {model}...")
 
     for i, shot in enumerate(shots):
-        shot_type = shot.get('shot_type', 'unknown')
+        shot_type = shot.get('shot_type', 'unknown').replace('/', '_')
         shot_num = f"{i + 1:03d}"
         filename = f"shot_{shot_num}_{shot_type}.png"
         filepath = os.path.join(output_dir, filename)

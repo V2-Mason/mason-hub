@@ -27,9 +27,12 @@ def assemble_clips(clips_dir, output_path):
     Returns:
         output_path on success, None on failure.
     """
-    # Find and sort clips
-    pattern = os.path.join(clips_dir, 'segment_*.mp4')
+    # Find and sort clips (v2: shot_*.mp4, v1 fallback: segment_*.mp4)
+    pattern = os.path.join(clips_dir, 'shot_*.mp4')
     clips = sorted(glob.glob(pattern))
+    if not clips:
+        pattern = os.path.join(clips_dir, 'segment_*.mp4')
+        clips = sorted(glob.glob(pattern))
 
     if not clips:
         print("ERROR: No video clips found", file=sys.stderr)

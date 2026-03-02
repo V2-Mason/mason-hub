@@ -1,16 +1,21 @@
-"""内容制作管线 v3：竞品拆解 → 本地化 → 产品匹配 → 拍摄脚本 → 分镜 → 视频生成 → 组装
+"""内容制作管线 v3：竞品拆解 → 本地化 → 产品匹配 → 拍摄脚本 → 分镜审核 → [AI分镜] → [视频生成] → [组装]
+
+标准流程到分镜文档审核为止，后续步骤（AI 分镜/视频/组装）按需手动续跑。
 
 用法：
-  # 完整跑（从下载到成片，match 步骤会暂停等 Mason 确认）
+  # 标准流程（到分镜文档审核暂停）
   python content_pipeline.py --input project.json
 
   # 跳过拆解（已有 analysis JSON）
   python content_pipeline.py --input project.json --skip-teardown --analysis ref_analysis.json
 
-  # 断点续跑（Mason 确认产品后）
+  # Mason 确认产品后续跑脚本
   python content_pipeline.py --input project.json --resume-from script
 
-  # 全自动（跳过产品确认）
+  # Mason 审核分镜后续跑 AI 生图（可选）
+  python content_pipeline.py --input project.json --resume-from storyboard
+
+  # 全自动（跳过所有审核卡点）
   python content_pipeline.py --input project.json --auto-approve
 
 project.json 格式：
@@ -27,11 +32,12 @@ project.json 格式：
 步骤：
   1. teardown   — 下载参照视频 + Gemini 拆解
   2. localize   — 品牌本地化（JSON in → JSON out）
-  3. match      — 产品匹配推荐（v3 新增，推荐 Top 3 → Slack → Mason 确认）
+  3. match      — 产品匹配推荐（Top 3 → Slack → Mason 确认）⏸
   4. script     — 拍摄脚本生成（骨架锁死 + 跨品类自动适配）
-  5. storyboard — Nano Banana 2 分镜图生成
-  6. videogen   — VEO 3.1 视频片段生成
-  7. assemble   — ffmpeg 拼接 + Drive 上传
+  5. review     — 分镜文档生成 + Google Drive 上传 → Mason 审核 ⏸
+  6. storyboard — [可选] Nano Banana 2 分镜图生成
+  7. videogen   — [可选] VEO 3.1 视频片段生成
+  8. assemble   — [可选] ffmpeg 拼接 + Drive 上传
 """
 import argparse
 import json
@@ -41,7 +47,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-STEPS = ['teardown', 'localize', 'match', 'script', 'storyboard', 'videogen', 'assemble']
+STEPS = ['teardown', 'localize', 'match', 'script', 'review', 'storyboard', 'videogen', 'assemble']
 WORK_BASE = '/tmp/content-pipeline'
 
 
@@ -245,6 +251,94 @@ def step_script(project, work_dir, state):
     return script_path
 
 
+def step_review(project, work_dir, state):
+    """Step 5: Generate storyboard document (.docx) + upload to Google Drive for review."""
+    import subprocess as _sp
+
+    script_path = state.get('artifacts', {}).get('shooting_script')
+    if not script_path or not os.path.exists(script_path):
+        raise FileNotFoundError("No shooting script found. Run script step first.")
+
+    docx_path = os.path.join(work_dir, 'storyboard_review.docx')
+    generator = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             'generate_storyboard_doc.js')
+
+    # Generate .docx
+    print("  Generating storyboard document...")
+    result = _sp.run(['node', generator, script_path, docx_path],
+                     capture_output=True, text=True, timeout=30)
+    if result.returncode != 0:
+        raise RuntimeError(f"Docx generation failed: {result.stderr[:300]}")
+    print(f"  {result.stdout.strip()}")
+
+    # Upload to Google Drive as Google Docs
+    drive_link = None
+    try:
+        drive_link = _upload_docx_to_drive(docx_path, project)
+        print(f"  Google Docs: {drive_link}")
+    except Exception as e:
+        print(f"  WARNING: Drive upload failed: {e}", file=sys.stderr)
+        print(f"  Local file: {docx_path}")
+
+    # Slack notification
+    from slack_review import _get_slack_token, _post_slack, CH_SOCIALMESH
+    token = _get_slack_token()
+    if token and drive_link:
+        project_id = project.get('project_id', 'unknown')
+        msg = (
+            f"--- 分镜脚本待审核 [{project_id}] ---\n"
+            f"\n"
+            f"分镜文档: {drive_link}\n"
+            f"\n"
+            f"请打开 Google Docs 直接审核/批注。\n"
+            f"确认后执行: python content_pipeline.py "
+            f"--input {os.path.join(work_dir, 'project.json')} --resume-from storyboard"
+        )
+        _post_slack(token, CH_SOCIALMESH, msg)
+        print("  Slack notification sent to #socialmesh")
+
+    state['artifacts']['storyboard_docx'] = docx_path
+    if drive_link:
+        state['artifacts']['storyboard_drive_link'] = drive_link
+    return docx_path
+
+
+def _upload_docx_to_drive(docx_path, project):
+    """Upload .docx to Google Drive as Google Docs. Returns webViewLink."""
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaFileUpload
+
+    cred_dir = os.path.expanduser('~/mason-hub/.credentials')
+    token_path = os.path.join(cred_dir, 'google-token.json')
+    with open(token_path) as f:
+        token_data = json.load(f)
+
+    creds = Credentials.from_authorized_user_info(token_data)
+    service = build('drive', 'v3', credentials=creds)
+
+    project_id = project.get('project_id', 'storyboard')
+    file_metadata = {
+        'name': f'分镜脚本_{project_id}',
+        'mimeType': 'application/vnd.google-apps.document',
+    }
+    media = MediaFileUpload(
+        docx_path,
+        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        resumable=True,
+    )
+    file = service.files().create(
+        body=file_metadata, media_body=media, fields='id,webViewLink',
+    ).execute()
+
+    service.permissions().create(
+        fileId=file['id'],
+        body={'type': 'anyone', 'role': 'writer'},
+    ).execute()
+
+    return file['webViewLink']
+
+
 def step_storyboard(project, work_dir, state):
     """Step 4: Nano Banana 2 storyboard generation.
 
@@ -371,7 +465,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 1: Teardown ---
     if not skip_teardown and _should_run('teardown', resume_from, state):
-        print("--- [1/7] Teardown: Download + Gemini Analysis ---")
+        print("--- [1/8] Teardown: Download + Gemini Analysis ---")
         try:
             step_teardown(project, work_dir, state, model=model)
             state['completed_steps'].append('teardown')
@@ -382,12 +476,12 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
     elif skip_teardown:
-        print("--- [1/7] Teardown: SKIPPED (--skip-teardown) ---")
+        print("--- [1/8] Teardown: SKIPPED (--skip-teardown) ---")
         print()
 
     # --- Step 2: Localize ---
     if _should_run('localize', resume_from, state):
-        print("--- [2/7] Localize: Brand Adaptation ---")
+        print("--- [2/8] Localize: Brand Adaptation ---")
         try:
             step_localize(project, work_dir, state,
                           analysis_path=state.get('artifacts', {}).get('reference_analysis'))
@@ -401,7 +495,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 3: Product Match ---
     if _should_run('match', resume_from, state):
-        print("--- [3/7] Match: Product Recommendation ---")
+        print("--- [3/8] Match: Product Recommendation ---")
         try:
             step_match(project, work_dir, state, skip_gemini=skip_gemini_match)
             state['completed_steps'].append('match')
@@ -426,7 +520,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 4: Shooting Script ---
     if _should_run('script', resume_from, state):
-        print("--- [4/7] Script: Shooting Script Generation ---")
+        print("--- [4/8] Script: Shooting Script Generation ---")
         try:
             step_script(project, work_dir, state)
             state['completed_steps'].append('script')
@@ -437,9 +531,33 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 5: Storyboard ---
+    # --- Step 5: Review (分镜文档生成 + Drive 上传) ---
+    if _should_run('review', resume_from, state):
+        print("--- [5/8] Review: Storyboard Document → Google Drive ---")
+        try:
+            step_review(project, work_dir, state)
+            state['completed_steps'].append('review')
+            _save_state(state_path, state)
+
+            if not auto_approve:
+                print()
+                print("*** PIPELINE PAUSED — 分镜文档已上传，等待 Mason 审核 ***")
+                drive_link = state.get('artifacts', {}).get('storyboard_drive_link', '')
+                if drive_link:
+                    print(f"    审核文档: {drive_link}")
+                print(f"    审核通过后续跑: python content_pipeline.py --input {project_path} --resume-from storyboard")
+                print()
+                _save_state(state_path, state)
+                return 0
+            print()
+        except Exception as e:
+            print(f"  FAILED: {e}", file=sys.stderr)
+            _save_state(state_path, state)
+            return 1
+
+    # --- Step 6: Storyboard ---
     if _should_run('storyboard', resume_from, state):
-        print("--- [5/7] Storyboard: Nano Banana 2 Image Generation ---")
+        print("--- [6/8] Storyboard: Nano Banana 2 Image Generation ---")
         try:
             step_storyboard(project, work_dir, state)
             state['completed_steps'].append('storyboard')
@@ -452,7 +570,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 6: Video Generation ---
     if _should_run('videogen', resume_from, state):
-        print("--- [6/7] Video Generation: VEO 3.1 ---")
+        print("--- [7/8] Video Generation: VEO 3.1 ---")
         try:
             step_videogen(project, work_dir, state)
             state['completed_steps'].append('videogen')
@@ -465,7 +583,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 7: Assembly ---
     if _should_run('assemble', resume_from, state):
-        print("--- [7/7] Assembly: ffmpeg ---")
+        print("--- [8/8] Assembly: ffmpeg ---")
         try:
             step_assemble(project, work_dir, state)
             state['completed_steps'].append('assemble')
