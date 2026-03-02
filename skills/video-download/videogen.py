@@ -1,13 +1,14 @@
 """VEO 3.1 视频片段生成：分镜图 → 每段视频片段
 
-用法：
-  python videogen.py <localized_analysis.json> --storyboard-dir ./storyboard/ [--output-dir ./video_clips/]
+v2 路径（推荐）：shooting_script.json + shot_*.png → shot_*.mp4
+v1 路径（向后兼容）：localized_analysis.json + segment_*.png → segment_*.mp4
 
-流程：
-  1. 读取 timeline segments + 对应分镜图
-  2. 每个 segment：分镜图 + 动作描述 → VEO 3.1 image-to-video
-  3. 异步操作，轮询等待完成
-  4. 输出 segment_NNN_{type}.mp4
+用法：
+  # v2: 从拍摄脚本（推荐）
+  python videogen.py <shooting_script.json> --storyboard-dir ./storyboard/ [--from-script]
+
+  # v1: 从分析 JSON（旧路径）
+  python videogen.py <localized_analysis.json> --storyboard-dir ./storyboard/
 """
 import argparse
 import json
@@ -29,6 +30,202 @@ def _map_duration(seconds):
         return '6'
     else:
         return '8'
+
+
+def _parse_shot_duration(duration_str):
+    """Parse shot duration like '0-8' or '22-30' to seconds."""
+    try:
+        parts = str(duration_str).split('-')
+        if len(parts) == 2:
+            return max(int(parts[1].strip()) - int(parts[0].strip()), 1)
+    except (ValueError, IndexError):
+        pass
+    return 6  # default
+
+
+def _extract_shots_from_script(script):
+    """从脚本提取 flat shot 列表，兼容 v2(shots[]) 和 v3(segments[].shots[])。"""
+    if 'segments' in script:
+        flat = []
+        for seg in script['segments']:
+            for shot in seg.get('shots', []):
+                shot_with_ctx = dict(shot)
+                shot_with_ctx['_segment_type'] = seg.get('segment_type', '')
+                flat.append(shot_with_ctx)
+        return flat
+    return script.get('shots', [])
+
+
+def _build_video_prompt_from_shot(shot, script):
+    """Build motion/action prompt for VEO from shooting script shot.
+
+    兼容 v2 (nested camera/action) 和 v3 (flat fields) 格式。
+    """
+    act = shot.get('action', {})
+    cam = shot.get('camera', {})
+    vs = script.get('visual_style', {})
+    gpn = script.get('global_production_notes', {})
+
+    parts = ["竖版9:16短视频片段。"]
+
+    # Action: v3 frame_description or v2 action.description
+    desc = shot.get('frame_description', '') or act.get('description', '')
+    if desc:
+        parts.append(desc)
+
+    gesture = act.get('key_gesture', '')
+    if gesture:
+        parts.append(f"关键动作：{gesture}。")
+
+    # Camera movement: v3 camera_movement or v2 camera.movement
+    movement = shot.get('camera_movement', '') or cam.get('movement', '')
+    if movement and movement != '固定机位' and movement != '固定':
+        parts.append(f"镜头运动：{movement}。")
+
+    # Lighting: v2 visual_style.lighting or v3 global_production_notes.lighting_setup
+    lighting = vs.get('lighting', '') or gpn.get('lighting_setup', '')
+    if lighting:
+        parts.append(f"光线：{lighting}。")
+
+    parts.append("画面自然流畅，写实风格。")
+
+    return ' '.join(parts)
+
+
+def generate_video_clips_from_script(script_path, storyboard_dir, output_dir,
+                                      model='veo-3.1-generate-preview',
+                                      poll_interval=15, max_wait=600, retry=1):
+    """v2: Generate video clips from shooting script + storyboard images.
+
+    Args:
+        script_path: Path to shooting_script.json.
+        storyboard_dir: Directory containing shot_NNN_type.png storyboard images.
+        output_dir: Output directory for video clips.
+        model: VEO model name.
+        poll_interval: Seconds between poll checks.
+        max_wait: Max seconds to wait per clip.
+        retry: Number of retries on failure.
+
+    Returns:
+        List of result dicts with shot info and output paths.
+    """
+    from google import genai
+    from google.genai import types
+
+    api_key = open(os.path.join(CRED_DIR, 'gemini-api-key.txt')).read().strip()
+    client = genai.Client(api_key=api_key)
+
+    with open(script_path, encoding='utf-8') as f:
+        script = json.load(f)
+
+    shots = _extract_shots_from_script(script)
+    if not shots:
+        raise ValueError("No shots found in shooting script JSON")
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    results = []
+    print(f"Generating {len(shots)} video clips from script with {model}...")
+
+    for i, shot in enumerate(shots):
+        shot_type = shot.get('shot_type', 'unknown')
+        shot_num = f"{i + 1:03d}"
+        duration_str = shot.get('duration_seconds', '')
+        duration_secs = _parse_shot_duration(duration_str)
+        veo_duration = _map_duration(duration_secs)
+
+        # Find matching storyboard image
+        img_filename = f"shot_{shot_num}_{shot_type}.png"
+        img_path = os.path.join(storyboard_dir, img_filename)
+
+        if not os.path.exists(img_path):
+            print(f"  [{shot_num}/{len(shots)}] {shot_type}: SKIP (no storyboard image)")
+            results.append({
+                'shot_num': i + 1,
+                'shot_type': shot_type,
+                'status': 'skipped',
+                'reason': 'no storyboard image',
+            })
+            continue
+
+        video_filename = f"shot_{shot_num}_{shot_type}.mp4"
+        video_path = os.path.join(output_dir, video_filename)
+
+        prompt = _build_video_prompt_from_shot(shot, script)
+
+        print(f"  [{shot_num}/{len(shots)}] {shot_type} ({duration_str}, {veo_duration}s)...",
+              end='', flush=True)
+
+        with open(img_path, 'rb') as img_f:
+            img_bytes = img_f.read()
+
+        success = False
+        for attempt in range(1 + retry):
+            try:
+                image = types.Image(
+                    image_bytes=img_bytes,
+                    mime_type='image/png',
+                )
+
+                operation = client.models.generate_videos(
+                    model=model,
+                    prompt=prompt,
+                    image=image,
+                    config=types.GenerateVideosConfig(
+                        aspect_ratio='9:16',
+                        duration_seconds=veo_duration,
+                    ),
+                )
+
+                elapsed = 0
+                while not operation.done:
+                    if elapsed >= max_wait:
+                        print(f" TIMEOUT ({max_wait}s)", flush=True)
+                        break
+                    time.sleep(poll_interval)
+                    elapsed += poll_interval
+                    operation = client.operations.get(operation)
+
+                if operation.done and operation.response:
+                    generated = operation.response.generated_videos[0]
+                    client.files.download(file=generated.video)
+                    generated.video.save(video_path)
+
+                    size_kb = os.path.getsize(video_path) // 1024
+                    print(f" OK ({size_kb}KB, {elapsed}s)")
+                    success = True
+                    break
+                elif operation.done:
+                    print(f" ERROR: operation completed without video", flush=True)
+                    if attempt < retry:
+                        print(f"    Retrying ({attempt + 1}/{retry})...", end='', flush=True)
+
+            except Exception as e:
+                print(f" ERROR: {e}", flush=True)
+                if attempt < retry:
+                    print(f"    Retrying ({attempt + 1}/{retry})...", end='', flush=True)
+                    time.sleep(5)
+
+        results.append({
+            'shot_num': i + 1,
+            'shot_type': shot_type,
+            'duration': veo_duration,
+            'prompt': prompt[:300],
+            'output_file': video_filename if success else None,
+            'status': 'ok' if success else 'failed',
+        })
+
+    generated = sum(1 for r in results if r['status'] == 'ok')
+    print(f"\nVideo generation complete: {generated}/{len(shots)} clips")
+
+    log_path = os.path.join(output_dir, 'videogen_log.json')
+    with open(log_path, 'w', encoding='utf-8') as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+
+    return results
+
+
+# --- v1: 旧路径（向后兼容） ---
 
 
 def _parse_timestamp_duration(timestamp):
@@ -214,10 +411,12 @@ def generate_video_clips(analysis_path, storyboard_dir, output_dir,
 
 def main():
     parser = argparse.ArgumentParser(description='Generate video clips with VEO 3.1')
-    parser.add_argument('analysis', help='Path to localized analysis JSON')
+    parser.add_argument('input', help='Path to shooting_script.json (v2) or localized_analysis.json (v1)')
     parser.add_argument('--storyboard-dir', required=True, help='Directory with storyboard PNGs')
+    parser.add_argument('--from-script', action='store_true',
+                        help='Use v2 path: read from shooting_script.json (auto-detected if input has "shots" key)')
     parser.add_argument('--output-dir', default=None,
-                        help='Output directory (default: {analysis_dir}/video_clips/)')
+                        help='Output directory (default: {input_dir}/video_clips/)')
     parser.add_argument('--model', default='veo-3.1-generate-preview',
                         help='VEO model (default: veo-3.1-generate-preview)')
     parser.add_argument('--poll-interval', type=int, default=15,
@@ -226,20 +425,37 @@ def main():
                         help='Max wait per clip in seconds (default: 600)')
     args = parser.parse_args()
 
-    if not os.path.exists(args.analysis):
-        print(f"ERROR: File not found: {args.analysis}", file=sys.stderr)
+    if not os.path.exists(args.input):
+        print(f"ERROR: File not found: {args.input}", file=sys.stderr)
         return 1
 
     output_dir = args.output_dir or os.path.join(
-        os.path.dirname(args.analysis), 'video_clips'
+        os.path.dirname(args.input) or '.', 'video_clips'
     )
 
+    # Auto-detect v2 script format
+    use_script = args.from_script
+    if not use_script:
+        with open(args.input, encoding='utf-8') as f:
+            data = json.load(f)
+        if 'shots' in data or 'segments' in data:
+            use_script = True
+            print("Auto-detected shooting script format (v2/v3 path)")
+
     try:
-        generate_video_clips(
-            args.analysis, args.storyboard_dir, output_dir,
-            model=args.model, poll_interval=args.poll_interval,
-            max_wait=args.max_wait,
-        )
+        if use_script:
+            generate_video_clips_from_script(
+                args.input, args.storyboard_dir, output_dir,
+                model=args.model, poll_interval=args.poll_interval,
+                max_wait=args.max_wait,
+            )
+        else:
+            print("Using v1 path (deprecated): reading from analysis JSON")
+            generate_video_clips(
+                args.input, args.storyboard_dir, output_dir,
+                model=args.model, poll_interval=args.poll_interval,
+                max_wait=args.max_wait,
+            )
     except Exception as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1

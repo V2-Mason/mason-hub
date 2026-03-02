@@ -1,14 +1,14 @@
-"""内容制作管线：竞品拆解 → 本地化 → 分镜 → (视频生成 → 组装)
+"""内容制作管线 v2：竞品拆解 → 本地化 → 拍摄脚本 → 分镜 → 视频生成 → 组装
 
 用法：
-  # 完整跑（从下载到分镜）
+  # 完整跑（从下载到成片）
   python content_pipeline.py --input project.json
 
   # 跳过拆解（已有 analysis JSON）
   python content_pipeline.py --input project.json --skip-teardown --analysis ref_analysis.json
 
   # 断点续跑（从某步骤开始）
-  python content_pipeline.py --input project.json --resume-from storyboard
+  python content_pipeline.py --input project.json --resume-from script
 
 project.json 格式：
   {
@@ -24,9 +24,10 @@ project.json 格式：
 步骤：
   1. teardown   — 下载参照视频 + Gemini 拆解
   2. localize   — 品牌本地化（JSON in → JSON out）
-  3. storyboard — Nano Banana 2 分镜图生成
-  4. videogen   — VEO3 视频片段生成（Phase 2，待开发）
-  5. assemble   — ffmpeg 拼接 + Drive 上传（Phase 2，待开发）
+  3. script     — 拍摄脚本生成（v2 新增，纯前向执行层）
+  4. storyboard — Nano Banana 2 分镜图生成
+  5. videogen   — VEO 3.1 视频片段生成
+  6. assemble   — ffmpeg 拼接 + Drive 上传
 """
 import argparse
 import json
@@ -36,7 +37,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-STEPS = ['teardown', 'localize', 'storyboard', 'videogen', 'assemble']
+STEPS = ['teardown', 'localize', 'script', 'storyboard', 'videogen', 'assemble']
 WORK_BASE = '/tmp/content-pipeline'
 
 
@@ -140,19 +141,60 @@ def step_localize(project, work_dir, state, analysis_path=None):
     return localized_path
 
 
-def step_storyboard(project, work_dir, state, localized_path=None):
-    """Step 3: Nano Banana 2 storyboard generation."""
-    from storyboard import generate_storyboard
+def step_script(project, work_dir, state):
+    """Step 3: Generate shooting script from localized analysis."""
+    from shooting_script import generate_script
 
-    if not localized_path:
-        localized_path = state.get('artifacts', {}).get('localized_analysis')
+    localized_path = state.get('artifacts', {}).get('localized_analysis')
     if not localized_path or not os.path.exists(localized_path):
         raise FileNotFoundError("No localized analysis found. Run localize first.")
 
-    storyboard_dir = os.path.join(work_dir, 'storyboard')
-    print(f"  Generating storyboard images...")
+    brand = project.get('brand', 'surenxuan')
+    product_override = project.get('product_override')
+    if product_override and not os.path.isabs(product_override):
+        product_override = os.path.join(os.path.dirname(localized_path), product_override)
+    print(f"  Generating shooting script for brand '{brand}'...")
 
-    prompts_log = generate_storyboard(localized_path, storyboard_dir)
+    script = generate_script(localized_path, brand=brand,
+                             product_override_path=product_override)
+
+    script_path = os.path.join(work_dir, 'shooting_script.json')
+    with open(script_path, 'w', encoding='utf-8') as f:
+        json.dump(script, f, indent=2, ensure_ascii=False)
+
+    # v3 uses segments[].shots[], v2 uses flat shots[]
+    if 'segments' in script:
+        shot_count = sum(len(s.get('shots', [])) for s in script['segments'])
+    else:
+        shot_count = len(script.get('shots', []))
+    print(f"  Shooting script saved: {script_path} ({shot_count} shots)")
+
+    state['artifacts']['shooting_script'] = script_path
+    return script_path
+
+
+def step_storyboard(project, work_dir, state):
+    """Step 4: Nano Banana 2 storyboard generation.
+
+    v2 path: reads from shooting_script.json (preferred)
+    v1 fallback: reads from localized_analysis.json
+    """
+    storyboard_dir = os.path.join(work_dir, 'storyboard')
+
+    # v2: Use shooting script if available
+    script_path = state.get('artifacts', {}).get('shooting_script')
+    if script_path and os.path.exists(script_path):
+        from storyboard import generate_storyboard_from_script
+        print(f"  Generating storyboard from shooting script (v2)...")
+        prompts_log = generate_storyboard_from_script(script_path, storyboard_dir)
+    else:
+        # v1 fallback
+        from storyboard import generate_storyboard
+        localized_path = state.get('artifacts', {}).get('localized_analysis')
+        if not localized_path or not os.path.exists(localized_path):
+            raise FileNotFoundError("No shooting script or localized analysis found.")
+        print(f"  Generating storyboard from analysis JSON (v1 fallback)...")
+        prompts_log = generate_storyboard(localized_path, storyboard_dir)
 
     generated = sum(
         1 for p in prompts_log
@@ -161,25 +203,42 @@ def step_storyboard(project, work_dir, state, localized_path=None):
 
     state['artifacts']['storyboard_dir'] = storyboard_dir
     state['artifacts']['storyboard_count'] = generated
+
+    # Pencil 画布预览（storyboard.py v2 自动生成，这里记录路径）
+    pen_path = os.path.join(storyboard_dir, 'storyboard.pen')
+    if os.path.exists(pen_path):
+        state['artifacts']['storyboard_pen'] = pen_path
+        print(f"  Pencil preview: {pen_path}")
+
     return storyboard_dir
 
 
 def step_videogen(project, work_dir, state):
-    """Step 4: VEO 3.1 video generation from storyboard images."""
-    from videogen import generate_video_clips
+    """Step 5: VEO 3.1 video generation from storyboard images.
 
+    v2 path: reads from shooting_script.json (preferred)
+    v1 fallback: reads from localized_analysis.json
+    """
     storyboard_dir = state.get('artifacts', {}).get('storyboard_dir')
-    localized_path = state.get('artifacts', {}).get('localized_analysis')
-
     if not storyboard_dir or not os.path.isdir(storyboard_dir):
         raise FileNotFoundError("No storyboard directory found. Run storyboard first.")
-    if not localized_path or not os.path.exists(localized_path):
-        raise FileNotFoundError("No localized analysis found. Run localize first.")
 
     clips_dir = os.path.join(work_dir, 'video_clips')
-    print(f"  Generating video clips from storyboard...")
 
-    results = generate_video_clips(localized_path, storyboard_dir, clips_dir)
+    # v2: Use shooting script if available
+    script_path = state.get('artifacts', {}).get('shooting_script')
+    if script_path and os.path.exists(script_path):
+        from videogen import generate_video_clips_from_script
+        print(f"  Generating video clips from shooting script (v2)...")
+        results = generate_video_clips_from_script(script_path, storyboard_dir, clips_dir)
+    else:
+        # v1 fallback
+        from videogen import generate_video_clips
+        localized_path = state.get('artifacts', {}).get('localized_analysis')
+        if not localized_path or not os.path.exists(localized_path):
+            raise FileNotFoundError("No shooting script or localized analysis found.")
+        print(f"  Generating video clips from analysis JSON (v1 fallback)...")
+        results = generate_video_clips(localized_path, storyboard_dir, clips_dir)
 
     generated = sum(1 for r in results if r['status'] == 'ok')
     state['artifacts']['clips_dir'] = clips_dir
@@ -239,7 +298,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 1: Teardown ---
     if not skip_teardown and _should_run('teardown', resume_from, state):
-        print("--- [1/5] Teardown: Download + Gemini Analysis ---")
+        print("--- [1/6] Teardown: Download + Gemini Analysis ---")
         try:
             step_teardown(project, work_dir, state, model=model)
             state['completed_steps'].append('teardown')
@@ -250,12 +309,12 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
     elif skip_teardown:
-        print("--- [1/5] Teardown: SKIPPED (--skip-teardown) ---")
+        print("--- [1/6] Teardown: SKIPPED (--skip-teardown) ---")
         print()
 
     # --- Step 2: Localize ---
     if _should_run('localize', resume_from, state):
-        print("--- [2/5] Localize: Brand Adaptation ---")
+        print("--- [2/6] Localize: Brand Adaptation ---")
         try:
             step_localize(project, work_dir, state,
                           analysis_path=state.get('artifacts', {}).get('reference_analysis'))
@@ -267,12 +326,24 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 3: Storyboard ---
-    if _should_run('storyboard', resume_from, state):
-        print("--- [3/5] Storyboard: Nano Banana 2 Image Generation ---")
+    # --- Step 3: Shooting Script (v2 新增) ---
+    if _should_run('script', resume_from, state):
+        print("--- [3/6] Script: Shooting Script Generation ---")
         try:
-            step_storyboard(project, work_dir, state,
-                            localized_path=state.get('artifacts', {}).get('localized_analysis'))
+            step_script(project, work_dir, state)
+            state['completed_steps'].append('script')
+            _save_state(state_path, state)
+            print()
+        except Exception as e:
+            print(f"  FAILED: {e}", file=sys.stderr)
+            _save_state(state_path, state)
+            return 1
+
+    # --- Step 4: Storyboard ---
+    if _should_run('storyboard', resume_from, state):
+        print("--- [4/6] Storyboard: Nano Banana 2 Image Generation ---")
+        try:
+            step_storyboard(project, work_dir, state)
             state['completed_steps'].append('storyboard')
             _save_state(state_path, state)
             print()
@@ -281,9 +352,9 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 4: Video Generation ---
+    # --- Step 5: Video Generation ---
     if _should_run('videogen', resume_from, state):
-        print("--- [4/5] Video Generation: VEO 3.1 ---")
+        print("--- [5/6] Video Generation: VEO 3.1 ---")
         try:
             step_videogen(project, work_dir, state)
             state['completed_steps'].append('videogen')
@@ -294,9 +365,9 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 5: Assembly ---
+    # --- Step 6: Assembly ---
     if _should_run('assemble', resume_from, state):
-        print("--- [5/5] Assembly: ffmpeg ---")
+        print("--- [6/6] Assembly: ffmpeg ---")
         try:
             step_assemble(project, work_dir, state)
             state['completed_steps'].append('assemble')
@@ -306,7 +377,6 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             print(f"  FAILED: {e}", file=sys.stderr)
             _save_state(state_path, state)
             return 1
-        print()
 
     # --- Sync to Board ---
     try:

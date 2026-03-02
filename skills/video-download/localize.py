@@ -40,12 +40,17 @@ LOCALIZATION_PROMPT_TEMPLATE = """你是一位品牌内容本地化专家。你�
 ⚠️ 核心规则（绝对不可违反）：
 1. 输出 JSON 的结构（所有 key、嵌套层级、数组长度）必须与输入 JSON 完全一致
 2. 不要新增任何 key，不要删除任何 key，不要改变数组元素数量
-3. 只修改以下字段中的文本值：
+3. 可修改的字段（适配品牌调性）：
    - content_structure.timeline[].description — 调整描述语气，适配品牌调性
    - content_structure.timeline[].key_technique — 如果技巧不适用于品牌，替换为品牌 voice 里的对应技巧
+   - content_structure.pacing_pattern — 适配品牌节奏（如从"快节奏"改为"中速偏慢"）
+   - content_structure.transition_style — 适配品牌风格的转场方式
    - audio_analysis.voiceover_style — 替换为品牌的口播风格标签
+   - audio_analysis.speaking_pace — 适配品牌节奏
+   - audio_analysis.emotional_arc — 适配品牌情绪曲线
    - audio_analysis.tone_keywords — 替换为品牌的调性关键词
    - audio_analysis.signature_phrases[].phrase — 用品牌的话术模板替换原文话术
+   - audio_analysis.signature_phrases[].function — 适配品牌的说服功能描述
    - copywriting_analysis.selling_point_expression_patterns[].example — 用品牌风格重写示例
    - copywriting_analysis.call_to_action.text — 用品牌的结尾引导话术替换
    - replicable_template.content_formula — 适配品牌调性重述
@@ -75,6 +80,11 @@ LOCALIZATION_PROMPT_TEMPLATE = """你是一位品牌内容本地化专家。你�
 - 结尾引导用"感兴趣的姐妹可以先收藏"而不是"一定要冲"
 - 价格表达用模糊区间（"百元出头""不到两百"），不报精确价格
 - 禁用词：美白→提亮、祛痘→改善痘痘、祛斑→淡化色斑、抗衰老→抗初老
+
+=== 禁止虚构规则 ===
+- 不可虚构原视频不存在的信息。如果原视频没有提及价格，本地化版也不能编造价格信息。
+- signature_phrases 的改写必须基于原文的语义，不能凭空添加原视频不存在的内容（如原文无价格，改写后也不能出现价格）。
+- 保持 price_signal 字段的真实性：如果原值为"未提及价格"，本地化后仍应为"未提及价格"。
 
 只输出 JSON，不要其他文字。确保 JSON 格式正确。
 
