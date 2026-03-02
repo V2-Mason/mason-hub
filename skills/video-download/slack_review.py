@@ -7,6 +7,7 @@
   1. EMP_0008 核对请求 — 选题/参照视频/分发策略 → #socialmesh
   2. Mason 交付通知 — 成片 + 分镜预览 + 脚本 → #socialmesh
   3. 管线状态通知 — 步骤完成/失败 → #socialmesh-dev
+  4. 产品匹配推荐 — Top 3 产品推荐 + 理由 → #socialmesh
 """
 import json
 import os
@@ -143,3 +144,48 @@ def notify_pipeline_status(project_id, step, status, detail=''):
         text += f" - {detail}"
 
     return _post_slack(token, CH_SOCIALMESH_DEV, text)
+
+
+def notify_product_recommendations(project_id, recommendations, analysis_products,
+                                   resume_cmd=''):
+    """发送产品匹配推荐到 #socialmesh，等待 Mason 确认。
+
+    Args:
+        project_id: 项目 ID。
+        recommendations: 推荐列表（含 product_name, brand, reasoning, match_type, rank）。
+        analysis_products: 原视频 product_catalog 条目。
+        resume_cmd: 续跑命令提示。
+    Returns:
+        True if message sent successfully.
+    """
+    token = _get_slack_token()
+    if not token:
+        print("WARNING: SLACK_BOT_TOKEN not found, skipping notification", file=sys.stderr)
+        return False
+
+    lines = [
+        f"--- 产品匹配推荐 [{project_id}] ---",
+        "",
+        "参照视频产品:",
+    ]
+    for p in analysis_products[:5]:
+        lines.append(f"  - {p.get('product_type', '?')}: {p.get('core_function', '')}")
+
+    lines.append("")
+    lines.append("推荐匹配 (Top 3):")
+    for rec in recommendations:
+        match_type = rec.get('match_type', 'unknown')
+        tag = '同品类' if match_type == 'same_category' else '跨品类'
+        lines.append(
+            f"  {rec.get('rank', '?')}. {rec.get('product_name', '?')} "
+            f"({rec.get('brand', '?')}) [{tag}]"
+        )
+        if rec.get('reasoning'):
+            lines.append(f"     理由: {rec['reasoning']}")
+
+    lines.append("")
+    if resume_cmd:
+        lines.append(f"确认后执行: {resume_cmd}")
+    lines.append("Mason 请确认或修改后继续管线。")
+
+    return _post_slack(token, CH_SOCIALMESH, '\n'.join(lines))

@@ -1,14 +1,17 @@
-"""内容制作管线 v2：竞品拆解 → 本地化 → 拍摄脚本 → 分镜 → 视频生成 → 组装
+"""内容制作管线 v3：竞品拆解 → 本地化 → 产品匹配 → 拍摄脚本 → 分镜 → 视频生成 → 组装
 
 用法：
-  # 完整跑（从下载到成片）
+  # 完整跑（从下载到成片，match 步骤会暂停等 Mason 确认）
   python content_pipeline.py --input project.json
 
   # 跳过拆解（已有 analysis JSON）
   python content_pipeline.py --input project.json --skip-teardown --analysis ref_analysis.json
 
-  # 断点续跑（从某步骤开始）
+  # 断点续跑（Mason 确认产品后）
   python content_pipeline.py --input project.json --resume-from script
+
+  # 全自动（跳过产品确认）
+  python content_pipeline.py --input project.json --auto-approve
 
 project.json 格式：
   {
@@ -24,10 +27,11 @@ project.json 格式：
 步骤：
   1. teardown   — 下载参照视频 + Gemini 拆解
   2. localize   — 品牌本地化（JSON in → JSON out）
-  3. script     — 拍摄脚本生成（v2 新增，纯前向执行层）
-  4. storyboard — Nano Banana 2 分镜图生成
-  5. videogen   — VEO 3.1 视频片段生成
-  6. assemble   — ffmpeg 拼接 + Drive 上传
+  3. match      — 产品匹配推荐（v3 新增，推荐 Top 3 → Slack → Mason 确认）
+  4. script     — 拍摄脚本生成（骨架锁死 + 跨品类自动适配）
+  5. storyboard — Nano Banana 2 分镜图生成
+  6. videogen   — VEO 3.1 视频片段生成
+  7. assemble   — ffmpeg 拼接 + Drive 上传
 """
 import argparse
 import json
@@ -37,7 +41,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-STEPS = ['teardown', 'localize', 'script', 'storyboard', 'videogen', 'assemble']
+STEPS = ['teardown', 'localize', 'match', 'script', 'storyboard', 'videogen', 'assemble']
 WORK_BASE = '/tmp/content-pipeline'
 
 
@@ -141,8 +145,71 @@ def step_localize(project, work_dir, state, analysis_path=None):
     return localized_path
 
 
+def step_match(project, work_dir, state, skip_gemini=False):
+    """Step 3: Product match recommendation + Mason approval pause."""
+    from product_match import recommend
+    from slack_review import notify_product_recommendations
+
+    analysis_path = state.get('artifacts', {}).get('reference_analysis')
+    if not analysis_path or not os.path.exists(analysis_path):
+        raise FileNotFoundError("No analysis JSON found. Run teardown first.")
+
+    brand = project.get('brand', 'surenxuan')
+    print(f"  Matching products for brand '{brand}'...")
+
+    recommendations, product_override = recommend(
+        analysis_path, brand=brand, skip_gemini=skip_gemini
+    )
+
+    if not recommendations:
+        print("  No product matches found, continuing without product override.")
+        return None
+
+    # Save recommendations
+    rec_path = os.path.join(work_dir, 'product_recommendations.json')
+    with open(rec_path, 'w', encoding='utf-8') as f:
+        json.dump(recommendations, f, indent=2, ensure_ascii=False)
+
+    # Save product_override (Top 1 by default, Mason can edit before resuming)
+    override_path = os.path.join(work_dir, 'product_override.json')
+    with open(override_path, 'w', encoding='utf-8') as f:
+        # 默认只放 Top 1，Mason 可以手动改这个文件选其他的
+        json.dump(product_override[:1], f, indent=2, ensure_ascii=False)
+
+    # Patch project.json in work_dir to point to product_override
+    project['product_override'] = override_path
+    project_copy = os.path.join(work_dir, 'project.json')
+    with open(project_copy, 'w', encoding='utf-8') as f:
+        json.dump(project, f, indent=2, ensure_ascii=False)
+
+    # Load analysis for Slack context
+    with open(analysis_path, encoding='utf-8') as f:
+        analysis = json.load(f)
+    analysis_products = analysis.get('product_catalog', [])
+
+    # Slack notification
+    resume_cmd = f"python content_pipeline.py --input {os.path.join(work_dir, 'project.json')} --resume-from script"
+    try:
+        notify_product_recommendations(
+            project.get('project_id', 'unknown'),
+            recommendations,
+            analysis_products,
+            resume_cmd=resume_cmd,
+        )
+        print(f"  Slack notification sent to #socialmesh")
+    except Exception as e:
+        print(f"  WARNING: Slack notification failed: {e}", file=sys.stderr)
+
+    print(f"  Recommendations: {rec_path}")
+    print(f"  Product override: {override_path}")
+
+    state['artifacts']['product_recommendations'] = rec_path
+    state['artifacts']['product_override'] = override_path
+    return rec_path
+
+
 def step_script(project, work_dir, state):
-    """Step 3: Generate shooting script from localized analysis."""
+    """Step 4: Generate shooting script from localized analysis."""
     from shooting_script import generate_script
 
     localized_path = state.get('artifacts', {}).get('localized_analysis')
@@ -151,8 +218,13 @@ def step_script(project, work_dir, state):
 
     brand = project.get('brand', 'surenxuan')
     product_override = project.get('product_override')
+    # Fallback: auto-detect from match step output
+    if not product_override:
+        product_override = state.get('artifacts', {}).get('product_override')
     if product_override and not os.path.isabs(product_override):
         product_override = os.path.join(os.path.dirname(localized_path), product_override)
+    if product_override and os.path.exists(product_override):
+        print(f"  Using product override: {product_override}")
     print(f"  Generating shooting script for brand '{brand}'...")
 
     script = generate_script(localized_path, brand=brand,
@@ -269,7 +341,8 @@ def step_assemble(project, work_dir, state):
 
 
 def run_pipeline(project_path, resume_from=None, skip_teardown=False,
-                 analysis_path=None, model='gemini-3-flash-preview'):
+                 analysis_path=None, model='gemini-3-flash-preview',
+                 skip_gemini_match=False, auto_approve=False):
     """Run the content production pipeline."""
     project = _load_project(project_path)
     project_id = project['project_id']
@@ -298,7 +371,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
 
     # --- Step 1: Teardown ---
     if not skip_teardown and _should_run('teardown', resume_from, state):
-        print("--- [1/6] Teardown: Download + Gemini Analysis ---")
+        print("--- [1/7] Teardown: Download + Gemini Analysis ---")
         try:
             step_teardown(project, work_dir, state, model=model)
             state['completed_steps'].append('teardown')
@@ -309,12 +382,12 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
     elif skip_teardown:
-        print("--- [1/6] Teardown: SKIPPED (--skip-teardown) ---")
+        print("--- [1/7] Teardown: SKIPPED (--skip-teardown) ---")
         print()
 
     # --- Step 2: Localize ---
     if _should_run('localize', resume_from, state):
-        print("--- [2/6] Localize: Brand Adaptation ---")
+        print("--- [2/7] Localize: Brand Adaptation ---")
         try:
             step_localize(project, work_dir, state,
                           analysis_path=state.get('artifacts', {}).get('reference_analysis'))
@@ -326,9 +399,34 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 3: Shooting Script (v2 新增) ---
+    # --- Step 3: Product Match ---
+    if _should_run('match', resume_from, state):
+        print("--- [3/7] Match: Product Recommendation ---")
+        try:
+            step_match(project, work_dir, state, skip_gemini=skip_gemini_match)
+            state['completed_steps'].append('match')
+            _save_state(state_path, state)
+
+            if not auto_approve:
+                print()
+                print("*** PIPELINE PAUSED — Awaiting Mason approval ***")
+                print(f"    Review recommendations in Slack (#socialmesh)")
+                override_path = state.get('artifacts', {}).get('product_override', '')
+                if override_path:
+                    print(f"    Edit product_override.json if needed: {override_path}")
+                print(f"    Resume: python content_pipeline.py --input {project_path} --resume-from script")
+                print()
+                _save_state(state_path, state)
+                return 0  # Clean exit, not an error
+            print()
+        except Exception as e:
+            print(f"  FAILED: {e}", file=sys.stderr)
+            _save_state(state_path, state)
+            return 1
+
+    # --- Step 4: Shooting Script ---
     if _should_run('script', resume_from, state):
-        print("--- [3/6] Script: Shooting Script Generation ---")
+        print("--- [4/7] Script: Shooting Script Generation ---")
         try:
             step_script(project, work_dir, state)
             state['completed_steps'].append('script')
@@ -339,9 +437,9 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 4: Storyboard ---
+    # --- Step 5: Storyboard ---
     if _should_run('storyboard', resume_from, state):
-        print("--- [4/6] Storyboard: Nano Banana 2 Image Generation ---")
+        print("--- [5/7] Storyboard: Nano Banana 2 Image Generation ---")
         try:
             step_storyboard(project, work_dir, state)
             state['completed_steps'].append('storyboard')
@@ -352,9 +450,9 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 5: Video Generation ---
+    # --- Step 6: Video Generation ---
     if _should_run('videogen', resume_from, state):
-        print("--- [5/6] Video Generation: VEO 3.1 ---")
+        print("--- [6/7] Video Generation: VEO 3.1 ---")
         try:
             step_videogen(project, work_dir, state)
             state['completed_steps'].append('videogen')
@@ -365,9 +463,9 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
             _save_state(state_path, state)
             return 1
 
-    # --- Step 6: Assembly ---
+    # --- Step 7: Assembly ---
     if _should_run('assemble', resume_from, state):
-        print("--- [6/6] Assembly: ffmpeg ---")
+        print("--- [7/7] Assembly: ffmpeg ---")
         try:
             step_assemble(project, work_dir, state)
             state['completed_steps'].append('assemble')
@@ -424,6 +522,10 @@ def main():
                         help='Path to existing analysis JSON (use with --skip-teardown)')
     parser.add_argument('--model', default='gemini-3-flash-preview',
                         help='Gemini model for teardown (default: gemini-3-flash-preview)')
+    parser.add_argument('--skip-gemini-match', action='store_true',
+                        help='Use only rule-based product matching (no Gemini call)')
+    parser.add_argument('--auto-approve', action='store_true',
+                        help='Auto-approve product recommendations (skip Mason review)')
     args = parser.parse_args()
 
     if not os.path.exists(args.input):
@@ -436,6 +538,8 @@ def main():
         skip_teardown=args.skip_teardown,
         analysis_path=args.analysis,
         model=args.model,
+        skip_gemini_match=args.skip_gemini_match,
+        auto_approve=args.auto_approve,
     )
 
 
