@@ -188,7 +188,7 @@ a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
-<h1>XHS 市场信号</h1>
+<h1 id="page-title">XHS 市场信号</h1>
 <div class="subtitle" id="disclaimer">加载中...</div>
 <div class="meta" id="meta"></div>
 
@@ -252,6 +252,36 @@ a:hover { text-decoration: underline; }
 var currentDate = null;
 var availableDates = [];
 
+// Derive basePath for data fetches.
+// /market/surenxuan-kr/xhs/ → basePath = '/market/surenxuan-kr/xhs/'
+// /market/surenxuan-kr/     → basePath = '/market/surenxuan-kr/xhs/' (append default platform)
+// /xhs/                     → basePath = '/xhs/'
+var basePath = (function() {
+  var p = window.location.pathname;
+  // Ensure trailing slash
+  if (p.charAt(p.length - 1) !== '/') p += '/';
+  // Strip index.html if present
+  p = p.replace(/index\.html\/?$/, '');
+  // If at project root (e.g., /market/surenxuan-kr/) with no platform suffix, append xhs/
+  var projRoot = p.match(/^\/market\/([^/]+)\/$/);
+  if (projRoot) {
+    p = p + 'xhs/';
+  }
+  return p;
+})();
+
+// Extract project name from URL if available (e.g., /market/surenxuan-kr/)
+var projectId = (function() {
+  var m = basePath.match(/\/market\/([^/]+)\//);
+  return m ? m[1] : '';
+})();
+
+// Update page title if in project context
+if (projectId) {
+  document.getElementById('page-title').textContent = 'XHS 市场信号 — ' + projectId;
+  document.title = projectId + ' — XHS 市场信号';
+}
+
 function showTab(name, el) {
   document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
   document.getElementById(name + '-section').classList.add('active');
@@ -287,7 +317,7 @@ async function discoverDates() {
     var ds = d.toISOString().split('T')[0];
     promises.push(
       (function(dateStr) {
-        return fetch('/xhs/analysis_' + dateStr + '.json', {method: 'HEAD'})
+        return fetch(basePath + 'analysis_' + dateStr + '.json', {method: 'HEAD'})
           .then(function(r) { return r.ok ? dateStr : null; })
           .catch(function() { return null; });
       })(ds)
@@ -322,12 +352,12 @@ async function loadDate(dateStr) {
   document.getElementById('date-input').value = dateStr;
   renderDateChips();
 
-  var enrichedRes = await fetch('/xhs/analysis_' + dateStr + '_enriched.json');
+  var enrichedRes = await fetch(basePath + 'analysis_' + dateStr + '_enriched.json');
   var res;
   if (enrichedRes.ok) {
     res = enrichedRes;
   } else {
-    res = await fetch('/xhs/analysis_' + dateStr + '.json');
+    res = await fetch(basePath + 'analysis_' + dateStr + '.json');
   }
   if (!res.ok) {
     document.getElementById('date-status').textContent = dateStr + ' 无数据';
@@ -507,13 +537,13 @@ function renderData(d) {
 
 async function loadBriefing(dateStr) {
   try {
-    var res = await fetch('/xhs/briefings/' + dateStr + '.json');
+    var res = await fetch(basePath + 'briefings/' + dateStr + '.json');
     if (!res.ok) {
       var today = new Date(Date.now() + 8 * 3600000);
       for (var i = 1; i < 7; i++) {
         var d = new Date(today); d.setDate(d.getDate() - i);
         var ds = d.toISOString().split('T')[0];
-        res = await fetch('/xhs/briefings/' + ds + '.json');
+        res = await fetch(basePath + 'briefings/' + ds + '.json');
         if (res.ok) break;
       }
     }
@@ -639,13 +669,13 @@ async function loadBriefing(dateStr) {
 
 async function loadTrends(dateStr) {
   try {
-    var res = await fetch('/xhs/trends/' + dateStr + '.json');
+    var res = await fetch(basePath + 'trends/' + dateStr + '.json');
     if (!res.ok) {
       var today = new Date(Date.now() + 8 * 3600000);
       for (var i = 1; i < 7; i++) {
         var d = new Date(today); d.setDate(d.getDate() - i);
         var ds = d.toISOString().split('T')[0];
-        res = await fetch('/xhs/trends/' + ds + '.json');
+        res = await fetch(basePath + 'trends/' + ds + '.json');
         if (res.ok) break;
       }
     }
@@ -737,14 +767,14 @@ async function loadComments(dateStr) {
   var noData = '<p style="color:#999;padding:20px;text-align:center">暂无评论数据</p>';
 
   try {
-    var res = await fetch('/xhs/comments/' + dateStr + '.json');
+    var res = await fetch(basePath + 'comments/' + dateStr + '.json');
     if (!res.ok) {
       // Try recent dates
       var today = new Date(Date.now() + 8 * 3600000);
       for (var i = 1; i < 7; i++) {
         var d = new Date(today); d.setDate(d.getDate() - i);
         var ds = d.toISOString().split('T')[0];
-        res = await fetch('/xhs/comments/' + ds + '.json');
+        res = await fetch(basePath + 'comments/' + ds + '.json');
         if (res.ok) break;
       }
     }

@@ -36,7 +36,7 @@ def interaction_score(liked, collected, comment, shared):
     return liked + collected * 3 + comment * 5 + shared * 8
 
 
-def analyze():
+def analyze(keywords=None):
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -52,12 +52,20 @@ def analyze():
     if has_content_tier:
         extra_cols += ', content_tier'
 
+    where_clause = ''
+    params = ()
+    if keywords:
+        placeholders = ','.join('?' for _ in keywords)
+        where_clause = f'WHERE source_keyword IN ({placeholders})'
+        params = tuple(keywords)
+
     rows = cur.execute(f'''
         SELECT note_id, title, "desc", type, liked_count, collected_count,
                comment_count, share_count, tag_list, source_keyword, note_url, nickname, time, user_id
                {extra_cols}
         FROM xhs_note
-    ''').fetchall()
+        {where_clause}
+    ''', params).fetchall()
 
     notes = []
     for r in rows:
@@ -318,9 +326,14 @@ def print_report(notes, report):
 def main():
     parser = argparse.ArgumentParser(description='XHS 爆款帖子分析')
     parser.add_argument('--json-out', help='输出 JSON 分析结果到指定路径')
+    parser.add_argument('--keywords', help='逗号分隔的关键词过滤（仅分析这些 source_keyword）')
     args = parser.parse_args()
 
-    notes = analyze()
+    keywords = None
+    if args.keywords:
+        keywords = [k.strip() for k in args.keywords.split(',') if k.strip()]
+
+    notes = analyze(keywords=keywords)
     if not notes:
         print('ERROR: 数据库无数据')
         return 1

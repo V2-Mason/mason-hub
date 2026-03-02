@@ -348,13 +348,20 @@ def _compute_comment_quality(comments, note_meta=None):
     return results[:15]
 
 
-def analyze_comments():
+def analyze_comments(keywords=None):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     # Get all comments with note info (including URL and interaction data)
-    comments = cur.execute('''
+    where_clause = ''
+    params = ()
+    if keywords:
+        placeholders = ','.join('?' for _ in keywords)
+        where_clause = f'WHERE n.source_keyword IN ({placeholders})'
+        params = tuple(keywords)
+
+    comments = cur.execute(f'''
         SELECT c.comment_id, c.note_id, c.content, c.like_count,
                c.create_time, c.sub_comment_count, c.parent_comment_id,
                c.nickname, c.user_id,
@@ -366,8 +373,9 @@ def analyze_comments():
                n.share_count as note_shared
         FROM xhs_note_comment c
         LEFT JOIN xhs_note n ON c.note_id = n.note_id
+        {where_clause}
         ORDER BY CAST(c.like_count AS INTEGER) DESC
-    ''').fetchall()
+    ''', params).fetchall()
 
     # Build note metadata (interaction score + rank + URL) for enriching analyses
     note_meta = {}
@@ -542,9 +550,14 @@ def print_report(report):
 def main():
     parser = argparse.ArgumentParser(description='XHS 评论分析')
     parser.add_argument('--json-out', help='输出 JSON 到指定路径')
+    parser.add_argument('--keywords', help='逗号分隔的关键词过滤（仅分析这些 source_keyword 对应笔记的评论）')
     args = parser.parse_args()
 
-    report = analyze_comments()
+    keywords = None
+    if args.keywords:
+        keywords = [k.strip() for k in args.keywords.split(',') if k.strip()]
+
+    report = analyze_comments(keywords=keywords)
     if not report:
         return 3
 

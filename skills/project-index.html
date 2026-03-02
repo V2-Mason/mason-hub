@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场信号看板</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f5f5; color: #333; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+h1 { font-size: 28px; margin-bottom: 8px; }
+.subtitle { color: #999; font-size: 14px; margin-bottom: 32px; }
+.project-list { display: grid; gap: 16px; }
+.project-card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-decoration: none; color: inherit; transition: box-shadow 0.2s; }
+.project-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.project-name { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
+.project-id { color: #999; font-size: 13px; font-family: monospace; }
+.platform-tags { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.platform-tag { display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 13px; font-weight: 500; }
+.platform-tag.xhs { background: #ffe0e0; color: #c62828; }
+.platform-tag.douyin { background: #e0e0e0; color: #333; }
+.platform-tag.taobao { background: #ffe0b2; color: #e65100; }
+.kw-list { margin-top: 8px; font-size: 13px; color: #888; }
+.loading { text-align: center; padding: 40px; color: #999; }
+.error { text-align: center; padding: 40px; color: #c62828; }
+</style>
+</head>
+<body>
+<h1>市场信号看板</h1>
+<div class="subtitle">选择项目查看分析数据</div>
+<div id="projects" class="project-list">
+  <div class="loading">加载项目列表...</div>
+</div>
+
+<script>
+var platformNames = {
+  'xhs': '小红书',
+  'douyin': '抖音',
+  'taobao': '淘宝',
+};
+var platformClasses = {
+  'xhs': 'xhs',
+  'douyin': 'douyin',
+  'taobao': 'taobao',
+};
+
+async function loadProjects() {
+  var container = document.getElementById('projects');
+  try {
+    var res = await fetch('/market/projects.json');
+    if (!res.ok) throw new Error('Failed to load projects.json');
+    var projects = await res.json();
+    var html = '';
+    for (var id in projects) {
+      var p = projects[id];
+      var platforms = Object.keys(p.platforms || {});
+      var tags = platforms.map(function(pl) {
+        var cls = platformClasses[pl] || '';
+        var name = platformNames[pl] || pl;
+        return '<span class="platform-tag ' + cls + '">' + name + '</span>';
+      }).join('');
+
+      // Show first platform's keywords
+      var firstPlatform = platforms[0];
+      var kws = (p.platforms[firstPlatform] || {}).keywords || [];
+      var kwText = kws.slice(0, 5).join(' · ');
+      if (kws.length > 5) kwText += ' ...';
+
+      // Link to first platform dashboard (default to xhs)
+      var link = '/market/' + id + '/';
+
+      html += '<a href="' + link + '" class="project-card">';
+      html += '<div class="project-name">' + (p.name || id) + '</div>';
+      html += '<div class="project-id">' + id + '</div>';
+      html += '<div class="platform-tags">' + tags + '</div>';
+      html += '<div class="kw-list">' + kwText + '</div>';
+      html += '</a>';
+    }
+    container.innerHTML = html || '<div class="error">没有配置项目</div>';
+  } catch (e) {
+    container.innerHTML = '<div class="error">加载失败: ' + e.message + '</div>';
+  }
+}
+
+loadProjects();
+</script>
+</body>
+</html>

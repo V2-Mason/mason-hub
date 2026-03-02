@@ -5,8 +5,14 @@ import sys
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python _xhs_slack_summary.py <analysis.json>")
+        print("Usage: python _xhs_slack_summary.py <analysis.json> [--dashboard-url <url>]")
         return 1
+
+    dashboard_url = 'http://106.14.44.68/xhs/'
+    if '--dashboard-url' in sys.argv:
+        idx = sys.argv.index('--dashboard-url')
+        if idx + 1 < len(sys.argv):
+            dashboard_url = sys.argv[idx + 1]
 
     with open(sys.argv[1]) as f:
         r = json.load(f)
@@ -36,7 +42,7 @@ def main():
     lines.append("")
 
     lines.append(f"假流量: {ft['count']} 条可疑")
-    lines.append(f"看板: http://106.14.44.68/xhs/")
+    lines.append(f"看板: {dashboard_url}")
 
     print('\n'.join(lines))
 

@@ -1,6 +1,9 @@
 #!/bin/bash
 # xhs-analyze.sh — XHS 市场信号管道
-# 用法: xhs-analyze.sh [--no-slack] [--no-enrich] [--no-comments] [--enrich-top-n 3] [--comment-top-n 10]
+# 用法: xhs-analyze.sh [--project <id>] [--no-slack] [--no-enrich] [--no-comments] [--enrich-top-n 3] [--comment-top-n 10]
+#
+# --project: 从 projects.json 读取关键词，输出到 projects/{id}/xhs/
+#            不传则全量分析 + 输出到原路径（向后兼容）
 #
 # 流程:
 # 1. SCP 脚本到阿里云 → 跑分析 → analysis_YYYY-MM-DD.json
@@ -17,8 +20,7 @@ source "$HUB_DIR/shared/common.sh"
 
 ALIYUN="root@106.14.44.68"
 MC_DIR="/opt/mediacrawler"
-ANALYSIS_DIR="$MC_DIR/analysis"
-SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh
+SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh (default)
 TODAY=$(TZ=Asia/Shanghai date '+%Y-%m-%d')
 
 NO_SLACK=false
@@ -27,8 +29,10 @@ NO_COMMENTS=false
 ENRICH_TOP_N=20
 COMMENT_TOP_N=10
 COMMENT_MAX=20
+PROJECT=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --project) PROJECT="$2"; shift 2 ;;
     --no-slack) NO_SLACK=true; shift ;;
     --no-enrich) NO_ENRICH=true; shift ;;
     --no-comments) NO_COMMENTS=true; shift ;;
@@ -39,13 +43,65 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# --- Project config ---
+KEYWORDS_ARG=""
+KEYWORDS_CSV=""
+PROJECT_NAME=""
+ANALYSIS_DIR="$MC_DIR/analysis"  # default (backward compatible)
+
+if [ -n "$PROJECT" ]; then
+  PROJECTS_FILE="$HUB_DIR/skills/projects.json"
+  if [ ! -f "$PROJECTS_FILE" ]; then
+    echo "ERROR: projects.json not found at $PROJECTS_FILE"
+    exit 1
+  fi
+
+  # Extract project config using python (jq not available on all systems)
+  PROJECT_CONFIG=$(python3 -c "
+import json, sys
+with open('$PROJECTS_FILE') as f:
+    projects = json.load(f)
+p = projects.get('$PROJECT')
+if not p:
+    print('ERROR: project $PROJECT not found', file=sys.stderr)
+    sys.exit(1)
+xhs = p.get('platforms', {}).get('xhs')
+if not xhs:
+    print('ERROR: project $PROJECT has no xhs platform', file=sys.stderr)
+    sys.exit(1)
+print(p['name'])
+print(','.join(xhs['keywords']))
+print(p.get('slack_channel', ''))
+" 2>&1)
+
+  if [ $? -ne 0 ]; then
+    echo "$PROJECT_CONFIG"
+    exit 1
+  fi
+
+  PROJECT_NAME=$(echo "$PROJECT_CONFIG" | sed -n '1p')
+  KEYWORDS_CSV=$(echo "$PROJECT_CONFIG" | sed -n '2p')
+  PROJECT_SLACK=$(echo "$PROJECT_CONFIG" | sed -n '3p')
+
+  if [ -n "$PROJECT_SLACK" ]; then
+    SLACK_CHANNEL="$PROJECT_SLACK"
+  fi
+
+  KEYWORDS_ARG="--keywords '$KEYWORDS_CSV'"
+  ANALYSIS_DIR="$MC_DIR/projects/$PROJECT/xhs"
+fi
+
 echo "=== XHS 市场信号管道 ==="
 echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+if [ -n "$PROJECT" ]; then
+  echo "Project: $PROJECT ($PROJECT_NAME)"
+  echo "Keywords: $KEYWORDS_CSV"
+fi
 
-log_event "xhs-analysis" "market-signals" "start" "Starting market signals pipeline"
+log_event "xhs-analysis" "market-signals" "start" "Starting market signals pipeline${PROJECT:+ (project: $PROJECT)}"
 
 # --- 确保目录存在 ---
-ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/briefings $ANALYSIS_DIR/trends" 2>/dev/null
+ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/briefings $ANALYSIS_DIR/trends $ANALYSIS_DIR/comments" 2>/dev/null
 
 # === STEP 1: 基础分析 ===
 echo ""
@@ -66,7 +122,7 @@ echo "Notes in DB: $NOTE_COUNT"
 JSON_OUT="$ANALYSIS_DIR/analysis_${TODAY}.json"
 
 ANALYSIS_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
-  "cd $MC_DIR && source venv/bin/activate && python xhs_analyze.py --json-out '$JSON_OUT' 2>&1")
+  "cd $MC_DIR && source venv/bin/activate && python xhs_analyze.py --json-out '$JSON_OUT' $KEYWORDS_ARG 2>&1")
 
 ANALYSIS_EXIT=$?
 echo "$ANALYSIS_OUTPUT"
@@ -135,10 +191,9 @@ if [ "$NO_COMMENTS" = false ]; then
 
     # Run comment analysis
     scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_comment_analysis.py" "$ALIYUN:$MC_DIR/_comment_analysis.py" 2>/dev/null
-    ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/comments" 2>/dev/null
 
     COMMENT_ANALYSIS_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
-      "cd $MC_DIR && source venv/bin/activate && python _comment_analysis.py --json-out '$ANALYSIS_DIR/comments/${TODAY}.json' 2>&1")
+      "cd $MC_DIR && source venv/bin/activate && python _comment_analysis.py --json-out '$ANALYSIS_DIR/comments/${TODAY}.json' $KEYWORDS_ARG 2>&1")
 
     echo "$COMMENT_ANALYSIS_OUTPUT"
   elif [ $COMMENT_EXIT -eq 3 ]; then
@@ -202,16 +257,26 @@ if [ $BRIEFING_EXIT -ne 0 ]; then
   exit 1
 fi
 
-log_event "xhs-analysis" "market-signals" "end" "Pipeline done, $NOTE_COUNT notes"
+log_event "xhs-analysis" "market-signals" "end" "Pipeline done, $NOTE_COUNT notes${PROJECT:+ (project: $PROJECT)}"
 
 # === SLACK 摘要 ===
 if [ "$NO_SLACK" = false ]; then
   scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_slack_summary.py" "$ALIYUN:$MC_DIR/_slack_summary.py" 2>/dev/null
+
+  DASHBOARD_URL="http://106.14.44.68/xhs/"
+  if [ -n "$PROJECT" ]; then
+    DASHBOARD_URL="http://106.14.44.68/market/$PROJECT/"
+  fi
+
   SUMMARY=$(ssh -o ConnectTimeout=10 "$ALIYUN" \
-    "cd $MC_DIR && source venv/bin/activate && python _slack_summary.py '$SIGNAL_INPUT'" 2>/dev/null)
+    "cd $MC_DIR && source venv/bin/activate && python _slack_summary.py '$SIGNAL_INPUT' --dashboard-url '$DASHBOARD_URL'" 2>/dev/null)
 
   if [ -n "$SUMMARY" ]; then
-    MSG="📊 *XHS 市场信号更新* ($TODAY)
+    PROJECT_LABEL=""
+    if [ -n "$PROJECT_NAME" ]; then
+      PROJECT_LABEL=" [$PROJECT_NAME]"
+    fi
+    MSG="📊 *XHS 市场信号更新*${PROJECT_LABEL} ($TODAY)
 $SUMMARY"
     notify_slack "$SLACK_CHANNEL" "$MSG" "XHS Analyst" ":bar_chart:"
     echo ""
