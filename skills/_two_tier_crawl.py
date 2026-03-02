@@ -2,9 +2,19 @@
 two_tier_crawl.py — 两层采集 + 拟人化浏览 + 多账号隔离
 
 用法: python two_tier_crawl.py --account A --keywords "k1,k2" [--top-n 10] [--pages 1]
+                                [--sort time_descending|general] [--time-window 30]
 
 第一层: 搜索 API 广撒网（标题+互动数据），存库
 第二层: 仅对互动分最高的 Top N 调详情 API（正文+标签+图片）
+
+搜索排序:
+- time_descending (默认): 按时间排序，采集近期内容
+- general: 综合排序（平台推荐，会返回老帖子）
+
+时间窗口 (--time-window N):
+- 仅在 time_descending 模式下生效
+- 搜索结果中发布时间超过 N 天的帖子跳过不存库
+- 默认 30 天
 
 拟人化:
 - 启动后先逛首页，模拟真实用户
@@ -58,10 +68,23 @@ def interaction_score(liked, collected, comment, shared) -> int:
 
 # ===== 数据库操作 =====
 
-def save_search_results(notes: List[Dict], keyword: str) -> int:
+def save_search_results(notes: List[Dict], keyword: str, time_window_days: int = 0) -> dict:
+    """Save search results to DB. Returns {'saved': N, 'skipped_old': N}."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+
+    # Ensure crawl_timestamp column exists (idempotent migration)
+    try:
+        cursor.execute('ALTER TABLE xhs_note ADD COLUMN crawl_timestamp INTEGER DEFAULT 0')
+        conn.commit()
+    except sqlite3.OperationalError:
+        pass  # column already exists
+
     saved = 0
+    skipped_old = 0
+    now_ts = int(time.time() * 1000)
+    now_s = int(time.time())
+
     for note in notes:
         note_card = note.get('note_card', {})
         user = note_card.get('user', {})
@@ -71,6 +94,21 @@ def save_search_results(notes: List[Dict], keyword: str) -> int:
 
         if note.get('model_type') != 'note':
             continue
+
+        # Extract publish timestamp from search result
+        # XHS search results include time in note_card (milliseconds)
+        pub_ts_ms = note_card.get('time', 0)
+        if not pub_ts_ms:
+            # Fallback: try timestamp field
+            pub_ts_ms = note.get('timestamp', 0)
+
+        # Time window filter: skip posts older than N days
+        if time_window_days > 0 and pub_ts_ms:
+            pub_ts_s = int(pub_ts_ms) // 1000 if int(pub_ts_ms) > 1e12 else int(pub_ts_ms)
+            age_days = (now_s - pub_ts_s) / 86400
+            if age_days > time_window_days:
+                skipped_old += 1
+                continue
 
         cover_url = ''
         image_list = note_card.get('image_list', [])
@@ -87,15 +125,14 @@ def save_search_results(notes: List[Dict], keyword: str) -> int:
         note_type = note_card.get('type', 'normal')
         title = note_card.get('display_title', '')
         note_url = f"https://www.xiaohongshu.com/explore/{note_id}?xsec_token={xsec_token}&xsec_source=pc_search"
-        now_ts = int(time.time() * 1000)
 
         if existing:
             cursor.execute('''
                 UPDATE xhs_note SET
                     liked_count = ?, collected_count = ?, comment_count = ?, share_count = ?,
-                    last_modify_ts = ?, xsec_token = ?
+                    last_modify_ts = ?, xsec_token = ?, crawl_timestamp = ?
                 WHERE note_id = ?
-            ''', (liked, collected, comment, shared, now_ts, xsec_token, note_id))
+            ''', (liked, collected, comment, shared, now_ts, xsec_token, now_s, note_id))
         else:
             cursor.execute('''
                 INSERT INTO xhs_note (
@@ -103,21 +140,21 @@ def save_search_results(notes: List[Dict], keyword: str) -> int:
                     user_id, nickname, avatar,
                     liked_count, collected_count, comment_count, share_count,
                     ip_location, image_list, tag_list, last_modify_ts,
-                    note_url, source_keyword, xsec_token, add_ts
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    note_url, source_keyword, xsec_token, add_ts, crawl_timestamp
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 note_id, note_type, title, '', '',
-                0, 0,
+                pub_ts_ms, 0,
                 user.get('user_id', ''), user.get('nickname', ''), user.get('avatar', ''),
                 liked, collected, comment, shared,
                 '', cover_url, '',
-                now_ts, note_url, keyword, xsec_token, now_ts
+                now_ts, note_url, keyword, xsec_token, now_ts, now_s
             ))
             saved += 1
 
     conn.commit()
     conn.close()
-    return saved
+    return {'saved': saved, 'skipped_old': skipped_old}
 
 
 def update_note_detail(note_id: str, detail: Dict):
@@ -170,18 +207,27 @@ def update_note_detail(note_id: str, detail: Dict):
     conn.close()
 
 
-def get_top_notes(keyword_list: List[str], top_n: int) -> List[Dict]:
+def _score_notes(keyword_list: List[str], need_detail: bool = True) -> List[Dict]:
+    """Score all notes for given keywords. If need_detail, only return notes missing desc."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     placeholders = ','.join('?' * len(keyword_list))
-    cursor.execute(f'''
-        SELECT note_id, title, liked_count, collected_count, comment_count, share_count, xsec_token
-        FROM xhs_note
-        WHERE source_keyword IN ({placeholders})
-          AND ("desc" IS NULL OR "desc" = '')
-        ORDER BY last_modify_ts DESC
-    ''', keyword_list)
+    if need_detail:
+        cursor.execute(f'''
+            SELECT note_id, title, liked_count, collected_count, comment_count, share_count, xsec_token
+            FROM xhs_note
+            WHERE source_keyword IN ({placeholders})
+              AND ("desc" IS NULL OR "desc" = '')
+            ORDER BY last_modify_ts DESC
+        ''', keyword_list)
+    else:
+        cursor.execute(f'''
+            SELECT note_id, title, liked_count, collected_count, comment_count, share_count, xsec_token
+            FROM xhs_note
+            WHERE source_keyword IN ({placeholders})
+            ORDER BY last_modify_ts DESC
+        ''', keyword_list)
 
     rows = cursor.fetchall()
     conn.close()
@@ -199,7 +245,42 @@ def get_top_notes(keyword_list: List[str], top_n: int) -> List[Dict]:
         })
 
     scored.sort(key=lambda x: x['score'], reverse=True)
+    return scored
+
+
+def get_top_notes(keyword_list: List[str], top_n: int) -> List[Dict]:
+    scored = _score_notes(keyword_list, need_detail=True)
     return scored[:top_n]
+
+
+def get_control_notes(keyword_list: List[str], control_n: int) -> List[Dict]:
+    """Select median-score notes as control group (need detail=missing desc)."""
+    scored = _score_notes(keyword_list, need_detail=True)
+    if len(scored) < 3:
+        return []
+    # Pick from the middle of the distribution
+    mid = len(scored) // 2
+    start = max(0, mid - control_n // 2)
+    end = start + control_n
+    return scored[start:end]
+
+
+def tag_content_tier(note_ids: List[str], tier: str):
+    """Tag notes with content_tier in DB."""
+    if not note_ids:
+        return
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    # Ensure column exists
+    try:
+        cursor.execute('ALTER TABLE xhs_note ADD COLUMN content_tier TEXT DEFAULT "unknown"')
+        conn.commit()
+    except sqlite3.OperationalError:
+        pass
+    for nid in note_ids:
+        cursor.execute('UPDATE xhs_note SET content_tier = ? WHERE note_id = ?', (tier, nid))
+    conn.commit()
+    conn.close()
 
 
 # ===== 拟人化浏览 =====
@@ -252,7 +333,9 @@ async def check_login(page, cookie_str, a1, ua):
 
 # ===== 主流程 =====
 
-async def run(account_id: str, keywords: str, top_n: int, pages: int):
+async def run(account_id: str, keywords: str, top_n: int, pages: int,
+              sort: str = 'time_descending', time_window_days: int = 30,
+              control_group: bool = False, control_n: int = 5):
     from playwright.async_api import async_playwright
     from media_platform.xhs.playwright_sign import sign_with_playwright
     from tools import utils
@@ -287,6 +370,7 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
     print(f'Account: {account_id} ({account.get("name", "?")})')
     print(f'Keywords: {keyword_list}')
     print(f'Pages/keyword: {pages}, Top-N: {top_n}')
+    print(f'Sort: {sort}, Time window: {time_window_days}d')
     print()
 
     # --- 启动浏览器（账号独立指纹）---
@@ -350,7 +434,7 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
                 'page': pg,
                 'page_size': 20,
                 'search_id': utils.get_search_id() if hasattr(utils, 'get_search_id') else '',
-                'sort': 'general',
+                'sort': sort,
                 'note_type': 0,
                 'ext_flags': [],
                 'image_formats': ['jpg', 'webp', 'avif'],
@@ -396,9 +480,12 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
                 notes = [item for item in items if item.get('model_type') == 'note']
                 total_found += len(notes)
 
-                saved = save_search_results(items, keyword)
-                total_saved += saved
-                print(f'    Found {len(notes)}, saved {saved} new')
+                # Pass time_window only for time_descending sort
+                tw = time_window_days if sort == 'time_descending' else 0
+                result = save_search_results(items, keyword, time_window_days=tw)
+                total_saved += result['saved']
+                skip_msg = f', {result["skipped_old"]} old' if result['skipped_old'] else ''
+                print(f'    Found {len(notes)}, saved {result["saved"]} new{skip_msg}')
 
                 if not data.get('data', {}).get('has_more', False):
                     print(f'    No more results')
@@ -418,21 +505,41 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
     print(f'\nTier 1: found {total_found}, saved {total_saved} new')
     print()
 
-    # --- 第二层：Top N 深挖 ---
-    print(f'=== TIER 2: Detail (Top {top_n}) ===')
+    # --- 第二层：Top N 深挖 + 控制组 ---
     top_notes = get_top_notes(keyword_list, top_n)
+    ctrl_notes = get_control_notes(keyword_list, control_n) if control_group else []
+
+    # Build work list: [(note_dict, tier_label), ...]
+    work_list = [(n, 'viral') for n in top_notes]
+    # Avoid duplicates: control notes that are already in top
+    top_ids = {n['note_id'] for n in top_notes}
+    for n in ctrl_notes:
+        if n['note_id'] not in top_ids:
+            work_list.append((n, 'control'))
+
+    total_detail = len(work_list)
+    print(f'=== TIER 2: Detail ({len(top_notes)} viral + {len(work_list) - len(top_notes)} control) ===')
 
     detail_ok = 0
     detail_fail = 0
 
-    if not top_notes:
+    if not work_list:
         print('No new notes to deep-dive')
     else:
-        print(f'Top {len(top_notes)} by score:')
-        for i, n in enumerate(top_notes):
-            print(f'  {i+1}. [{n["score"]:>8}] {n["title"][:40]}  (赞{n["liked"]} 藏{n["collected"]})')
+        current_tier = ''
+        for idx, (n, tier) in enumerate(work_list):
+            if tier != current_tier:
+                current_tier = tier
+                tier_notes = [x for x, t in work_list if t == tier]
+                print(f'\n  [{tier.upper()}] {len(tier_notes)} notes:')
+                for i, tn in enumerate(tier_notes):
+                    print(f'    {i+1}. [{tn["score"]:>8}] {tn["title"][:40]}  (赞{tn["liked"]} 藏{tn["collected"]})')
 
-        for n in top_notes:
+        rate_limited = False
+        for idx, (n, tier) in enumerate(work_list):
+            if rate_limited:
+                break
+
             note_id = n['note_id']
             xsec_token = n['xsec_token']
 
@@ -469,10 +576,11 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
                     )
 
                 if resp.status_code != 200:
-                    print(f'  FAIL [{note_id}]: HTTP {resp.status_code}')
+                    print(f'  FAIL [{tier}:{note_id}]: HTTP {resp.status_code}')
                     detail_fail += 1
                     if resp.status_code in (461, 471):
                         print(f'  STOP: Rate limited')
+                        rate_limited = True
                         break
                     await human_delay(5, 15, 'cooldown')
                     continue
@@ -480,10 +588,11 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
                 data = resp.json()
                 if not data.get('success') or not data.get('data', {}).get('items'):
                     msg = data.get('msg', 'no items')
-                    print(f'  FAIL [{note_id}]: {msg}')
+                    print(f'  FAIL [{tier}:{note_id}]: {msg}')
                     detail_fail += 1
                     if data.get('code') == 300011:
                         print(f'  STOP: Rate limited')
+                        rate_limited = True
                         break
                     await human_delay(5, 15, 'cooldown')
                     continue
@@ -492,15 +601,21 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int):
                 update_note_detail(note_id, detail)
 
                 tags = [t.get('name', '') for t in detail.get('tag_list', []) if t.get('type') == 'topic']
-                print(f'  OK   [{note_id}]: +desc({len(detail.get("desc", ""))}字) +tags({",".join(tags[:3])})')
+                print(f'  OK   [{tier}:{note_id}]: +desc({len(detail.get("desc", ""))}字) +tags({",".join(tags[:3])})')
                 detail_ok += 1
 
             except Exception as e:
-                print(f'  ERROR [{note_id}]: {e}')
+                print(f'  ERROR [{tier}:{note_id}]: {e}')
                 detail_fail += 1
 
             # 模拟阅读笔记
             await human_delay(10, 30, 'reading note')
+
+        # Tag content tiers in DB
+        viral_ids = [n['note_id'] for n, t in work_list if t == 'viral']
+        control_ids = [n['note_id'] for n, t in work_list if t == 'control']
+        tag_content_tier(viral_ids, 'viral')
+        tag_content_tier(control_ids, 'control')
 
         print(f'\nTier 2: {detail_ok} OK, {detail_fail} failed')
 
@@ -530,7 +645,18 @@ if __name__ == '__main__':
     parser.add_argument('--keywords', required=True, help='Comma-separated keywords')
     parser.add_argument('--top-n', type=int, default=10)
     parser.add_argument('--pages', type=int, default=1)
+    parser.add_argument('--sort', default='time_descending',
+                        choices=['time_descending', 'general'],
+                        help='Search sort order (default: time_descending)')
+    parser.add_argument('--time-window', type=int, default=30,
+                        help='Skip posts older than N days (default: 30, 0=no filter)')
+    parser.add_argument('--control-group', action='store_true',
+                        help='Also collect median-score notes as control group')
+    parser.add_argument('--control-n', type=int, default=5,
+                        help='Number of control group notes (default: 5)')
     args = parser.parse_args()
 
-    exit_code = asyncio.run(run(args.account, args.keywords, args.top_n, args.pages))
+    exit_code = asyncio.run(run(args.account, args.keywords, args.top_n, args.pages,
+                                sort=args.sort, time_window_days=args.time_window,
+                                control_group=args.control_group, control_n=args.control_n))
     exit(exit_code or 0)

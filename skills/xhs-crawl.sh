@@ -26,6 +26,10 @@ ACCOUNT=""
 PAGES=1
 TOP_N=10
 NO_DELAY=false
+SORT="time_descending"
+TIME_WINDOW=30
+CONTROL_GROUP=false
+CONTROL_N=5
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --task) TASK="$2"; shift 2 ;;
@@ -33,6 +37,10 @@ while [[ $# -gt 0 ]]; do
     --pages) PAGES="$2"; shift 2 ;;
     --top-n) TOP_N="$2"; shift 2 ;;
     --no-delay) NO_DELAY=true; shift ;;
+    --sort) SORT="$2"; shift 2 ;;
+    --time-window) TIME_WINDOW="$2"; shift 2 ;;
+    --control-group) CONTROL_GROUP=true; shift ;;
+    --control-n) CONTROL_N="$2"; shift 2 ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
   esac
 done
@@ -98,6 +106,7 @@ echo "Account: $ACCOUNT"
 echo "Keywords (this run): $KEYWORDS"
 echo "Full pool: $ALL_KEYWORDS"
 echo "Pages: $PAGES, Top-N: $TOP_N"
+echo "Sort: $SORT, Time window: ${TIME_WINDOW}d"
 
 # --- Random startup delay (0-45 min) ---
 if [ "$NO_DELAY" = false ]; then
@@ -137,8 +146,13 @@ log_event "xhs-crawler" "crawl-task-$TASK" "start" "Task $TASK ($TASK_NAME), acc
 
 echo ""
 echo "--- Running two-tier crawl ---"
+CONTROL_ARG=""
+if [ "$CONTROL_GROUP" = true ]; then
+  CONTROL_ARG="--control-group --control-n $CONTROL_N"
+fi
+
 CRAWL_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
-  "cd $MC_DIR && source venv/bin/activate && python two_tier_crawl.py --account '$ACCOUNT' --keywords '$KEYWORDS' --pages $PAGES --top-n $TOP_N 2>&1")
+  "cd $MC_DIR && source venv/bin/activate && python two_tier_crawl.py --account '$ACCOUNT' --keywords '$KEYWORDS' --pages $PAGES --top-n $TOP_N --sort $SORT --time-window $TIME_WINDOW $CONTROL_ARG 2>&1")
 
 CRAWL_EXIT=$?
 echo "$CRAWL_OUTPUT"

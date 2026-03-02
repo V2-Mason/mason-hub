@@ -1,13 +1,14 @@
 #!/bin/bash
 # xhs-analyze.sh — XHS 市场信号管道
-# 用法: xhs-analyze.sh [--no-slack] [--no-enrich] [--enrich-top-n 3]
+# 用法: xhs-analyze.sh [--no-slack] [--no-enrich] [--no-comments] [--enrich-top-n 3] [--comment-top-n 10]
 #
 # 流程:
 # 1. SCP 脚本到阿里云 → 跑分析 → analysis_YYYY-MM-DD.json
 # 2. (可选) 粉丝量富化 → analysis_YYYY-MM-DD_enriched.json
-# 3. (可选) 趋势对比 → trends/YYYY-MM-DD.json
-# 4. 市场信号生成 → briefings/YYYY-MM-DD.json
-# 5. Slack 摘要
+# 3. (可选) 评论采集 → xhs_note_comment 表 + comments/YYYY-MM-DD.json
+# 4. (可选) 趋势对比 → trends/YYYY-MM-DD.json
+# 5. 市场信号生成 → briefings/YYYY-MM-DD.json
+# 6. Slack 摘要
 
 set -uo pipefail
 
@@ -22,12 +23,18 @@ TODAY=$(TZ=Asia/Shanghai date '+%Y-%m-%d')
 
 NO_SLACK=false
 NO_ENRICH=false
+NO_COMMENTS=false
 ENRICH_TOP_N=20
+COMMENT_TOP_N=10
+COMMENT_MAX=20
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --no-slack) NO_SLACK=true; shift ;;
     --no-enrich) NO_ENRICH=true; shift ;;
+    --no-comments) NO_COMMENTS=true; shift ;;
     --enrich-top-n) ENRICH_TOP_N="$2"; shift 2 ;;
+    --comment-top-n) COMMENT_TOP_N="$2"; shift 2 ;;
+    --comment-max) COMMENT_MAX="$2"; shift 2 ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
   esac
 done
@@ -42,7 +49,7 @@ ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/briefings $ANALYSIS_D
 
 # === STEP 1: 基础分析 ===
 echo ""
-echo "--- [1/4] Syncing & running analysis ---"
+echo "--- [1/6] Syncing & running analysis ---"
 scp -o ConnectTimeout=10 "$HUB_DIR/skills/xhs-analyze-viral.py" "$ALIYUN:$MC_DIR/xhs_analyze.py"
 
 NOTE_COUNT=$(ssh -o ConnectTimeout=10 "$ALIYUN" \
@@ -79,7 +86,7 @@ SIGNAL_INPUT="$JSON_OUT"
 # === STEP 2: 粉丝量富化 (可选，非阻塞) ===
 if [ "$NO_ENRICH" = false ]; then
   echo ""
-  echo "--- [2/4] Creator enrichment (top $ENRICH_TOP_N) ---"
+  echo "--- [2/6] Creator enrichment (top $ENRICH_TOP_N) ---"
   scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_enrich_creators.py" "$ALIYUN:$MC_DIR/_enrich_creators.py" 2>/dev/null
 
   ENRICH_OUTPUT=$(ssh -o ConnectTimeout=60 -o ServerAliveInterval=60 "$ALIYUN" \
@@ -107,12 +114,47 @@ if [ "$NO_ENRICH" = false ]; then
   fi
 else
   echo ""
-  echo "--- [2/4] Creator enrichment: SKIPPED (--no-enrich) ---"
+  echo "--- [2/6] Creator enrichment: SKIPPED (--no-enrich) ---"
 fi
 
-# === STEP 3: 趋势对比 (可选，非阻塞) ===
+# === STEP 3: 评论采集 (可选，非阻塞) ===
+if [ "$NO_COMMENTS" = false ]; then
+  echo ""
+  echo "--- [3/6] Comment collection (top $COMMENT_TOP_N notes, max $COMMENT_MAX/note) ---"
+  scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_collect_comments.py" "$ALIYUN:$MC_DIR/_collect_comments.py" 2>/dev/null
+
+  COMMENT_OUTPUT=$(ssh -o ConnectTimeout=60 -o ServerAliveInterval=60 "$ALIYUN" \
+    "cd $MC_DIR && source venv/bin/activate && python _collect_comments.py --account MAIN --top-n $COMMENT_TOP_N --max-comments $COMMENT_MAX 2>&1")
+
+  COMMENT_EXIT=$?
+  echo "$COMMENT_OUTPUT"
+
+  if [ $COMMENT_EXIT -eq 0 ]; then
+    echo "Comment collection OK"
+    log_event "xhs-analysis" "market-signals" "info" "Comments collected"
+
+    # Run comment analysis
+    scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_comment_analysis.py" "$ALIYUN:$MC_DIR/_comment_analysis.py" 2>/dev/null
+    ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/comments" 2>/dev/null
+
+    COMMENT_ANALYSIS_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
+      "cd $MC_DIR && source venv/bin/activate && python _comment_analysis.py --json-out '$ANALYSIS_DIR/comments/${TODAY}.json' 2>&1")
+
+    echo "$COMMENT_ANALYSIS_OUTPUT"
+  elif [ $COMMENT_EXIT -eq 3 ]; then
+    echo "Comment collection skipped (no data)"
+  else
+    echo "WARNING: Comment collection failed (exit $COMMENT_EXIT), non-blocking"
+    log_event "xhs-analysis" "market-signals" "info" "Comment collection failed (exit $COMMENT_EXIT), non-blocking"
+  fi
+else
+  echo ""
+  echo "--- [3/6] Comment collection: SKIPPED (--no-comments) ---"
+fi
+
+# === STEP 4: 趋势对比 (可选，非阻塞) ===
 echo ""
-echo "--- [3/4] Trend comparison ---"
+echo "--- [4/6] Trend comparison ---"
 scp -o ConnectTimeout=10 "$HUB_DIR/skills/xhs-trend-compare.py" "$ALIYUN:$MC_DIR/_trend_compare.py" 2>/dev/null
 
 TREND_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
@@ -134,9 +176,9 @@ else
   echo "WARNING: Trend comparison failed (exit $TREND_EXIT), continuing without trends"
 fi
 
-# === STEP 4: 市场信号 ===
+# === STEP 5: 市场信号 ===
 echo ""
-echo "--- [4/4] Market signals ---"
+echo "--- [5/6] Market signals ---"
 scp -o ConnectTimeout=10 "$HUB_DIR/skills/_xhs_strategy_briefing.py" "$ALIYUN:$MC_DIR/xhs_briefing.py" 2>/dev/null
 
 BRIEFING_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \

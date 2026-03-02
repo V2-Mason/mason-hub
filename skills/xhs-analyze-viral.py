@@ -17,6 +17,7 @@ import argparse
 import sqlite3
 import json
 import re
+import time
 from datetime import datetime
 
 DB = '/opt/mediacrawler/database/sqlite_tables.db'
@@ -40,9 +41,21 @@ def analyze():
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    rows = cur.execute('''
+    # Check which optional columns exist (added by P1/P3 upgrades)
+    columns = [row[1] for row in cur.execute('PRAGMA table_info(xhs_note)').fetchall()]
+    has_crawl_ts = 'crawl_timestamp' in columns
+    has_content_tier = 'content_tier' in columns
+
+    extra_cols = ''
+    if has_crawl_ts:
+        extra_cols += ', crawl_timestamp'
+    if has_content_tier:
+        extra_cols += ', content_tier'
+
+    rows = cur.execute(f'''
         SELECT note_id, title, "desc", type, liked_count, collected_count,
                comment_count, share_count, tag_list, source_keyword, note_url, nickname, time, user_id
+               {extra_cols}
         FROM xhs_note
     ''').fetchall()
 
@@ -64,11 +77,20 @@ def analyze():
         if liked > 1000 and save_rate < 5:
             fake_flags.append('藏赞比过低')
 
-        # 时间戳转日期
+        # 时间戳转日期 + 计算帖子年龄
         ts = r['time']
         pub_date = ''
+        post_age_days = -1  # -1 = unknown
         if ts and int(ts) > 0:
-            pub_date = datetime.fromtimestamp(int(ts) / 1000).strftime('%Y-%m-%d')
+            ts_val = int(ts)
+            # Normalize: if > 1e12, it's milliseconds
+            ts_s = ts_val / 1000 if ts_val > 1e12 else ts_val
+            pub_date = datetime.fromtimestamp(ts_s).strftime('%Y-%m-%d')
+            post_age_days = round((time.time() - ts_s) / 86400)
+
+        # crawl_timestamp (seconds since epoch)
+        crawl_ts = r['crawl_timestamp'] if has_crawl_ts and r['crawl_timestamp'] else 0
+        content_tier = r['content_tier'] if has_content_tier else 'unknown'
 
         notes.append({
             'note_id': r['note_id'],
@@ -86,6 +108,9 @@ def analyze():
             'nickname': r['nickname'] or '',
             'user_id': r['user_id'] or '',
             'pub_date': pub_date,
+            'post_age_days': post_age_days,
+            'crawl_timestamp': crawl_ts,
+            'content_tier': content_tier,
             'fake_flags': fake_flags,
         })
 
@@ -145,12 +170,27 @@ def build_report(notes):
     # --- 假流量 ---
     fakes = [n for n in notes if n['fake_flags']]
 
+    # Age distribution
+    known_ages = [n['post_age_days'] for n in notes if n['post_age_days'] >= 0]
+    age_stats = {}
+    if known_ages:
+        age_stats = {
+            'min_age_days': min(known_ages),
+            'max_age_days': max(known_ages),
+            'median_age_days': sorted(known_ages)[len(known_ages) // 2],
+            'within_30d': sum(1 for a in known_ages if a <= 30),
+            'within_7d': sum(1 for a in known_ages if a <= 7),
+            'older_than_90d': sum(1 for a in known_ages if a > 90),
+            'age_known_count': len(known_ages),
+        }
+
     return {
         'meta': {
             'date': datetime.now().strftime('%Y-%m-%d'),
             'total_notes': len(notes),
             'video_count': len(video_notes),
             'normal_count': len(normal_notes),
+            'age_distribution': age_stats,
         },
         'top_posts': [{
             'title': n['title'], 'score': n['score'], 'type': n['type'],
@@ -161,6 +201,8 @@ def build_report(notes):
             'url': n['url'], 'nickname': n['nickname'],
             'user_id': n['user_id'],
             'pub_date': n['pub_date'],
+            'post_age_days': n['post_age_days'],
+            'content_tier': n['content_tier'],
             'fake_flags': n['fake_flags'],
         } for n in notes[:20]],
         'keyword_insights': keyword_insights,
