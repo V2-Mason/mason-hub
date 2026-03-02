@@ -2,7 +2,7 @@
 
 > **Meta Manager 每日晨会必读此文件**
 > 最后更新: 2026-03-02
-> 更新人: Mason + Session（多账号采集架构 + 拟人化 + 两层采集）
+> 更新人: Mason + Session（分析管道 + EMP_0008 数据分析职责 + IP属地永久去除）
 
 ---
 
@@ -264,10 +264,16 @@ P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
   - 关键词每次随机选子集、cron 随机偏移 0-45 分钟
   - Cookie 过期按账号通知
   - 待 Mason: 注册 2 个小号 → 养号 3-5 天 → 提供 cookie
-- [ ] 分析管道 — 采集稳定后实现:
-  - xhs-analyze.sh: 数字归一化（"1.2万"→12000）+ 假流量过滤（评赞比/藏赞比异常检测）+ 互动评分（赞+藏×3+评×5+转×8）+ 爆帖排行 Top 20 + 关键词统计
-  - xhs-strategy-briefing.sh: 规则策略推荐（藏赞比高→教程类，评赞比高→话题类）+ 3 号差异化内容建议 + Slack 周报
-  - 周六自动跑（分析 08:00 CST + 简报 10:00 CST）
+- [x] 分析管道 — 2026-03-02 完成，已在阿里云验证通过（167 条数据）:
+  - xhs-analyze-viral.py: 数字归一化（"1.2万"→12000）+ 假流量过滤（评赞比<0.2%/藏赞比<5%）+ 互动评分（赞+藏×3+评×5+转×8）+ 爆帖排行 Top 20 + 关键词统计 + JSON 输出
+  - xhs-analyze.sh: SCP 分析脚本到阿里云执行 + Slack 摘要（不再用 SSH heredoc 嵌 Python）
+  - _xhs_strategy_briefing.py: 规则策略引擎（干货型/话题型/社交货币型分类）+ 内容建议
+  - xhs-strategy-briefing.sh: SCP 策略脚本到阿里云执行 + 读取最新分析 JSON
+  - _xhs_slack_summary.py: 独立 Slack 摘要生成器
+  - 分析存档: docs/analysis/ + 阿里云 /opt/mediacrawler/analysis/
+  - EMP_0008 新增数据分析职责（Mason: "策略必须基于数据"）
+  - 周六自动跑（分析 + 简报），cron 待注册
+  - **注意**: 主号搜索被 XHS 软封（API 返回 200+success 但 items 为空），等小号就绪后才能采集新数据
 
 P1 — 模块 C：china-hub 分析看板（阿里云本地 :8080）:
 - [ ] 看板后端 — FastAPI 查询采集数据库，提供品类热度/爆款排行/竞品分析/关键词监控 API（EMP_0005）
