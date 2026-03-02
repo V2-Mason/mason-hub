@@ -44,3 +44,170 @@ Generated: 2026-02-28T01:30:01Z
   Task summaries: 1
 
 === END REPORT ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-01T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:      408 in /      894 out | $-6.000
+  Total: $-29.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 2KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 0KB
+  ✅ EMP_0004: 0KB
+  ✅ EMP_0005: 0KB
+  ✅ EMP_0008: 1KB
+  ✅ EMP_0009: 0KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 35%
+  Memory available: 1.3Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+okCookie reminder sent for week 2026-08
+=== MEMORY COMPACTION ===
+Agent: all
+Dry run: false
+Date: 2026-03-01T03:00:01Z
+
+[EMP_0000] lessons file: 2KB
+[EMP_0000] sections: fresh=6, mid-term=0
+0, old=0
+0
+/home/hangn/mason-hub/skills/compact-memory.sh: line 143: [: 0
+0: integer expression expected
+/home/hangn/mason-hub/skills/compact-memory.sh: line 157: [: 0
+0: integer expression expected
+/home/hangn/mason-hub/skills/compact-memory.sh: line 170: [: 0
+0: integer expression expected
+[EMP_0000] compacted: 2KB → 2KB
+[EMP_0001] lessons file: 0KB
+[EMP_0001] under 2KB, skip compaction
+[EMP_0002] lessons file: 0KB
+[EMP_0002] under 2KB, skip compaction
+[EMP_0004] lessons file: 0KB
+[EMP_0004] under 2KB, skip compaction
+[EMP_0005] lessons file: 0KB
+[EMP_0005] under 2KB, skip compaction
+[EMP_0008] lessons file: 1KB
+[EMP_0008] under 2KB, skip compaction
+[EMP_0009] lessons file: 0KB
+[EMP_0009] under 2KB, skip compaction
+[EMP_0011] lessons file: 0KB
+[EMP_0011] under 2KB, skip compaction
+
+=== TASK LOG ARCHIVAL ===
+Task logs: 3 total, 0 archived (>30 days)
+
+=== AUDIT LOG COMPACTION ===
+Audit log: 1 entries
+Under 500 lines, skip compaction
+
+=== COMPACTION COMPLETE ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-02T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:      408 in /      894 out | $-6.000
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  Total: $-31.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 2KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 0KB
+  ✅ EMP_0004: 0KB
+  ✅ EMP_0005: 0KB
+  ✅ EMP_0008: 1KB
+  ✅ EMP_0009: 0KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 35%
+  Memory available: 934Mi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===

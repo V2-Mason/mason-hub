@@ -1161,3 +1161,54 @@ Exit code: 0
 {"timestamp":"2026-02-28T22:00:05Z","agent_id":"xhs-crawler","task_id":"crawl-task-4","event_type":"error","message":"Aborted: cookie expired "}
 {"timestamp":"2026-02-28T22:09:00Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
 {"timestamp":"2026-02-28T22:10:27Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
+{"timestamp":"2026-03-01T19:16:30Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-03-01T19:16:33Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"start","message":"Starting task 1 (内容灵感), keywords: 韩国护肤,韩国好物,韩国美妆教程,韩国零食,韩国代购 "}
+{"timestamp":"2026-03-01T19:22:39Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"end","message":"Task 1 done, new notes: 57, total: 148 "}
+{"timestamp":"2026-03-01T19:22:53Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-03-01T19:22:56Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"start","message":"Starting task 2 (选品情报), keywords: 水乳推荐,精华液推荐,面膜推荐,防晒推荐 "}
+{"timestamp":"2026-03-01T19:23:42Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"end","message":"Task 2 done, new notes: 0, total: 148 "}
+{"timestamp":"2026-03-01T19:24:55Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-03-01T19:24:58Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"start","message":"Starting task 2 (选品情报), keywords: 水乳推荐,精华液推荐,面膜推荐,防晒推荐 "}
+{"timestamp":"2026-03-01T19:25:41Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"end","message":"Task 2 done, new notes: 0, total: 148 "}
+{"timestamp":"2026-03-01T19:27:50Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"info","message":"XHS cookie valid "}
+{"timestamp":"2026-03-01T19:27:53Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"start","message":"Starting task 2 (选品情报), keywords: 水乳推荐,精华液推荐,面膜推荐,防晒推荐 "}
+{"timestamp":"2026-03-01T19:28:39Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"end","message":"Task 2 done, new notes: 0, total: 148 "}
+{"timestamp":"2026-03-01T21:09:24Z","agent_id":"xhs-crawler","task_id":"cookie-check","event_type":"error","message":"XHS cookie status: EXPIRED "}
+{"timestamp":"2026-03-02T01:15:53Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T01:16:07Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T01:16:18Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T01:16:25Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
+{"timestamp":"2026-03-02T02:43:25Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"start","message":"Task 1 (内容灵感), account: A, keywords: 韩国代购,韩国美妆教程,韩国好物 "}
+{"timestamp":"2026-03-02T02:43:32Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"error","message":"Crawl failed (exit 2) "}
+{"timestamp":"2026-03-02T02:43:46Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"start","message":"Task 1 (内容灵感), account: MAIN, keywords: 韩国代购,韩国护肤,韩国零食 "}
+{"timestamp":"2026-03-02T02:46:40Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"end","message":"Task 1 done, account: MAIN, new: 0, detail: 1, total: 167 "}
+{"timestamp":"2026-03-02T02:46:45Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T02:46:58Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T02:48:06Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Comments collected "}
+{"timestamp":"2026-03-02T02:48:26Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T02:48:33Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
+{"timestamp":"2026-03-02T02:49:17Z","agent_id":"xhs-publish","task_id":"publish-log","event_type":"info","message":"Recorded publish: log --title 韩国护肤好物测试 --keywords 韩国护肤,好物推荐 --type video --expect high "}
+{"timestamp":"2026-03-02T02:49:28Z","agent_id":"xhs-publish","task_id":"publish-log","event_type":"info","message":"Checked publish performance: check --id 3 "}
+{"timestamp":"2026-03-02T03:22:23Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T03:22:37Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T03:22:47Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T03:22:57Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
+{"timestamp":"2026-03-02T03:39:30Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T03:39:43Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T03:39:52Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T03:40:03Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
+{"timestamp":"2026-03-02T03:58:01Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T03:58:14Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T04:03:17Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Comments collected "}
+{"timestamp":"2026-03-02T04:03:38Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T04:03:49Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
+{"timestamp":"2026-03-02T04:19:57Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T04:20:10Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T04:25:30Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Comments collected "}
+{"timestamp":"2026-03-02T04:25:50Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T04:26:00Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
+{"timestamp":"2026-03-02T04:27:13Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"start","message":"Starting market signals pipeline "}
+{"timestamp":"2026-03-02T04:27:29Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Base analysis done: /opt/mediacrawler/analysis/analysis_2026-03-02.json "}
+{"timestamp":"2026-03-02T04:32:33Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Comments collected "}
+{"timestamp":"2026-03-02T04:32:54Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"info","message":"Trends done: /opt/mediacrawler/analysis/trends/2026-03-02.json "}
+{"timestamp":"2026-03-02T04:33:04Z","agent_id":"xhs-analysis","task_id":"market-signals","event_type":"end","message":"Pipeline done, 167 notes "}
