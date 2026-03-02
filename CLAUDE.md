@@ -167,5 +167,6 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | 每日 08:00 | PM (EMP_0001) | 库存巡检 |
 | 每日 09:00 | SRE (EMP_0004) | 基础设施日报 |
 | 每日 09:30 | cron 脚本 | agent-status-report → Slack |
+| 每周二/五 14:00 | SocialMesh PM (EMP_0008) | XHS 数据采集+分析 |
 | 每周一 10:00 | PM (EMP_0001) | 记忆压缩 |
 | 每周日 11:00 | cron 脚本 | compact-memory.sh 全量 |
