@@ -42,7 +42,7 @@ def analyze():
 
     rows = cur.execute('''
         SELECT note_id, title, "desc", type, liked_count, collected_count,
-               comment_count, share_count, tag_list, source_keyword, note_url, nickname, time
+               comment_count, share_count, tag_list, source_keyword, note_url, nickname, time, user_id
         FROM xhs_note
     ''').fetchall()
 
@@ -84,6 +84,7 @@ def analyze():
             'keyword': r['source_keyword'] or '',
             'url': r['note_url'] or '',
             'nickname': r['nickname'] or '',
+            'user_id': r['user_id'] or '',
             'pub_date': pub_date,
             'fake_flags': fake_flags,
         })
@@ -158,6 +159,7 @@ def build_report(notes):
             'save_rate': n['save_rate'], 'engage_rate': n['engage_rate'],
             'share_rate': n['share_rate'],
             'url': n['url'], 'nickname': n['nickname'],
+            'user_id': n['user_id'],
             'pub_date': n['pub_date'],
             'fake_flags': n['fake_flags'],
         } for n in notes[:20]],
