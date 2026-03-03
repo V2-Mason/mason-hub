@@ -417,7 +417,7 @@ def step_storyboard(project, work_dir, state):
     return storyboard_dir
 
 
-def step_videogen(project, work_dir, state):
+def step_videogen(project, work_dir, state, veo_model='veo-3.1-generate-preview'):
     """Step 5: VEO 3.1 video generation from storyboard images.
 
     v2 path: reads from shooting_script.json (preferred)
@@ -434,7 +434,9 @@ def step_videogen(project, work_dir, state):
     if script_path and os.path.exists(script_path):
         from videogen import generate_video_clips_from_script
         print(f"  Generating video clips from shooting script (v2)...")
-        results = generate_video_clips_from_script(script_path, storyboard_dir, clips_dir)
+        results = generate_video_clips_from_script(
+            script_path, storyboard_dir, clips_dir,
+            model=veo_model, skip_existing=True)
     else:
         # v1 fallback
         from videogen import generate_video_clips
@@ -442,7 +444,8 @@ def step_videogen(project, work_dir, state):
         if not localized_path or not os.path.exists(localized_path):
             raise FileNotFoundError("No shooting script or localized analysis found.")
         print(f"  Generating video clips from analysis JSON (v1 fallback)...")
-        results = generate_video_clips(localized_path, storyboard_dir, clips_dir)
+        results = generate_video_clips(localized_path, storyboard_dir, clips_dir,
+                                       model=veo_model)
 
     generated = sum(1 for r in results if r['status'] == 'ok')
     state['artifacts']['clips_dir'] = clips_dir
@@ -474,7 +477,8 @@ def step_assemble(project, work_dir, state):
 
 def run_pipeline(project_path, resume_from=None, skip_teardown=False,
                  analysis_path=None, model='gemini-3-flash-preview',
-                 skip_gemini_match=False, auto_approve=False):
+                 skip_gemini_match=False, auto_approve=False,
+                 veo_model='veo-3.1-generate-preview'):
     """Run the content production pipeline."""
     project = _load_project(project_path)
     project_id = project['project_id']
@@ -610,7 +614,7 @@ def run_pipeline(project_path, resume_from=None, skip_teardown=False,
     if _should_run('videogen', resume_from, state):
         print("--- [7/8] Video Generation: VEO 3.1 ---")
         try:
-            step_videogen(project, work_dir, state)
+            step_videogen(project, work_dir, state, veo_model=veo_model)
             state['completed_steps'].append('videogen')
             _save_state(state_path, state)
             print()
@@ -682,6 +686,8 @@ def main():
                         help='Use only rule-based product matching (no Gemini call)')
     parser.add_argument('--auto-approve', action='store_true',
                         help='Auto-approve product recommendations (skip Mason review)')
+    parser.add_argument('--veo-model', default='veo-3.1-generate-preview',
+                        help='VEO model for video generation (default: veo-3.1-generate-preview)')
     args = parser.parse_args()
 
     if not os.path.exists(args.input):
@@ -696,6 +702,7 @@ def main():
         model=args.model,
         skip_gemini_match=args.skip_gemini_match,
         auto_approve=args.auto_approve,
+        veo_model=args.veo_model,
     )
 
 

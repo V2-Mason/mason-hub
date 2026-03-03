@@ -58,4 +58,23 @@
 
 ## 晨会模式总结
 
+## 技术参考资料
+
+### Gemini API 完整文档 (2026-03-03, Mason 要求记忆)
+- **单文件版**: Google Drive — https://drive.google.com/file/d/1Ls_-ataj3d9TNqcsptkkWRTZZqHuwnpN/view?usp=drivesdk
+- **分文件版**: Google Drive — https://drive.google.com/file/d/1nr5jfoCsY1onoFNlcjGtD4ChsAal2C9r/view?usp=drivesdk (tar.gz)
+- **本地路径**: /tmp/gemini-api-docs/ (74 个 md 文件，按官网目录分 11 个子目录)
+- **合并文件**: /tmp/gemini-api-docs-all.md (1.6 MB，全部合并)
+- **来源**: https://ai.google.dev/gemini-api/docs (2026-03-03 下载)
+- **用途**: 内容管线大量使用 Gemini API（VEO 视频生成、Nano Banana 图片生成、Flash 文本处理），遇到 API 问题时先查本地文档
+- **核心章节速查**:
+  - 视频生成 (VEO): `01-models/04-video.md`
+  - 图片生成 (Nano Banana/Imagen): `01-models/03-image-generation.md`, `01-models/06-imagen.md`
+  - 配额与限制: `07-resources/03-rate-limits.md`
+  - 定价: `00-get-started/05-pricing.md`
+  - Context Caching: `05-guides/05-caching.md`
+  - 文件上传 API: `05-guides/04-files.md`
+  - Batch API: `05-guides/02-batch-api.md`
+  - 结构化输出: `02-capabilities/08-structured-output.md`
+
 ## Agent 协作 Pattern

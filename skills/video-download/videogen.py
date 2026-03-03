@@ -57,44 +57,87 @@ def _extract_shots_from_script(script):
 
 
 def _build_video_prompt_from_shot(shot, script):
-    """Build motion/action prompt for VEO from shooting script shot.
+    """Build VEO prompt that mirrors every field in the shooting script shot.
 
-    兼容 v2 (nested camera/action) 和 v3 (flat fields) 格式。
+    严格按分镜脚本的每个字段生成 prompt，不遗漏任何指令。
     """
-    act = shot.get('action', {})
-    cam = shot.get('camera', {})
-    vs = script.get('visual_style', {})
     gpn = script.get('global_production_notes', {})
+    seg_ctx = shot.get('_segment_type', '')
 
-    parts = ["竖版9:16短视频片段。"]
+    parts = []
 
-    # Action: v3 frame_description or v2 action.description
-    desc = shot.get('frame_description', '') or act.get('description', '')
-    if desc:
-        parts.append(desc)
+    # --- 全局设定 ---
+    parts.append("【格式】竖版9:16短视频片段。")
 
-    gesture = act.get('key_gesture', '')
-    if gesture:
-        parts.append(f"关键动作：{gesture}。")
+    location = gpn.get('location', '')
+    if location:
+        parts.append(f"【场景】{location}")
 
-    # Camera movement: v3 camera_movement or v2 camera.movement
-    movement = shot.get('camera_movement', '') or cam.get('movement', '')
-    if movement and movement != '固定机位' and movement != '固定':
-        parts.append(f"镜头运动：{movement}。")
+    wardrobe = gpn.get('wardrobe', '')
+    if wardrobe:
+        parts.append(f"【服装】{wardrobe}")
 
-    # Lighting: v2 visual_style.lighting or v3 global_production_notes.lighting_setup
-    lighting = vs.get('lighting', '') or gpn.get('lighting_setup', '')
+    lighting = gpn.get('lighting_setup', '')
     if lighting:
-        parts.append(f"光线：{lighting}。")
+        parts.append(f"【灯光】{lighting}")
 
-    parts.append("画面自然流畅，写实风格。")
+    # --- 镜头信息 ---
+    shot_type = shot.get('shot_type', '')
+    if shot_type:
+        parts.append(f"【景别】{shot_type}")
 
-    return ' '.join(parts)
+    camera_movement = shot.get('camera_movement', '')
+    if camera_movement:
+        parts.append(f"【镜头运动】{camera_movement}")
+
+    duration = shot.get('duration_seconds', '')
+    if duration:
+        parts.append(f"【时长】{duration}秒")
+
+    # --- 画面内容（核心） ---
+    desc = shot.get('frame_description', '')
+    if desc:
+        parts.append(f"【画面描述】{desc}")
+
+    # --- 表演指导 ---
+    acting = shot.get('acting_direction', '')
+    if acting:
+        parts.append(f"【表演指导】{acting}")
+
+    # --- 道具 ---
+    props = shot.get('props', '')
+    if props and props != '无':
+        parts.append(f"【道具】{props}")
+
+    # --- 画面文字/贴片 ---
+    overlay = shot.get('text_overlay', '')
+    if overlay:
+        parts.append(f"【画面文字】{overlay}")
+
+    # --- 台词/旁白 ---
+    voiceover = shot.get('voiceover', '')
+    if voiceover:
+        parts.append(f"【口播台词】{voiceover}")
+
+    # --- 声音设计 ---
+    audio = shot.get('audio_note', '')
+    if audio:
+        parts.append(f"【声音设计】{audio}")
+
+    # --- 光线备注（shot 级别覆盖全局） ---
+    lighting_note = shot.get('lighting_note', '')
+    if lighting_note and lighting_note != '同全局':
+        parts.append(f"【光线备注】{lighting_note}")
+
+    parts.append("画面写实自然，保持真实质感。")
+
+    return '\n'.join(parts)
 
 
 def generate_video_clips_from_script(script_path, storyboard_dir, output_dir,
                                       model='veo-3.1-generate-preview',
-                                      poll_interval=15, max_wait=600, retry=1):
+                                      poll_interval=15, max_wait=600, retry=1,
+                                      skip_existing=True):
     """v2: Generate video clips from shooting script + storyboard images.
 
     Args:
@@ -105,6 +148,7 @@ def generate_video_clips_from_script(script_path, storyboard_dir, output_dir,
         poll_interval: Seconds between poll checks.
         max_wait: Max seconds to wait per clip.
         retry: Number of retries on failure.
+        skip_existing: Skip clips that already exist in output_dir.
 
     Returns:
         List of result dicts with shot info and output paths.
@@ -150,6 +194,20 @@ def generate_video_clips_from_script(script_path, storyboard_dir, output_dir,
 
         video_filename = f"shot_{shot_num}_{shot_type}.mp4"
         video_path = os.path.join(output_dir, video_filename)
+
+        # Skip existing clips
+        if skip_existing and os.path.exists(video_path) and os.path.getsize(video_path) > 1024:
+            size_kb = os.path.getsize(video_path) // 1024
+            print(f"  [{shot_num}/{len(shots)}] {shot_type}: SKIP (exists, {size_kb}KB)")
+            results.append({
+                'shot_num': i + 1,
+                'shot_type': shot_type,
+                'duration': veo_duration,
+                'output_file': video_filename,
+                'status': 'ok',
+                'skipped': True,
+            })
+            continue
 
         prompt = _build_video_prompt_from_shot(shot, script)
 
