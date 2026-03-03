@@ -32,7 +32,9 @@ Mason (人类，最终决策者)
 │
 ├── EMP_0011 Account Manager     ← 独立：品牌上下文管理，桥接品牌与内容团队
 │
-└── EMP_0006 斥候 Scout          ← 独立：全域情报搜集（技术/内容/电商/技术选型）
+├── EMP_0006 斥候 Scout          ← 独立：全域情报搜集（技术/内容/电商/技术选型）
+│
+└── EMP_0012 Product Architect   ← 独立：产品定义、归属判断、边界管理
 ```
 
 ### Agent 职责速览
@@ -48,6 +50,7 @@ Mason (人类，最终决策者)
 - EMP_0009 Content-Tech Dev — 内容技术开发（~/socialmesh/ 专属）
 - EMP_0010 Content Creator — 多平台内容生产、社区互动（有状态，有品牌风格记忆）
 - EMP_0011 Account Manager — 品牌上下文管理，产出 brief，桥接品牌与内容团队
+- EMP_0012 Product Architect — 产品参谋，需求澄清/归属判断/边界定义/迭代路径规划
 
 ## Backlog 管理规则
 
@@ -77,6 +80,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | Content Creator | agents/EMP_0010.md | 内容生产（~/socialmesh/ + 记忆文件） |
 | Content-Tech Dev | agents/EMP_0009.md | 仅限 ~/socialmesh/ |
 | Account Manager | agents/EMP_0011.md | 品牌上下文管理，跨域桥梁 |
+| Product Architect | agents/EMP_0012.md | 产品定义、归属判断、边界管理 |
 
 **加载流程**：
 1. 识别自己被分配的角色名称
