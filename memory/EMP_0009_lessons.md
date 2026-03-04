@@ -78,3 +78,58 @@ Google 模型 display name ≠ API model ID。用 `client.models.list()` 查确�
 - `content_board.py` 新增 `register_review_content()` — 管线生成审核文档后直接写 Sheet，不依赖 Drive 文件夹扫描
 - 素材明细 Sheet 新增"生成日期"列（L 列），记录每条素材的生成时间
 - 幂等设计：先查 project_id 是否已存在，存在则更新，不重复插入
+
+## 2026-03-04: VEO Prompt 第二次重写 — 结构化标签 → 自然叙事
+
+### 第一次重写（结构化标签）的问题
+第一版用中文标签格式（【格式】【场景】...），15 个 shot 中 4 个失败（shot 1/9/12/13）。Mason 反馈 9 个具体问题：
+1. 中英混杂、结构凌乱 → 应该是流畅自然语言
+2. 对话格式机械（"The person says"） → VEO 大概率不支持中文口播
+3. camera_movement 全写"固定" → 缺乏运动引导
+4. negative prompt 和 prompt 内容矛盾（prompt 里有定格/虚化，negative 里禁止）
+5. "挥手打招呼"是瞬间动作，撑不满 4 秒
+6. "干净明亮的背景"太抽象
+7. "虚化处理"是后期术语，不是拍摄指令
+8. "双手展示产品"对 6 秒来说太静态
+9. props 暴露了 Python list 语法 `['COSRX...']`
+
+### 第二次重写（自然叙事）成功
+改为 VEO 官方推荐的 flowing narrative 格式：Subject+Action → Style/Setting → Camera+Motion → Ambiance/Lighting
+- 一个连续段落，无标签/标记
+- camera "固定" → 默认 "slow gentle drift"
+- voiceover/text_overlay/audio_note **不传给 VEO**（VEO 无法处理）
+- props 用视觉描述（"a white bottle with blue cap"），不用品牌名
+- 每个 prompt 以 "Vertical 9:16 video. Photorealistic, natural texture, cinematic quality." 锚定风格
+- 结果：15/15 全部成功
+
+### 教训
+- VEO prompt 不是"信息越多越好"，而是"视觉描述越具体越好"
+- 后期概念（虚化/分屏/定格/贴纸/特效）必须在拍摄脚本阶段就拦住（已在 shooting_script.py 加 VEO 约束 A-E）
+- 瞬间动作不能做 VEO prompt（至少要 4 秒的持续动作）
+
+## 2026-03-04: 多版本剪辑 — 渠道×目标 架构升级
+
+### 架构变更
+- **旧系统**：4 个简单 preset（xhs_tutorial, douyin_fast, product_focus, highlight_15s），每个硬编码平台+风格+时长
+- **新系统**：5 渠道（抖音/小红书/视频号/微信私域/产品聚焦）× 7 营销目标（认知/种草/教育/信任/促销/复购/互动）的矩阵组合
+- **核心原则**：参数表是给 Gemini 的风格指南，不是 ffmpeg 硬编码命令。同样是"抖音认知型"，化妆刷教程和成分科普的具体剪辑方案完全不同，必须让 Gemini 看完实际素材后动态判断
+
+### 代码变更速查
+- `config.py`：`MULTICUT_VARIANTS_DEFAULT` → `MULTICUT_DEFAULTS`，格式 `['小红书×种草型', '抖音×认知型']`
+- `multicut.py`：`VARIANT_PRESETS` → `CHANNEL_GUIDES` + `GOAL_GUIDES`；`generate_edls(variants=)` → `generate_edls(cuts=)`
+- `content_pipeline.py`：CLI `--variants` → `--cuts`，接受 `"抖音×认知型,小红书×种草型"` 格式
+- `gemini_analyze.py`：拆解 prompt 新增 `marketing_goal` 字段（primary_goal/secondary_goal/funnel_stage/intended_user_action）
+
+### 新 EDL schema
+Gemini 输出的 EDL JSON 新增字段（assemble.py 暂未对接，等实际 Gemini 输出后再做）：
+- `visual_effects`: slow_zoom_in / slow_zoom_out / speed_ramp / reverse / blur_bg
+- `end_card`: 结尾卡片（时长+文案+视觉风格）
+- `cover_suggestion`: 封面建议（源素材+时间戳+封面文字）
+- `editing_rationale`: 剪辑思路说明
+
+### 无效组合自动跳过
+- 微信私域×认知型（私域用户已认识你）
+- 微信私域×互动型（微信群互动用文字更有效）
+
+### 参考文档
+完整架构文档：`~/socialmesh/docs/plans/2026-03-04-multicut-architecture.md`

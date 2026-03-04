@@ -77,4 +77,13 @@
   - Batch API: `05-guides/02-batch-api.md`
   - 结构化输出: `02-capabilities/08-structured-output.md`
 
+### 内容管线：一素材多剪能力上线 (2026-03-04)
+- Pipeline step 8 (multicut) 支持渠道×目标组合，一套 VEO 素材产出多版本成片分发不同渠道
+- 5 渠道（抖音/小红书/视频号/微信私域/产品聚焦）× 7 营销目标（认知/种草/教育/信任/促销/复购/互动）
+- **设计决策**：参数表是给 Gemini 的风格指南，不是 ffmpeg 硬编码 — Gemini 看完实际素材后动态判断具体剪辑方案
+- **成本影响**：多剪只加 1 次 Gemini Flash 调用（~$0.01），不增加 VEO 消耗（复用素材）
+- **数据闭环规划**：Layer 1 剪辑指纹已上线 → Layer 2 按渠道/品类统计（待 10-15 个视频积累后） → Layer 3 发布数据回流
+- **架构文档**：`~/socialmesh/docs/plans/2026-03-04-multicut-architecture.md`
+- **Pipeline CLI**：`--cuts "抖音×认知型,小红书×种草型"`，不带则走 simple concat（向后兼容）
+
 ## Agent 协作 Pattern
