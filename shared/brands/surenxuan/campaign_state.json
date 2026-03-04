@@ -1,0 +1,15 @@
+{
+  "current_campaign": {
+    "name": "春季护肤",
+    "stage": "content_production",
+    "start_date": "2026-03-01",
+    "focus_products": ["化妆刷", "定妆喷雾", "补水精华"]
+  },
+  "channel_last_published": {
+    "小红书": null,
+    "抖音": null,
+    "视频号": null,
+    "微信私域": null
+  },
+  "notes": "初始化，待管线跑通后自动更新"
+}
