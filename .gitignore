@@ -18,3 +18,4 @@ logs/archive/
 
 # Credentials (never commit)
 .credentials/
+.env
