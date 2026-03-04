@@ -18,6 +18,9 @@ done
 
 SINCE=$(date -d "$SINCE_DAYS days ago" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+
 echo "=== Xiaohongshu Trends Scout Report ==="
 echo "Keyword: $KEYWORD"
 echo "Since: $SINCE"
@@ -44,16 +47,23 @@ XHS_QUERIES=(
 for Q in "${XHS_QUERIES[@]}"; do
   RESULT=$(github_search "$Q")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:3]:
         stars = r.get('stargazers_count', 0)
         if stars > 10:
+            name = r['full_name']; url = r['html_url']
             lang = r.get('language', '?')
+            created = r.get('created_at', '')[:10]
             updated = r.get('pushed_at', '')[:10]
             desc = (r.get('description') or 'No description')[:100]
-            print(f'  [{stars}★] {r[\"full_name\"]} ({lang}, updated {updated})')
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            print(f'  {tag} [{name}]({url}) [{stars}★] ({lang}) created {created} updated {updated}')
             print(f'    {desc}')
             print()
 except: pass
@@ -74,15 +84,21 @@ TREND_QUERIES=(
 for Q in "${TREND_QUERIES[@]}"; do
   RESULT=$(github_search "$Q")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:3]:
         stars = r.get('stargazers_count', 0)
         if stars > 20:
-            lang = r.get('language', '?')
+            name = r['full_name']; url = r['html_url']; lang = r.get('language', '?')
+            created = r.get('created_at', '')[:10]
             desc = (r.get('description') or 'No description')[:100]
-            print(f'  [{stars}★] {r[\"full_name\"]} ({lang}): {desc}')
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            print(f'  {tag} [{name}]({url}) [{stars}★] ({lang}) created {created}: {desc}')
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   sleep 2
@@ -101,15 +117,21 @@ BEAUTY_QUERIES=(
 for Q in "${BEAUTY_QUERIES[@]}"; do
   RESULT=$(github_search "$Q")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:3]:
         stars = r.get('stargazers_count', 0)
         if stars > 10:
-            lang = r.get('language', '?')
+            name = r['full_name']; url = r['html_url']; lang = r.get('language', '?')
+            created = r.get('created_at', '')[:10]
             desc = (r.get('description') or 'No description')[:100]
-            print(f'  [{stars}★] {r[\"full_name\"]} ({lang}): {desc}')
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            print(f'  {tag} [{name}]({url}) [{stars}★] ({lang}) created {created}: {desc}')
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   sleep 2

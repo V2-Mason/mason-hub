@@ -21,6 +21,18 @@ TOPIC="${TOPIC:-claude code agent}"
 SINCE=$(date -d "$SINCE_ARG" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
 ENCODED_TOPIC=$(echo "$TOPIC" | sed 's/ /+/g')
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+scout_dedup_check() {
+  local repo="$1" stars="$2"
+  if [ -x "$DEDUP_SCRIPT" ] || [ -f "$DEDUP_SCRIPT" ]; then
+    python3 "$DEDUP_SCRIPT" --check "$repo" "$stars" 2>/dev/null
+    return $?
+  fi
+  echo "new"
+  return 0
+}
+
 echo "=== GitHub Scout Report ==="
 echo "Topic: $TOPIC"
 echo "Since: $SINCE"
@@ -36,15 +48,24 @@ NEW_COUNT=$(echo "$NEW_REPOS" | python3 -c "import sys,json; print(json.load(sys
 
 if [ "$NEW_COUNT" -gt 0 ]; then
   echo "$NEW_REPOS" | python3 -c "
-import sys, json
+import sys, json, subprocess
 data = json.load(sys.stdin)
+dedup = '${DEDUP_SCRIPT}'
 for item in data.get('items', [])[:10]:
     name = item['full_name']
     url = item['html_url']
     stars = item['stargazers_count']
     desc = (item.get('description') or 'No description')[:100]
     lang = item.get('language') or '?'
-    print(f'- [{name}]({url}) ⭐{stars} [{lang}] — {desc}')
+    created = item.get('created_at', '')[:10]
+    # dedup check
+    r = subprocess.run(['python3', dedup, '--check', name, str(stars)],
+                       capture_output=True, text=True)
+    status = r.stdout.strip()
+    if status == 'known':
+        continue
+    tag = '🆕' if status == 'new' else '📈'
+    print(f'- {tag} [{name}]({url}) ⭐{stars} [{lang}] created {created} — {desc}')
 " 2>/dev/null
   HAS_RESULTS=true
 else
@@ -60,15 +81,22 @@ UPD_COUNT=$(echo "$UPDATED_REPOS" | python3 -c "import sys,json; print(json.load
 
 if [ "$UPD_COUNT" -gt 0 ]; then
   echo "$UPDATED_REPOS" | python3 -c "
-import sys, json
+import sys, json, subprocess
 data = json.load(sys.stdin)
+dedup = '${DEDUP_SCRIPT}'
 for item in data.get('items', [])[:10]:
     name = item['full_name']
     url = item['html_url']
     stars = item['stargazers_count']
     pushed = item.get('pushed_at', '')[:10]
     desc = (item.get('description') or 'No description')[:100]
-    print(f'- [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
+    r = subprocess.run(['python3', dedup, '--check', name, str(stars)],
+                       capture_output=True, text=True)
+    status = r.stdout.strip()
+    if status == 'known':
+        continue
+    tag = '🆕' if status == 'new' else '📈'
+    print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
   HAS_RESULTS=true
 else

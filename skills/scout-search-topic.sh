@@ -27,6 +27,9 @@ fi
 SINCE=$(date -d "$SINCE_ARG" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
 ENCODED_QUERY=$(echo "$QUERY" | sed 's/ /+/g')
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+
 echo "=== Topic Search Report ==="
 echo "Query: $QUERY"
 echo "Since: $SINCE"
@@ -43,8 +46,9 @@ if [ "$REPO_COUNT" -gt 0 ]; then
   echo "Found $REPO_COUNT repos (showing top 15):"
   echo ""
   echo "$REPOS" | python3 -c "
-import sys, json
+import sys, json, subprocess
 data = json.load(sys.stdin)
+dedup = '${DEDUP_SCRIPT}'
 for item in data.get('items', [])[:15]:
     name = item['full_name']
     url = item['html_url']
@@ -53,7 +57,13 @@ for item in data.get('items', [])[:15]:
     created = item.get('created_at', '')[:10]
     pushed = item.get('pushed_at', '')[:10]
     desc = (item.get('description') or 'No description')[:120]
-    print(f'- [{name}]({url})')
+    r = subprocess.run(['python3', dedup, '--check', name, str(stars)],
+                       capture_output=True, text=True)
+    status = r.stdout.strip()
+    if status == 'known':
+        continue
+    tag = '🆕' if status == 'new' else '📈'
+    print(f'- {tag} [{name}]({url})')
     print(f'  ⭐{stars} [{lang}] created {created} updated {pushed}')
     print(f'  {desc}')
     print()

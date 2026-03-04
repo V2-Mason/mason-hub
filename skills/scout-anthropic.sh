@@ -6,6 +6,9 @@ set -uo pipefail
 
 WEEK_AGO=$(date -d "7 days ago" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+
 echo "=== Anthropic / Claude Ecosystem Scout ==="
 echo "Date: $(date +%Y-%m-%d)"
 echo "Checking since: $WEEK_AGO"
@@ -18,15 +21,22 @@ A_COUNT=$(echo "$ANTHROPIC_REPOS" | python3 -c "import sys,json; print(json.load
 
 if [ "$A_COUNT" -gt 0 ]; then
   echo "$ANTHROPIC_REPOS" | python3 -c "
-import sys, json
+import sys, json, subprocess
 data = json.load(sys.stdin)
+dedup = '${DEDUP_SCRIPT}'
 for item in data.get('items', [])[:10]:
     name = item['full_name']
     url = item['html_url']
     stars = item['stargazers_count']
     pushed = item.get('pushed_at', '')[:10]
     desc = (item.get('description') or 'No description')[:100]
-    print(f'- [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
+    r = subprocess.run(['python3', dedup, '--check', name, str(stars)],
+                       capture_output=True, text=True)
+    status = r.stdout.strip()
+    if status == 'known':
+        continue
+    tag = '🆕' if status == 'new' else '📈'
+    print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
 else
   echo "  No recent updates."
@@ -40,15 +50,22 @@ CC_COUNT=$(echo "$CC_REPOS" | python3 -c "import sys,json; print(json.load(sys.s
 
 if [ "$CC_COUNT" -gt 0 ]; then
   echo "$CC_REPOS" | python3 -c "
-import sys, json
+import sys, json, subprocess
 data = json.load(sys.stdin)
+dedup = '${DEDUP_SCRIPT}'
 for item in data.get('items', [])[:10]:
     name = item['full_name']
     url = item['html_url']
     stars = item['stargazers_count']
     pushed = item.get('pushed_at', '')[:10]
     desc = (item.get('description') or 'No description')[:100]
-    print(f'- [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
+    r = subprocess.run(['python3', dedup, '--check', name, str(stars)],
+                       capture_output=True, text=True)
+    status = r.stdout.strip()
+    if status == 'known':
+        continue
+    tag = '🆕' if status == 'new' else '📈'
+    print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
 else
   echo "  No recent updates."
@@ -62,15 +79,22 @@ MCP_COUNT=$(echo "$MCP_REPOS" | python3 -c "import sys,json; print(json.load(sys
 
 if [ "$MCP_COUNT" -gt 0 ]; then
   echo "$MCP_REPOS" | python3 -c "
-import sys, json
+import sys, json, subprocess
 data = json.load(sys.stdin)
+dedup = '${DEDUP_SCRIPT}'
 for item in data.get('items', [])[:10]:
     name = item['full_name']
     url = item['html_url']
     stars = item['stargazers_count']
     pushed = item.get('pushed_at', '')[:10]
     desc = (item.get('description') or 'No description')[:100]
-    print(f'- [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
+    r = subprocess.run(['python3', dedup, '--check', name, str(stars)],
+                       capture_output=True, text=True)
+    status = r.stdout.strip()
+    if status == 'known':
+        continue
+    tag = '🆕' if status == 'new' else '📈'
+    print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
 else
   echo "  No recent updates."

@@ -24,6 +24,9 @@ if [[ -z "$QUERY" ]]; then
   exit 2
 fi
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+
 echo "=== Find-Skill Scout Report ==="
 echo "Query: $QUERY"
 echo "Domain: ${DOMAIN:-all}"
@@ -44,21 +47,27 @@ if echo "$SOURCES" | grep -q "github"; then
   echo "--- GitHub Repositories ---"
   RESULT=$(github_search "$QUERY")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     items = data.get('items', [])
     if not items:
         print('  No results found.')
     for r in items[:10]:
         stars = r.get('stargazers_count', 0)
+        name = r['full_name']; url = r['html_url']
         lang = r.get('language', '?')
+        created = r.get('created_at', '')[:10]
         updated = r.get('pushed_at', '')[:10]
         desc = (r.get('description') or 'No description')[:120]
         license = (r.get('license') or {}).get('spdx_id', '?')
-        print(f'  [{stars}★] {r[\"full_name\"]} ({lang}, {license})')
-        print(f'    Updated: {updated} | {desc}')
-        print(f'    URL: {r[\"html_url\"]}')
+        res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+        status = res.stdout.strip()
+        if status == 'known': continue
+        tag = '🆕' if status == 'new' else '📈'
+        print(f'  {tag} [{name}]({url}) [{stars}★] ({lang}, {license})')
+        print(f'    Created: {created} Updated: {updated} | {desc}')
         print()
 except Exception as e:
     print(f'  Parse error: {e}')
@@ -72,20 +81,26 @@ if echo "$SOURCES" | grep -q "mcp"; then
   echo "--- MCP Servers (GitHub) ---"
   RESULT=$(github_search "mcp server $QUERY")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     items = data.get('items', [])
     if not items:
         print('  No results found.')
     for r in items[:5]:
         stars = r.get('stargazers_count', 0)
+        name = r['full_name']; url = r['html_url']
         lang = r.get('language', '?')
+        created = r.get('created_at', '')[:10]
         updated = r.get('pushed_at', '')[:10]
         desc = (r.get('description') or 'No description')[:120]
-        print(f'  [{stars}★] {r[\"full_name\"]} ({lang})')
-        print(f'    Updated: {updated} | {desc}')
-        print(f'    URL: {r[\"html_url\"]}')
+        res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+        status = res.stdout.strip()
+        if status == 'known': continue
+        tag = '🆕' if status == 'new' else '📈'
+        print(f'  {tag} [{name}]({url}) [{stars}★] ({lang})')
+        print(f'    Created: {created} Updated: {updated} | {desc}')
         print()
 except Exception as e:
     print(f'  Parse error: {e}')
@@ -132,19 +147,25 @@ if echo "$SOURCES" | grep -q "pypi"; then
   # PyPI search doesn't have a JSON API, use GitHub search for Python packages instead
   RESULT=$(github_search "$QUERY language:python")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     items = [r for r in data.get('items', []) if r.get('language') == 'Python']
     if not items:
         print('  No results found.')
     for r in items[:5]:
         stars = r.get('stargazers_count', 0)
+        name = r['full_name']; url = r['html_url']
+        created = r.get('created_at', '')[:10]
         updated = r.get('pushed_at', '')[:10]
         desc = (r.get('description') or 'No description')[:120]
-        print(f'  [{stars}★] {r[\"full_name\"]}')
-        print(f'    Updated: {updated} | {desc}')
-        print(f'    URL: {r[\"html_url\"]}')
+        res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+        status = res.stdout.strip()
+        if status == 'known': continue
+        tag = '🆕' if status == 'new' else '📈'
+        print(f'  {tag} [{name}]({url}) [{stars}★]')
+        print(f'    Created: {created} Updated: {updated} | {desc}')
         print()
 except Exception as e:
     print(f'  Parse error: {e}')

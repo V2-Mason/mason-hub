@@ -52,8 +52,14 @@ AGENT_NAME=$(basename "$1" .md)
 source ~/slack-bot/.env
 export ANTHROPIC_API_KEY
 
-# --- 允许从 Claude Code session 内嵌套调用 ---
-unset CLAUDECODE 2>/dev/null || true
+# --- 检测 Claude Code session 嵌套（claude -p 不支持嵌套）---
+if [ "${CLAUDECODE:-}" = "1" ]; then
+  echo "❌ 错误：不能在 Claude Code session 内运行 run-agent.sh（claude -p 不支持嵌套）"
+  echo "请用以下替代方式："
+  echo "  1. 另开终端运行"
+  echo "  2. 使用 /dev-task 等 skill 替代"
+  exit 1
+fi
 
 # --- 提取 markdown body（跳过 YAML frontmatter）---
 SYSPROMPT=$(awk "BEGIN{c=0} /^---$/{c++; next} c>=2{print}" "$AGENT_FILE")

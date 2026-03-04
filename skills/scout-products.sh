@@ -18,6 +18,9 @@ done
 
 SINCE=$(date -d "$SINCE_DAYS days ago" +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+
 echo "=== Product Scout Report ==="
 echo "Track: $TRACK"
 echo "Since: $SINCE"
@@ -45,14 +48,20 @@ QUERIES=(
 for Q in "${QUERIES[@]}"; do
   RESULT=$(github_search "$Q")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:3]:
         stars = r.get('stargazers_count', 0)
         if stars > 50:
-            lang = r.get('language', '?')
-            print(f\"  [{stars}★] {r['full_name']} ({lang}): {(r.get('description') or '')[:100]}\")
+            name = r['full_name']; url = r['html_url']; lang = r.get('language', '?')
+            created = r.get('created_at', '')[:10]
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            print(f\"  {tag} [{name}]({url}) [{stars}★] ({lang}) created {created}: {(r.get('description') or '')[:100]}\")
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   sleep 2
@@ -72,13 +81,20 @@ GEO_QUERIES=(
 for Q in "${GEO_QUERIES[@]}"; do
   RESULT=$(github_search "$Q")
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:3]:
         stars = r.get('stargazers_count', 0)
         if stars > 20:
-            print(f\"  [{stars}★] {r['full_name']}: {(r.get('description') or '')[:100]}\")
+            name = r['full_name']; url = r['html_url']
+            created = r.get('created_at', '')[:10]
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            print(f\"  {tag} [{name}]({url}) [{stars}★] created {created}: {(r.get('description') or '')[:100]}\")
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   sleep 2
@@ -98,14 +114,20 @@ COMP_REPOS=(
 for REPO in "${COMP_REPOS[@]}"; do
   RESULT=$(curl -s "https://api.github.com/repos/$REPO" 2>/dev/null)
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     r = json.load(sys.stdin)
     if 'stargazers_count' in r:
         stars = r['stargazers_count']
         pushed = r.get('pushed_at', '')[:10]
         desc = (r.get('description') or '')[:80]
-        print(f\"  [{stars}★] {r['full_name']} (updated {pushed}): {desc}\")
+        name = r['full_name']; url = r.get('html_url', '')
+        dedup = '${DEDUP_SCRIPT}'
+        res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+        status = res.stdout.strip()
+        if status != 'known':
+            tag = '🆕' if status == 'new' else '📈'
+            print(f\"  {tag} [{name}]({url}) [{stars}★] updated {pushed}: {desc}\")
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   sleep 1

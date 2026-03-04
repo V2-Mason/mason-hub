@@ -16,6 +16,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# --- Dedup helper ---
+DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
+
 echo "=== UI/UX Scout Report ==="
 echo "Category: $CATEGORY"
 echo "Date: $(date +%Y-%m-%d)"
@@ -42,13 +45,21 @@ for Q in "${QUERIES[@]}"; do
   RESULT=$(github_search "$Q")
   if [[ -n "$RESULT" ]]; then
     echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:5]:
         stars = r.get('stargazers_count', 0)
         if stars > 100:
-            print(f\"  [{stars}★] {r['full_name']}: {(r.get('description') or '')[:100]}\")
+            name = r['full_name']
+            url = r['html_url']
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            created = r.get('created_at', '')[:10]
+            print(f\"  {tag} [{name}]({url}) [{stars}★] created {created}: {(r.get('description') or '')[:100]}\")
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   fi
@@ -70,13 +81,21 @@ if [[ "$COMPETITORS" == true ]]; then
   for COMP in "${COMPETITORS_LIST[@]}"; do
     RESULT=$(github_search "$COMP")
     echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     data = json.load(sys.stdin)
+    dedup = '${DEDUP_SCRIPT}'
     for r in data.get('items', [])[:2]:
         stars = r.get('stargazers_count', 0)
         if stars > 20:
-            print(f\"  [{stars}★] {r['full_name']}: {(r.get('description') or '')[:100]}\")
+            name = r['full_name']
+            url = r['html_url']
+            res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+            status = res.stdout.strip()
+            if status == 'known': continue
+            tag = '🆕' if status == 'new' else '📈'
+            created = r.get('created_at', '')[:10]
+            print(f\"  {tag} [{name}]({url}) [{stars}★] created {created}: {(r.get('description') or '')[:100]}\")
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
     sleep 2
@@ -98,13 +117,20 @@ DESIGN_REPOS=(
 for REPO in "${DESIGN_REPOS[@]}"; do
   RESULT=$(curl -s "https://api.github.com/repos/$REPO" 2>/dev/null)
   echo "$RESULT" | python3 -c "
-import sys, json
+import sys, json, subprocess
 try:
     r = json.load(sys.stdin)
     stars = r.get('stargazers_count', 0)
     pushed = r.get('pushed_at', '')[:10]
     desc = (r.get('description') or '')[:80]
-    print(f\"  [{stars}★] {r['full_name']} (updated {pushed}): {desc}\")
+    name = r['full_name']
+    url = r.get('html_url', '')
+    dedup = '${DEDUP_SCRIPT}'
+    res = subprocess.run(['python3', dedup, '--check', name, str(stars)], capture_output=True, text=True)
+    status = res.stdout.strip()
+    if status != 'known':
+        tag = '🆕' if status == 'new' else '📈'
+        print(f\"  {tag} [{name}]({url}) [{stars}★] updated {pushed}: {desc}\")
 except: pass
 " 2>/dev/null && HAS_RESULTS=true
   sleep 1
