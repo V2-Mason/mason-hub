@@ -355,6 +355,7 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
 EOSUMMARY
 
   echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
+  echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"duration\":$DURATION,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_LOG"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
 
   # Phase 3: 非开发类 agent 的 ACTION 解析
@@ -490,6 +491,7 @@ $TASK"
 EOSUMMARY
 
     echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
+    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"duration\":$DURATION,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_LOG"
 
     # Slack 结构化成功通知
     SLACK_SUCCESS_MSG=$(format_slack_message "success" "$AGENT_NAME" "$TASK_ID" "$ROUND" "修改文件: ${MODIFIED:-none}" "$DURATION")
