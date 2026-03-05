@@ -169,13 +169,13 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
-- [ ] run-agent.sh 嵌套检测 — 检测 CLAUDECODE=1 时直接报错退出，不再静默挂死（EMP_0002）
-- [ ] Skills 去重 — user 级 (~/.claude/skills/) 和 project 级 (mason-hub/.claude/skills/) 同名 skill 共存，统一保留一套（EMP_0002）
+- [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）
+- [x] Skills 去重 — 2026-03-05 检查完毕，user 级 skills 目录为空，无重复项（EMP_0002）
 - [ ] Scout cron 首次执行验证 — 今晚 23:00 CST 首次触发，明天确认 triggers.log 有输出（EMP_0004）
 
 P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
-- [ ] Scout 去重机制 — 维护 intel/seen.jsonl（repo name + 首次报告日期 + 上次 star 数），新项目标 🆕，已知项目仅 star 显著变化时标 📈，无变化不报（EMP_0002）
-- [ ] Scout 简报格式改进 — 每条标题直接是可点击链接 + 具体日期，禁止"本周""最近"等模糊表述（EMP_0002 实现 + EMP_0006 遵守）
+- [x] Scout 去重机制 — 2026-03-05 确认已实现（scripts/scout-dedup.py + intel/seen.jsonl），9 个 scout 脚本全部已集成 dedup 调用（EMP_0002）
+- [x] Scout 简报格式改进 — 2026-03-05 完成，6 个 scout 脚本修改（模糊时间→具体日期，补 markdown 链接），9 个脚本 bash -n 验证通过（EMP_0002）
 - [ ] Scout 多数据源 — 当前 9 个脚本全部只用 GitHub API，需引入真正的多渠道：Google→Gemini, X→Grok, 小红书→DeepSeek。scout-xhs-trends.sh 当前搜的是 GitHub 不是小红书（EMP_0002）
 - [ ] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用，Mason 手动触发必须有 /skill 替代方案（EMP_0002）
 
@@ -204,6 +204,16 @@ P2 — UX 持续优化:
 - [x] cleanup_stale_pending 注册到 Celery beat — 2026-02-28
 - [x] .env.example 同步 + config.py 旧 IP 修复 — 2026-02-28
 - [x] 全量代码提交（之前 2302 行裸跑无版本控制） — 2026-02-28，按功能分 8 个 commit
+
+**SocialMesh 内容管线 — 音频架构优化（2026-03-04 加入）**:
+
+> 三轨音频架构已实装（voiceover_writer + tts_generate + assemble 三轨混音），
+> 但 CosyVoice TTS 自然度不够（AI 感重、节奏僵硬），需优化。
+
+P1 — TTS 自然度优化:
+- [ ] 调参优化：全文一次性生成（不逐段）、限制语速 0.9-1.2（当前 Qwen 给到 1.7-1.9 太快）、换 cosyvoice-v3-plus 模型、试不同音色
+- [ ] 如调参不够：换 TTS 引擎（Fish Audio / 豆包 TTS / Azure Neural TTS），tts_generate.py 已做引擎抽象可替换
+- [ ] 终极方案：真人录 10s 参考音频 → CosyVoice voice clone 复刻音色；或直接找配音
 
 **SocialMesh 统一 Sprint — 基础功能 + 模块化重构（2026-03-03 合并重排）**:
 
