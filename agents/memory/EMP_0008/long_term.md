@@ -280,3 +280,25 @@ Step 4 渠道适配：
 - 不带 `--cuts` 则走原来的 simple concat（向后兼容）
 - 多剪只增加 1 次 Gemini Flash 调用（~$0.01），不增加 VEO 消耗（复用同一套素材）
 - 输出 N 个 EDL JSON → N 条成片，分发到各渠道
+
+## 剪辑规则库评审 (2026-03-06 会议)
+
+### 核心决策
+- styles/.md 是 Mason 的"审美笔记本"，手动维护，不急着做自动构建
+- 音频驱动视频（TTS 时长为基准调整 clip），但排最后做（依赖 TTS 调通）
+- 字幕排版：干掉 semi_transparent_black，换描边+阴影
+- 中文文案三层防御：prompt 约束 + 后处理替换 + 检查清单
+- 称呼统一"姐妹们"，价格分场景
+
+### 三源问题认知
+- CHANNEL_GUIDES（Gemini 读）、channel_profiles.json（FFmpeg 读）、styles/.md（人读）是三个消费者要不同格式
+- styles/.md 是官方版本，改它然后手动同步到代码
+- 品牌约束必须贯穿管线所有文案环节（multicut + voiceover_writer），不只是某一步
+
+### 规则库位置
+- 平台通用规则：`mason-hub/shared/editing_intelligence/styles/`（9 个文件）
+- 品牌覆盖：`mason-hub/shared/brands/surenxuan/editing_overrides.md`
+
+### 详细文档
+- 执行决议: docs/plans/2026-03-06-video-pipeline-style-review.md
+- 会议记录: docs/plans/2026-03-06-video-pipeline-style-review-meeting-log.md
