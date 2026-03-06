@@ -11,7 +11,7 @@
         "box_bg": false
       },
       "audio": { "volume_scale": 1.0 },
-      "layout": { "letterbox": false }
+      "layout": { "letterbox": false, "width": 1080, "height": 1920 }
     },
     "视频号": {
       "color": { "saturation": 1.0, "contrast": 1.0 },
@@ -24,7 +24,7 @@
         "box_color": "black@0.7"
       },
       "audio": { "volume_scale": 1.0 },
-      "layout": { "letterbox": true, "pad_top": 80, "pad_bottom": 80 }
+      "layout": { "letterbox": true, "pad_top": 80, "pad_bottom": 80, "width": 1080, "height": 1920 }
     },
     "小红书": {
       "color": { "saturation": 0.85, "contrast": 0.95, "brightness": 0.05 },
@@ -82,7 +82,7 @@
         "box_bg": false
       },
       "audio": { "volume_scale": 1.0 },
-      "layout": { "letterbox": false }
+      "layout": { "letterbox": false, "width": 1080, "height": 1080 }
     }
   }
 }
