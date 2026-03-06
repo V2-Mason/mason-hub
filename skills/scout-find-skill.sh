@@ -126,11 +126,13 @@ try:
         name = pkg.get('name', '?')
         desc = (pkg.get('description') or 'No description')[:120]
         version = pkg.get('version', '?')
+        date = obj.get('package', {}).get('date', '?')[:10] if obj.get('package', {}).get('date') else '?'
         link = pkg.get('links', {}).get('npm', '')
-        print(f'  {name}@{version}')
-        print(f'    {desc}')
         if link:
-            print(f'    URL: {link}')
+            print(f'  [{name}@{version}]({link}) updated {date}')
+        else:
+            print(f'  {name}@{version} updated {date}')
+        print(f'    {desc}')
         print()
 except Exception as e:
     print(f'  Parse error: {e}')

@@ -15,7 +15,7 @@ echo "Checking since: $WEEK_AGO"
 echo ""
 
 # 1. Check anthropic org repos for updates
-echo "### Anthropic Official Repos (recently pushed)"
+echo "### Anthropic Official Repos (pushed since $WEEK_AGO)"
 ANTHROPIC_REPOS=$(curl -s "https://api.github.com/search/repositories?q=org:anthropics+pushed:>$WEEK_AGO&sort=updated&per_page=10" 2>/dev/null)
 A_COUNT=$(echo "$ANTHROPIC_REPOS" | python3 -c "import sys,json; print(json.load(sys.stdin).get('total_count',0))" 2>/dev/null || echo "0")
 
@@ -39,7 +39,7 @@ for item in data.get('items', [])[:10]:
     print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
 else
-  echo "  No recent updates."
+  echo "  No updates since $WEEK_AGO."
 fi
 echo ""
 
@@ -68,7 +68,7 @@ for item in data.get('items', [])[:10]:
     print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
 else
-  echo "  No recent updates."
+  echo "  No updates since $WEEK_AGO."
 fi
 echo ""
 
@@ -97,7 +97,7 @@ for item in data.get('items', [])[:10]:
     print(f'- {tag} [{name}]({url}) ⭐{stars} updated {pushed} — {desc}')
 " 2>/dev/null
 else
-  echo "  No recent updates."
+  echo "  No updates since $WEEK_AGO."
 fi
 
 echo ""

@@ -86,4 +86,13 @@
 - **架构文档**：`~/socialmesh/docs/plans/2026-03-04-multicut-architecture.md`
 - **Pipeline CLI**：`--cuts "抖音×认知型,小红书×种草型"`，不带则走 simple concat（向后兼容）
 
+## 参考文档索引
+
+### Gemini API 完整文档 (2026-03-06, Mason 指定)
+- **路径**: `intel/processed/Gemini-API-Docs-Complete.md`（45667 行，1.7MB）
+- **Google Drive**: `Gemini-API-Docs-Complete.md`（ID: 1Ls_-ataj3d9TNqcsptkkWRTZZqHuwnpN）
+- **用途**: 所有关于 Gemini API 的问题（定价/配额/模型能力/rate limits/policy），优先查这份文档，不要去网上搜
+- **覆盖内容**: Gemini 全系列模型、Imagen、VEO、文本/图片/视频生成、API 调用方式、免费层/付费层区别
+- **规则**: Mason 明确要求 — Gemini API 相关问题必须先查此文档
+
 ## Agent 协作 Pattern

@@ -74,8 +74,8 @@ fi
 
 echo ""
 
-# Search recently updated high-star repos
-echo "### Recently Updated (100+ stars, pushed since $SINCE)"
+# Search updated high-star repos
+echo "### Updated since $SINCE (100+ stars)"
 UPDATED_REPOS=$(curl -s "https://api.github.com/search/repositories?q=${ENCODED_TOPIC}+stars:>100+pushed:>$SINCE&sort=updated&per_page=10" 2>/dev/null)
 UPD_COUNT=$(echo "$UPDATED_REPOS" | python3 -c "import sys,json; print(json.load(sys.stdin).get('total_count',0))" 2>/dev/null || echo "0")
 
@@ -100,7 +100,7 @@ for item in data.get('items', [])[:10]:
 " 2>/dev/null
   HAS_RESULTS=true
 else
-  echo "No recently updated repositories found."
+  echo "No updated repositories found since $SINCE."
 fi
 
 echo ""

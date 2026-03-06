@@ -19,10 +19,12 @@ done
 # --- Dedup helper ---
 DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
 
+REPORT_DATE=$(date +%Y-%m-%d)
+
 echo "=== E-Commerce Competitor Scout Report ==="
 echo "Keyword: $KEYWORD"
 echo "Market: $MARKET"
-echo "Date: $(date +%Y-%m-%d)"
+echo "Date: $REPORT_DATE"
 echo ""
 
 HAS_RESULTS=false

@@ -19,9 +19,11 @@ done
 # --- Dedup helper ---
 DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
 
+REPORT_DATE=$(date +%Y-%m-%d)
+
 echo "=== UI/UX Scout Report ==="
 echo "Category: $CATEGORY"
-echo "Date: $(date +%Y-%m-%d)"
+echo "Date: $REPORT_DATE"
 echo ""
 
 HAS_RESULTS=false

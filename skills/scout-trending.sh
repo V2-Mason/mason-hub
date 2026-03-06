@@ -23,6 +23,7 @@ DEDUP_SCRIPT="$(dirname "$0")/../scripts/scout-dedup.py"
 
 echo "=== GitHub Trending Scout ==="
 echo "Date: $(date +%Y-%m-%d)"
+echo "Since: $WEEK_AGO"
 echo "Min stars: $MIN_STARS"
 echo "Language: ${LANGUAGE:-any}"
 echo ""
