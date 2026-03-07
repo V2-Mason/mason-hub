@@ -21,3 +21,50 @@
 
 ### 详细文档
 - 执行决议: docs/plans/2026-03-06-video-pipeline-style-review.md
+
+## 视频管线升级 — 11 项改动全部完成 (2026-03-07)
+
+### 来源
+- Bilibili 课程 BV17r421A71u（产品短视频三板斧，37 集）→ Gemini 2.5 Pro 逐集分析 → 提炼方法论 → 落地代码
+- 计划文档: `docs/plans/2026-03-07-video-pipeline-upgrade-from-course.md`
+
+### Sprint 1 改动（有依赖关系，先做）
+1. **配音重生成** — `voiceover_writer.py` 新增 `write_voiceover_from_edl_text(edl)` 从 EDL 的 voiceover_full_text 直接生成 segments；`tts_generate.py` 新增 `generate_tts_per_cut(edl, output_dir)`；`assemble.py` 的 `batch_assemble_edls()` 自动检测并调用
+2. **心跳节奏** — `multicut.py` MULTICUT_PROMPT 新增"节奏控制规则（心跳理论）"6 条规则
+3. **J/L-Cut** — `multicut.py` timeline item 新增 `audio_offset_seconds`；`assemble.py` 用 adelay/atrim 实现偏移
+4. **5 结构公式** — `shooting_script.py` 新增 STRUCTURE_FORMULAS + prompt rule 6
+5. **卖点口语化** — `shooting_script.py` prompt voice section rule 6
+
+### Sprint 2 改动（独立模块，并行做）
+6. **五感设计** — `shooting_script.py` sensory_channel 字段 + rule 7
+7. **构图指导** — `shooting_script.py` composition 字段 + rule 9
+8. **色彩心理学** — `shooting_script.py` rule 8
+9. **SFX 音效层** — 新建 `sfx_generate.py`（load_sfx_library + match_sfx + generate_sfx_track）；`multicut.py` 新增 sfx_hints；`assemble.py` SFX track 混合（voiceover + SFX amix 1:0.8 → + BGM）
+10. **花字分类** — `multicut.py` 新增 subtitle_type；`assemble.py` SUBTITLE_TYPE_PRESETS（4 类预设）
+11. **拉片反馈循环** — 新建 `video_teardown.py`（teardown_video + teardown_to_constraints，Gemini 视频理解）
+12. **Hook 视觉库** — `shooting_script.py` HOOK_VISUAL_TEMPLATES（8 种）+ rule 10
+
+### 新文件
+- `sfx_generate.py` — SFX 匹配 + ffmpeg 混合
+- `video_teardown.py` — Gemini 自动拉片（CLI 入口 + argparse）
+- `shared/sfx/sfx_library.json` — SFX 素材库结构（tracks 待填充）
+
+### 待完成
+- SFX 素材库填充（`shared/sfx/sfx_library.json` tracks 为空）
+- 端到端测试验证改进效果
+
+### Commits
+- socialmesh `e43f096`: Sprint 1 — 配音重生成 + prompt upgrades (5 files, +336 lines)
+- socialmesh `494e629`: Sprint 2 — SFX + subtitle + teardown + hook (5 files, +535 lines)
+
+## 多 Agent 并行开发经验 (2026-03-07)
+
+### 成功模式
+- **按文件区域分工**：Agent A 改函数逻辑，Agent B 改 prompt 文本 → 不冲突
+- **按依赖关系分批**：Sprint 1（有依赖的先做）→ Sprint 2（独立模块并行）
+- 4 个 Agent 完成 871 行新增代码，全部一次通过语法验证
+
+### 风险区域
+- `assemble.py` 改动最密集（音频混合 + SFX + J/L-Cut + 花字），多人改容易冲突
+- 同一个 prompt（如 MULTICUT_PROMPT）多人加规则 → 需注意不重复不矛盾
+- 接口字段名必须事先约定（如 `voiceover_full_text` vs `voiceover_script`）

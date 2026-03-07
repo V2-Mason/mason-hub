@@ -96,3 +96,13 @@
 - **规则**: Mason 明确要求 — Gemini API 相关问题必须先查此文档
 
 ## Agent 协作 Pattern
+
+### 多 Agent 并行开发成功案例 (2026-03-07)
+- **场景**: 视频管线 11 项改动，涉及 ~10 个文件，871 行新增代码
+- **方法**: 分 2 Sprint，每 Sprint 2 个并行 Agent
+  - Sprint 1: Agent A（函数逻辑: voiceover_writer + tts_generate + assemble）+ Agent B（prompt 文本: shooting_script + multicut）
+  - Sprint 2: Agent C（新模块: sfx_generate + assemble SFX/花字）+ Agent D（新模块: video_teardown + shooting_script hook/构图/色彩）
+- **分工原则**: 按文件区域分工（同一文件不同区域可以），按依赖关系分批（有依赖的先做）
+- **结果**: 全部一次通过语法验证，无冲突
+- **风险**: assemble.py 改动最密集（4 个 agent 都碰），需要明确各自改哪个函数/区域
+- **教训**: 接口字段名必须事先约定（voiceover_full_text vs voiceover_script 这种命名歧义会导致对接失败）
