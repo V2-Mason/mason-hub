@@ -16,6 +16,9 @@ logs/cron.log
 # Log archive (large, auto-generated)
 logs/archive/
 
+# Large binary files (exceed GitHub 100MB limit)
+*.xlsx
+
 # Credentials (never commit)
 .credentials/
 .env
