@@ -1,0 +1,10 @@
+{
+  "categories": {
+    "ambient": "环境音效（室内白噪、窗外鸟鸣、雨声）",
+    "mood": "氛围音效（悬念、惊喜、温馨）",
+    "action": "动作音效（开盖、涂抹、喷雾、ASMR）",
+    "emphasis": "强调音效（叮、whoosh、数据出现）",
+    "transition": "转场音效（风声、闪光、滑动）"
+  },
+  "tracks": []
+}
