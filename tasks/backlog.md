@@ -328,10 +328,11 @@ P2 — 模块 A 增强:
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册
 
-**TrendRadar + RSSHub 趋势监控系统（2026-03-08 部署完成）**:
+**Radar — Mason 个人情报系统（原 TrendRadar + RSSHub，2026-03-08 正式命名）**:
 
-> 赛道分析工具链。TrendRadar 抓热榜 + RSS，关键词过滤，存本地 SQLite。
-> /standup 晨会汇报趋势信号，不推 Slack。
+> 统一产品名：**Radar**。归属 mason-hub 子模块，Platform Dev 维护。
+> 三个数据管道：TrendRadar（热榜+RSS 广度采集）、Scout（深度分析）、RSSHub（RSS 转换）。
+> 架构：星型拓扑，Mason 为决策中心，所有情报汇聚到他。
 > Mason 战略方向：bottom-up（已知业务）+ top-down（新赛道探索）。
 
 已完成:
@@ -341,11 +342,24 @@ P2 — 模块 A 增强:
 - [x] 14 组关键词配置（A/B/C/D 四层）— 2026-03-08
 - [x] /standup 晨会新增趋势热榜板块 — 2026-03-08
 - [x] 配置备份到 tools/trendradar-config/ — 2026-03-08
+- [x] RSS 源扩展 10→17 个 — 2026-03-08，新增：The Verge / Ars Technica / MIT Tech Review / McKinsey / CB Insights / Tom's Hardware / Utility Dive（BCG/Bain 无公开 RSS 已跳过）
+- [x] 新增关键词组 [基础设施/硬科技] — 2026-03-08，C+ 层，8 匹配词（内存/存储/光纤/电力/储能/HBM/数据中心/算力）+ 14 排除词
+- [x] 关键词组总数 14→15 — 2026-03-08
 
 待办:
 - [ ] 启用 AI 分析功能 — 需配 DeepSeek API key 到 config.yaml（EMP_0002）
-- [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）
+- [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）→ 已更新见下方点击追踪 (2026-03-08)
 - [ ] Scout 脚本接入 TrendRadar SQLite — 用趋势数据辅助情报分析（EMP_0006）
+
+P1 — Radar 产品定义（2026-03-08 会议决议）:
+- [ ] 产品定义文档 — Product Architect (EMP_0012) 出 docs/products/radar.md，定义边界/模块/接口/迭代路径
+- [ ] 星型拓扑反馈回路设计 — 纳入产品定义，定义 Mason 行为数据如何反哺关键词权重
+
+P1 — 话题淘汰点击追踪（2026-03-08 Mason 批准方案 1）:
+- [ ] HTML 报告加"无用"按钮 — 每条新闻旁加按钮，点击发 GET 请求记录到 SQLite（EMP_0002）
+- [ ] 轻量 API 服务 — Flask 单文件，接收点击事件写 SQLite（EMP_0002）
+- [ ] 每周关注率统计 — 15 组关键词各自的命中数 vs Mason 无用标记数，算关注率（EMP_0002）
+- [ ] 淘汰建议生成 — 关注率连续两周低于阈值的关键词组标记"建议淘汰"，Mason 手动确认（EMP_0002）
 
 **ComfyUI 自建节点 — GPU 实例部署（2026-03-08 加入）**:
 

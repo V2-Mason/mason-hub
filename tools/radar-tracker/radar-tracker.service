@@ -1,0 +1,15 @@
+[Unit]
+Description=Radar Tracker - TrendRadar click tracking MVP
+After=network.target
+
+[Service]
+Type=simple
+User=hangn
+WorkingDirectory=/home/hangn/mason-hub/tools/radar-tracker
+ExecStart=/home/hangn/mason-hub/.venv/bin/python3 /home/hangn/mason-hub/tools/radar-tracker/tracker.py
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
