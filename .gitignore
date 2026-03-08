@@ -22,3 +22,5 @@ logs/archive/
 # Credentials (never commit)
 .credentials/
 .env
+tools/trendradar/
+logs/trendradar.log

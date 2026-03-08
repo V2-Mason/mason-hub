@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════
+#                    TrendRadar 频率词配置文件
+#                    Mason Hub 定制版
+# ═══════════════════════════════════════════════════════════════
+
+[GLOBAL_FILTER]
+震惊
+突发
+
+[WORD_GROUPS]
+
+[韩国护肤]
+/韩妆|韩国护肤|K-Beauty|COSRX|韩系精华/
+
+[跨境电商]
+/跨境电商|海淘|保税仓|NMPA备案/
+
+[小红书运营]
+/小红书运营|小红书算法|笔记流量|种草/
+
+[AI视频生成]
+/AI视频|AI生成视频|VEO|自动剪辑/
+
+[Vibe Coding]
+/vibe coding|AI编程|AI开发工具|Cursor|Claude Code/
+
+[AI Agent]
+/AI Agent|智能体|多Agent协作|MCP/
+
+[出海]
+/中国出海|海外本地化|品牌出海|工具出海/
+
+[AI工具出海]
+/AI工具出海|AI SaaS|AI应用|AI产品|micro SaaS|AI startup/
+
+[内容电商]
+/短视频带货|直播电商|AI内容电商|自动化内容营销/
+
+[个人IP]
+/个人IP变现|知识付费|一人企业|creator economy/
+
+[新消费品类]
+/宠物用品|家居好物|新消费|DTC/
+
+[抖音TikTok]
+/抖音电商|抖音运营|TikTok Shop|TikTok电商|TikTok出海/
+
+[独立开发者]
+/独立开发|独立开发者|solo founder|indie hacker|bootstrapped/
+
+[副业一人公司]
+/副业|一人公司|小团队创业|solopreneur|side project/
