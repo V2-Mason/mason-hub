@@ -1,0 +1,2078 @@
+{
+  "crawl_start": "2026-03-05T04:18:14.250049+08:00",
+  "total_discovered": 248,
+  "pages": [
+    {
+      "status": "ok",
+      "file_id": 39,
+      "title": "签名算法",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/签名算法.md",
+      "size": 3385
+    },
+    {
+      "status": "ok",
+      "file_id": 40,
+      "title": "系统参数说明",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/系统参数说明.md",
+      "size": 745
+    },
+    {
+      "status": "ok",
+      "file_id": 41,
+      "title": "应用消息推送",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/应用消息推送.md",
+      "size": 3885
+    },
+    {
+      "status": "ok",
+      "file_id": 42,
+      "title": "SDK使用说明",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/SDK使用说明.md",
+      "size": 2705
+    },
+    {
+      "status": "ok",
+      "file_id": 292,
+      "title": "接口限流说明",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/接口限流说明.md",
+      "size": 707
+    },
+    {
+      "status": "ok",
+      "file_id": 43,
+      "title": "上架服务市场",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/上架服务市场.md",
+      "size": 2503
+    },
+    {
+      "status": "ok",
+      "file_id": 44,
+      "title": "商品基础介绍",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/商品基础介绍.md",
+      "size": 1698
+    },
+    {
+      "status": "ok",
+      "file_id": 45,
+      "title": "订单基础介绍",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/订单基础介绍.md",
+      "size": 1074
+    },
+    {
+      "status": "ok",
+      "file_id": 46,
+      "title": "跨境订单介绍",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/跨境订单介绍.md",
+      "size": 2217
+    },
+    {
+      "status": "ok",
+      "file_id": 47,
+      "title": "订单接入方案",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/订单接入方案.md",
+      "size": 760
+    },
+    {
+      "status": "ok",
+      "file_id": 48,
+      "title": "售后接入说明",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/售后接入说明.md",
+      "size": 1679
+    },
+    {
+      "status": "ok",
+      "file_id": 49,
+      "title": "财务接入说明",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/财务接入说明.md",
+      "size": 434
+    },
+    {
+      "status": "ok",
+      "file_id": 331,
+      "title": "会员通接入说明",
+      "category": "API调用场景",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/API调用场景/会员通接入说明.md",
+      "size": 479583
+    },
+    {
+      "status": "ok",
+      "file_id": 50,
+      "title": "数据加密对接方案",
+      "category": "数据加解密",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/数据加解密/数据加密对接方案.md",
+      "size": 3190
+    },
+    {
+      "status": "ok",
+      "file_id": 51,
+      "title": "加密算法介绍",
+      "category": "数据加解密",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/数据加解密/加密算法介绍.md",
+      "size": 2331
+    },
+    {
+      "status": "ok",
+      "file_id": 294,
+      "title": "新版小红书电子面单ISV对接改造",
+      "category": "电子面单",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/电子面单/新版小红书电子面单ISV对接改造.md",
+      "size": 5937
+    },
+    {
+      "status": "ok",
+      "file_id": 295,
+      "title": "电子面单对接说明（新）",
+      "category": "电子面单",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/电子面单/电子面单对接说明新.md",
+      "size": 11940
+    },
+    {
+      "status": "ok",
+      "file_id": 296,
+      "title": "电子面单打印组件协议（新）",
+      "category": "电子面单",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/电子面单/电子面单打印组件协议新.md",
+      "size": 26476
+    },
+    {
+      "status": "ok",
+      "file_id": 297,
+      "title": "小红书云打印系统物料使用说明书",
+      "category": "电子面单",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/电子面单/小红书云打印系统物料使用说明书.md",
+      "size": 23735
+    },
+    {
+      "status": "ok",
+      "file_id": 301,
+      "title": "电子面单常见问题（新）",
+      "category": "电子面单",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/电子面单/电子面单常见问题新.md",
+      "size": 12367
+    },
+    {
+      "status": "ok",
+      "file_id": 318,
+      "title": "小红书打印组件使用问题",
+      "category": "电子面单",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/电子面单/小红书打印组件使用问题.md",
+      "size": 3835
+    },
+    {
+      "status": "ok",
+      "file_id": 54,
+      "title": "小红书开放平台开发者协议",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/小红书开放平台开发者协议.md",
+      "size": 9718
+    },
+    {
+      "status": "ok",
+      "file_id": 55,
+      "title": "数据安全承诺函",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/数据安全承诺函.md",
+      "size": 2744
+    },
+    {
+      "status": "ok",
+      "file_id": 102,
+      "title": "服务市场上架审核标准",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/服务市场上架审核标准.md",
+      "size": 1086
+    },
+    {
+      "status": "ok",
+      "file_id": 103,
+      "title": "开发者角色说明",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/开发者角色说明.md",
+      "size": 769
+    },
+    {
+      "status": "ok",
+      "file_id": 104,
+      "title": "小红书服务市场服务协议（服务商版）",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/小红书服务市场服务协议服务商版.md",
+      "size": 8704
+    },
+    {
+      "status": "ok",
+      "file_id": 105,
+      "title": "小红书服务市场管理规范",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/小红书服务市场管理规范.md",
+      "size": 6367
+    },
+    {
+      "status": "ok",
+      "file_id": 106,
+      "title": "企业管理类目管理规则",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/企业管理类目管理规则.md",
+      "size": 2054
+    },
+    {
+      "status": "ok",
+      "file_id": 107,
+      "title": "商品管理类目管理规则",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/商品管理类目管理规则.md",
+      "size": 2483
+    },
+    {
+      "status": "ok",
+      "file_id": 108,
+      "title": "订单管理类目管理规则",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/订单管理类目管理规则.md",
+      "size": 2216
+    },
+    {
+      "status": "ok",
+      "file_id": 109,
+      "title": "内容工具类目管理规则",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/内容工具类目管理规则.md",
+      "size": 2162
+    },
+    {
+      "status": "ok",
+      "file_id": 110,
+      "title": "小红书服务市场保证金要求",
+      "category": "规则中心",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/规则中心/小红书服务市场保证金要求.md",
+      "size": 429
+    },
+    {
+      "status": "empty",
+      "file_id": 35,
+      "title": "获取分类列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 37,
+      "title": "由末级分类获取规格（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 56,
+      "title": "由末级分类获取属性"
+    },
+    {
+      "status": "empty",
+      "file_id": 57,
+      "title": "由属性获取属性值"
+    },
+    {
+      "status": "empty",
+      "file_id": 58,
+      "title": "获取快递公司信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 59,
+      "title": "获取物流方案列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 60,
+      "title": "运费模版列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 61,
+      "title": "运费模版详情"
+    },
+    {
+      "status": "empty",
+      "file_id": 62,
+      "title": "获取品牌信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 63,
+      "title": "获取物流模式列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 64,
+      "title": "获取地址信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 65,
+      "title": "获取老版本商家授权信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 66,
+      "title": "cc资质检查"
+    },
+    {
+      "status": "empty",
+      "file_id": 67,
+      "title": "商品标题类目预测"
+    },
+    {
+      "status": "empty",
+      "file_id": 99,
+      "title": "批量获取发货时间规则"
+    },
+    {
+      "status": "empty",
+      "file_id": 100,
+      "title": "获取地址信息（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 101,
+      "title": "获取商家地址库"
+    },
+    {
+      "status": "empty",
+      "file_id": 255,
+      "title": "获取预测类目（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 261,
+      "title": "判断文本中是否含有违禁词"
+    },
+    {
+      "status": "empty",
+      "file_id": 339,
+      "title": "查看账号模板列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 183,
+      "title": "订单列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 184,
+      "title": "订单详情"
+    },
+    {
+      "status": "empty",
+      "file_id": 185,
+      "title": "订单收件人信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 186,
+      "title": "修改订单备注"
+    },
+    {
+      "status": "empty",
+      "file_id": 187,
+      "title": " 订单发货"
+    },
+    {
+      "status": "empty",
+      "file_id": 188,
+      "title": "修改快递单号"
+    },
+    {
+      "status": "empty",
+      "file_id": 189,
+      "title": "订单物流轨迹"
+    },
+    {
+      "status": "empty",
+      "file_id": 190,
+      "title": "海关申报信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 315,
+      "title": "批量上传序列号"
+    },
+    {
+      "status": "empty",
+      "file_id": 193,
+      "title": "跨境清关支持口岸"
+    },
+    {
+      "status": "empty",
+      "file_id": 194,
+      "title": "跨境重推支付单"
+    },
+    {
+      "status": "empty",
+      "file_id": 196,
+      "title": "跨境商品备案信息查询"
+    },
+    {
+      "status": "empty",
+      "file_id": 197,
+      "title": "小包批次创建"
+    },
+    {
+      "status": "empty",
+      "file_id": 198,
+      "title": "开票列表查询"
+    },
+    {
+      "status": "empty",
+      "file_id": 199,
+      "title": "开票结果回传（正向蓝票开具）"
+    },
+    {
+      "status": "empty",
+      "file_id": 200,
+      "title": "发票冲红（逆向冲红）"
+    },
+    {
+      "status": "empty",
+      "file_id": 201,
+      "title": "批量解密"
+    },
+    {
+      "status": "empty",
+      "file_id": 202,
+      "title": "批量脱敏"
+    },
+    {
+      "status": "empty",
+      "file_id": 203,
+      "title": " 批量获取索引串"
+    },
+    {
+      "status": "empty",
+      "file_id": 272,
+      "title": "获取KOS员工数据 "
+    },
+    {
+      "status": "empty",
+      "file_id": 287,
+      "title": "创建三方商品备案信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 337,
+      "title": "订单充值结果回传接口"
+    },
+    {
+      "status": "empty",
+      "file_id": 204,
+      "title": "获取售后列表（旧）"
+    },
+    {
+      "status": "empty",
+      "file_id": 205,
+      "title": "售后详情（旧）"
+    },
+    {
+      "status": "empty",
+      "file_id": 206,
+      "title": "售后审核（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 207,
+      "title": "售后确认收货（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 208,
+      "title": "售后换货确认收货并发货"
+    },
+    {
+      "status": "empty",
+      "file_id": 209,
+      "title": " 获取售后拒绝原因"
+    },
+    {
+      "status": "empty",
+      "file_id": 210,
+      "title": " 获取售后列表（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 211,
+      "title": "获取售后详情（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 221,
+      "title": "商品列表完整版"
+    },
+    {
+      "status": "empty",
+      "file_id": 222,
+      "title": "更新物流方案"
+    },
+    {
+      "status": "empty",
+      "file_id": 223,
+      "title": "商品上下架"
+    },
+    {
+      "status": "empty",
+      "file_id": 224,
+      "title": "创建ITEM（即将废弃）"
+    },
+    {
+      "status": "empty",
+      "file_id": 225,
+      "title": "更新ITEM"
+    },
+    {
+      "status": "empty",
+      "file_id": 226,
+      "title": " 删除ITEM"
+    },
+    {
+      "status": "empty",
+      "file_id": 227,
+      "title": "创建SKU（即将废弃）"
+    },
+    {
+      "status": "empty",
+      "file_id": 228,
+      "title": "更新SKU"
+    },
+    {
+      "status": "empty",
+      "file_id": 229,
+      "title": "删除SKU"
+    },
+    {
+      "status": "empty",
+      "file_id": 230,
+      "title": "查询Item列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 231,
+      "title": "获取ITEM详情"
+    },
+    {
+      "status": "empty",
+      "file_id": 232,
+      "title": "修改价格"
+    },
+    {
+      "status": "empty",
+      "file_id": 233,
+      "title": "修改商品主图、主图视频"
+    },
+    {
+      "status": "empty",
+      "file_id": 305,
+      "title": "创建商品Item+Sku（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 306,
+      "title": "更新商品Item+Sku（新）"
+    },
+    {
+      "status": "empty",
+      "file_id": 234,
+      "title": "获取商品库存"
+    },
+    {
+      "status": "empty",
+      "file_id": 235,
+      "title": "同步库存"
+    },
+    {
+      "status": "empty",
+      "file_id": 236,
+      "title": "增减库存"
+    },
+    {
+      "status": "empty",
+      "file_id": 273,
+      "title": "获取商品库存V2"
+    },
+    {
+      "status": "empty",
+      "file_id": 274,
+      "title": "同步库存V2"
+    },
+    {
+      "status": "empty",
+      "file_id": 279,
+      "title": "创建仓库"
+    },
+    {
+      "status": "empty",
+      "file_id": 280,
+      "title": "修改仓库"
+    },
+    {
+      "status": "empty",
+      "file_id": 281,
+      "title": "仓库列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 282,
+      "title": "仓库详情"
+    },
+    {
+      "status": "empty",
+      "file_id": 283,
+      "title": "设置仓库覆盖地区"
+    },
+    {
+      "status": "empty",
+      "file_id": 284,
+      "title": "设置仓库优先级"
+    },
+    {
+      "status": "empty",
+      "file_id": 237,
+      "title": "素材列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 238,
+      "title": "上传素材"
+    },
+    {
+      "status": "empty",
+      "file_id": 239,
+      "title": "修改素材"
+    },
+    {
+      "status": "empty",
+      "file_id": 240,
+      "title": "删除素材"
+    },
+    {
+      "status": "empty",
+      "file_id": 241,
+      "title": "查询电子面单订购关系"
+    },
+    {
+      "status": "empty",
+      "file_id": 242,
+      "title": "查询电子面单模板列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 243,
+      "title": "批量取号"
+    },
+    {
+      "status": "empty",
+      "file_id": 244,
+      "title": "更新面单"
+    },
+    {
+      "status": "empty",
+      "file_id": 245,
+      "title": "取消面单"
+    },
+    {
+      "status": "empty",
+      "file_id": 246,
+      "title": "查询面单"
+    },
+    {
+      "status": "empty",
+      "file_id": 330,
+      "title": "查询增值服务列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 247,
+      "title": "带货达人侧详情查询"
+    },
+    {
+      "status": "empty",
+      "file_id": 248,
+      "title": "查询月度结算单下载地址"
+    },
+    {
+      "status": "empty",
+      "file_id": 249,
+      "title": "分页查询账户动账流水"
+    },
+    {
+      "status": "empty",
+      "file_id": 250,
+      "title": "分页查询订单货款结算明细"
+    },
+    {
+      "status": "empty",
+      "file_id": 251,
+      "title": "分页查询其他服务款结算明细"
+    },
+    {
+      "status": "empty",
+      "file_id": 303,
+      "title": "近场轨迹推送"
+    },
+    {
+      "status": "empty",
+      "file_id": 334,
+      "title": "更新会员信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 335,
+      "title": "查询会员信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 346,
+      "title": "分页查询供货单列表"
+    },
+    {
+      "status": "empty",
+      "file_id": 344,
+      "title": "供货单发货"
+    },
+    {
+      "status": "empty",
+      "file_id": 345,
+      "title": "修改供货单快递信息"
+    },
+    {
+      "status": "empty",
+      "file_id": 350,
+      "title": "查询供货关系(开发中)"
+    },
+    {
+      "status": "empty",
+      "file_id": 351,
+      "title": "更新供货库存(开发中)"
+    },
+    {
+      "status": "ok",
+      "file_id": 111,
+      "title": "商品新建 msg_sku_create",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品新建-msg_sku_create.md",
+      "size": 160
+    },
+    {
+      "status": "ok",
+      "file_id": 112,
+      "title": "商品上下架 msg_sku_buyable",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品上下架-msg_sku_buyable.md",
+      "size": 170
+    },
+    {
+      "status": "ok",
+      "file_id": 113,
+      "title": "商品审核驳回 msg_item_audit_reject",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品审核驳回-msg_item_audit_reject.md",
+      "size": 172
+    },
+    {
+      "status": "ok",
+      "file_id": 114,
+      "title": "商品删除 msg_item_delete",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品删除-msg_item_delete.md",
+      "size": 159
+    },
+    {
+      "status": "ok",
+      "file_id": 115,
+      "title": "订单状态变更 msg_fulfillment_status_change",
+      "category": "履约消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/履约消息/订单状态变更-msg_fulfillment_status_change.md",
+      "size": 510
+    },
+    {
+      "status": "ok",
+      "file_id": 116,
+      "title": "买家收货信息变更 msg_fulfillment_receiver_change",
+      "category": "履约消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/履约消息/买家收货信息变更-msg_fulfillment_receiver_change.md",
+      "size": 249
+    },
+    {
+      "status": "ok",
+      "file_id": 117,
+      "title": "卖家修改备注 msg_fulfillment_seller_remark_change",
+      "category": "履约消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/履约消息/卖家修改备注-msg_fulfillment_seller_remark_change.md",
+      "size": 262
+    },
+    {
+      "status": "ok",
+      "file_id": 118,
+      "title": "订单发货时效变更 msg_fulfillment_delivery_time_change",
+      "category": "履约消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/履约消息/订单发货时效变更-msg_fulfillment_delivery_time_change.md",
+      "size": 245
+    },
+    {
+      "status": "ok",
+      "file_id": 290,
+      "title": "物流服务订阅状态变更 msg_logistic_service_subscribe_status_change",
+      "category": "履约消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/履约消息/物流服务订阅状态变更-msg_logistic_service_subscribe_status_change.md",
+      "size": 405
+    },
+    {
+      "status": "ok",
+      "file_id": 338,
+      "title": "充值订单即将超期取消通知 msg_fulfillment_soon_cancel",
+      "category": "履约消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/履约消息/充值订单即将超期取消通知-msg_fulfillment_soon_cancel.md",
+      "size": 225
+    },
+    {
+      "status": "ok",
+      "file_id": 119,
+      "title": "发起售后申请 msg_after_sale_create",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/发起售后申请-msg_after_sale_create.md",
+      "size": 386
+    },
+    {
+      "status": "ok",
+      "file_id": 120,
+      "title": "售后类型变更 msg_after_sale_transfer",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/售后类型变更-msg_after_sale_transfer.md",
+      "size": 375
+    },
+    {
+      "status": "ok",
+      "file_id": 121,
+      "title": "买家修改售后申请 msg_after_sale_update",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/买家修改售后申请-msg_after_sale_update.md",
+      "size": 372
+    },
+    {
+      "status": "ok",
+      "file_id": 122,
+      "title": "同意退货申请 msg_after_sale_audit_pass",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/同意退货申请-msg_after_sale_audit_pass.md",
+      "size": 387
+    },
+    {
+      "status": "ok",
+      "file_id": 123,
+      "title": "卖家审核拒绝 msg_after_sale_audit_reject",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/卖家审核拒绝-msg_after_sale_audit_reject.md",
+      "size": 374
+    },
+    {
+      "status": "ok",
+      "file_id": 124,
+      "title": "买家退货给卖家 msg_after_sale_update_express_no",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/买家退货给卖家-msg_after_sale_update_express_no.md",
+      "size": 391
+    },
+    {
+      "status": "ok",
+      "file_id": 125,
+      "title": "售后超时时长变更 msg_after_sale_expire_time_change",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/售后超时时长变更-msg_after_sale_expire_time_change.md",
+      "size": 398
+    },
+    {
+      "status": "ok",
+      "file_id": 126,
+      "title": "卖家确认收货 msg_after_sale_confirm_receive",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/卖家确认收货-msg_after_sale_confirm_receive.md",
+      "size": 377
+    },
+    {
+      "status": "ok",
+      "file_id": 127,
+      "title": "卖家收货拒绝 msg_after_sale_reject_receive",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/卖家收货拒绝-msg_after_sale_reject_receive.md",
+      "size": 376
+    },
+    {
+      "status": "ok",
+      "file_id": 128,
+      "title": "卖家换货发货 msg_after_sale_exchange_ship",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/卖家换货发货-msg_after_sale_exchange_ship.md",
+      "size": 375
+    },
+    {
+      "status": "ok",
+      "file_id": 129,
+      "title": "客服仲裁 msg_after_sale_create_arbitrate",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/客服仲裁-msg_after_sale_create_arbitrate.md",
+      "size": 420
+    },
+    {
+      "status": "ok",
+      "file_id": 130,
+      "title": "售后关闭 msg_after_sale_closed",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/售后关闭-msg_after_sale_closed.md",
+      "size": 421
+    },
+    {
+      "status": "ok",
+      "file_id": 131,
+      "title": "退款成功消息 msg_after_sale_refund_finished",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/退款成功消息-msg_after_sale_refund_finished.md",
+      "size": 380
+    },
+    {
+      "status": "ok",
+      "file_id": 285,
+      "title": "换货-买家确认收货 msg_after_sale_exchange_user_confirm_receive",
+      "category": "售后消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/售后消息/换货-买家确认收货-msg_after_sale_exchange_user_confirm_receive.md",
+      "size": 394
+    },
+    {
+      "status": "ok",
+      "file_id": 314,
+      "title": "解除授权 msg_auth_revoke",
+      "category": "授权消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/授权消息/解除授权-msg_auth_revoke.md",
+      "size": 188
+    },
+    {
+      "status": "ok",
+      "file_id": 348,
+      "title": "供货单状态变更 msg_supply_order_status_change",
+      "category": "供货商消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/供货商消息/供货单状态变更-msg_supply_order_status_change.md",
+      "size": 478
+    },
+    {
+      "status": "ok",
+      "file_id": 349,
+      "title": "买家收货信息变更 msg_supply_order_receiver_change",
+      "category": "供货商消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/供货商消息/买家收货信息变更-msg_supply_order_receiver_change.md",
+      "size": 261
+    },
+    {
+      "status": "ok",
+      "file_id": 132,
+      "title": "【商家】订阅服务市场Q&A",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/商家订阅服务市场QA.md",
+      "size": 738
+    },
+    {
+      "status": "ok",
+      "file_id": 133,
+      "title": "开发者注册之后邮箱未收到设置密码邮件",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/开发者注册之后邮箱未收到设置密码邮件.md",
+      "size": 32
+    },
+    {
+      "status": "ok",
+      "file_id": 260,
+      "title": "开发者注册后邮箱信息丢失仅有开发者账号",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/开发者注册后邮箱信息丢失仅有开发者账号.md",
+      "size": 236
+    },
+    {
+      "status": "ok",
+      "file_id": 134,
+      "title": "创建商品时规格值如何使用？",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/创建商品时规格值如何使用.md",
+      "size": 136
+    },
+    {
+      "status": "ok",
+      "file_id": 135,
+      "title": "创建item时规格如何区分spl规格spv规格？",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/创建item时规格如何区分spl规格spv规格.md",
+      "size": 50
+    },
+    {
+      "status": "ok",
+      "file_id": 136,
+      "title": "创建spu时规格如何获取？",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/创建spu时规格如何获取.md",
+      "size": 40
+    },
+    {
+      "status": "ok",
+      "file_id": 137,
+      "title": "商品属性如何获取，如何判断属性是否必填，属性值如何获取？",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/商品属性如何获取如何判断属性是否必填属性值如何获取.md",
+      "size": 105
+    },
+    {
+      "status": "ok",
+      "file_id": 138,
+      "title": "商品末级类目如何获取？",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/商品末级类目如何获取.md",
+      "size": 61
+    },
+    {
+      "status": "ok",
+      "file_id": 139,
+      "title": "如何区分单包组、多包组、组合商品、渠道商品？",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/如何区分单包组多包组组合商品渠道商品.md",
+      "size": 227
+    },
+    {
+      "status": "ok",
+      "file_id": 140,
+      "title": "电子面单常见问题（旧）",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/电子面单常见问题旧.md",
+      "size": 10238
+    },
+    {
+      "status": "ok",
+      "file_id": 141,
+      "title": "数据安全方案对商家侧影响",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/数据安全方案对商家侧影响.md",
+      "size": 429
+    },
+    {
+      "status": "ok",
+      "file_id": 142,
+      "title": "订单详情中itemlist和skulist如何理解？",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/订单详情中itemlist和skulist如何理解.md",
+      "size": 266
+    },
+    {
+      "status": "ok",
+      "file_id": 143,
+      "title": "物流模式为三方自主发货时，如何判断内贸、跨境订单？",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/物流模式为三方自主发货时如何判断内贸跨境订单.md",
+      "size": 233
+    },
+    {
+      "status": "ok",
+      "file_id": 144,
+      "title": "收件人信息拉取不到",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/收件人信息拉取不到.md",
+      "size": 71
+    },
+    {
+      "status": "ok",
+      "file_id": 145,
+      "title": "同一店铺多仓库发货，如何区分？",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/同一店铺多仓库发货如何区分.md",
+      "size": 257
+    },
+    {
+      "status": "ok",
+      "file_id": 146,
+      "title": "订单详情中skulist出现skucode相同，但价格不相同的情况",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/订单详情中skulist出现skucode相同但价格不相同的情况.md",
+      "size": 134
+    },
+    {
+      "status": "ok",
+      "file_id": 147,
+      "title": "换货申请通过之后，商家发出的新包裹如何处理？",
+      "category": "售后",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/售后/换货申请通过之后商家发出的新包裹如何处理.md",
+      "size": 50
+    },
+    {
+      "status": "ok",
+      "file_id": 299,
+      "title": "【重要】新版电子面单isv公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要新版电子面单isv公告.md",
+      "size": 808
+    },
+    {
+      "status": "ok",
+      "file_id": 150,
+      "title": "开放平台工单能力上线公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/开放平台工单能力上线公告.md",
+      "size": 269
+    },
+    {
+      "status": "ok",
+      "file_id": 151,
+      "title": "服务发布流程上线公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/服务发布流程上线公告.md",
+      "size": 412
+    },
+    {
+      "status": "ok",
+      "file_id": 152,
+      "title": "商家自研开发者授权流程优化公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/商家自研开发者授权流程优化公告.md",
+      "size": 518
+    },
+    {
+      "status": "ok",
+      "file_id": 153,
+      "title": "小红书服务市场上线公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/小红书服务市场上线公告.md",
+      "size": 693
+    },
+    {
+      "status": "ok",
+      "file_id": 154,
+      "title": "小红书开放平台公测公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/小红书开放平台公测公告.md",
+      "size": 815
+    },
+    {
+      "status": "ok",
+      "file_id": 288,
+      "title": "开放平台移动端授权功能上线",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/开放平台移动端授权功能上线.md",
+      "size": 203
+    },
+    {
+      "status": "ok",
+      "file_id": 289,
+      "title": "小红书电商平台新版工业类目变更公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/小红书电商平台新版工业类目变更公告.md",
+      "size": 791
+    },
+    {
+      "status": "ok",
+      "file_id": 307,
+      "title": "【重要通知】3月底必须切换新版电子面单",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要通知3月底必须切换新版电子面单.md",
+      "size": 717
+    },
+    {
+      "status": "ok",
+      "file_id": 309,
+      "title": "【重要】旧版电子面单下线倒计时通知",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要旧版电子面单下线倒计时通知.md",
+      "size": 822
+    },
+    {
+      "status": "ok",
+      "file_id": 310,
+      "title": "【重要】未缴纳保证金服务下线通知",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要未缴纳保证金服务下线通知.md",
+      "size": 2910
+    },
+    {
+      "status": "ok",
+      "file_id": 316,
+      "title": "订单API国家补贴订单新增字段",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/订单API国家补贴订单新增字段.md",
+      "size": 668
+    },
+    {
+      "status": "ok",
+      "file_id": 317,
+      "title": "【重要】商品发布策略升级公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要商品发布策略升级公告.md",
+      "size": 704
+    },
+    {
+      "status": "ok",
+      "file_id": 320,
+      "title": "开放平台[现货+预售]发货模式更新文档",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/开放平台现货预售发货模式更新文档.md",
+      "size": 997
+    },
+    {
+      "status": "ok",
+      "file_id": 322,
+      "title": "【重要】国家补贴-3C类目API变更公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要国家补贴-3C类目API变更公告.md",
+      "size": 1781
+    },
+    {
+      "status": "ok",
+      "file_id": 323,
+      "title": "【重要】开发者入驻资质、服务上架及类目资质审核规则公示",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要开发者入驻资质服务上架及类目资质审核规则公示.md",
+      "size": 2227
+    },
+    {
+      "status": "ok",
+      "file_id": 324,
+      "title": "【重要】关于推行小红书订单隐私号的公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要关于推行小红书订单隐私号的公告.md",
+      "size": 1427
+    },
+    {
+      "status": "ok",
+      "file_id": 329,
+      "title": "【重要】自动发货-API变更公告",
+      "category": "产品发布",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/产品发布/重要自动发货-API变更公告.md",
+      "size": 1178
+    },
+    {
+      "status": "ok",
+      "file_id": 155,
+      "title": "【重要】售后接口和消息全面更新通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要售后接口和消息全面更新通知.md",
+      "size": 1703
+    },
+    {
+      "status": "ok",
+      "file_id": 156,
+      "title": "售后接口下线公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/售后接口下线公告.md",
+      "size": 434
+    },
+    {
+      "status": "ok",
+      "file_id": 157,
+      "title": "【重要】小红书电子面单切换通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书电子面单切换通知.md",
+      "size": 571
+    },
+    {
+      "status": "ok",
+      "file_id": 158,
+      "title": "【重要】小红书电子面单全面开放对接通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书电子面单全面开放对接通知.md",
+      "size": 538
+    },
+    {
+      "status": "ok",
+      "file_id": 159,
+      "title": "【重要】开放平台商品接口规则调整",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要开放平台商品接口规则调整.md",
+      "size": 423
+    },
+    {
+      "status": "ok",
+      "file_id": 160,
+      "title": "【重要】开放平台商品校验规则更新",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要开放平台商品校验规则更新.md",
+      "size": 429
+    },
+    {
+      "status": "ok",
+      "file_id": 161,
+      "title": "【重要】开放平台消息变更通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要开放平台消息变更通知.md",
+      "size": 787
+    },
+    {
+      "status": "ok",
+      "file_id": 162,
+      "title": "【重要】商品3.0改造开白通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要商品30改造开白通知.md",
+      "size": 528
+    },
+    {
+      "status": "ok",
+      "file_id": 163,
+      "title": "服务发布流程优化",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/服务发布流程优化.md",
+      "size": 408
+    },
+    {
+      "status": "ok",
+      "file_id": 164,
+      "title": "商品发货时间设置规则变更公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/商品发货时间设置规则变更公告.md",
+      "size": 292
+    },
+    {
+      "status": "ok",
+      "file_id": 165,
+      "title": "【重要】小红书开放平台商品接口3.0改造延期通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书开放平台商品接口30改造延期通知.md",
+      "size": 260
+    },
+    {
+      "status": "ok",
+      "file_id": 166,
+      "title": "支持修改注册邮箱账号",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/支持修改注册邮箱账号.md",
+      "size": 191
+    },
+    {
+      "status": "ok",
+      "file_id": 167,
+      "title": "【重要】开放平台商品3.0改造通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要开放平台商品30改造通知.md",
+      "size": 2757
+    },
+    {
+      "status": "ok",
+      "file_id": 168,
+      "title": "开放平台商品限流公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/开放平台商品限流公告.md",
+      "size": 182
+    },
+    {
+      "status": "ok",
+      "file_id": 169,
+      "title": "无物流发货更新公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/无物流发货更新公告.md",
+      "size": 516
+    },
+    {
+      "status": "ok",
+      "file_id": 170,
+      "title": "商家地址库升级公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/商家地址库升级公告.md",
+      "size": 683
+    },
+    {
+      "status": "ok",
+      "file_id": 171,
+      "title": "商家结算、达人带货详情接口上线",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/商家结算达人带货详情接口上线.md",
+      "size": 510
+    },
+    {
+      "status": "ok",
+      "file_id": 172,
+      "title": "服务市场排序规则说明",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/服务市场排序规则说明.md",
+      "size": 471
+    },
+    {
+      "status": "ok",
+      "file_id": 173,
+      "title": "订单接口下线公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/订单接口下线公告.md",
+      "size": 906
+    },
+    {
+      "status": "ok",
+      "file_id": 174,
+      "title": "【重要】售后换货流程变更公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要售后换货流程变更公告.md",
+      "size": 890
+    },
+    {
+      "status": "ok",
+      "file_id": 175,
+      "title": "【重要】小红书开放平台数据安全方案上线公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书开放平台数据安全方案上线公告.md",
+      "size": 624
+    },
+    {
+      "status": "ok",
+      "file_id": 176,
+      "title": "开放平台应用类目优化公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/开放平台应用类目优化公告.md",
+      "size": 923
+    },
+    {
+      "status": "ok",
+      "file_id": 177,
+      "title": "消息推送订阅功能上线公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/消息推送订阅功能上线公告.md",
+      "size": 365
+    },
+    {
+      "status": "ok",
+      "file_id": 178,
+      "title": "发票接口上线",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/发票接口上线.md",
+      "size": 286
+    },
+    {
+      "status": "ok",
+      "file_id": 179,
+      "title": "商品接口升级切换公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/商品接口升级切换公告.md",
+      "size": 207
+    },
+    {
+      "status": "ok",
+      "file_id": 180,
+      "title": "售后接口升级",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/售后接口升级.md",
+      "size": 343
+    },
+    {
+      "status": "ok",
+      "file_id": 181,
+      "title": "商品接口升级",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/商品接口升级.md",
+      "size": 767
+    },
+    {
+      "status": "ok",
+      "file_id": 182,
+      "title": "轮询接口增加限流",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/轮询接口增加限流.md",
+      "size": 347
+    },
+    {
+      "status": "ok",
+      "file_id": 258,
+      "title": "【重要】商品类目预测接口更新通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要商品类目预测接口更新通知.md",
+      "size": 890
+    },
+    {
+      "status": "ok",
+      "file_id": 259,
+      "title": "【重要】小红书订单解密限额公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书订单解密限额公告.md",
+      "size": 1702
+    },
+    {
+      "status": "ok",
+      "file_id": 262,
+      "title": "【重要】小红书商品scskucode变更公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书商品scskucode变更公告.md",
+      "size": 698
+    },
+    {
+      "status": "ok",
+      "file_id": 263,
+      "title": "【重要】ISV电子面单渗透治理通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要ISV电子面单渗透治理通知.md",
+      "size": 1793
+    },
+    {
+      "status": "ok",
+      "file_id": 266,
+      "title": "【重要】订单类型新增“新年礼”通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要订单类型新增新年礼通知.md",
+      "size": 343
+    },
+    {
+      "status": "ok",
+      "file_id": 268,
+      "title": "订单接口升级",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/订单接口升级.md",
+      "size": 538
+    },
+    {
+      "status": "ok",
+      "file_id": 269,
+      "title": "【重要】小红书商品scskucode变更推迟公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要小红书商品scskucode变更推迟公告.md",
+      "size": 433
+    },
+    {
+      "status": "ok",
+      "file_id": 270,
+      "title": "【重要】运费模版接口三级地址识别",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要运费模版接口三级地址识别.md",
+      "size": 322
+    },
+    {
+      "status": "ok",
+      "file_id": 275,
+      "title": "小红书平台送货上门订单对接通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/小红书平台送货上门订单对接通知.md",
+      "size": 2098
+    },
+    {
+      "status": "ok",
+      "file_id": 276,
+      "title": "【重要】订单详情接口新增出参",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要订单详情接口新增出参.md",
+      "size": 582
+    },
+    {
+      "status": "ok",
+      "file_id": 278,
+      "title": "【重要】订单详情接口出参优化",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要订单详情接口出参优化.md",
+      "size": 367
+    },
+    {
+      "status": "ok",
+      "file_id": 291,
+      "title": "【重要】开放平台接口限流通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要开放平台接口限流通知.md",
+      "size": 2366
+    },
+    {
+      "status": "ok",
+      "file_id": 293,
+      "title": "【重要】库存接口变更通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要库存接口变更通知.md",
+      "size": 3382
+    },
+    {
+      "status": "ok",
+      "file_id": 300,
+      "title": "商品API更新通知",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/商品API更新通知.md",
+      "size": 265
+    },
+    {
+      "status": "ok",
+      "file_id": 308,
+      "title": "【重要】商品发布新版接口上线",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要商品发布新版接口上线.md",
+      "size": 1185
+    },
+    {
+      "status": "ok",
+      "file_id": 311,
+      "title": "【重要】授权回调地址核对公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要授权回调地址核对公告.md",
+      "size": 984
+    },
+    {
+      "status": "ok",
+      "file_id": 321,
+      "title": "【重要】商品接口迁移公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要商品接口迁移公告.md",
+      "size": 1017
+    },
+    {
+      "status": "ok",
+      "file_id": 325,
+      "title": "【重要】电子面单模板更新公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要电子面单模板更新公告.md",
+      "size": 1069
+    },
+    {
+      "status": "ok",
+      "file_id": 328,
+      "title": "【重要】开平限流公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要开平限流公告.md",
+      "size": 1036
+    },
+    {
+      "status": "ok",
+      "file_id": 340,
+      "title": "【重要】虚拟充值开平公告",
+      "category": "技术变更",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/技术变更/重要虚拟充值开平公告.md",
+      "size": 2607
+    },
+    {
+      "status": "ok",
+      "file_id": 265,
+      "title": "【重要】服务市场服务免费使用规则变更通知",
+      "category": "其他公告",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/其他公告/重要服务市场服务免费使用规则变更通知.md",
+      "size": 633
+    },
+    {
+      "status": "ok",
+      "file_id": 267,
+      "title": "【重要】除夕夜小红书订单补拉通知",
+      "category": "其他公告",
+      "doc_type": "平台公告",
+      "path": "intel/raw/xhs-docs/平台公告/其他公告/重要除夕夜小红书订单补拉通知.md",
+      "size": 177
+    },
+    {
+      "status": "empty",
+      "file_id": 25,
+      "title": "通用"
+    },
+    {
+      "status": "empty",
+      "file_id": 26,
+      "title": "商品"
+    },
+    {
+      "status": "empty",
+      "file_id": 27,
+      "title": "订单"
+    },
+    {
+      "status": "empty",
+      "file_id": 28,
+      "title": "售后"
+    },
+    {
+      "status": "ok",
+      "title": "授权流程（自研）",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810923",
+      "source": "apifox",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/授权流程（自研）.md",
+      "size": 765
+    },
+    {
+      "status": "ok",
+      "title": "授权流程（软件服务商）",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810928",
+      "source": "apifox",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/授权流程（软件服务商）.md",
+      "size": 4285
+    },
+    {
+      "status": "ok",
+      "title": "SDK 使用说明",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810941",
+      "source": "apifox",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/SDK 使用说明.md",
+      "size": 974
+    },
+    {
+      "status": "ok",
+      "title": "发布服务",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810945",
+      "source": "apifox",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/发布服务.md",
+      "size": 1193
+    },
+    {
+      "status": "ok",
+      "title": "打印组件使用常见问题",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-7768573",
+      "source": "apifox",
+      "category": "开发文档",
+      "doc_type": "开发文档",
+      "path": "intel/raw/xhs-docs/开发文档/开发文档/打印组件使用常见问题.md",
+      "size": 1925
+    },
+    {
+      "status": "ok",
+      "title": "由末级分类获取规格（旧）",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24193659",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/由末级分类获取规格（旧）.md",
+      "size": 857
+    },
+    {
+      "status": "ok",
+      "title": "订单发货",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24204499",
+      "source": "apifox",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/订单发货.md",
+      "size": 930
+    },
+    {
+      "status": "ok",
+      "title": "获取取消申请列表（即将下线）",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24217042",
+      "source": "apifox",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/获取取消申请列表（即将下线）.md",
+      "size": 1293
+    },
+    {
+      "status": "ok",
+      "title": "取消申请审核（即将下线）",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24218049",
+      "source": "apifox",
+      "category": "订单",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/订单/取消申请审核（即将下线）.md",
+      "size": 600
+    },
+    {
+      "status": "ok",
+      "title": "跨境商品备案信息同步",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24221615",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/跨境商品备案信息同步.md",
+      "size": 681
+    },
+    {
+      "status": "ok",
+      "title": "批量获取索引串",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24240907",
+      "source": "apifox",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/批量获取索引串.md",
+      "size": 714
+    },
+    {
+      "status": "ok",
+      "title": "获取售后列表",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24647726",
+      "source": "apifox",
+      "category": "售后",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/售后/获取售后列表.md",
+      "size": 1664
+    },
+    {
+      "status": "ok",
+      "title": "售后详情",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24655015",
+      "source": "apifox",
+      "category": "售后",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/售后/售后详情.md",
+      "size": 2224
+    },
+    {
+      "status": "ok",
+      "title": "商品列表基础版",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24682633",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/商品列表基础版.md",
+      "size": 1499
+    },
+    {
+      "status": "ok",
+      "title": "商品列表完整版（新）",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24685962",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/商品列表完整版（新）.md",
+      "size": 4117
+    },
+    {
+      "status": "ok",
+      "title": "创建ITEM",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24841892",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/创建ITEM.md",
+      "size": 2304
+    },
+    {
+      "status": "ok",
+      "title": "更新TEM",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24846432",
+      "source": "apifox",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/更新TEM.md",
+      "size": 2404
+    },
+    {
+      "status": "ok",
+      "title": "删除ITEM",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24848829",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/删除ITEM.md",
+      "size": 602
+    },
+    {
+      "status": "ok",
+      "title": "创建SKU",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24854921",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/创建SKU.md",
+      "size": 2072
+    },
+    {
+      "status": "ok",
+      "title": "修改规格图",
+      "source_url": "https://xiaohongshu.apifox.cn/api-24870010",
+      "source": "apifox",
+      "category": "商品",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/商品/修改规格图.md",
+      "size": 588
+    },
+    {
+      "status": "ok",
+      "title": "商品新建",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810862",
+      "source": "apifox",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品新建.md",
+      "size": 185
+    },
+    {
+      "status": "ok",
+      "title": "商品审核驳回",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810867",
+      "source": "apifox",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品审核驳回.md",
+      "size": 198
+    },
+    {
+      "status": "ok",
+      "title": "商品删除",
+      "source_url": "https://xiaohongshu.apifox.cn/doc-2810868",
+      "source": "apifox",
+      "category": "商品消息",
+      "doc_type": "消息文档",
+      "path": "intel/raw/xhs-docs/消息文档/商品消息/商品删除.md",
+      "size": 192
+    },
+    {
+      "status": "ok",
+      "title": "系统参数",
+      "source_url": "https://xiaohongshu.apifox.cn/schema-9782950",
+      "source": "apifox",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/系统参数.md",
+      "size": 212
+    },
+    {
+      "status": "ok",
+      "title": "返回参数",
+      "source_url": "https://xiaohongshu.apifox.cn/schema-9785678",
+      "source": "apifox",
+      "category": "通用",
+      "doc_type": "SDK文档",
+      "path": "intel/raw/xhs-docs/SDK文档/通用/返回参数.md",
+      "size": 99
+    }
+  ],
+  "crawl_end": "2026-03-05T04:20:38.027179+08:00",
+  "stats": {
+    "ok": 169,
+    "errors": 104
+  },
+  "last_merge": "2026-03-05T05:00:15.465108+08:00"
+}

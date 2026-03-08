@@ -1,0 +1,23 @@
+{
+  "dev/API/商品管理/接口列表": "70921d46c8441b9e57924fd75c0b5bfd",
+  "dev/API/订单管理/接口列表": "e8d1cb33eb91871b1e4a340b932cefe8",
+  "dev/API/售后管理/接口列表": "f044aad6d04977544a2408e7d137063a",
+  "dev/API/物流管理/接口列表": "ad73063655ae8160a26a4bb9fe04adc9",
+  "dev/API/资金管理/获取账户余额": "54afc1477991d4b3503fd00eb25371fb",
+  "dev/API/营销/创建优惠券": "1e07cbdefd5a5a086659401619871d3f",
+  "dev/API/营销/获取优惠券详情": "1f52ddd696e39f5460ce2ff02abf445e",
+  "dev/API/营销/更新优惠券状态": "2cad332a4e8593a30312bec1cb851201",
+  "dev/API/品牌资质/接口列表": "f9cb7d84b1cf8f6507b321c07f2f6204",
+  "https://developers.weixin.qq.com/doc/store/leagueheadsupplier/": "dc90191c359766d01fc529bf10e6f0bb",
+  "https://developers.weixin.qq.com/doc/store/shop/": "ae0cb9f425fd70216b414da2ced1b8d5",
+  "https://developers.weixin.qq.com/doc/store/shop/API/": "8e7403175e9f8dc1740c687bcad0f989",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/": "d1b7fe0cd814a737047ee525aedcc360",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_callbackcheck.html": "3ab53c8bdc14ab8f22b7a4f7cdebcae4",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_clearapiquota.html": "8d5514cf1267e741125a7081255e7068",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_clearquota.html": "d21aab32932437e2060120f91feaa06d",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_clearquotabyappsecret.html": "4d13905b2e13eb6db36a1574750e7fa8",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_getridinfo.html": "fe6c231aa3552cfa7ad52b8da2c8192e",
+  "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_img_upload.html": "5024aa6ca49b6bf97b6926c8a2a82990",
+  "https://developers.weixin.qq.com/doc/store/shop/API/brand/api_addbrandlogic.html": "0677c0bbe118779bd8ddc9691d2f04da",
+  "https://developers.weixin.qq.com/doc/store/shop/API/brand/api_cancelauditbrandlogic.html": "daea2694391f76f5dd9fd9531c498893"
+}

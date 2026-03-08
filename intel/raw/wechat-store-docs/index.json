@@ -1,0 +1,220 @@
+{
+  "platform": "微信小店",
+  "crawl_start": "2026-03-05T05:06:34.312427+08:00",
+  "pages": [
+    {
+      "status": "ok",
+      "title": "接口列表",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/channels-shop-product/",
+      "category": "API/商品管理",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/商品管理/接口列表.md",
+      "size": 3112,
+      "crawl_date": "2026-03-05T05:06:43.824691+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "接口列表",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/channels-shop-order/",
+      "category": "API/订单管理",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/订单管理/接口列表.md",
+      "size": 1989,
+      "crawl_date": "2026-03-05T05:06:48.042325+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "接口列表",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/channels-shop-aftersale/",
+      "category": "API/售后管理",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/售后管理/接口列表.md",
+      "size": 1736,
+      "crawl_date": "2026-03-05T05:06:50.217574+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "接口列表",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/channels-shop-delivery/",
+      "category": "API/物流管理",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/物流管理/接口列表.md",
+      "size": 2768,
+      "crawl_date": "2026-03-05T05:06:52.487692+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "获取账户余额",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/funds/getbalance.html",
+      "category": "API/资金管理",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/资金管理/获取账户余额.md",
+      "size": 1529,
+      "crawl_date": "2026-03-05T05:06:55.093563+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "创建优惠券",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/coupon/create.html",
+      "category": "API/营销",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/营销/创建优惠券.md",
+      "size": 5283,
+      "crawl_date": "2026-03-05T05:06:57.001977+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "获取优惠券详情",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/coupon/get.html",
+      "category": "API/营销",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/营销/获取优惠券详情.md",
+      "size": 4617,
+      "crawl_date": "2026-03-05T05:06:58.431183+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "更新优惠券状态",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/coupon/update_status.html",
+      "category": "API/营销",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/营销/更新优惠券状态.md",
+      "size": 1601,
+      "crawl_date": "2026-03-05T05:06:59.462670+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "接口列表",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/brand/",
+      "category": "API/品牌资质",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API/品牌资质/接口列表.md",
+      "size": 771,
+      "crawl_date": "2026-03-05T05:07:00.437420+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "联盟带货机构",
+      "source_url": "https://developers.weixin.qq.com/doc/store/leagueheadsupplier/",
+      "category": "通用",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/开发者文档/通用/联盟带货机构.md",
+      "size": 92,
+      "crawl_date": "2026-03-05T05:11:02.393187+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "微信小店介绍",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/",
+      "category": "通用",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/开发者文档/通用/微信小店介绍.md",
+      "size": 230,
+      "crawl_date": "2026-03-05T05:11:15.253755+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "API 接口",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/",
+      "category": "API",
+      "doc_type": "开发者文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/开发者文档/API/API 接口.md",
+      "size": 19371,
+      "crawl_date": "2026-03-05T05:11:29.046002+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "通用",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/通用.md",
+      "size": 1029,
+      "crawl_date": "2026-03-05T05:11:41.522623+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "网络通信检测",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_callbackcheck.html",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/网络通信检测.md",
+      "size": 2140,
+      "crawl_date": "2026-03-05T05:11:54.493588+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "重置指定API调用次数",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_clearapiquota.html",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/重置指定API调用次数.md",
+      "size": 1968,
+      "crawl_date": "2026-03-05T05:12:09.271744+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "重置API调用次数",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_clearquota.html",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/重置API调用次数.md",
+      "size": 1721,
+      "crawl_date": "2026-03-05T05:12:22.073022+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "使用AppSecret重置API调用次数",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_clearquotabyappsecret.html",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/使用AppSecret重置API调用次数.md",
+      "size": 1459,
+      "crawl_date": "2026-03-05T05:12:37.188643+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "查询rid信息",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_getridinfo.html",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/查询rid信息.md",
+      "size": 2298,
+      "crawl_date": "2026-03-05T05:14:15.049400+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "上传图片",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/apimgnt/api_img_upload.html",
+      "category": "apimgnt",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/apimgnt/上传图片.md",
+      "size": 3023,
+      "crawl_date": "2026-03-05T05:14:48.593065+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "新增品牌资质",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/brand/api_addbrandlogic.html",
+      "category": "品牌资质",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/品牌资质/新增品牌资质.md",
+      "size": 5961,
+      "crawl_date": "2026-03-05T05:15:38.004780+08:00"
+    },
+    {
+      "status": "ok",
+      "title": "撤回品牌资质审核",
+      "source_url": "https://developers.weixin.qq.com/doc/store/shop/API/brand/api_cancelauditbrandlogic.html",
+      "category": "品牌资质",
+      "doc_type": "API文档",
+      "path": "intel/raw/wechat-store-docs/开发者文档/API文档/品牌资质/撤回品牌资质审核.md",
+      "size": 1110,
+      "crawl_date": "2026-03-05T05:15:52.617379+08:00"
+    }
+  ],
+  "crawl_end_dev": "2026-03-05T05:15:53.822944+08:00",
+  "stats": {
+    "ok": 21
+  }
+}

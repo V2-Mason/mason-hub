@@ -211,3 +211,443 @@ Generated: 2026-03-02T01:30:01Z
   Task summaries: 1
 
 === END REPORT ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-03T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:      408 in /      894 out | $-6.000
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  Total: $-31.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 4KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 2KB
+  ✅ EMP_0009: 1KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 36%
+  Memory available: 2.1Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-04T01:30:02Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:      408 in /      894 out | $-6.000
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  2026-03-03:       -2 in /       -2 out | $-2.000
+  Total: $-33.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 4KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 2KB
+  ✅ EMP_0009: 4KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 36%
+  Memory available: 1.8Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-05T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:      408 in /      894 out | $-6.000
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  2026-03-03:       -2 in /       -2 out | $-2.000
+  Total: $-33.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 4KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 4KB
+  ✅ EMP_0009: 7KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 38%
+  Memory available: 1.5Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-06T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  ❌ 2026-02-27T05:30 | EMP_0005 | srx_20260227_test | repair_failed
+
+--- 3. Token Usage (7d) ---
+  2026-02-27:   522575 in /    10946 out | $-23.298
+  2026-02-28:      408 in /      894 out | $-6.000
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  2026-03-03:       -2 in /       -2 out | $-2.000
+  Total: $-33.298
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 4KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 4KB
+  ✅ EMP_0009: 7KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 39%
+  Memory available: 2.2Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-07T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-02-28:      339 in /      735 out | $-5.000
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  2026-03-03:       -2 in /       -2 out | $-2.000
+  Total: $-9.000
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 4KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 4KB
+  ✅ EMP_0009: 7KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 40%
+  Memory available: 2.0Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+okCookie reminder sent for week 2026-09
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-08T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-01:       -2 in /       -2 out | $-2.000
+  2026-03-03:       -2 in /       -2 out | $-2.000
+  Total: $-4.000
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 4KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 4KB
+  ✅ EMP_0009: 7KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ❌ fix-comfyui-gemini.sh (not executable)
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 44%
+  Memory available: 1.1Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===
+=== MEMORY COMPACTION ===
+Agent: all
+Dry run: false
+Date: 2026-03-08T03:00:01Z
+
+[EMP_0000] lessons file: 4KB
+[EMP_0000] sections: fresh=3, mid-term=6, old=0
+0
+/home/hangn/mason-hub/skills/compact-memory.sh: line 170: [: 0
+0: integer expression expected
+[EMP_0000] compacted: 4KB → 3KB
+[EMP_0001] lessons file: 0KB
+[EMP_0001] under 2KB, skip compaction
+[EMP_0002] lessons file: 3KB
+[EMP_0002] sections: fresh=8, mid-term=1, old=0
+0
+/home/hangn/mason-hub/skills/compact-memory.sh: line 170: [: 0
+0: integer expression expected
+[EMP_0002] compacted: 3KB → 3KB
+[EMP_0004] lessons file: 1KB
+[EMP_0004] under 2KB, skip compaction
+[EMP_0005] lessons file: 1KB
+[EMP_0005] under 2KB, skip compaction
+[EMP_0008] lessons file: 4KB
+[EMP_0008] sections: fresh=3, mid-term=2, old=0
+0
+/home/hangn/mason-hub/skills/compact-memory.sh: line 170: [: 0
+0: integer expression expected
+[EMP_0008] compacted: 4KB → 3KB
+[EMP_0009] lessons file: 7KB
+[EMP_0009] sections: fresh=8, mid-term=1, old=0
+0
+/home/hangn/mason-hub/skills/compact-memory.sh: line 170: [: 0
+0: integer expression expected
+[EMP_0009] compacted: 7KB → 7KB
+[EMP_0011] lessons file: 0KB
+[EMP_0011] under 2KB, skip compaction
+
+=== TASK LOG ARCHIVAL ===
+Task logs: 3 total, 0 archived (>30 days)
+
+=== AUDIT LOG COMPACTION ===
+Audit log: 1 entries
+Under 500 lines, skip compaction
+
+=== COMPACTION COMPLETE ===
