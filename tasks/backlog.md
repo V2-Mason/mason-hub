@@ -328,6 +328,38 @@ P2 — 模块 A 增强:
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册
 
+**ComfyUI 自建节点 — GPU 实例部署（2026-03-08 加入）**:
+
+> 自建 ComfyUI 节点，直接调官方 API，不经过第三方代理。
+> GPU 实例: instance-20260307-184545, Zone: us-central1-a
+> Docker: yanwk/comfyui-boot:cu128-slim, 持久化卷 ~/comfyui-storage:/root
+
+P1 — 可灵 Kling Direct 节点（代码已写好，待部署）:
+- [x] ComfyUI 节点代码 — 2026-03-08 完成，skills/comfyui-kling-direct/（KlingTextToVideo + KlingImageToVideo）
+  - 支持模型: kling-v3-omni / kling-v2-5-turbo / kling-v2-6 / kling-v2-1 / kling-v1-6
+  - JWT 认证纯 stdlib，无额外依赖
+  - 异步任务轮询，支持 text2video + image2video + tail_image（结束帧控制）
+- [ ] 待 Mason: 去 klingai.com/dev 申请 API access_key + secret_key
+- [ ] 部署节点到 GPU 实例 Docker 容器 — 等 Mason 启动实例后 SSH 部署
+- [ ] 安装 opencv-python-headless 到容器（视频帧提取依赖）
+- [ ] 端到端验证: text-to-video + image-to-video 各跑一次
+
+P2 — Seedance 2.0 节点（等官方 API 开放）:
+- [ ] 火山引擎 Seedance 2.0 API 开放后，自建 ComfyUI 节点（同 Gemini/Kling 模式）
+- [ ] 支持传入参考音频 → 数字人口型同步（Seedance 1.5 Pro 不支持此功能）
+
+P2 — Qwen Image Edit 模型下载（待部署）:
+- [ ] 下载 5 个模型文件到 GPU 实例 Docker（总计 ~31GB）:
+  - VAE: qwen_image_vae.safetensors (254MB)
+  - CLIP: qwen_2.5_vl_7b_fp8_scaled.safetensors (9.38GB)
+  - UNET: qwen_image_edit_2509_fp8_e4m3fn.safetensors (20.4GB)
+  - LoRA 1: Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors (850MB)
+  - LoRA 2: Qwen-Edit-2509-Multiple-angles.safetensors (236MB)
+
+已完成:
+- [x] Gemini Direct Pro 节点 — 2026-03-07，skills/comfyui-gemini-direct/，已部署并验证
+- [x] fix-comfyui-gemini.sh — NakanoSanku 插件第三方代理修复脚本
+
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 
 **目标**: Agent 不仅按时间运行，还能响应事件自主决策。Mason 从操作者变成审批者。
