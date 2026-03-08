@@ -106,3 +106,23 @@
 - **结果**: 全部一次通过语法验证，无冲突
 - **风险**: assemble.py 改动最密集（4 个 agent 都碰），需要明确各自改哪个函数/区域
 - **教训**: 接口字段名必须事先约定（voiceover_full_text vs voiceover_script 这种命名歧义会导致对接失败）
+
+## 赛道分析工具链上线 (2026-03-08)
+
+### 新增基础设施
+- TrendRadar + RSSHub 已部署到 mason-hub，cron */30 自动采集
+- 11 个中文热榜 + 10 个 RSS 源（36氪/虎嗅/少数派/a16z/Sequoia/YC/HN/ProductHunt/TechCrunch/阮一峰）
+- /standup 晨会新增"趋势热榜"板块
+
+### Mason 的战略方向
+- 正在从纯 bottom-up 向 bottom-up + top-down 混合模式转变
+- 对已知业务（素仁轩/SocialMesh）继续 bottom-up
+- 对新赛道探索用 top-down：先定边界再验证
+- 关键词四层框架：A（现有业务）B（技术能力圈）C（赛道扫描）D（同类人社区）
+- C层重点方向：AI工具出海、AI内容电商、抖音/TikTok
+
+### 职责边界
+- 部署维护: EMP_0002（Platform Dev）
+- 数据消费: EMP_0006（Scout）可从 TrendRadar SQLite 获取趋势信号
+- 赛道判断: Mason 亲自做，不委派给 agent
+- 每两周关键词淘汰回顾

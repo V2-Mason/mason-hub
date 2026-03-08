@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-03-02
-> 更新人: Mason + Session（分析管道 + EMP_0008 数据分析职责 + IP属地永久去除）
+> 最后更新: 2026-03-08
+> 更新人: Mason + Session（TrendRadar + RSSHub 趋势监控部署 + agent lessons 更新）
 
 ---
 
@@ -176,7 +176,7 @@ P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 - [x] Scout 去重机制 — 2026-03-05 确认已实现（scripts/scout-dedup.py + intel/seen.jsonl），9 个 scout 脚本全部已集成 dedup 调用（EMP_0002）
 - [x] Scout 简报格式改进 — 2026-03-05 完成，6 个 scout 脚本修改（模糊时间→具体日期，补 markdown 链接），9 个脚本 bash -n 验证通过（EMP_0002）
-- [ ] Scout 多数据源 — 当前 9 个脚本全部只用 GitHub API，需引入真正的多渠道：Google→Gemini, X→Grok, 小红书→DeepSeek。scout-xhs-trends.sh 当前搜的是 GitHub 不是小红书（EMP_0002）
+- [ ] Scout 多数据源 — 当前 9 个脚本全部只用 GitHub API，需引入真正的多渠道：Google→Gemini, X→Grok, 小红书→DeepSeek。scout-xhs-trends.sh 当前搜的是 GitHub 不是小红书（EMP_0002）→ 部分缓解：TrendRadar 已提供 11 热榜 + 10 RSS 的趋势信号底座 (2026-03-08)
 - [ ] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用，Mason 手动触发必须有 /skill 替代方案（EMP_0002）
 
 P2 — UX 持续优化:
@@ -327,6 +327,25 @@ P2 — 模块 A 增强:
 - [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
 - [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
 - [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册
+
+**TrendRadar + RSSHub 趋势监控系统（2026-03-08 部署完成）**:
+
+> 赛道分析工具链。TrendRadar 抓热榜 + RSS，关键词过滤，存本地 SQLite。
+> /standup 晨会汇报趋势信号，不推 Slack。
+> Mason 战略方向：bottom-up（已知业务）+ top-down（新赛道探索）。
+
+已完成:
+- [x] RSSHub Docker 自托管 — 2026-03-08，localhost:1200，--restart always
+- [x] TrendRadar 部署 — 2026-03-08，~/mason-hub/tools/trendradar/，cron */30
+- [x] 11 中文热榜 + 10 RSS 源配置 — 2026-03-08（36氪/虎嗅/少数派/a16z/Sequoia/YC/HN/ProductHunt/TechCrunch/阮一峰）
+- [x] 14 组关键词配置（A/B/C/D 四层）— 2026-03-08
+- [x] /standup 晨会新增趋势热榜板块 — 2026-03-08
+- [x] 配置备份到 tools/trendradar-config/ — 2026-03-08
+
+待办:
+- [ ] 启用 AI 分析功能 — 需配 DeepSeek API key 到 config.yaml（EMP_0002）
+- [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）
+- [ ] Scout 脚本接入 TrendRadar SQLite — 用趋势数据辅助情报分析（EMP_0006）
 
 **ComfyUI 自建节点 — GPU 实例部署（2026-03-08 加入）**:
 

@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════
 #                    TrendRadar 频率词配置文件
-#                    Mason Hub 定制版
+#                    Mason Hub v2 — 宽进严出
 # ═══════════════════════════════════════════════════════════════
 
 [GLOBAL_FILTER]
@@ -9,44 +9,166 @@
 
 [WORD_GROUPS]
 
-[韩国护肤]
-/韩妆|韩国护肤|K-Beauty|COSRX|韩系精华/
+# ─── A层：现有业务监控 ───
+
+[韩妆/护肤]
+韩妆
+韩国护肤
+K-Beauty
+COSRX
+韩系
+!娱乐
+!追星
+!偶像
+!韩剧
+!韩股
+!韩元
+!韩国瑜
 
 [跨境电商]
-/跨境电商|海淘|保税仓|NMPA备案/
+跨境
+海淘
+保税
+NMPA
+进口化妆品
+!代购骗局
 
-[小红书运营]
-/小红书运营|小红书算法|笔记流量|种草/
+[小红书]
+小红书
+种草
+笔记流量
+!小红书八卦
+!明星
 
-[AI视频生成]
-/AI视频|AI生成视频|VEO|自动剪辑/
+# ─── B层：技术能力圈 ───
+
+[AI视频]
+AI视频
+AI生成
+VEO
+Sora
+可灵
+自动剪辑
+文生视频
+!AI换脸
+!深度伪造
+!deepfake
 
 [Vibe Coding]
-/vibe coding|AI编程|AI开发工具|Cursor|Claude Code/
+vibe coding
+AI编程
+AI coding
+Cursor
+Claude Code
+Windsurf
+Copilot
+AI工程师
+AI engineer
+!招聘
+!岗位
 
 [AI Agent]
-/AI Agent|智能体|多Agent协作|MCP/
+Agent
+智能体
+MCP
+多智能体
+LLM应用
+AI workflow
+!游戏角色
+!经纪人
+!房产中介
+
+# ─── C层：赛道扫描（重点）───
 
 [出海]
-/中国出海|海外本地化|品牌出海|工具出海/
+出海
+全球化
+海外市场
+本地化
+localization
+going global
+!游戏出海
+!手游
 
-[AI工具出海]
-/AI工具出海|AI SaaS|AI应用|AI产品|micro SaaS|AI startup/
+[AI工具/SaaS]
+AI工具
+AI SaaS
+AI应用
+AI产品
+micro SaaS
+AI startup
+AI tool
+AI软件
+AI Stack
+AI will
+AI is for
+AI社会
+AI时代
+/\bAGI\b/
+!AI概念股
+!股价
+!AI龙虾
+!AI养
 
 [内容电商]
-/短视频带货|直播电商|AI内容电商|自动化内容营销/
+短视频带货
+直播电商
+内容营销
+内容电商
+content commerce
+TikTok Shop
+!直播翻车
+!带货骗局
+
+[抖音/TikTok]
+抖音电商
+TikTok
+TikTok Shop
+Douyin
+抖音运营
+!抖音热舞
+!抖音搞笑
+!抖音明星
 
 [个人IP]
-/个人IP变现|知识付费|一人企业|creator economy/
+个人IP
+知识付费
+一人企业
+creator economy
+个人品牌
+solopreneur
+!割韭菜
 
-[新消费品类]
-/宠物用品|家居好物|新消费|DTC/
+[新消费]
+新消费
+DTC
+宠物用品
+家居好物
+消费升级
+!奢侈品
+!豪车
 
-[抖音TikTok]
-/抖音电商|抖音运营|TikTok Shop|TikTok电商|TikTok出海/
+# ─── D层：通用信号词 ───
 
-[独立开发者]
-/独立开发|独立开发者|solo founder|indie hacker|bootstrapped/
+[独立开发]
+独立开发
+indie hacker
+solo founder
+side project
+个人开发者
+bootstrapped
+一人公司
+副业
+小团队创业
 
-[副业一人公司]
-/副业|一人公司|小团队创业|solopreneur|side project/
+[趋势观察]
+融资
+seed round
+Series A
+Y Combinator
+新赛道
+风口
+!A股
+!港股
+!基金
+!体育
