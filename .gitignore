@@ -24,3 +24,4 @@ logs/archive/
 .env
 tools/trendradar/
 logs/trendradar.log
+tools/trendradar-config/reports/
