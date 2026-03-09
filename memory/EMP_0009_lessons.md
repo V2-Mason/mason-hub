@@ -134,3 +134,23 @@ Gemini 输出的 EDL JSON 新增字段（assemble.py 暂未对接，等实际 Ge
 
 ### 参考文档
 完整架构文档：`~/socialmesh/docs/plans/2026-03-04-multicut-architecture.md`
+
+## 2026-03-09: Celery prefork + asyncio.run() 产生 zombie 进程
+
+### 问题
+SocialMesh Celery worker（prefork 模式）中 `publishing.py` 用 `asyncio.run()` 调用 adapter 的 async 方法，每次执行都 fork 子进程但父进程不回收，产生 zombie。Playwright 浏览器实例也随之泄漏（每 6h 多 2 个 node 进程，每个 ~54MB）。从 Mar06 开始积累 14 个 zombie + 10 个 Playwright 泄漏，共浪费 ~884MB。
+
+### 根因
+- `asyncio.run()` 在 Celery prefork worker 中会创建新事件循环并 fork 子进程
+- 父进程（Celery worker PID 1123）没有正确 `waitpid()` 回收
+- adapter 内部启动的 Playwright 浏览器实例用完没关闭
+
+### 修复
+1. `scheduler.py` 加 `worker_max_tasks_per_child=50`（worker 跑 50 个任务后自动回收，治标）
+2. `publishing.py` 新增 `_run_async()` 替代 `asyncio.run()`（复用事件循环而非每次新建，治本）
+3. 当前 SocialMesh 无实际发帖需求，Celery 已停止
+
+### 教训
+- **Celery prefork + asyncio.run() = zombie 工厂**，必须用 `loop.run_until_complete()` 复用事件循环
+- **空转服务也要关**：没有帖子要发的 Celery 每分钟空跑 `check_scheduled_posts`，依然产生 zombie
+- **未使用的服务不应常驻**：SocialMesh 暂未上线，Celery + Vite dev server 不该一直跑

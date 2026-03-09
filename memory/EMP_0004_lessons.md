@@ -21,3 +21,25 @@
 ## 2026-03-02: GCP 系统依赖 checklist
 
 内容制作管线需要 ffmpeg（拼接视频片段）。GCP 实例默认未安装。上线新管道前检查系统依赖：`sudo apt install ffmpeg`。应加入部署 checklist：管线上线 → 验证 ffmpeg/imagemagick 等多媒体工具是否就位。
+
+## 2026-03-09: agent-status-report.sh 监控盲区 — 进程级检查缺失
+
+### 问题
+SocialMesh Celery 产生 14 个 zombie 进程 + 10 个 Playwright 泄漏进程（530MB），空转 Celery 占 354MB，Vite dev server 占 87MB。总计 ~970MB 纯浪费，占 3.8GB 机器的 25%。**现有 SRE 日报完全没发现**，因为只看了 `free -h` 总量和 `df -h` 磁盘，没有进程级检查。
+
+### 根因
+- `agent-status-report.sh` 缺少：zombie 检测、Top N 内存进程、同名进程过多告警、内存使用率阈值告警
+- 没有"预期进程白名单"概念，Vite dev server 常驻生产无人问
+
+### 修复
+已给 `agent-status-report.sh` 新增 Section 6b:
+1. **Zombie 检测** — `ps -eo stat | grep Z`，有就 🔴 告警
+2. **Top 5 内存进程** — 按 RSS 排序列出
+3. **内存使用率阈值** — 60% ⚠️ / 80% 🔴
+4. **同名进程过多** — 同名 ≥5 个实例告警（抓到 Playwright 泄漏）
+5. Slack 摘要带 zombie + 内存告警标记
+
+### 教训
+- **监控必须到进程粒度**，"总内存还剩 1.3GB" 看不出谁在泄漏
+- **增长趋势比瞬时值更重要**：Playwright 每 6h 多 2 个进程，只看一次快照看不出来
+- **空转服务也吃资源**：未使用的 Celery/Vite 应该关掉而非让它跑着

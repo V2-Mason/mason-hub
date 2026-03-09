@@ -63,3 +63,20 @@ VEO 是异步 API：`client.models.generate_videos()` 返回 operation → 轮�
 ## 2026-03-02: Drive 文件夹移动
 
 `files().update(fileId=id, addParents=new, removeParents=old)` 原子移动。文件 ID 和 webViewLink 不变，Sheet 里的链接仍有效。
+
+## 2026-03-09: Radar 系统合并 — 趋势分析 + Scout 情报集成到 :8081
+
+### 变更
+- Radar Tracker (:8081) 新增 `/insights` 路由（合并自 trend_report.py 的 HTML 功能）
+- 新增 `/intel` 路由（渲染 `intel/digests/*.md` Scout 情报简报）
+- cron 已移除 `trend_report.py html` 生成（旧 :8080/trends/latest.html 不再更新）
+- `trend_report.py` 文本模式保留给 `/standup` 晨会用
+- LAYERS 和 LAYER_DISPLAY 补充了 `基础设施/硬科技` (C+ 层)
+- `/intel` 文件排序改为按修改时间倒序（修复 W09-digest 字典序排在日期前面的 bug）
+
+### Radar :8081 当前路由一览
+- `/` — 统一视图（分层命中 + 未分类热榜 + Scout 摘要）
+- `/hotlist` — 原始热榜 + dismiss 按钮
+- `/insights` — 趋势分析（分层 + 7天热度）
+- `/intel` — Scout 情报简报（Markdown 渲染）
+- `/api/dismiss` / `/api/mark-read` / `/api/stats` / `/api/weekly-report` — API

@@ -205,8 +205,46 @@ echo "--- 6. System Resources ---"
 
 disk_pct=$(df -h / | awk 'NR==2{print $5}')
 mem_available=$(free -h | awk '/^Mem:/{print $7}')
+mem_used_pct=$(free | awk '/^Mem:/{printf "%.0f", $3/$2*100}')
 echo "  Disk usage: $disk_pct"
-echo "  Memory available: $mem_available"
+echo "  Memory available: $mem_available (${mem_used_pct}% used)"
+
+# --- 6b. 进程健康检查 ---
+echo ""
+echo "--- 6b. Process Health ---"
+
+# Zombie 检测
+zombie_count=$(ps -eo stat | grep -c '^Z' || true)
+if [ "$zombie_count" -gt 0 ]; then
+  echo "  🔴 Zombie processes: $zombie_count"
+  ps -eo pid,ppid,stat,comm | awk '$3 ~ /Z/' | head -5 | while read line; do
+    echo "    $line"
+  done
+else
+  echo "  ✅ No zombie processes"
+fi
+
+# Top 5 内存消耗进程
+echo "  Top memory consumers:"
+ps -eo pid,rss,comm --sort=-rss | head -6 | tail -5 | while read pid rss comm; do
+  mb=$((rss / 1024))
+  echo "    ${comm}: ${mb}MB (PID $pid)"
+done
+
+# 内存使用率告警
+if [ "$mem_used_pct" -ge 80 ]; then
+  echo "  🔴 Memory usage critical: ${mem_used_pct}%"
+elif [ "$mem_used_pct" -ge 60 ]; then
+  echo "  ⚠️ Memory usage elevated: ${mem_used_pct}%"
+fi
+
+# 异常进程检测：同名进程过多（可能泄漏）
+echo "  Process count check:"
+ps -eo comm | sort | uniq -c | sort -rn | head -10 | while read count name; do
+  if [ "$count" -ge 5 ] && [ "$name" != "kworker/u4:0" ] && [ "$name" != "kworker/0:0" ]; then
+    echo "    ⚠️ $name: $count instances"
+  fi
+done
 
 # --- 7. Task Logs ---
 echo ""
@@ -227,8 +265,11 @@ echo "=== END REPORT ==="
 # --- Slack 输出 ---
 if [ -n "$SLACK_CHANNEL" ] && [ -x "$SLACK_NOTIFY" ]; then
   # 构建简洁的 Slack 摘要
+  ALERTS=""
+  [ "$zombie_count" -gt 0 ] && ALERTS="${ALERTS} | 🔴 Zombies: $zombie_count"
+  [ "$mem_used_pct" -ge 80 ] && ALERTS="${ALERTS} | 🔴 Mem: ${mem_used_pct}%"
   SUMMARY="📊 *Agent Status Report* | $(date +%Y-%m-%d)
-Disk: $disk_pct | Mem available: $mem_available | Skills broken: $broken
+Disk: $disk_pct | Mem: ${mem_used_pct}% used ($mem_available free) | Skills broken: $broken${ALERTS}
 详细报告请查看 GCP logs"
   "$SLACK_NOTIFY" "$SLACK_CHANNEL" "$SUMMARY" "SRE Bot" ":chart_with_upwards_trend:" 2>/dev/null || true
 fi

@@ -64,6 +64,17 @@ def init_db():
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS read_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            news_title TEXT NOT NULL,
+            source TEXT NOT NULL DEFAULT '',
+            read_at TEXT NOT NULL DEFAULT (datetime('now')),
+            UNIQUE(news_title)
+        )
+        """
+    )
     conn.commit()
     conn.close()
 
@@ -96,6 +107,27 @@ def _make_dismiss_btn(title, source):
         "'" + esc_source + "')\">"
         "\u00d7</button>"
     )
+
+
+def _make_read_btn(title, source):
+    """生成已读标记按钮 HTML"""
+    esc_title = html_mod.escape(_js_escape(title), quote=True)
+    esc_source = html_mod.escape(_js_escape(source), quote=True)
+    return (
+        '<button class="read-btn" title="标记已读" '
+        "onclick=\"markRead(this, "
+        "'" + esc_title + "', "
+        "'" + esc_source + "')\">"
+        "\u2713</button>"
+    )
+
+
+def _load_read_titles():
+    """加载所有已标记已读的标题。"""
+    conn = get_db()
+    rows = conn.execute("SELECT DISTINCT news_title FROM read_items").fetchall()
+    conn.close()
+    return {r["news_title"] for r in rows}
 
 
 # CSS + JS 注入到 </head> 前
@@ -134,6 +166,42 @@ INJECT_HEAD = """
     opacity: 0.35;
 }
 .news-item { position: relative; }
+.read-btn {
+    background: none;
+    border: 1px solid #e5e7eb;
+    color: #9ca3af;
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+.read-btn:hover {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #22c55e;
+}
+.read-btn.is-read {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #22c55e;
+    cursor: default;
+}
+.news-item.is-read .news-link, .rss-item.is-read .rss-link,
+.news-item.is-read .news-title, .rss-item.is-read .rss-title {
+    text-decoration: line-through;
+    color: #9ca3af;
+}
+.news-item.is-read, .rss-item.is-read {
+    opacity: 0.5;
+}
 </style>
 <script>
 function dismissItem(btn, newsId, title, keywordGroup, source) {
@@ -155,6 +223,20 @@ function dismissItem(btn, newsId, title, keywordGroup, source) {
             if (item) item.classList.add('is-dismissed');
         }
     }).catch(function(err) { console.error('dismiss failed', err); });
+}
+function markRead(btn, title, source) {
+    if (btn.classList.contains('is-read')) return;
+    fetch('/api/mark-read', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title: title, source: source})
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.ok) {
+            btn.classList.add('is-read');
+            var item = btn.closest('.news-item') || btn.closest('.rss-item');
+            if (item) item.classList.add('is-read');
+        }
+    }).catch(function(err) { console.error('mark-read failed', err); });
 }
 </script>
 """
@@ -281,8 +363,9 @@ def inject_dismiss_buttons(raw_html):
             )
         raw_html = "".join(rebuilt)
 
-    # 5) Inject dismiss buttons into news-items, hide already-dismissed and already-seen
+    # 5) Inject dismiss + read buttons into news-items, hide already-dismissed and already-seen
     dedup_hidden = [0]  # mutable counter for closure
+    read_set = _load_read_titles()
 
     def _inject_news_btn(m):
         block = m.group(0)
@@ -300,9 +383,15 @@ def inject_dismiss_buttons(raw_html):
         # 记录为今日已见
         if title:
             newly_seen.append((title, source))
-        btn = _make_dismiss_btn(title, source)
+        read_btn = _make_read_btn(title, source)
+        dismiss_btn = _make_dismiss_btn(title, source)
+        # 如果已标记已读，给 item 加 is-read class，按钮加 is-read
+        is_already_read = title in read_set
+        if is_already_read:
+            block = block.replace('class="news-item"', 'class="news-item is-read"', 1)
+            read_btn = read_btn.replace('class="read-btn"', 'class="read-btn is-read"', 1)
         idx = block.rfind("</div>")
-        return block[:idx] + btn + block[idx:]
+        return block[:idx] + read_btn + dismiss_btn + block[idx:]
 
     raw_html = re.sub(
         r'<div class="news-item[^"]*">\s*<div class="news-number">'
@@ -326,9 +415,14 @@ def inject_dismiss_buttons(raw_html):
             return ""
         if title:
             newly_seen.append((title, source))
-        btn = _make_dismiss_btn(title, source)
+        read_btn = _make_read_btn(title, source)
+        dismiss_btn = _make_dismiss_btn(title, source)
+        is_already_read = title in read_set
+        if is_already_read:
+            block = block.replace('class="rss-item"', 'class="rss-item is-read"', 1)
+            read_btn = read_btn.replace('class="read-btn"', 'class="read-btn is-read"', 1)
         idx = block.rfind("</div>")
-        return block[:idx] + btn + block[idx:]
+        return block[:idx] + read_btn + dismiss_btn + block[idx:]
 
     raw_html = re.sub(
         r'<div class="rss-item">\s*<div class="rss-meta">.*?</div>\s*'
@@ -441,8 +535,275 @@ def _build_date_nav(reports, current_date=None, current_time=None):
 
 # --- 路由 ---
 @app.route("/")
-def index():
-    """代理展示最新 TrendRadar HTML 报告，注入 dismiss 按钮。"""
+def unified():
+    """统一视图：分层关键词命中 + 未分类热门 + Scout 情报摘要"""
+    from html import escape as h
+
+    date_str = datetime.now().strftime('%Y-%m-%d')
+
+    try:
+        match_title = _load_matcher()
+    except Exception as e:
+        return Response("<h1>Error loading matcher</h1><p>" + str(e) + "</p>",
+                        status=500, content_type="text/html; charset=utf-8")
+
+    items = _get_data(date_str)
+    results = _match_items(items, match_title)
+    total_matched = sum(len(v) for v in results.values())
+    trends = _get_frequency_trends(match_title)
+    dismissed_set = _load_dismissed_titles()
+    seen_before = _load_seen_before_today()
+    read_set = _load_read_titles()
+    newly_seen = []
+
+    # Unmatched items (hot items not caught by keywords)
+    matched_titles = set()
+    for matched in results.values():
+        for _, _, title, _ in matched:
+            matched_titles.add(title)
+    unmatched = [(st, src, title, url) for st, src, title, url in items
+                 if title not in matched_titles]
+
+    # Cross-platform detection
+    cross_platform = set()
+    for g, matched in results.items():
+        sources = set(st for st, _, _, _ in matched)
+        if len(sources) > 1:
+            cross_platform.add(g)
+
+    # Scout digest
+    scout_html = ""
+    if INTEL_DIGESTS_DIR.exists():
+        digest_files = sorted(INTEL_DIGESTS_DIR.glob("*.md"),
+                              key=lambda f: f.stat().st_mtime, reverse=True)
+        if digest_files:
+            md = digest_files[0].read_text(encoding='utf-8')
+            scout_html = _render_markdown_to_html(md)
+            scout_label = digest_files[0].stem
+
+    # Navigation tabs
+    nav = """
+<div style="background:#1e293b;padding:0;font-family:system-ui,sans-serif;">
+  <div style="display:flex;align-items:center;padding:10px 20px;gap:4px;">
+    <a href="/" style="background:#334155;color:#e2e8f0;padding:6px 14px;border-radius:6px 6px 0 0;font-size:13px;text-decoration:none;font-weight:600;">统一视图</a>
+    <a href="/hotlist" style="color:#94a3b8;padding:6px 14px;font-size:13px;text-decoration:none;">热榜原始</a>
+    <a href="/insights" style="color:#94a3b8;padding:6px 14px;font-size:13px;text-decoration:none;">趋势分析</a>
+    <a href="/intel" style="color:#94a3b8;padding:6px 14px;font-size:13px;text-decoration:none;">情报简报</a>
+    <span style="flex:1"></span>
+    <span style="color:#475569;font-size:12px;">""" + date_str + """</span>
+  </div>
+</div>"""
+
+    page = f"""<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar — {date_str}</title>
+<style>
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{ font-family: -apple-system, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }}
+  .container {{ max-width: 760px; margin: 0 auto; padding: 16px; }}
+  .header {{ background: #1a1a2e; color: #fff; padding: 20px 24px; border-radius: 12px; margin-bottom: 16px; }}
+  .header h1 {{ font-size: 20px; font-weight: 600; }}
+  .header .meta {{ font-size: 13px; color: #aaa; margin-top: 4px; }}
+  .stats {{ display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }}
+  .stat {{ background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; font-size: 12px; }}
+  .stat b {{ font-size: 16px; display: block; }}
+  .layer {{ background: #fff; border-radius: 12px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }}
+  .layer-header {{ padding: 12px 18px; font-size: 15px; font-weight: 600; border-bottom: 1px solid #f0f0f0; }}
+  .layer-desc {{ font-size: 12px; color: #888; font-weight: 400; margin-left: 8px; }}
+  .group {{ padding: 0 18px; }}
+  .group-name {{ font-size: 13px; font-weight: 600; color: #666; padding: 10px 0 4px; border-bottom: 1px solid #f5f5f5; }}
+  .item {{ display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid #fafafa; gap: 8px; }}
+  .item:last-child {{ border-bottom: none; }}
+  .item a {{ color: #1a73e8; text-decoration: none; font-size: 13px; flex: 1; }}
+  .item a:hover {{ text-decoration: underline; }}
+  .item .src {{ font-size: 10px; color: #999; background: #f5f5f5; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }}
+  .btn {{ background: none; border: 1px solid #e5e7eb; color: #9ca3af; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 13px; flex-shrink: 0; transition: all 0.2s; display:flex; align-items:center; justify-content:center; }}
+  .btn-read:hover {{ background: #f0fdf4; border-color: #86efac; color: #22c55e; }}
+  .btn-read.is-read {{ background: #f0fdf4; border-color: #86efac; color: #22c55e; cursor: default; }}
+  .btn-dismiss:hover {{ background: #fef2f2; border-color: #fca5a5; color: #ef4444; }}
+  .item.is-read a {{ text-decoration: line-through; color: #9ca3af; }}
+  .item.is-read {{ opacity: 0.5; }}
+  .cross {{ font-size: 10px; color: #e65100; background: #fff3e0; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }}
+  .scout {{ background: #fff; border-radius: 12px; margin-bottom: 12px; padding: 18px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }}
+  .scout h2 {{ font-size: 15px; margin-bottom: 12px; }}
+  .trend-section {{ background: #fff; border-radius: 12px; margin-bottom: 12px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }}
+  .trend-section h2 {{ font-size: 15px; margin-bottom: 12px; }}
+  .trend-row {{ display: flex; align-items: center; padding: 5px 0; font-size: 13px; border-bottom: 1px solid #fafafa; }}
+  .trend-row:last-child {{ border-bottom: none; }}
+  .trend-name {{ flex: 1; }}
+  .trend-count {{ width: 40px; text-align: right; font-weight: 600; }}
+  .trend-arrow {{ width: 24px; text-align: center; font-size: 14px; }}
+  .trend-arrow.up {{ color: #e53935; }}
+  .trend-arrow.down {{ color: #43a047; }}
+  .trend-arrow.flat {{ color: #999; }}
+  .trend-bar {{ width: 60px; height: 5px; background: #eee; border-radius: 3px; overflow: hidden; margin-left: 6px; }}
+  .trend-bar-fill {{ height: 100%; border-radius: 3px; }}
+  .footer {{ text-align: center; font-size: 11px; color: #bbb; padding: 16px; }}
+</style>
+<script>
+function markRead(btn, title, source) {{
+    if (btn.classList.contains('is-read')) return;
+    fetch('/api/mark-read', {{
+        method: 'POST',
+        headers: {{'Content-Type': 'application/json'}},
+        body: JSON.stringify({{title: title, source: source}})
+    }}).then(r => r.json()).then(data => {{
+        if (data.ok) {{
+            btn.classList.add('is-read');
+            var item = btn.closest('.item');
+            if (item) item.classList.add('is-read');
+        }}
+    }});
+}}
+function dismiss(btn, title, group, source) {{
+    fetch('/api/dismiss', {{
+        method: 'POST',
+        headers: {{'Content-Type': 'application/json'}},
+        body: JSON.stringify({{title: title, keyword_group: group, source: source}})
+    }}).then(r => r.json()).then(data => {{
+        if (data.ok) {{
+            var item = btn.closest('.item');
+            if (item) item.style.display = 'none';
+        }}
+    }});
+}}
+</script>
+</head>
+<body>
+{nav}
+<div class="container">
+
+<div class="header">
+  <h1>Radar</h1>
+  <div class="meta">{date_str} · {len(items)} 条采集 · {total_matched} 条关键词命中 · {len(unmatched)} 条未分类</div>
+  <div class="stats">
+    <div class="stat"><b>{len(items)}</b>采集</div>
+    <div class="stat"><b>{total_matched}</b>命中</div>
+    <div class="stat"><b>{len(results)}</b>关键词组</div>
+    <div class="stat"><b>{len(unmatched)}</b>未分类</div>
+  </div>
+</div>
+"""
+
+    def _render_item(title, url, src_label, group_name=""):
+        """Render a single item with read + dismiss buttons."""
+        if _is_dismissed(title, dismissed_set):
+            return ""
+        if _is_dismissed(title, seen_before):
+            return ""
+        newly_seen.append((title, src_label))
+        is_read = title in read_set
+        read_cls = " is-read" if is_read else ""
+        btn_cls = " is-read" if is_read else ""
+        esc_t = h(title.replace("'", "\\'"))
+        esc_g = h(group_name.replace("'", "\\'"))
+        esc_s = h(src_label.replace("'", "\\'"))
+        link = f'<a href="{h(url)}" target="_blank">{h(title)}</a>' if url else f'<span style="flex:1;font-size:13px">{h(title)}</span>'
+        return (
+            f'<div class="item{read_cls}">'
+            f'{link}<span class="src">{h(src_label)}</span>'
+            f"<button class=\"btn btn-read{btn_cls}\" onclick=\"markRead(this, '{esc_t}', '{esc_s}')\">✓</button>"
+            f"<button class=\"btn btn-dismiss\" onclick=\"dismiss(this, '{esc_t}', '{esc_g}', '{esc_s}')\">&times;</button>"
+            f'</div>\n'
+        )
+
+    # --- Layered keyword hits ---
+    for layer_code, layer_emoji, layer_desc, layer_color in LAYER_DISPLAY:
+        layer_groups = {g: v for g, v in results.items()
+                        if LAYERS.get(g, ('?',))[0] == layer_code}
+        if not layer_groups:
+            continue
+
+        count = sum(len(v) for v in layer_groups.values())
+        page += f"""
+<div class="layer">
+  <div class="layer-header" style="background: {layer_color};">
+    {layer_emoji} {layer_desc}
+    <span class="layer-desc">({count} 条)</span>
+  </div>
+"""
+        for g, matched in sorted(layer_groups.items(), key=lambda x: -len(x[1])):
+            cross_tag = ' <span class="cross">跨平台</span>' if g in cross_platform else ''
+            page += f'  <div class="group"><div class="group-name">{h(g)}{cross_tag}</div>\n'
+            for src_type, src, title, url in matched:
+                src_label = SOURCE_LABELS.get(src, src)
+                page += "    " + _render_item(title, url, src_label, g)
+            page += '  </div>\n'
+        page += '</div>\n'
+
+    if not results:
+        page += '<div class="layer" style="padding:18px;text-align:center;color:#999;">今日无关键词命中</div>\n'
+
+    # --- Unmatched hot items ---
+    if unmatched:
+        # Deduplicate and limit
+        seen_unmatched = set()
+        filtered = []
+        for st, src, title, url in unmatched:
+            if title not in seen_unmatched and not _is_dismissed(title, dismissed_set) and not _is_dismissed(title, seen_before):
+                seen_unmatched.add(title)
+                filtered.append((st, src, title, url))
+        if filtered:
+            page += f"""
+<div class="layer">
+  <div class="layer-header" style="background: #f3f4f6;">
+    📰 未分类热榜 <span class="layer-desc">({len(filtered)} 条，关键词未命中)</span>
+  </div>
+  <div class="group">
+"""
+            for st, src, title, url in filtered[:50]:  # cap at 50
+                src_label = SOURCE_LABELS.get(src, src)
+                page += "    " + _render_item(title, url, src_label)
+            page += '  </div>\n</div>\n'
+
+    # --- 7-day trends ---
+    if trends:
+        max_total = max(t['total'] for t in trends.values()) or 1
+        bar_colors = {'C': '#43a047', 'C+': '#009688', 'D': '#ff9800', 'B': '#1e88e5', 'A': '#e53935'}
+        page += '<div class="trend-section"><h2>📈 关键词热度（近 7 天）</h2>\n'
+        for g, t in sorted(trends.items(), key=lambda x: -x[1]['total']):
+            layer_code = LAYERS.get(g, ('?',))[0]
+            arrow_class = {'↑': 'up', '↓': 'down', '→': 'flat'}.get(t['trend'], 'flat')
+            bar_pct = int(t['total'] / max_total * 100)
+            bar_color = bar_colors.get(layer_code, '#999')
+            page += f"""  <div class="trend-row">
+    <span class="trend-name">{h(g)}</span>
+    <span class="trend-count">{t['total']}</span>
+    <span class="trend-arrow {arrow_class}">{t['trend']}</span>
+    <div class="trend-bar"><div class="trend-bar-fill" style="width:{bar_pct}%;background:{bar_color}"></div></div>
+  </div>\n"""
+        page += '</div>\n'
+
+    # --- Scout digest ---
+    if scout_html:
+        page += f"""
+<div class="scout">
+  <h2>🔍 Scout 情报摘要 — {h(scout_label)}</h2>
+  <div style="font-size:13px;">
+    {scout_html}
+  </div>
+</div>
+"""
+
+    _record_seen_batch(newly_seen)
+
+    page += f"""
+<div class="footer">
+  Radar · Mason Hub · {datetime.now().strftime('%Y-%m-%d %H:%M')}
+</div>
+</div>
+</body>
+</html>"""
+
+    return Response(page, content_type="text/html; charset=utf-8")
+
+
+@app.route("/hotlist")
+def hotlist():
+    """原始热榜视图（旧首页）。"""
     html_path = Path(TRENDRADAR_HTML)
     if not html_path.exists():
         return Response(
@@ -502,6 +863,24 @@ def dismiss():
     conn.execute(
         "INSERT INTO dismissals (news_title, keyword_group, source) VALUES (?, ?, ?)",
         (title, keyword_group, source),
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
+
+
+@app.route("/api/mark-read", methods=["POST"])
+def mark_read():
+    """标记一条新闻为已读。"""
+    data = request.get_json(force=True)
+    title = (data.get("title") or "").strip()
+    if not title:
+        return jsonify({"ok": False, "error": "title is required"}), 400
+    source = (data.get("source") or "").strip()
+    conn = get_db()
+    conn.execute(
+        "INSERT OR IGNORE INTO read_items (news_title, source) VALUES (?, ?)",
+        (title, source),
     )
     conn.commit()
     conn.close()
@@ -807,6 +1186,7 @@ def insights(date_str=None):
     trends = _get_frequency_trends(match_title)
     dismissed_set = _load_dismissed_titles()
     seen_before = _load_seen_before_today()
+    read_set = _load_read_titles()
     insights_newly_seen = []
 
     # 跨平台检测
@@ -848,6 +1228,11 @@ def insights(date_str=None):
   .item .src {{ font-size: 11px; color: #999; background: #f5f5f5; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }}
   .item .dismiss {{ background: none; border: 1px solid #e5e7eb; color: #9ca3af; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 14px; flex-shrink: 0; transition: all 0.2s; }}
   .item .dismiss:hover {{ background: #fef2f2; border-color: #fca5a5; color: #ef4444; }}
+  .item .read-mark {{ background: none; border: 1px solid #e5e7eb; color: #9ca3af; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 14px; flex-shrink: 0; transition: all 0.2s; }}
+  .item .read-mark:hover {{ background: #f0fdf4; border-color: #86efac; color: #22c55e; }}
+  .item .read-mark.is-read {{ background: #f0fdf4; border-color: #86efac; color: #22c55e; cursor: default; }}
+  .item.is-read a {{ text-decoration: line-through; color: #9ca3af; }}
+  .item.is-read {{ opacity: 0.5; }}
   .insight {{ background: #fff; border-radius: 12px; margin-bottom: 12px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }}
   .insight h2 {{ font-size: 15px; margin-bottom: 12px; }}
   .trend-row {{ display: flex; align-items: center; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #fafafa; }}
@@ -877,13 +1262,31 @@ function dismissInsight(btn, title, group, source) {{
         }}
     }});
 }}
+function markReadInsight(btn, title, source) {{
+    if (btn.classList.contains('is-read')) return;
+    fetch('/api/mark-read', {{
+        method: 'POST',
+        headers: {{'Content-Type': 'application/json'}},
+        body: JSON.stringify({{title: title, source: source}})
+    }}).then(r => r.json()).then(data => {{
+        if (data.ok) {{
+            btn.classList.add('is-read');
+            var item = btn.closest('.item');
+            if (item) item.classList.add('is-read');
+        }}
+    }});
+}}
 </script>
 </head>
 <body>
 <div class="nav">
-  <a href="/">← 实时热榜</a>
+  <a href="/">统一视图</a>
+  <span>·</span>
+  <a href="/hotlist">热榜原始</a>
   <span>·</span>
   <span style="color:#e2e8f0;font-weight:600;">趋势分析</span>
+  <span>·</span>
+  <a href="/intel">情报简报</a>
   <span>·</span>
   <span style="color:#94a3b8;">{date_str}</span>
 </div>
@@ -930,7 +1333,11 @@ function dismissInsight(btn, title, group, source) {{
                 esc_g = h(g.replace("'", "\\'"))
                 esc_src = h(src_label.replace("'", "\\'"))
                 link = f'<a href="{h(url)}" target="_blank">{h(title)}</a>' if url else f'<span style="flex:1;font-size:14px">{h(title)}</span>'
-                html_out += f'    <div class="item">{link}<span class="src">{h(src_label)}</span>'
+                is_read = title in read_set
+                read_cls = ' is-read' if is_read else ''
+                read_btn_cls = ' is-read' if is_read else ''
+                html_out += f'    <div class="item{read_cls}">{link}<span class="src">{h(src_label)}</span>'
+                html_out += f"<button class=\"read-mark{read_btn_cls}\" onclick=\"markReadInsight(this, '{esc_title}', '{esc_src}')\">\u2713</button>"
                 html_out += f"<button class=\"dismiss\" onclick=\"dismissInsight(this, '{esc_title}', '{esc_g}', '{esc_src}')\">&times;</button></div>\n"
 
             html_out += '  </div>\n'
@@ -1107,11 +1514,13 @@ def intel(date_str=None):
 </head>
 <body>
 <div class="nav">
-  <a href="/">← 实时热榜</a>
+  <a href="/">统一视图</a>
   <span>·</span>
-  <a href="/insights">📈 趋势分析</a>
+  <a href="/hotlist">热榜原始</a>
   <span>·</span>
-  <span style="color:#e2e8f0;font-weight:600;">🔍 情报</span>
+  <a href="/insights">趋势分析</a>
+  <span>·</span>
+  <span style="color:#e2e8f0;font-weight:600;">情报简报</span>
   <span>·</span>
   <select onchange="window.location='/intel/'+this.value">
     {file_options}
