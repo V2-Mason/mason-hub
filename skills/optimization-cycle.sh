@@ -318,7 +318,20 @@ REPORT_EOF
 
 log "  报告已保存: $REPORT_FILE"
 
-# 构建 Slack 消息（精简版，完整版在文件里）
+# 上传到 Google Drive
+log "  上传到 Google Drive..."
+DRIVE_RESULT=$("$HUB_DIR/.venv/bin/python3" "$HUB_DIR/skills/gdrive_upload_report.py" "$REPORT_FILE" 2>/dev/null) || true
+DRIVE_LINK=$(echo "$DRIVE_RESULT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('link',''))" 2>/dev/null) || true
+
+if [ -n "$DRIVE_LINK" ]; then
+    log "  Drive 上传成功: $DRIVE_LINK"
+    REPORT_LINK="$DRIVE_LINK"
+else
+    log "  Drive 上传失败，使用本地路径"
+    REPORT_LINK="intel/optimization-reports/$DATE.md"
+fi
+
+# 构建 Slack 消息（精简版，完整版在 Drive）
 SUGGESTION_SUMMARY=$(echo "$SUGGESTIONS" | grep -E "^### 优化建议" | head -5)
 SUGGESTION_COUNT=$(echo "$SUGGESTION_SUMMARY" | grep -c "优化建议" || true)
 
@@ -331,7 +344,7 @@ Gate 2（合理性）：$GATE2_RESULT
 本周 ${SUGGESTION_COUNT} 条优化建议：
 $(echo "$SUGGESTION_SUMMARY" | sed 's/### /• /g')
 
-完整报告：intel/optimization-reports/$DATE.md
+完整报告：$REPORT_LINK
 请确认是否执行 ✅ / 跳过 ⏭️ / 需要讨论 💬"
 else
     SLACK_MSG="⚠️ 自优化周期 — $DATE
@@ -340,7 +353,7 @@ Gate 1（数据）：$GATE1_RESULT
 Gate 2（合理性）：$GATE2_RESULT
 
 本周建议未通过 Gate 2 审核，已跳过。
-详见：intel/optimization-reports/$DATE.md"
+详见：$REPORT_LINK"
 fi
 
 "$SLACK_NOTIFY" "$SLACK_CHANNEL" "$SLACK_MSG" "Optimization Bot" ":gear:" 2>/dev/null || true
