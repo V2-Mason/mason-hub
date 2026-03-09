@@ -1,0 +1,35 @@
+# 小红书平台参数 — Layer 2
+# 最后更新: 2026-03-09
+# 来源: 小红书创作者中心 + 商家帮助文档
+
+video:
+  max_duration_seconds: 900
+  min_duration_seconds: 1
+  max_file_size_mb: 500
+  min_width: 540
+  min_height: 960
+  recommended_ratio: "9:16"
+  supported_formats: "mp4,mov"
+
+text:
+  max_title_chars: 20
+  max_body_chars: 1000
+  max_hashtags: 10
+
+image:
+  max_images: 18
+  min_images: 1
+  max_file_size_mb: 20
+  min_width: 600
+  min_height: 600
+  recommended_ratio: "3:4"
+
+forbidden_words:
+  # 高风险违禁词（广告法 + 平台规则）
+  list: "最好,最佳,第一,国家级,绝对,100%,永久,万能,祛斑,美白淡斑,速效,立竿见影,根治,药妆,医学护肤"
+  # 注意: 这只是基础列表，完整违禁词库应从小红书官方文档定期更新
+
+compliance:
+  nmpa_required: true
+  brand_authorization_required: true
+  cross_border_label_required: true

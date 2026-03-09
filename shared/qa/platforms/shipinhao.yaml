@@ -1,0 +1,30 @@
+# 视频号平台参数 — Layer 2
+# 最后更新: 2026-03-09
+# 来源: 微信视频号创作者中心
+
+video:
+  max_duration_seconds: 1800
+  min_duration_seconds: 1
+  max_file_size_mb: 2048
+  min_width: 480
+  min_height: 480
+  recommended_ratio: "9:16"
+  supported_formats: "mp4,mov"
+
+text:
+  max_title_chars: 0
+  max_body_chars: 1000
+  max_hashtags: 0
+
+image:
+  max_images: 9
+  max_file_size_mb: 20
+  min_width: 480
+  min_height: 480
+
+forbidden_words:
+  list: "最好,最佳,第一,国家级,绝对,100%,永久,万能,祛斑,速效,立竿见影,根治,药妆"
+
+compliance:
+  nmpa_required: true
+  brand_authorization_required: true
