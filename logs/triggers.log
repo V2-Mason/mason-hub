@@ -651,3 +651,67 @@ Audit log: 1 entries
 Under 500 lines, skip compaction
 
 === COMPACTION COMPLETE ===
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-09T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-03:       -2 in /       -2 out | $-2.000
+  Total: $-2.000
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 3KB
+  ✅ EMP_0001: 0KB
+  ✅ EMP_0002: 3KB
+  ✅ EMP_0004: 1KB
+  ✅ EMP_0005: 1KB
+  ✅ EMP_0008: 3KB
+  ✅ EMP_0009: 7KB
+  ✅ EMP_0011: 0KB
+
+--- 5. Skills Health ---
+  ✅ agent-doctor.sh
+  ✅ agent-status-report.sh
+  ✅ check-escalation.sh
+  ✅ check-syntax.sh
+  ✅ compact-memory.sh
+  ✅ data-coo-daily.sh
+  ✅ deploy-to-aliyun.sh
+  ✅ dev-verify-loop.sh
+  ❌ fix-comfyui-gemini.sh (not executable)
+  ✅ health-check-full.sh
+  ✅ marketing-daily.sh
+  ✅ notify-mason.sh
+  ✅ run-acceptance-tests.sh
+  ✅ run-backend-tests.sh
+  ✅ run-smoke-tests.sh
+  ✅ scout-anthropic.sh
+  ✅ scout-ecom-compete.sh
+  ✅ scout-find-skill.sh
+  ✅ scout-github.sh
+  ✅ scout-products.sh
+  ✅ scout-search-topic.sh
+  ✅ scout-trending.sh
+  ✅ scout-ui-inspiration.sh
+  ✅ scout-xhs-trends.sh
+  ✅ xhs-analyze.sh
+  ✅ xhs-cookie-check.sh
+  ✅ xhs-cookie-refresh.sh
+  ✅ xhs-crawl.sh
+  ✅ xhs-publish-log.sh
+  ✅ xhs-strategy-briefing.sh
+
+--- 6. System Resources ---
+  Disk usage: 46%
+  Memory available: 1.7Gi
+
+--- 7. Task Logs ---
+  Total files: 3
+  Task summaries: 1
+
+=== END REPORT ===

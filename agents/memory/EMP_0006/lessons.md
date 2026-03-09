@@ -14,3 +14,15 @@
 
 ### 注意
 - 这不替代 Scout 的专项情报搜集（GitHub trending、特定领域深挖），而是提供一个持续的趋势信号底座
+
+## Radar Tracker 新增能力 (2026-03-09)
+
+### 关注率统计
+- `/api/weekly-report` 现在返回每组关键词的关注率（1 - dismissed/total_hits）
+- 可用于判断哪些关键词组对 Mason 有价值（关注率高）vs 哪些是噪音（关注率低）
+- Scout 情报简报可以参考关注率数据，优先深挖高关注率方向
+
+### 每日去重
+- Radar Tracker 自动记录 Mason 看过的标题，次日起隐藏已读
+- Mason 每天看到的都是新内容，不会重复浏览
+- Scout 生成情报时也应注意去重：检查 intel/seen.jsonl + Radar 的 seen_items 表，避免重复推荐

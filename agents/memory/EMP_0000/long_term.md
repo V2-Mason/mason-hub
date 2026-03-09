@@ -126,3 +126,10 @@
 - 数据消费: EMP_0006（Scout）可从 TrendRadar SQLite 获取趋势信号
 - 赛道判断: Mason 亲自做，不委派给 agent
 - 每两周关键词淘汰回顾
+
+### Radar Tracker 关注率 + 每日去重上线 (2026-03-09)
+- `/api/weekly-report` 新增关注率：每组关键词的 hits vs dismissed 比率，替代之前的绝对数
+- 淘汰建议改为关注率驱动：连续两周关注率 < 50% 建议淘汰（之前是连续两周 ≥3 条无用）
+- 每日去重：Mason 看过的新闻次日自动隐藏，保证每天只看新内容
+- `seen_items` 表记录已读标题，热榜页 + 趋势分析页都去重
+- 晨会可引用 `/api/weekly-report` 汇报各关键词组关注率

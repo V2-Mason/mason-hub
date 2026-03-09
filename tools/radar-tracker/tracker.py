@@ -53,6 +53,17 @@ def init_db():
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS seen_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            news_title TEXT NOT NULL,
+            source TEXT NOT NULL DEFAULT '',
+            first_seen_date TEXT NOT NULL DEFAULT (date('now')),
+            UNIQUE(news_title)
+        )
+        """
+    )
     conn.commit()
     conn.close()
 
@@ -172,10 +183,37 @@ def _is_dismissed(title, dismissed_set):
     return False
 
 
+def _load_seen_before_today():
+    """加载今日之前已看过的标题，用于每日去重。"""
+    today = datetime.now().strftime("%Y-%m-%d")
+    conn = get_db()
+    rows = conn.execute(
+        "SELECT DISTINCT news_title FROM seen_items WHERE first_seen_date < ?",
+        (today,),
+    ).fetchall()
+    conn.close()
+    return {r["news_title"] for r in rows}
+
+
+def _record_seen_batch(items):
+    """批量记录今日看到的新闻标题。items = [(title, source), ...]"""
+    if not items:
+        return
+    conn = get_db()
+    conn.executemany(
+        "INSERT OR IGNORE INTO seen_items (news_title, source) VALUES (?, ?)",
+        items,
+    )
+    conn.commit()
+    conn.close()
+
+
 def inject_dismiss_buttons(raw_html):
-    """在每条新闻/RSS 条目旁注入 dismiss 按钮，并自动隐藏已标记无用的条目。"""
+    """在每条新闻/RSS 条目旁注入 dismiss 按钮，自动隐藏已标记无用和往日已读的条目。"""
 
     dismissed_set = _load_dismissed_titles()
+    seen_before = _load_seen_before_today()
+    newly_seen = []  # collect (title, source) for batch insert
 
     # 1) 注入 CSS + JS 到 </head>
     raw_html = raw_html.replace("</head>", INJECT_HEAD + "\n</head>", 1)
@@ -243,7 +281,9 @@ def inject_dismiss_buttons(raw_html):
             )
         raw_html = "".join(rebuilt)
 
-    # 5) Inject dismiss buttons into news-items, hide already-dismissed
+    # 5) Inject dismiss buttons into news-items, hide already-dismissed and already-seen
+    dedup_hidden = [0]  # mutable counter for closure
+
     def _inject_news_btn(m):
         block = m.group(0)
         title_m = re.search(r'class="news-link"[^>]*>([^<]+)</a>', block)
@@ -253,6 +293,13 @@ def inject_dismiss_buttons(raw_html):
         # 已 dismiss 的条目直接隐藏
         if _is_dismissed(title, dismissed_set):
             return ""
+        # 往日已读的条目隐藏（每日去重）
+        if title and _is_dismissed(title, seen_before):
+            dedup_hidden[0] += 1
+            return ""
+        # 记录为今日已见
+        if title:
+            newly_seen.append((title, source))
         btn = _make_dismiss_btn(title, source)
         idx = block.rfind("</div>")
         return block[:idx] + btn + block[idx:]
@@ -265,7 +312,7 @@ def inject_dismiss_buttons(raw_html):
         flags=re.DOTALL,
     )
 
-    # 6) Inject dismiss buttons into RSS items, hide already-dismissed
+    # 6) Inject dismiss buttons into RSS items, hide already-dismissed and already-seen
     def _inject_rss_btn(m):
         block = m.group(0)
         title_m = re.search(r'class="rss-link"[^>]*>([^<]+)</a>', block)
@@ -274,6 +321,11 @@ def inject_dismiss_buttons(raw_html):
         source = author_m.group(1).strip() if author_m else ""
         if _is_dismissed(title, dismissed_set):
             return ""
+        if title and _is_dismissed(title, seen_before):
+            dedup_hidden[0] += 1
+            return ""
+        if title:
+            newly_seen.append((title, source))
         btn = _make_dismiss_btn(title, source)
         idx = block.rfind("</div>")
         return block[:idx] + btn + block[idx:]
@@ -286,13 +338,22 @@ def inject_dismiss_buttons(raw_html):
         flags=re.DOTALL,
     )
 
-    # 7) 注入已过滤条数提示
+    # 7) 批量记录今日已见
+    _record_seen_batch(newly_seen)
+
+    # 8) 注入已过滤条数提示
     hidden_count = len(dismissed_set)
-    if hidden_count > 0:
+    dedup_count = dedup_hidden[0]
+    if hidden_count > 0 or dedup_count > 0:
+        parts = []
+        if hidden_count > 0:
+            parts.append(str(hidden_count) + ' 个标记无用')
+        if dedup_count > 0:
+            parts.append(str(dedup_count) + ' 个往日已读')
         badge = (
             '<div style="background:#1e293b;padding:8px 20px;font-family:system-ui,sans-serif;'
             'font-size:13px;color:#94a3b8;">'
-            '已过滤 ' + str(hidden_count) + ' 个标记无用的话题 · '
+            '已过滤 ' + ' + '.join(parts) + ' · '
             '<a href="/api/stats" style="color:#60a5fa;text-decoration:none;">查看统计</a>'
             '</div>'
         )
@@ -352,6 +413,7 @@ def _build_date_nav(reports, current_date=None, current_time=None):
     nav_html += """  </select>
   <a href="/" style="color:#60a5fa;font-size:13px;text-decoration:none;">← 最新</a>
   <a href="/insights" style="color:#60a5fa;font-size:13px;text-decoration:none;">📈 趋势分析</a>
+  <a href="/intel" style="color:#60a5fa;font-size:13px;text-decoration:none;">🔍 情报</a>
   <script>
   var reportDates = """ + str({d: [r["time"] for r in reversed(rs)] for d, rs in dates.items()}).replace("'", '"') + """;
   document.getElementById('date-select').onchange = function() {
@@ -474,16 +536,46 @@ def stats():
     return jsonify({"stats": result})
 
 
+def _count_weekly_hits(weeks=2):
+    """从 TrendRadar 数据统计每组关键词每周的总命中数。"""
+    try:
+        match_title = _load_matcher()
+    except Exception:
+        return None
+
+    now = datetime.now()
+    weekly_hits = []
+    for w in range(weeks):
+        week_end = now - timedelta(weeks=w)
+        week_start = week_end - timedelta(weeks=1)
+        group_counts = {}
+        for i in range(7):
+            d = week_start + timedelta(days=i)
+            ds = d.strftime("%Y-%m-%d")
+            day_items = _get_data(ds)
+            day_results = _match_items(day_items, match_title)
+            for g, matched in day_results.items():
+                group_counts[g] = group_counts.get(g, 0) + len(matched)
+        weekly_hits.append({
+            "week_start": week_start.strftime("%Y-%m-%d"),
+            "week_end": week_end.strftime("%Y-%m-%d"),
+            "hits_by_group": group_counts,
+        })
+    return weekly_hits
+
+
 @app.route("/api/weekly-report")
 def weekly_report():
     """
     返回关注率报告。
-    连续两周每周 dismiss >= 3 条的关键词组建议淘汰。
+    关注率 = 1 - (dismissed / total_hits)。
+    连续两周关注率低于阈值的关键词组建议淘汰。
     ?weeks=N 可指定回看周数（默认 2）。
     """
     weeks = int(request.args.get("weeks", 2))
     conn = get_db()
 
+    # 每周 dismiss 数
     report_weeks = []
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     for w in range(weeks):
@@ -518,21 +610,44 @@ def weekly_report():
     ).fetchall()
     conn.close()
 
+    # 每周总命中数（从 TrendRadar 数据）
+    weekly_hits = _count_weekly_hits(weeks) or []
+
+    # 计算每组每周的关注率
+    for i, rw in enumerate(report_weeks):
+        hits = weekly_hits[i]["hits_by_group"] if i < len(weekly_hits) else {}
+        rw["hits_by_group"] = hits
+        relevance = {}
+        all_kw = set(list(rw["dismissals_by_group"].keys()) + list(hits.keys()))
+        for kw in all_kw:
+            total = hits.get(kw, 0)
+            dismissed = rw["dismissals_by_group"].get(kw, 0)
+            if total > 0:
+                relevance[kw] = round(1.0 - dismissed / total, 2)
+            elif dismissed > 0:
+                relevance[kw] = 0.0
+            # 无数据的不算
+        rw["relevance_by_group"] = relevance
+
+    # 淘汰建议：连续两周关注率低于阈值
     suggest_retire = []
     if len(report_weeks) >= 2:
-        w0 = report_weeks[0]["dismissals_by_group"]
-        w1 = report_weeks[1]["dismissals_by_group"]
-        all_kw = set(list(w0.keys()) + list(w1.keys()))
-        for kw in all_kw:
-            d0 = w0.get(kw, 0)
-            d1 = w1.get(kw, 0)
-            if d0 >= 3 and d1 >= 3:
-                suggest_retire.append({
-                    "keyword_group": kw,
-                    "recent_week_dismissed": d0,
-                    "prev_week_dismissed": d1,
-                    "reason": "连续两周每周被标记 >=3 条无用",
-                })
+        r0 = report_weeks[0].get("relevance_by_group", {})
+        r1 = report_weeks[1].get("relevance_by_group", {})
+        all_kw = set(list(r0.keys()) + list(r1.keys()))
+        for kw in sorted(all_kw):
+            rel0 = r0.get(kw)
+            rel1 = r1.get(kw)
+            if rel0 is not None and rel1 is not None:
+                if rel0 < RETIRE_THRESHOLD and rel1 < RETIRE_THRESHOLD:
+                    suggest_retire.append({
+                        "keyword_group": kw,
+                        "recent_week_relevance": rel0,
+                        "prev_week_relevance": rel1,
+                        "recent_week_hits": report_weeks[0].get("hits_by_group", {}).get(kw, 0),
+                        "recent_week_dismissed": report_weeks[0]["dismissals_by_group"].get(kw, 0),
+                        "reason": f"连续两周关注率低于 {RETIRE_THRESHOLD:.0%}（本周 {rel0:.0%}，上周 {rel1:.0%}）",
+                    })
 
     return jsonify({
         "threshold": RETIRE_THRESHOLD,
@@ -691,6 +806,8 @@ def insights(date_str=None):
     total_matched = sum(len(v) for v in results.values())
     trends = _get_frequency_trends(match_title)
     dismissed_set = _load_dismissed_titles()
+    seen_before = _load_seen_before_today()
+    insights_newly_seen = []
 
     # 跨平台检测
     cross_platform = set()
@@ -805,6 +922,9 @@ function dismissInsight(btn, title, group, source) {{
             for src_type, src, title, url in matched:
                 if _is_dismissed(title, dismissed_set):
                     continue
+                if _is_dismissed(title, seen_before):
+                    continue
+                insights_newly_seen.append((title, src))
                 src_label = SOURCE_LABELS.get(src, src)
                 esc_title = h(title.replace("'", "\\'"))
                 esc_g = h(g.replace("'", "\\'"))
@@ -815,6 +935,8 @@ function dismissInsight(btn, title, group, source) {{
 
             html_out += '  </div>\n'
         html_out += '</div>\n'
+
+    _record_seen_batch(insights_newly_seen)
 
     if not results:
         html_out += '<div class="layer" style="padding:18px;text-align:center;color:#999;">今日无关键词命中</div>\n'
@@ -850,6 +972,163 @@ function dismissInsight(btn, title, group, source) {{
 </html>"""
 
     return Response(html_out, content_type="text/html; charset=utf-8")
+
+
+# --- Scout 情报简报 ---
+INTEL_DIGESTS_DIR = Path(os.path.expanduser("~/mason-hub/intel/digests"))
+
+
+def _render_markdown_to_html(md_text):
+    """简易 Markdown → HTML 转换（标题/列表/粗体/链接/表格/分隔线）"""
+    from html import escape as h
+    lines = md_text.split('\n')
+    html_lines = []
+    in_table = False
+    in_ul = False
+
+    for line in lines:
+        stripped = line.strip()
+
+        # 表格
+        if stripped.startswith('|') and stripped.endswith('|'):
+            cells = [c.strip() for c in stripped.strip('|').split('|')]
+            # 分隔行
+            if all(set(c) <= set('-: ') for c in cells):
+                continue
+            if not in_table:
+                html_lines.append('<table style="width:100%;border-collapse:collapse;margin:8px 0;font-size:13px;">')
+                tag = 'th'
+                in_table = True
+            else:
+                tag = 'td'
+            row = ''.join(f'<{tag} style="border:1px solid #e5e7eb;padding:6px 10px;text-align:left;">{_inline_fmt(h(c))}</{tag}>' for c in cells)
+            html_lines.append(f'<tr>{row}</tr>')
+            continue
+        elif in_table:
+            html_lines.append('</table>')
+            in_table = False
+
+        # 空行结束列表
+        if not stripped and in_ul:
+            html_lines.append('</ul>')
+            in_ul = False
+
+        # 标题
+        if stripped.startswith('# '):
+            html_lines.append(f'<h1 style="font-size:22px;margin:20px 0 8px;border-bottom:2px solid #e5e7eb;padding-bottom:8px;">{_inline_fmt(h(stripped[2:]))}</h1>')
+        elif stripped.startswith('## '):
+            html_lines.append(f'<h2 style="font-size:17px;margin:18px 0 6px;color:#1a1a2e;">{_inline_fmt(h(stripped[3:]))}</h2>')
+        elif stripped.startswith('### '):
+            html_lines.append(f'<h3 style="font-size:14px;margin:14px 0 4px;color:#374151;">{_inline_fmt(h(stripped[4:]))}</h3>')
+        elif stripped.startswith('- '):
+            if not in_ul:
+                html_lines.append('<ul style="margin:4px 0;padding-left:20px;">')
+                in_ul = True
+            html_lines.append(f'<li style="margin:3px 0;font-size:14px;line-height:1.6;">{_inline_fmt(h(stripped[2:]))}</li>')
+        elif stripped == '':
+            html_lines.append('<br>')
+        else:
+            html_lines.append(f'<p style="margin:4px 0;font-size:14px;line-height:1.6;">{_inline_fmt(h(stripped))}</p>')
+
+    if in_ul:
+        html_lines.append('</ul>')
+    if in_table:
+        html_lines.append('</table>')
+
+    return '\n'.join(html_lines)
+
+
+def _inline_fmt(text):
+    """处理行内格式：**粗体**、[链接](url)、`代码`"""
+    import re as _re
+    # 链接
+    text = _re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" target="_blank" style="color:#1a73e8;">\1</a>', text)
+    # 粗体
+    text = _re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', text)
+    # 行内代码
+    text = _re.sub(r'`([^`]+)`', r'<code style="background:#f3f4f6;padding:1px 4px;border-radius:3px;font-size:12px;">\1</code>', text)
+    return text
+
+
+@app.route("/intel")
+@app.route("/intel/<date_str>")
+def intel(date_str=None):
+    """Scout 情报简报页面"""
+    from html import escape as h
+
+    if not INTEL_DIGESTS_DIR.exists():
+        return Response("<h1>intel/digests/ 目录不存在</h1>", status=404,
+                        content_type="text/html; charset=utf-8")
+
+    # 列出所有简报文件（按修改时间倒序，确保最新生成的排第一）
+    digest_files = sorted(INTEL_DIGESTS_DIR.glob("*.md"), key=lambda f: f.stat().st_mtime, reverse=True)
+    if not digest_files:
+        return Response("<h1>暂无情报简报</h1>", status=404,
+                        content_type="text/html; charset=utf-8")
+
+    # 选择要显示的文件
+    selected_file = None
+    if date_str:
+        for f in digest_files:
+            if date_str in f.stem:
+                selected_file = f
+                break
+    if not selected_file:
+        selected_file = digest_files[0]
+
+    md_content = selected_file.read_text(encoding='utf-8')
+    body_html = _render_markdown_to_html(md_content)
+
+    # 构建日期选择器
+    file_options = ''
+    for f in digest_files:
+        label = f.stem
+        sel = ' selected' if f == selected_file else ''
+        file_options += f'<option value="{h(label)}"{sel}>{label}</option>\n'
+
+    page = f"""<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar 情报 — {h(selected_file.stem)}</title>
+<style>
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{ font-family: -apple-system, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }}
+  .nav {{ background: #1e293b; padding: 12px 20px; display: flex; align-items: center; gap: 16px; font-family: system-ui, sans-serif; flex-wrap: wrap; }}
+  .nav a {{ color: #60a5fa; text-decoration: none; font-size: 13px; }}
+  .nav a:hover {{ text-decoration: underline; }}
+  .nav span {{ color: #94a3b8; font-size: 13px; }}
+  .nav select {{ background: #334155; color: #e2e8f0; border: 1px solid #475569; border-radius: 4px; padding: 4px 8px; font-size: 13px; }}
+  .container {{ max-width: 760px; margin: 0 auto; padding: 16px; }}
+  .content {{ background: #fff; border-radius: 12px; padding: 24px 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }}
+  .footer {{ text-align: center; font-size: 11px; color: #bbb; padding: 16px; }}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="/">← 实时热榜</a>
+  <span>·</span>
+  <a href="/insights">📈 趋势分析</a>
+  <span>·</span>
+  <span style="color:#e2e8f0;font-weight:600;">🔍 情报</span>
+  <span>·</span>
+  <select onchange="window.location='/intel/'+this.value">
+    {file_options}
+  </select>
+</div>
+<div class="container">
+  <div class="content">
+    {body_html}
+  </div>
+  <div class="footer">
+    Radar · Mason Hub · Scout 情报系统
+  </div>
+</div>
+</body>
+</html>"""
+
+    return Response(page, content_type="text/html; charset=utf-8")
 
 
 if __name__ == "__main__":
