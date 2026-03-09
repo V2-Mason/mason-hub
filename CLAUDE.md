@@ -171,6 +171,14 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 - 过时内容标注 `→ 已更新 (日期)` 而非删除
 - 只有 Mason 明确说"删掉"才能删除记忆条目
 
+### 铁律 4: 收工必须写 Lesson（2026-03-09 Mason 指定）
+- 每个 Agent session 结束前，**必须**更新自己的记忆文件（`agents/memory/EMP_XXXX/long_term.md` 或 `lessons.md`）
+- 记录内容：本次做了什么、发现了什么、踩了什么坑、backlog 有什么过时
+- Team agent 模式下，每个 teammate 关闭前必须写 lesson，team lead 负责检查
+- Session Operator 在 sprint 结束后汇总各 agent lesson 到全局 MEMORY.md
+- **不写 lesson 就不能关闭 agent** — shutdown_request 前 team lead 应确认 lesson 已写入
+- 格式：日期 + sprint/任务名 + 完成内容 + 教训，控制在 5-15 行
+
 ### 执行检查点
 - 执行多步计划时，每完成 3 个步骤暂停，向 Mason 汇报进度和结果
 - 汇报内容：完成了什么、验证结果、下一步计划、发现的问题

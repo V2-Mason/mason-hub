@@ -16,7 +16,7 @@ from pathlib import Path
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tracker.db")
 TRENDRADAR_DIR = Path(os.path.expanduser("~/mason-hub/tools/trendradar"))
-RETIRE_THRESHOLD = float(os.environ.get("RETIRE_THRESHOLD", "0.5"))
+RETIRE_THRESHOLD = float(os.environ.get("RETIRE_THRESHOLD", "0.3"))
 
 
 def get_db():

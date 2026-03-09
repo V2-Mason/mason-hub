@@ -33,6 +33,19 @@
 - 淘汰建议改为：连续两周关注率低于 `RETIRE_THRESHOLD`（默认 50%）
 - 注意：RSS 源（华尔街见闻/McKinsey/CB Insights）的命中数取决于 TrendRadar 关键词是否匹配到它们的标题，如果关键词没覆盖到则 hits=0 但 dismiss>0，关注率直接为 0%
 
+## Radar 点击追踪 Sprint (2026-03-09, Team Sprint)
+
+### 完成内容
+- HTML 报告注入 dismiss + read 按钮（inject_dismiss_buttons），统一视图直接渲染，104 个按钮验证通过
+- Flask API :8081 systemd 托管，支持 GET/POST dismiss + mark-read + stats + weekly-report
+- CORS `Access-Control-Allow-Origin: *` 支持 file:// 和跨端口访问
+- 淘汰阈值从 50% 调整为 30%（Mason 指定）
+
+### 教训
+- 按 task spec 做 GET 支持很重要 — HTML 按钮用 GET 比 POST 简单（不需要 fetch+JSON），用户体验更好
+- systemd 托管 Flask 单文件服务是最轻量的部署方式，比 Docker 省资源
+- 淘汰建议需要至少 2 周数据积累才有意义，第一周结果全为空是预期行为
+
 ### 每日去重实现
 - 新增 `seen_items` 表（news_title UNIQUE, source, first_seen_date）
 - 逻辑：首次展示时 INSERT OR IGNORE 记录标题，次日起自动隐藏（first_seen_date < today）

@@ -17,6 +17,16 @@ from flask import Flask, Response, jsonify, request
 
 app = Flask(__name__)
 
+
+@app.after_request
+def _add_cors(response):
+    """Allow cross-origin requests (file:// or different port)."""
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return response
+
+
 # --- 配置 ---
 TRENDRADAR_HTML = os.environ.get(
     "TRENDRADAR_HTML",
@@ -29,7 +39,7 @@ TRENDRADAR_HTML_DIR = os.environ.get(
     os.path.expanduser("~/mason-hub/tools/trendradar/output/html"),
 )
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tracker.db")
-RETIRE_THRESHOLD = float(os.environ.get("RETIRE_THRESHOLD", "0.5"))
+RETIRE_THRESHOLD = float(os.environ.get("RETIRE_THRESHOLD", "0.3"))
 
 
 # --- 数据库 ---
@@ -849,15 +859,24 @@ def history(date, time_slot):
     return Response(injected, content_type="text/html; charset=utf-8")
 
 
-@app.route("/api/dismiss", methods=["POST"])
+@app.route("/api/dismiss", methods=["GET", "POST"])
 def dismiss():
-    """接收 dismiss 标记，写入 SQLite。"""
-    data = request.get_json(force=True)
-    title = (data.get("title") or "").strip()
+    """接收 dismiss 标记，写入 SQLite。
+    POST: JSON body {title, keyword_group, source}
+    GET:  /api/dismiss?title=xxx&keyword_group=yyy&source=zzz
+    """
+    if request.method == "GET":
+        title = (request.args.get("title") or "").strip()
+        keyword_group = (request.args.get("keyword_group") or "").strip()
+        source = (request.args.get("source") or "").strip()
+    else:
+        data = request.get_json(force=True)
+        title = (data.get("title") or "").strip()
+        keyword_group = (data.get("keyword_group") or "").strip()
+        source = (data.get("source") or "").strip()
+
     if not title:
         return jsonify({"ok": False, "error": "title is required"}), 400
-    keyword_group = (data.get("keyword_group") or "").strip()
-    source = (data.get("source") or "").strip()
 
     conn = get_db()
     conn.execute(

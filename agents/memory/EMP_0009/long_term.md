@@ -68,3 +68,16 @@
 - `assemble.py` 改动最密集（音频混合 + SFX + J/L-Cut + 花字），多人改容易冲突
 - 同一个 prompt（如 MULTICUT_PROMPT）多人加规则 → 需注意不重复不矛盾
 - 接口字段名必须事先约定（如 `voiceover_full_text` vs `voiceover_script`）
+
+## SocialMesh P0 Sprint (2026-03-09, Team Sprint)
+
+### Backlog 过时发现
+- **图片上传功能已存在**：后端 `/api/content/{id}/images`（上传/列表/删除/重排序）+ 前端 `ImageUpload` 组件（拖拽上传、缩略图、排序、删除）+ publishing.py 发布时自动传图 — 全部已实现
+- **内容列表/草稿管理已存在**：ContentEditor.jsx 左侧栏已有内容列表（加载/删除/新建），后端 `/api/content/` CRUD 完整，Dashboard 展示最近 5 条
+- 教训：**接到任务先验证现状**，不要假设 backlog 说"未完成"就真的未完成。两个 P0 任务实际上已经在之前的开发中实现了
+
+### 实际改动
+- GeoAnalysis.jsx 5 处英文占位标签翻译为中文（其余页面已全部中文）
+- publishing.py 发布成功后更新 Content.status = PUBLISHED
+- schedule.py 排程时 DRAFT→SCHEDULED，mark-published 时→PUBLISHED
+- ContentEditor.jsx 侧栏增加琥珀色「已排程」badge（原有绿色已发布 + 灰色草稿）
