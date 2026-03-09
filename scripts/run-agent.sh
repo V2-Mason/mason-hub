@@ -48,6 +48,32 @@ fi
 # --- 提取 agent 名称 ---
 AGENT_NAME=$(basename "$1" .md)
 
+# --- Lane Queue: serial execution lock ---
+LANE_LOCK="$HUB_DIR/scripts/lane-lock.sh"
+AGENT_LANE=""
+if [ -x "$LANE_LOCK" ]; then
+  AGENT_LANE=$("$LANE_LOCK" get-lane "$AGENT_NAME")
+  if [ -n "$AGENT_LANE" ]; then
+    # Check if parent already holds this lane (chain execution)
+    if [ "${LANE_LOCK_HELD:-}" = "$AGENT_LANE" ]; then
+      echo "[lane-lock] Lane $AGENT_LANE inherited from parent" >&2
+      AGENT_LANE=""  # don't release on exit
+    elif ! "$LANE_LOCK" acquire "$AGENT_LANE" "$AGENT_NAME" "${TASK_ID:-unknown}" --wait 60; then
+      echo "❌ Cannot acquire $AGENT_LANE lane lock" >&2
+      exit 1
+    else
+      export LANE_LOCK_HELD="$AGENT_LANE"
+    fi
+  fi
+fi
+
+cleanup_lock() {
+  if [ -n "${AGENT_LANE:-}" ] && [ -x "${LANE_LOCK:-}" ]; then
+    "$LANE_LOCK" release "$AGENT_LANE" "$AGENT_NAME" 2>/dev/null || true
+  fi
+}
+trap cleanup_lock EXIT
+
 # --- 加载 API key ---
 source ~/slack-bot/.env
 export ANTHROPIC_API_KEY
@@ -148,13 +174,25 @@ inject_semantic_search() {
   if [ ! -x "$VENV_PYTHON" ]; then
     return 1
   fi
-  # 检查 ChromaDB 是否已初始化
+  # 检查 ChromaDB 是否已初始化且有数据
   if [ ! -d "$HUB_DIR/memory/chroma_db" ]; then
+    return 1
+  fi
+  local doc_count
+  doc_count=$("$VENV_PYTHON" -c "
+import chromadb
+c = chromadb.PersistentClient(path='$HUB_DIR/memory/chroma_db')
+try:
+    print(c.get_collection('agent_memory').count())
+except:
+    print(0)
+" 2>/dev/null) || doc_count=0
+  if [ "$doc_count" -eq 0 ] 2>/dev/null; then
     return 1
   fi
   local search_result
   search_result=$("$VENV_PYTHON" "$HUB_DIR/scripts/memory-search.py" \
-    "$task_desc" --agent "$AGENT_NAME" --top 5 --format inject 2>/dev/null) || return 1
+    "$task_desc" --scope all --top 5 --format inject 2>/dev/null) || return 1
   if [ -n "$search_result" ] && [ ${#search_result} -gt 20 ]; then
     echo "$search_result"
     return 0
@@ -162,21 +200,18 @@ inject_semantic_search() {
   return 1
 }
 
-# 决定 lessons 注入策略：语义搜索（Layer 3）vs 全量注入（Layer 2）
-LESSONS_FILE_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
-if [ "$LESSONS_FILE_SIZE" -gt 10240 ]; then
-  # 大于 10KB：尝试语义搜索，只注入相关 top-5
-  SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
-  if [ -n "$SEMANTIC_RESULT" ]; then
-    SYSPROMPT="${SYSPROMPT}
+# 决定 lessons 注入策略：始终尝试语义搜索（Layer 3），失败则回退全量注入（Layer 2）
+# 语义搜索能跨 agent 召回相关记忆，比全量注入单个 lessons 文件更有价值
+SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
+if [ -n "$SEMANTIC_RESULT" ]; then
+  SYSPROMPT="${SYSPROMPT}
 
 ---
 ${SEMANTIC_RESULT}"
-    INJECT_USED=${#SYSPROMPT}
-    echo "[context] Using Layer 3 semantic search for $AGENT_NAME lessons" >&2
-  fi
-  # 如果语义搜索失败，Layer 2 全量注入已在上面的 Phase 2 完成
+  INJECT_USED=${#SYSPROMPT}
+  echo "[context] Using Layer 3 semantic search for $AGENT_NAME" >&2
 fi
+# 如果语义搜索失败（ChromaDB 空或无结果），Layer 2 全量注入已在上面的 Phase 2 完成
 
 # 根据 agent 角色注入对应的知识文件（按优先级排列，高优先级先注入）
 case "$AGENT_NAME" in

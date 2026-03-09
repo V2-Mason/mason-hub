@@ -304,4 +304,8 @@ archive_task_logs
 compact_audit
 
 echo ""
+echo "=== RE-INDEX CHROMADB ==="
+"$HOME/mason-hub/.venv/bin/python3" "$HOME/mason-hub/scripts/memory-store.py" --incremental 2>&1 || echo "ChromaDB re-index failed (non-critical)"
+
+echo ""
 echo "=== COMPACTION COMPLETE ==="

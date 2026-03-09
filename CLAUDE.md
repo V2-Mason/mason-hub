@@ -20,6 +20,8 @@ Mason (人类，最终决策者)
 │     │           │
 │     │           └── EMP_0005 电商 Dev  ← 四级：业务执行层
 │     │
+│     │     └── EMP_0013 店铺运营      ← 三级：XHS 店铺日常运营
+│     │
 │     ├── EMP_0008 SocialMesh 内容运营总监  ← 二级：内容策略 + 项目管理
 │     │     │
 │     │     ├── EMP_0010 Content Creator   ← 三级：内容生产 + 社区互动
@@ -51,6 +53,7 @@ Mason (人类，最终决策者)
 - EMP_0010 Content Creator — 多平台内容生产、社区互动（有状态，有品牌风格记忆）
 - EMP_0011 Account Manager — 品牌上下文管理，产出 brief，桥接品牌与内容团队
 - EMP_0012 Product Architect — 产品参谋，需求澄清/归属判断/边界定义/迭代路径规划
+- EMP_0013 店铺运营 — XHS 店铺日常运营（客服/评分/售后/合规/对账）
 
 ## Backlog 管理规则
 
@@ -81,6 +84,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | Content-Tech Dev | agents/EMP_0009.md | 仅限 ~/socialmesh/ |
 | Account Manager | agents/EMP_0011.md | 品牌上下文管理，跨域桥梁 |
 | Product Architect | agents/EMP_0012.md | 产品定义、归属判断、边界管理 |
+| 店铺运营 | agents/EMP_0013.md | XHS 店铺日常运营（客服/评分/售后/合规/对账） |
 
 **加载流程**：
 1. 识别自己被分配的角色名称
@@ -92,6 +96,34 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 - 不得跨越工作目录边界
 - 不得替代其他角色做决策
 - 不得忽略配置文件中的"明确禁止"条款
+
+## Agent 基础设施能力（所有 Agent 共享）
+
+### 1. 记忆语义搜索
+所有通过 `run-agent.sh` 启动的 agent 自动获得跨 agent 语义记忆召回能力。
+- 底层：ChromaDB + all-MiniLM-L6-v2 本地向量索引，零 API 成本
+- 索引范围：所有 agent 的 long_term.md + lessons + decisions + 全局记忆（共 134 个文档块）
+- 自动触发：每次 agent 启动时根据任务描述搜索 top-5 相关记忆注入 context
+- 手动搜索：`~/mason-hub/.venv/bin/python3 scripts/memory-search.py "查询内容" --scope all --format text`
+- 重建索引：`~/mason-hub/.venv/bin/python3 scripts/memory-store.py --rebuild`
+- 自动维护：每周日 compact-memory.sh 后自动增量更新索引
+
+### 2. Lane Queue（并发锁）
+防止同域 agent 并发操作导致竞态条件。通过 `run-agent.sh` 自动获取/释放。
+- 3 个 lane：`ecommerce`（EMP_0001/0003/0005/0013）、`socialmesh`（EMP_0008/0009/0010）、`platform`（EMP_0002/0004）
+- 跨域 agent（Meta Manager/Scout/Account Manager/Product Architect）不需要锁
+- 锁自动超时释放（默认 20 分钟），agent 崩溃不会死锁
+- 链式执行自动继承锁（PM → Dev 不会重复获取）
+- 手动查看：`scripts/lane-lock.sh status`
+- 手动清理：`scripts/lane-lock.sh cleanup`
+
+### 3. Semantic Snapshot（网页内容提取）
+将网页转换为紧凑 markdown，比原始 HTML 压缩 10x+，节省 token。
+- 用法：`python3 skills/semantic_snapshot.py "URL" --max-chars 6000`
+- 三种模式：article（文章提取）、table（表格保留）、interactive（aria tree 解析）
+- `--no-js`：不启动浏览器，用 requests+BeautifulSoup（更快更轻）
+- `--json`：输出带元数据的 JSON（URL/标题/压缩率/提取模式）
+- 已注册到 EMP_0001/0006/0008/0013 的 skills 列表
 
 ## 基础设施 / 部署
 
