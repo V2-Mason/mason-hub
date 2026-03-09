@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-03-08
-> 更新人: Mason + Session（TrendRadar + RSSHub 趋势监控部署 + agent lessons 更新）
+> 最后更新: 2026-03-09
+> 更新人: Mason + Session（EMP_0013 店铺运营 Agent 三方评审定稿 + 基础设施三件套 + backlog 更新）
 
 ---
 
@@ -30,7 +30,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 - 反向SSH隧道入口 (:2222)
 - 隧道保活: tunnel-keepalive.sh (cron */5, 2026-02-26 部署)
 - Cron 守护脚本: /opt/surenxuan/scripts/
-- Agent 角色文件: ~/mason-hub/agents/EMP_0000~0005.md
+- Agent 角色文件: ~/mason-hub/agents/EMP_0000~0013.md
 - Token 追踪: api_logger.py + claude-logged.sh (2026-02-26 部署)
 
 ### Slack (Mason HQ)
@@ -260,6 +260,8 @@ P1 — 体验补全:
 > XHS 自动发帖已改为半自动模式（SocialMesh 准备内容，Mason 手动发布到 APP）。
 
 P0 — 准入 (Mason 手动):
+- [ ] 向清谭索取品牌授权书（DAERA + CDL，需包含：授权方/被授权方/品牌/期限，明确可在 xiaohongshu.com 销售，有效期>30天）— 2026-03-09 确认需要
+- [ ] 注册小红书企业专业号（蓝V）+ 个体店（个体工商户执照，美容护肤类目，保证金 ¥1,000，支持 0 元开店）— 2026-03-09 确认方案
 - [ ] 用素仁轩中国营业执照注册 open.xiaohongshu.com 开发者账号，选「商家后台系统」类目（零成本、权限全）
 - [ ] 拿到 appKey / appSecret
 
@@ -350,6 +352,30 @@ P2 — 模块 A 增强:
 - [ ] 启用 AI 分析功能 — 需配 DeepSeek API key 到 config.yaml（EMP_0002）
 - [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）→ 已更新见下方点击追踪 (2026-03-08)
 - [ ] Scout 脚本接入 TrendRadar SQLite — 用趋势数据辅助情报分析（EMP_0006）
+
+**EMP_0013 店铺运营 Agent（2026-03-09 三方评审定稿）**:
+
+> Agent 状态：设计完成，待开店后激活。
+> 三方评审参与者：Product Architect (EMP_0012) + 电商 Domain Manager (EMP_0003) + 素仁轩 PM (EMP_0001)
+> Slack 频道：#srx-ops（已创建）
+> 设计文档：agents/EMP_0013.md
+
+Phase 1 — 开店日激活（5 个核心职能，匹配小红书 5 维店铺分）:
+- [ ] 物流体验：发货时效监控 + 物流异常预警（EMP_0013）
+- [ ] 服务咨询：3 分钟响应 SLA 监控 + 买家消息提醒（EMP_0013）
+- [ ] 商品体验：差评/负面评价预警 + 商品质量问题追踪（EMP_0013）
+- [ ] 售后退款：退货退款流程监控 + 超时预警（EMP_0013）
+- [ ] 交易纠纷：纠纷单预警 + 升级阈值 8%（EMP_0013）
+
+Phase 2 — 月均订单 > 100 后启用:
+- [ ] 供应链协调：补货建议 + 供应商沟通协议（EMP_0013）
+- [ ] 促销活动执行：活动日历 + 库存预留（EMP_0013，限价权限需 PM 审批）
+- [ ] 竞品动态追踪：价格/评价/上新监控（EMP_0013）
+
+PM/0013 分工:
+- PM (EMP_0001) 管 system_feedback 表 + UX 巡检 + 战略决策
+- 0013 管 XHS 买家消息 + 店铺分 + 日常运营执行
+- 库存巡检已从 PM 移交 0013（2026-03-09）
 
 P1 — Radar 产品定义（2026-03-08 会议决议）:
 - [ ] 产品定义文档 — Product Architect (EMP_0012) 出 docs/products/radar.md，定义边界/模块/接口/迭代路径
