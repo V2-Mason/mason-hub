@@ -165,6 +165,10 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] CLAUDE.md 开发铁律 — 2026-03-02 完成，3 条铁律 + 执行检查点 + 反合理化清单 + code review + 设计文档
 - [x] Code reviewer agent — 2026-03-02 完成，agents/code-reviewer.md，两阶段审查（spec + quality）
 - [x] 设计文档目录 — 2026-03-02 完成，docs/plans/，首份文档：多账号采集架构
+- [x] QA Gate 验收系统 — 2026-03-09 完成，shared/qa/（gate1_checks.py 自动验证 + gate2_checklist.md 人工清单 + risk_categories.md 风险分类 + 3 个平台 YAML 参数）
+- [x] /commit 智能提交 skill — 2026-03-09 完成，.claude/skills/commit/SKILL.md，5 步流程（盘点→backlog→记忆→commit→汇报）
+- [x] EMP_0012 Product Architect 轻量化重写 — 2026-03-09 完成，去掉 Lab 管理/审计扫描，保留两个 Checklist（功能边界 6 问 + Agent 创建 5 问）
+- [x] EMP_0008 新增发布前质量门控 — 2026-03-09 完成，Gate 1 自动 → Gate 2 EMP_0008 执行 → Gate 3 Mason 签批
 - [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
 
@@ -378,14 +382,14 @@ PM/0013 分工:
 - 库存巡检已从 PM 移交 0013（2026-03-09）
 
 P1 — Radar 产品定义（2026-03-08 会议决议）:
-- [ ] 产品定义文档 — Product Architect (EMP_0012) 出 docs/products/radar.md，定义边界/模块/接口/迭代路径
-- [ ] 星型拓扑反馈回路设计 — 纳入产品定义，定义 Mason 行为数据如何反哺关键词权重
+- [x] 产品定义文档 — 2026-03-09 完成，docs/products/radar.md（模块间接口 + 反馈回路 + 迭代路径）
+- [x] 星型拓扑反馈回路设计 — 2026-03-09 完成，纳入 radar.md（dismiss/read/隐式跳过三种行为数据）
 
 P1 — 话题淘汰点击追踪（2026-03-08 Mason 批准方案 1）:
-- [ ] HTML 报告加"无用"按钮 — 每条新闻旁加按钮，点击发 GET 请求记录到 SQLite（EMP_0002）
-- [ ] 轻量 API 服务 — Flask 单文件，接收点击事件写 SQLite（EMP_0002）
-- [ ] 每周关注率统计 — 15 组关键词各自的命中数 vs Mason 无用标记数，算关注率（EMP_0002）
-- [ ] 淘汰建议生成 — 关注率连续两周低于阈值的关键词组标记"建议淘汰"，Mason 手动确认（EMP_0002）
+- [x] HTML 报告加"无用"按钮 — 2026-03-09 完成，inject_dismiss_buttons() + 统一视图直接渲染（EMP_0002）
+- [x] 轻量 API 服务 — 2026-03-09 完成，Flask :8081 systemd 托管，GET/POST dismiss + CORS（EMP_0002）
+- [x] 每周关注率统计 — 2026-03-09 完成，/api/weekly-report + weekly_report.py CLI（EMP_0002）
+- [x] 淘汰建议生成 — 2026-03-09 完成，阈值 30%，需 2 周数据积累（EMP_0002）
 
 **ComfyUI 自建节点 — GPU 实例部署（2026-03-08 加入）**:
 

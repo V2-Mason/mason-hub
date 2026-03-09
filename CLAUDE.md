@@ -145,6 +145,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | 命令 | 功能 |
 |------|------|
 | `/standup` | 晨会：git log + backlog + 系统状态 → 报告 |
+| `/commit` | 智能提交：先更新 backlog + 记忆 + lesson，再 git commit |
 | `/deploy` | 一键部署 surenxuan 到阿里云 |
 | `/health` | 全局健康检查（agent + 基础设施 + 阿里云） |
 | `/dev-task <描述>` | 启动 EMP_0005 执行开发任务 |
