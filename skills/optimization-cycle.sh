@@ -1,5 +1,6 @@
 #!/bin/bash
 # =============================================================================
+export PATH="/home/hangn/.local/bin:$PATH"
 # 自优化周期 — 每周自动运行
 #
 # 流程（Mason 修正版顺序）：
@@ -20,7 +21,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HUB_DIR="$(dirname "$SCRIPT_DIR")"
 LOG_FILE="$HUB_DIR/logs/optimization-cycle.log"
 SLACK_NOTIFY="/home/hangn/slack-bot/slack_notify.sh"
-SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh
+SLACK_CHANNEL="C0AKN4T1JBW"  # #optimization
 DATE=$(date +%Y-%m-%d)
 REPORT_DIR="$HUB_DIR/intel/optimization-reports"
 REPORT_FILE="$REPORT_DIR/$DATE.md"
