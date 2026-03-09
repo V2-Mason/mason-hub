@@ -52,7 +52,7 @@ Mason (人类，最终决策者)
 - EMP_0009 Content-Tech Dev — 内容技术开发（~/socialmesh/ 专属）
 - EMP_0010 Content Creator — 多平台内容生产、社区互动（有状态，有品牌风格记忆）
 - EMP_0011 Account Manager — 品牌上下文管理，产出 brief，桥接品牌与内容团队
-- EMP_0012 Product Architect — 产品参谋，需求澄清/归属判断/边界定义/迭代路径规划
+- EMP_0012 Product Architect — 产品参谋，按需激活，帮 Mason 问对问题（归属判断/边界定义），不主动扫描不管理
 - EMP_0013 店铺运营 — XHS 店铺日常运营（客服/评分/售后/合规/对账）
 
 ## Backlog 管理规则
@@ -83,7 +83,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | Content Creator | agents/EMP_0010.md | 内容生产（~/socialmesh/ + 记忆文件） |
 | Content-Tech Dev | agents/EMP_0009.md | 仅限 ~/socialmesh/ |
 | Account Manager | agents/EMP_0011.md | 品牌上下文管理，跨域桥梁 |
-| Product Architect | agents/EMP_0012.md | 产品定义、归属判断、边界管理 |
+| Product Architect | agents/EMP_0012.md | 按需激活，归属判断、边界定义（不管理、不审计） |
 | 店铺运营 | agents/EMP_0013.md | XHS 店铺日常运营（客服/评分/售后/合规/对账） |
 
 **加载流程**：
