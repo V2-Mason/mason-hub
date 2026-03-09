@@ -174,11 +174,18 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 
 ### 铁律 4: 收工必须写 Lesson（2026-03-09 Mason 指定）
 - 每个 Agent session 结束前，**必须**更新自己的记忆文件（`agents/memory/EMP_XXXX/long_term.md` 或 `lessons.md`）
+- **必须使用标准格式**：参照 `shared/templates/lesson_format.md`
 - 记录内容：本次做了什么、发现了什么、踩了什么坑、backlog 有什么过时
+- **Gap 类型是强制字段** — 不勾选就不算 lesson 写完：
+  - 🔧 配置错误 → 立刻修
+  - 🏗️ 系统能力缺失 → 填触发动作，EMP_0012 triage
+  - 📄 文档更新 → 更新对应文件
+  - 🔗 集成缺失 → 填触发动作，EMP_0012 triage
+  - 📚 纯知识 → 留存即可
+- 🏗️ 和 🔗 类型必须填写触发动作（任务描述 + 建议 Owner + 验收条件），EMP_0000 晨会检查后 ping EMP_0012
 - Team agent 模式下，每个 teammate 关闭前必须写 lesson，team lead 负责检查
 - Session Operator 在 sprint 结束后汇总各 agent lesson 到全局 MEMORY.md
-- **不写 lesson 就不能关闭 agent** — shutdown_request 前 team lead 应确认 lesson 已写入
-- 格式：日期 + sprint/任务名 + 完成内容 + 教训，控制在 5-15 行
+- **不写 lesson 就不能关闭 agent** — shutdown_request 前 team lead 应确认 lesson 已写入且 gap 类型已勾选
 
 ### 执行检查点
 - 执行多步计划时，每完成 3 个步骤暂停，向 Mason 汇报进度和结果

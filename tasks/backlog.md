@@ -169,6 +169,8 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] /commit 智能提交 skill — 2026-03-09 完成，.claude/skills/commit/SKILL.md，5 步流程（盘点→backlog→记忆→commit→汇报）
 - [x] EMP_0012 Product Architect 轻量化重写 — 2026-03-09 完成，去掉 Lab 管理/审计扫描，保留两个 Checklist（功能边界 6 问 + Agent 创建 5 问）
 - [x] EMP_0008 新增发布前质量门控 — 2026-03-09 完成，Gate 1 自动 → Gate 2 EMP_0008 执行 → Gate 3 Mason 签批
+- [x] Lesson Triage 机制 — 2026-03-09 完成，lesson 强制 gap 分类 + EMP_0012 triage + EMP_0000 晨会检查（shared/templates/lesson_format.md）
+- [x] 自优化闭环协议 — 2026-03-09 完成，shared/qa/optimization_loop.md，3 轮上限 + 多维目标防漂移
 - [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
 
@@ -356,6 +358,7 @@ P2 — 模块 A 增强:
 - [ ] 启用 AI 分析功能 — 需配 DeepSeek API key 到 config.yaml（EMP_0002）
 - [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）→ 已更新见下方点击追踪 (2026-03-08)
 - [ ] Scout 脚本接入 TrendRadar SQLite — 用趋势数据辅助情报分析（EMP_0006）
+- [ ] Scout 脚本接入 Radar 关注率 API — Scout cron 启动时读 localhost:8081/api/weekly-report，关注率>70% 增加搜索深度，<30% 降低频率（EMP_0002，验收：Scout 输出包含关注率字段）
 
 **EMP_0013 店铺运营 Agent（2026-03-09 三方评审定稿）**:
 
