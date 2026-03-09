@@ -221,4 +221,5 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | 每日 09:30 | cron 脚本 | agent-status-report → Slack |
 | 每周二/五 14:00 | SocialMesh PM (EMP_0008) | XHS 数据采集+分析 |
 | 每周一 10:00 | PM (EMP_0001) | 记忆压缩 |
+| 每周三 14:00 | cron 脚本 | 自优化周期（读数据→Gate 1→分析→Gate 2→Slack） |
 | 每周日 11:00 | cron 脚本 | compact-memory.sh 全量 |
