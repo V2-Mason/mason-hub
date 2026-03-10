@@ -176,6 +176,20 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
 
+P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
+- [x] SYSTEM_MAP 受力分析 — 2026-03-10 完成，四条能力线动态状态 + 耦合触发机制
+- [x] Agent 四层设计模板 — 2026-03-10 完成，docs/system/AGENT_DESIGN_TEMPLATE.md（触发→前置→输出→下游）
+- [x] Agent 全量审计 — 2026-03-10 完成，14 个 agent 四层完整度审计，发现下游通知层 64% 不完整
+- [x] 过滤规则四级定义 — 2026-03-10 完成，docs/plans/2026-03-10-autonomous-loop.md（L0 静默 / L1 聚合 / L2 通知 / L3 决策）
+- [x] Event Router — 2026-03-10 完成，scripts/event_router.py（10 条路由规则 + pending/archive + 前置条件检查）
+- [x] Dispatcher — 2026-03-10 完成，scripts/dispatcher.sh（5 任务池 + 四道安全门 + backlog 扫描）
+- [x] 事件发射工具 — 2026-03-10 完成，scripts/emit_event.sh + 3 个核心脚本已接入（data-sync/health-check/optimization-cycle）
+- [x] 事件 schema — 2026-03-10 完成，data/schemas/（event.yaml + report.yaml + routing_table.yaml）
+- [ ] event_watcher systemd 注册 — inotify 实时监听 queue.jsonl（EMP_0004）
+- [ ] dispatcher cron 注册 — 每小时扫描 backlog + 事件（EMP_0004）
+- [ ] Agent .md 四层声明补齐 — 14 个 agent 逐步补齐下游通知 + 触发条件（渐进，EMP_0012 审核）
+- [ ] 汇报链 Manager 聚合 — EMP_0000/0001/0002/0008 聚合下属 report（EMP_0002）
+
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）
 - [x] Skills 去重 — 2026-03-05 检查完毕，user 级 skills 目录为空，无重复项（EMP_0002）

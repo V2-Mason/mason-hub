@@ -155,5 +155,11 @@ $(echo -e "$DETAILS")"
 fi
 
 # 只在全部失败时返回非零退出码
-[ "$SYNC_OK" -eq 0 ] && [ "$TOTAL" -gt 0 ] && exit 1
+if [ "$SYNC_OK" -eq 0 ] && [ "$TOTAL" -gt 0 ]; then
+  "$HUB_DIR/scripts/emit_event.sh" "data-sync-failed" "data-sync.sh" "failed" 2 "{\"synced\":$SYNC_OK,\"total\":$TOTAL}" 2>/dev/null || true
+  exit 1
+fi
+
+# 发射事件: 数据同步完成
+"$HUB_DIR/scripts/emit_event.sh" "data-sync-complete" "data-sync.sh" "ok" 1 "{\"synced\":$SYNC_OK,\"total\":$TOTAL}" 2>/dev/null || true
 exit 0

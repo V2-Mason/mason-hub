@@ -449,3 +449,13 @@ if [ "$SEND_SLACK" = true ]; then
   bash "$SLACK_NOTIFY" "#system-alerts" "$OUTPUT"
   echo ">>> 已发送"
 fi
+
+# 发射事件: 健康检查结果
+HUB_DIR="${HUB_DIR:-$HOME/mason-hub}"
+if [ "$COUNT_ERR" -eq 0 ]; then
+  "$HUB_DIR/scripts/emit_event.sh" "health-check-all-green" "data_health_check.sh" "ok" 1 \
+    "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"warn\":$COUNT_WARN}" 2>/dev/null || true
+else
+  "$HUB_DIR/scripts/emit_event.sh" "health-check-failed" "data_health_check.sh" "failed" 2 \
+    "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"errors\":$COUNT_ERR}" 2>/dev/null || true
+fi

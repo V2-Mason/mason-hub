@@ -487,3 +487,7 @@ fi
 log "  Slack 通知已发送"
 
 log "=== 自优化周期结束 ==="
+
+# 发射事件: 自优化周期完成
+"$HUB_DIR/scripts/emit_event.sh" "optimization-cycle-complete" "optimization-cycle.sh" "ok" 1 \
+  "{\"gate1\":\"$GATE1_PASS\",\"gate2\":\"$GATE2_PASS\",\"suggestions\":$SUGGESTION_COUNT}" 2>/dev/null || true
