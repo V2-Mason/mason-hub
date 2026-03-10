@@ -189,6 +189,8 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] dispatcher cron 注册 — 2026-03-10 完成，每小时整点（CST 08-22 窗口内执行）
 - [x] Agent .md 四层声明补齐（第一批 6 个）— 2026-03-10 完成，EMP_0002/0005/0009/0010/0011/0014
 - [x] 汇报链 Manager 聚合 — 2026-03-10 完成，scripts/aggregate_reports.py（L0-L3 分级 + Slack）
+- [x] Mason Gateway 永驻 daemon — 2026-03-10 完成，mason-gateway.py（对标 OpenClaw Gateway：串行队列 + heartbeat + Mason session 让路 + Tier 1 脚本 / Tier 2 API 双层执行）+ MASONHUB.md 灵魂文件 + systemd 部署
+- [x] Anthropic API 配置 — 2026-03-10 完成，API key 配到 .env，heartbeat 端到端验证通过（661 token/次 ≈ $0.002）
 - [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):

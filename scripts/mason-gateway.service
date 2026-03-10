@@ -1,0 +1,25 @@
+[Unit]
+Description=Mason Gateway — AI Agent 永驻 daemon
+After=network.target
+Documentation=file:///home/hangn/mason-hub/MASONHUB.md
+
+[Service]
+Type=simple
+User=hangn
+WorkingDirectory=/home/hangn/mason-hub
+ExecStart=/home/hangn/mason-hub/.venv/bin/python3 /home/hangn/mason-hub/scripts/mason-gateway.py
+Restart=always
+RestartSec=30
+Environment=HUB_DIR=/home/hangn/mason-hub
+EnvironmentFile=-/home/hangn/mason-hub/.env
+
+# 资源限制（GCP 3.8G 总内存）
+MemoryMax=512M
+CPUQuota=50%
+
+# 日志（gateway.py 自己写 logs/gateway.log，systemd 不重复）
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

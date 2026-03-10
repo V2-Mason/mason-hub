@@ -19,12 +19,12 @@
 ### 1. Agent 自治线
 ```
 状态:    active
-里程碑:  MASON_AUTHORITY + SYSTEM_MAP + /standup 集成落地 → 3 天验证期（3/13 检查）
-阻力:    无（内部设计，自主可控）
+里程碑:  自治闭环基础设施全部部署（event_router + dispatcher + event_watcher + emit_event + 6/14 agent 四层声明 + aggregate_reports）→ 3 天验证期（3/13 检查）
+阻力:    无（剩余 8 个 agent 四层声明可渐进补齐）
 耦合:    ↓ 效率影响 → 数据线、内容线、商业线
-上次更新: 2026-03-10 18:11
+上次更新: 2026-03-10 23:00
 ```
-**解读**: 这条线稳定后，其他三条线的执行效率都会提升（agent 不再逐步请示）。当前无阻断，按计划推进即可。
+**解读**: 从设计阶段进入验证阶段。Push→Pull 基础设施已全部就位（event-watcher systemd active, dispatcher cron 每小时, 3 个核心脚本已接入事件发射）。明早 CST 08:00 时间窗口打开后，dispatcher 将首次真实运行。剩余工作：8 个 agent 四层声明补齐（渐进，不阻塞）。
 
 ### 2. 数据线
 ```
