@@ -165,6 +165,24 @@ datasets:
       - 产出格式不统一（有的带日期有的不带）
       - 没有结构化 schema，下游只能 grep 文件
 
+  # --- XHS 平台规则文档 ---
+  - id: raw_xhs_helper_docs
+    name: 小红书电商帮助中心文档
+    description: school.xiaohongshu.com 帮助中心 + 商家学堂规则，开店/合规/运营参考
+    owner: EMP_0014
+    producer: skills/_xhs_helper_full_crawl.py + skills/_xhs_school_fetch_details.py
+    storage:
+      type: markdown_files
+      location: gcp:~/mason-hub/intel/processed/小红书电商帮助中心-完整文档.md
+      raw_data: gcp:~/mason-hub/intel/raw/xhs-helper-docs/
+    update_frequency: "每月 1 日"
+    consumers: [EMP_0013（店铺运营）, EMP_0001（素仁轩 PM）]
+    status: active
+    data_quality_notes: |
+      - 通过 Playwright 爬取，API 拦截 + DOM 回退双保险
+      - 帮助中心内容可能滞后于实际平台规则变更
+      - 4 个爬取脚本：_xhs_helper_crawl.py / _xhs_helper_full_crawl.py / _xhs_helper_pro.py / _xhs_school_fetch_details.py
+
 # =============================================================================
 # 加工层 (Transformation) — 清洗、聚合、生成分析指标
 # =============================================================================

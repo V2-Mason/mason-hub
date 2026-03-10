@@ -1,0 +1,480 @@
+{
+  "crawl_date": "2026-03-09T22:35:21.715044+08:00",
+  "total_articles": 108,
+  "categories": {
+    "内容发布/发布功能": [
+      {
+        "title": "以前发的笔记带有（商品、书籍、影视、品牌）标签，现在系统升级后，是否还存在？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1173"
+      },
+      {
+        "title": "如何发布笔记",
+        "url": "https://school.xiaohongshu.com/helper/detail/1239"
+      },
+      {
+        "title": "已发布的笔记可以修改吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1240"
+      },
+      {
+        "title": "为什么发布笔记看不到【商品】和【品牌】的标签了（原标签：书籍/地点/商品/品牌/用户/影视）",
+        "url": "https://school.xiaohongshu.com/helper/detail/1172"
+      },
+      {
+        "title": "视频笔记标记链接数量有限制吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1415"
+      },
+      {
+        "title": "发过的笔记还可以标记吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1382"
+      }
+    ],
+    "内容发布/发布规范": [
+      {
+        "title": "小红书商家内容运营有哪些规范？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1182"
+      },
+      {
+        "title": "笔记可以挂外链吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1393"
+      },
+      {
+        "title": "我的笔记被抄袭/盗用了怎么办？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1242"
+      },
+      {
+        "title": "发现违规内容，如何举报？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1243"
+      },
+      {
+        "title": "我的名誉权/知识产权被侵犯了怎么办？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1241"
+      }
+    ],
+    "平台秩序/投诉举报": [
+      {
+        "title": "什么情况可以投诉举报他人/店铺？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1307"
+      },
+      {
+        "title": "举报他人违规怎么处理？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1308"
+      }
+    ],
+    "平台秩序/违规条例解读": [
+      {
+        "title": "小红书有哪些商家规则？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1291"
+      },
+      {
+        "title": "在哪里查看规则？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1292"
+      },
+      {
+        "title": "商家在什么情况下会被判罚为“侵权”？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1293"
+      }
+    ],
+    "店铺基础/店铺基础配置": [
+      {
+        "title": "怎么设置商品优惠券？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1659"
+      },
+      {
+        "title": "店铺如何配置赠品并且直接展示在下单界面？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1662"
+      },
+      {
+        "title": "店铺会员怎么设置？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1663"
+      },
+      {
+        "title": "怎么给用户发短信带上店铺链接？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1661"
+      }
+    ],
+    "店铺基础/店铺营销": [
+      {
+        "title": "商家有专门的运营对接小二吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1654"
+      },
+      {
+        "title": "目前平台新人券是什么力度，持续到什么时间？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1657"
+      },
+      {
+        "title": "如何创建赠品活动？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1672"
+      },
+      {
+        "title": "涉及多个促销时，按照哪个优惠先后来叠加，属于平行优惠计算",
+        "url": "https://school.xiaohongshu.com/helper/detail/1674"
+      },
+      {
+        "title": "薯店的预售商品促销设置完了之后不会马上显示促销之后的价格？需要再等一段时间才会显示吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1650"
+      },
+      {
+        "title": "怎么设置直播券？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1713"
+      },
+      {
+        "title": "618的9折通用券怎么领取呢？/618直播间9折券怎么领取呢？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1669"
+      },
+      {
+        "title": "使用在线报名添加，一直在提示到达上限，但活动没有设置数量限制是什么原因？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1655"
+      }
+    ],
+    "店铺基础/店铺运营规则": [
+      {
+        "title": "目前系统后台支持商家触达加购商品或者购买过商品的用户吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1647"
+      },
+      {
+        "title": "成长任务是在哪里参加的~",
+        "url": "https://school.xiaohongshu.com/helper/detail/1644"
+      },
+      {
+        "title": "什么是30天最低价？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1646"
+      },
+      {
+        "title": "奖励的薯条券有使用条件限制吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1734"
+      },
+      {
+        "title": "主商品参加200－15的活动，渠道商品是不是不会同步参与呢？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1645"
+      },
+      {
+        "title": "奖励的薯条券是否有有效期？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1735"
+      },
+      {
+        "title": "薯条优惠券到账后，会通知商家吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1733"
+      }
+    ],
+    "店铺客服/代运营客服": [
+      {
+        "title": "什么是代运营服务模式？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1581"
+      },
+      {
+        "title": "在哪里查看代运营服务标准？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1585"
+      },
+      {
+        "title": "使用代运营服务后，还可以切回自主客服吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1584"
+      },
+      {
+        "title": "店铺现在没有人力自己服务，同时担心平台不一定了解店铺的商品，可以放心交由平台管理吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1590"
+      },
+      {
+        "title": "如何开通客服代运营服务？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1583"
+      },
+      {
+        "title": "如何开通平台代运营服务？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1769"
+      },
+      {
+        "title": "如何关闭平台代运营服务？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1770"
+      },
+      {
+        "title": "店铺有直播等可能的大流量咨询情况或有较为紧急的需求与客服团队沟通，如何与代运营团队联系？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1589"
+      },
+      {
+        "title": "如何查询代运营客服接待数据？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1587"
+      },
+      {
+        "title": "使用代运营服务后如何查询账单结果？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1586"
+      }
+    ],
+    "店铺客服/自主客服": [
+      {
+        "title": "【系统配置】客服人员常用系统有哪些/客服从哪里接待咨询？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1535"
+      },
+      {
+        "title": "【考核规则】客服考核规则是什么？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1545"
+      },
+      {
+        "title": "【系统配置】如何设置快捷回复话术？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1538"
+      },
+      {
+        "title": "【系统配置】客服基础配置总览",
+        "url": "https://school.xiaohongshu.com/helper/detail/1534"
+      },
+      {
+        "title": "【考核规则】接到广告营销类干扰咨询，可以不回复吗？这部分考核吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1550"
+      },
+      {
+        "title": "【系统配置】用户不接电话，还有什么渠道可以联系用户？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1543"
+      },
+      {
+        "title": "【数据查询】在哪里查看聊天记录/3分钟回复率不达标数据/评价不满意数据？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1556"
+      },
+      {
+        "title": "【工单规范】什么是工单？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1576"
+      },
+      {
+        "title": "【数据查询】在哪里查看店铺3分钟回复率/不满意率等服务数据？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1555"
+      },
+      {
+        "title": "【工单规范】商家处理工单的时效是多久？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1578"
+      },
+      {
+        "title": "【考核规则】在哪里能看到店铺所有的违规扣分情况？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1551"
+      }
+    ],
+    "店铺相关/售后订单类": [
+      {
+        "title": "如何查看商品运费险情况呢？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1798"
+      },
+      {
+        "title": "电子面单怎么打单？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1797"
+      },
+      {
+        "title": "电子面单没有邮政的端口吗，如何操作呢？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1809"
+      },
+      {
+        "title": "超期报备的结果在哪里查询呢？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1826"
+      }
+    ],
+    "店铺相关/商品管理": [
+      {
+        "title": "如何获取笔记URL",
+        "url": "https://school.xiaohongshu.com/helper/detail/993"
+      },
+      {
+        "title": "号店一体，店铺可以销售虚拟商品吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1394"
+      },
+      {
+        "title": "普通企业店也可以销售多个品牌的产品吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1405"
+      }
+    ],
+    "店铺相关/店铺管理": [
+      {
+        "title": "在入驻过程中，公司变更了地址，如何告知小红书？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1093"
+      },
+      {
+        "title": "合同上的“授权代表签名”具体需要谁的签名？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1103"
+      },
+      {
+        "title": "若店铺违规被平台清退，具体流程是怎样的？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1105"
+      },
+      {
+        "title": "我可以同时签署电子合同和纸质合同吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1095"
+      }
+    ],
+    "店铺相关/数据中心": [
+      {
+        "title": "什么是薯券低价预警计算规则？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1417"
+      },
+      {
+        "title": "考核指标服务咨询-“3分钟回复率”怎么计算？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1153"
+      },
+      {
+        "title": "店铺分考核哪些内容？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1149"
+      },
+      {
+        "title": "小红书商家店铺分规则在哪里？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1178"
+      },
+      {
+        "title": "店铺分怎么计算？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1150"
+      },
+      {
+        "title": "店铺分各考核项的定义及时间是什么？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1151"
+      },
+      {
+        "title": "仅退款和退货退款时长的计算公式分别是什么？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1154"
+      },
+      {
+        "title": "物流体验-配送时效考核内容有什么变化？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1152"
+      }
+    ],
+    "店铺相关/物流发货": [
+      {
+        "title": "商家在什么情况下会被判罚为“超期发货”？",
+        "url": "https://school.xiaohongshu.com/helper/detail/574"
+      },
+      {
+        "title": "商品物流模式如何选择？店铺商品需不需要入小红书仓？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1164"
+      },
+      {
+        "title": "商家管理后台如何选择物流模式？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1159"
+      },
+      {
+        "title": "同一个店铺是否支持不同的物流模式？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1160"
+      },
+      {
+        "title": "发货延误赔付：说明",
+        "url": "https://school.xiaohongshu.com/helper/detail/1352"
+      },
+      {
+        "title": "对虚拟商品、自主配送这些无法上传快递单号的是怎么考核的？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1339"
+      },
+      {
+        "title": "超期发货和发货延误赔付有什么区别？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1336"
+      },
+      {
+        "title": "同一收货人在同一店铺购买多个跨境直邮的订单，能否合并发货，所有订单使用同一个包裹发货？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1161"
+      },
+      {
+        "title": "订单内有商品缺货，是否能分批发出？ （跨境小包）",
+        "url": "https://school.xiaohongshu.com/helper/detail/1162"
+      },
+      {
+        "title": "已经超期报备，比如报备发货时间是7月15号发货，但是超过报备日期没有发货，会赔付吗 ？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1346"
+      },
+      {
+        "title": "（假预售）为什么我无法使用商详页预售了？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1338"
+      },
+      {
+        "title": "如何判定为发货延误？和快递物流揽收记录是否有关？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1337"
+      },
+      {
+        "title": "怎么操作发货？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1779"
+      },
+      {
+        "title": "为什么会有退款冻结和物流冻结金额？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1166"
+      },
+      {
+        "title": "多店铺合并发货应该如何操作？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1165"
+      },
+      {
+        "title": "超期发货报备流程和注意事项是什么？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1155"
+      }
+    ],
+    "店铺相关/营销中心": [
+      {
+        "title": "促销活动提报有什么要求？",
+        "url": "https://school.xiaohongshu.com/helper/detail/373"
+      },
+      {
+        "title": "专业号有哪些营销推广功能？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1111"
+      },
+      {
+        "title": "什么是广告投放？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1112"
+      },
+      {
+        "title": "普通企业店的商品是否在公域流量中展示（例如商场feed流，商搜）？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1412"
+      },
+      {
+        "title": "店铺crm券教程",
+        "url": "https://school.xiaohongshu.com/helper/detail/1985"
+      }
+    ],
+    "开店入驻/入驻后常见问题": [
+      {
+        "title": "完成入驻后，可以更改经营类目吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/2001"
+      },
+      {
+        "title": "完成入驻后，可以更改店铺类型吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/2002"
+      },
+      {
+        "title": "如果我的店铺不再经营了，可以操作关店吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/2003"
+      },
+      {
+        "title": "入驻成功后，我可以在哪里管理我的店铺？",
+        "url": "https://school.xiaohongshu.com/helper/detail/2000"
+      }
+    ],
+    "开店入驻/开店费用": [
+      {
+        "title": "小红书开店需要缴纳费用吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1996"
+      },
+      {
+        "title": "小红书开店，保证金可以退还吗？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1999"
+      },
+      {
+        "title": "在哪里缴纳保证金？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1997"
+      },
+      {
+        "title": "已经缴纳保证金，为什么还没到账？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1998"
+      }
+    ],
+    "开店入驻/开店资质信息": [
+      {
+        "title": "提交资质材料时如何填写信息？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1993"
+      }
+    ],
+    "直播带货/好物推荐达人直播": [
+      {
+        "title": "直播间发券教程",
+        "url": "https://school.xiaohongshu.com/helper/detail/982"
+      }
+    ],
+    "订单履约/电子面单": [
+      {
+        "title": "小红书消费者隐私信息加密公告",
+        "url": "https://school.xiaohongshu.com/helper/detail/1952"
+      }
+    ],
+    "财务结算/资金结算": [
+      {
+        "title": "第三方支付渠道费是什么？",
+        "url": "https://school.xiaohongshu.com/helper/detail/1719"
+      }
+    ]
+  }
+}

@@ -114,7 +114,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 
 ### 2. Lane Queue（并发锁）
 防止同域 agent 并发操作导致竞态条件。通过 `run-agent.sh` 自动获取/释放。
-- 3 个 lane：`ecommerce`（EMP_0001/0003/0005/0013）、`socialmesh`（EMP_0008/0009/0010）、`platform`（EMP_0002/0004）
+- 3 个 lane：`ecommerce`（EMP_0001/0003/0005/0013）、`socialmesh`（EMP_0008/0009/0010）、`platform`（EMP_0002/0004/0014）
 - 跨域 agent（Meta Manager/Scout/Account Manager/Product Architect）不需要锁
 - 锁自动超时释放（默认 20 分钟），agent 崩溃不会死锁
 - 链式执行自动继承锁（PM → Dev 不会重复获取）
@@ -227,3 +227,4 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | 每周一 10:00 | PM (EMP_0001) | 记忆压缩 |
 | 每周三 14:00 | cron 脚本 | 自优化周期（读数据→Gate 1→分析→Gate 2→Slack） |
 | 每周日 11:00 | cron 脚本 | compact-memory.sh 全量 |
+| 每月 1 日 10:00 | Data Engineer (EMP_0014) | XHS 帮助中心文档刷新 |
