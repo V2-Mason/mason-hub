@@ -185,10 +185,11 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] Dispatcher — 2026-03-10 完成，scripts/dispatcher.sh（5 任务池 + 四道安全门 + backlog 扫描）
 - [x] 事件发射工具 — 2026-03-10 完成，scripts/emit_event.sh + 3 个核心脚本已接入（data-sync/health-check/optimization-cycle）
 - [x] 事件 schema — 2026-03-10 完成，data/schemas/（event.yaml + report.yaml + routing_table.yaml）
-- [ ] event_watcher systemd 注册 — inotify 实时监听 queue.jsonl（EMP_0004）
-- [ ] dispatcher cron 注册 — 每小时扫描 backlog + 事件（EMP_0004）
-- [ ] Agent .md 四层声明补齐 — 14 个 agent 逐步补齐下游通知 + 触发条件（渐进，EMP_0012 审核）
-- [ ] 汇报链 Manager 聚合 — EMP_0000/0001/0002/0008 聚合下属 report（EMP_0002）
+- [x] event_watcher systemd 注册 — 2026-03-10 完成，event-watcher.service active，inotify 实时监听 queue.jsonl
+- [x] dispatcher cron 注册 — 2026-03-10 完成，每小时整点（CST 08-22 窗口内执行）
+- [x] Agent .md 四层声明补齐（第一批 6 个）— 2026-03-10 完成，EMP_0002/0005/0009/0010/0011/0014
+- [x] 汇报链 Manager 聚合 — 2026-03-10 完成，scripts/aggregate_reports.py（L0-L3 分级 + Slack）
+- [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）
