@@ -104,56 +104,42 @@ check_no_running_agent() {
 }
 
 # === 任务匹配 ===
-# 可自主执行的任务定义
-# 格式: task_id|owner_agent|capability_line|description
-AUTONOMOUS_TASKS=(
-    "searxng-docker|EMP_0002|自治线|SearXNG Docker 部署"
-    "unit-tests|EMP_0002|数据线|关键函数单元测试"
-    "health-fix|EMP_0014|数据线|data_health_check 数据集修复"
-    "socialmesh-basic|EMP_0009|内容线|SocialMesh 基础功能"
-    "skill-pairing|EMP_0002|自治线|cron agent 配对 /skill"
-)
+# 从 data/autonomous_tasks.yaml 动态读取，不再硬编码
+# Python 脚本处理: 读注册表 + 检查 backlog 完成状态 + 检查能力线状态
+TASK_REGISTRY="$HUB_DIR/data/autonomous_tasks.yaml"
 
 find_actionable_task() {
-    local task_id owner line desc status
+    local task_info
+    task_info=$(python3 "$HUB_DIR/scripts/find-actionable-task.py" 2>/dev/null)
+    local exit_code=$?
 
-    for task_def in "${AUTONOMOUS_TASKS[@]}"; do
-        IFS='|' read -r task_id owner line desc <<< "$task_def"
+    if [[ $exit_code -ne 0 ]] || [[ -z "$task_info" ]]; then
+        # 列出所有任务状态供日志参考
+        python3 "$HUB_DIR/scripts/find-actionable-task.py" --list 2>/dev/null | while read -r line; do
+            log "  $line"
+        done
+        return 1
+    fi
 
-        # 安全门 2: 检查能力线状态
-        status=$(get_line_status "$line")
-        if [[ "$status" != "active" ]]; then
-            log "  跳过 $task_id: 能力线 $line 状态为 $status (需要 active)"
-            continue
-        fi
-
-        # 检查 backlog 中该任务是否未完成
-        if grep -q "\[x\].*${task_id}" "$BACKLOG" 2>/dev/null; then
-            log "  跳过 $task_id: backlog 中已标记完成"
-            continue
-        fi
-
-        # 找到可执行任务
-        echo "$task_id|$owner|$line|$desc"
-        return 0
-    done
-
-    return 1
+    echo "$task_info"
+    return 0
 }
 
 # === 执行任务 ===
 execute_task() {
-    local task_id="$1" owner="$2" line="$3" desc="$4"
+    local task_id="$1" agent_path="$2" line="$3" desc="$4"
+    local agent_name
+    agent_name=$(basename "$agent_path" .md)
 
-    log ">>> 启动任务: $desc ($task_id → $owner)"
+    log ">>> 启动任务: $desc ($task_id → $agent_name)"
 
     if $DRY_RUN; then
-        log "  [DRY-RUN] 会启动 $owner 执行: $desc"
+        log "  [DRY-RUN] 会启动 $agent_name 执行: $desc"
         return 0
     fi
 
     # 写事件: 任务开始
-    echo "{\"event\":\"dispatcher-task-start\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":1,\"data\":{\"task_id\":\"$task_id\",\"agent\":\"$owner\",\"desc\":\"$desc\"}}" \
+    echo "{\"event\":\"dispatcher-task-start\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":1,\"data\":{\"task_id\":\"$task_id\",\"agent\":\"$agent_name\",\"desc\":\"$desc\"}}" \
         >> "$EVENTS_QUEUE"
 
     # 启动 agent
@@ -162,13 +148,13 @@ execute_task() {
 
     if [[ -x "$RUN_AGENT" ]]; then
         # 通过 run-agent.sh 启动（自带 lane lock + token tracking）
-        "$RUN_AGENT" "$owner" "自主任务: $desc" \
-            > "$report_dir/${owner}_${task_id}.log" 2>&1 &
+        "$RUN_AGENT" "$agent_path" "自主任务: $desc" \
+            > "$report_dir/${agent_name}_${task_id}.log" 2>&1 &
         local pid=$!
-        log "  Agent $owner 已启动 (PID: $pid)"
+        log "  Agent $agent_name 已启动 (PID: $pid)"
 
         # 写事件: 任务启动完成
-        echo "{\"event\":\"agent-task-started\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":0,\"data\":{\"task_id\":\"$task_id\",\"agent\":\"$owner\",\"pid\":$pid}}" \
+        echo "{\"event\":\"agent-task-started\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":0,\"data\":{\"task_id\":\"$task_id\",\"agent\":\"$agent_name\",\"pid\":$pid}}" \
             >> "$EVENTS_QUEUE"
     else
         log "  run-agent.sh 不存在或不可执行"
@@ -178,15 +164,15 @@ execute_task() {
 # === 主流程 ===
 main() {
     if [[ "${1:-}" == "--status" ]]; then
+        local task_count
+        task_count=$(python3 "$HUB_DIR/scripts/find-actionable-task.py" --count 2>/dev/null || echo "0")
         echo "Dispatcher 状态:"
-        echo "  任务池: ${#AUTONOMOUS_TASKS[@]} 条"
+        echo "  注册表: $TASK_REGISTRY"
+        echo "  可执行任务: $task_count 条"
         echo "  时间窗口: $(check_time_window && echo '✅ 在窗口内' || echo '❌ 窗口外')"
         echo "  正在运行的 agent: $(pgrep -cf 'claude.*-p' 2>/dev/null || echo 0)"
-        for task_def in "${AUTONOMOUS_TASKS[@]}"; do
-            IFS='|' read -r task_id owner line desc <<< "$task_def"
-            status=$(get_line_status "$line")
-            echo "  [$status] $task_id → $owner ($line): $desc"
-        done
+        echo ""
+        python3 "$HUB_DIR/scripts/find-actionable-task.py" --list 2>/dev/null
         return 0
     fi
 
@@ -229,8 +215,8 @@ main() {
     # 找可执行任务
     local task_info
     if task_info=$(find_actionable_task); then
-        IFS='|' read -r task_id owner line desc <<< "$task_info"
-        execute_task "$task_id" "$owner" "$line" "$desc"
+        IFS='|' read -r task_id agent_path line desc <<< "$task_info"
+        execute_task "$task_id" "$agent_path" "$line" "$desc"
     else
         log "  无可执行任务"
     fi

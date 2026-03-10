@@ -232,6 +232,12 @@ case "$AGENT_NAME" in
   # EMP_0002 (Platform Dev), EMP_0004 (SRE), EMP_0006 (Scout) — 无额外知识注入
 esac
 
+# --- Phase 2.6: 收工流程注入 ---
+POST_TASK_FILE="$HUB_DIR/docs/procedures/post-task.md"
+if [ -f "$POST_TASK_FILE" ]; then
+  inject_if_exists "$POST_TASK_FILE" "⚠️ 收工流程（任务完成后必须执行）"
+fi
+
 # --- 提取 launcher_args（从 YAML frontmatter）---
 LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
   if(/^launcher_args:/){in_la=1; next}

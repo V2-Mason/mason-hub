@@ -30,5 +30,10 @@
 
 ## 完成后
 
-确保你运行了 `python3 scripts/submit-repair.py update <id> --status <status>` 更新队列。
+1. 确保你运行了 `python3 scripts/submit-repair.py update <id> --status <status>` 更新队列
+2. **执行收工流程**（铁律 4，不可跳过）：
+   - 写 lesson 到 `agents/memory/EMP_0004/long_term.md`（做了什么、踩了什么坑、gap 分类）
+   - 更新 `tasks/backlog.md`（完成的标 [x]，新发现的加进去）
+   - `git add` 相关文件 + `git commit`（不含 logs/、.env）
+
 Gateway 下次 heartbeat 会独立验证你的修复是否真正生效。
