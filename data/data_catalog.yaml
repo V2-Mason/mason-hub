@@ -98,7 +98,7 @@ datasets:
     storage:
       type: sqlite
       location: gcp:~/mason-hub/tools/trendradar/output/news/YYYY-MM-DD.db
-    update_frequency: "每 30 分钟"
+    update_frequency: "每 6 小时"
     consumers: [weekly_report.py, trend_report.py]
     status: active
     data_quality_notes: |
@@ -112,7 +112,7 @@ datasets:
     storage:
       type: sqlite
       location: gcp:~/mason-hub/tools/trendradar/output/rss/YYYY-MM-DD.db
-    update_frequency: "每 30 分钟"
+    update_frequency: "每 6 小时"
     consumers: [weekly_report.py, trend_report.py]
     status: active
 

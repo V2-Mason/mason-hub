@@ -14,6 +14,12 @@ SEND_SLACK=false
 NOW_EPOCH=$(date +%s)
 TIMESTAMP=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')
 
+# 加载凭证（用于 API 端点认证检查）
+if [ -f "/home/hangn/mason-hub/.env" ]; then
+  set -a; source "/home/hangn/mason-hub/.env"; set +a
+fi
+SRX_TOKEN=""
+
 # Parse args
 for arg in "$@"; do
   case "$arg" in
@@ -316,12 +322,20 @@ while IFS=$'\t' read -r ds_id stype location table freq endpoint; do
       ;;
 
     api_response)
-      # Check API endpoint reachability
+      # Check API endpoint reachability (with JWT auth if available)
       if [ -n "$endpoint" ]; then
         # Extract host from location
         host="${location#aliyun:}"
         url="http://${host}${endpoint}"
-        http_code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout "$SSH_TIMEOUT" "$url" 2>/dev/null || echo "000")
+        # Lazy login: get token on first API check
+        if [ -z "$SRX_TOKEN" ] && [ -n "${SRX_API_EMAIL:-}" ] && [ -n "${SRX_API_PASSWORD:-}" ]; then
+          SRX_TOKEN=$(curl -s -X POST "http://${host}/api/auth/login" \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"$SRX_API_EMAIL\",\"password\":\"$SRX_API_PASSWORD\"}" 2>/dev/null \
+            | python3 -c "import json,sys; print(json.load(sys.stdin).get('access_token',''))" 2>/dev/null || echo "")
+        fi
+        http_code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout "$SSH_TIMEOUT" \
+          ${SRX_TOKEN:+-H "Authorization: Bearer $SRX_TOKEN"} "$url" 2>/dev/null || echo "000")
         if [ "$http_code" -ge 200 ] && [ "$http_code" -lt 400 ]; then
           status="ok"
           detail="API 可达 (HTTP $http_code)"
