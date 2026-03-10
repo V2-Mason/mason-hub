@@ -73,9 +73,15 @@
 - CLAUDE.md 事实性更新（cron 表、agent 列表）
 - 跨 agent 协作接口变更
 
-**稳定标准**：连续 3 天，Mason 不主动介入，系统正常运转（cron 跑、健康检查绿、Slack 通知正常）
+**稳定标准**（全部满足才算稳定）：
+1. 连续 3 天 Mason 不主动介入，系统正常运转
+2. data_health_check.sh 连续 3 天全绿（无 ❌）
+3. optimization-cycle 读到的是干净数据（从 mirror/JSONL，不是 raw markdown）
+4. morning briefing 数据来源可追溯（每条信息标注来源数据集）
 
 **解锁条件**：Mason 确认 "Layer 2 稳定了，开始 Layer 3"
+
+**注意**：Layer 3 的"分析能力"需要等 Layer 2 稳定，但 Layer 3 的"数据基础设施"（SDK、管道清洁度）是 Layer 2 稳定的前置条件，属于 Layer 2 的工作范围。
 
 ---
 
