@@ -71,7 +71,11 @@ WRITABLE_PATHS = [
     "MASONHUB.md",
     "data/gateway-memory.jsonl",
     "data/events/queue.jsonl",
+    "data/repair_queue.json",
 ]
+
+REPAIR_LOCK = Path("/tmp/repair-session.lock")
+REPAIR_QUEUE_FILE = HUB_DIR / "data" / "repair_queue.json"
 
 # 可重启/reload 的服务白名单
 ALLOWED_SERVICES = [
@@ -653,12 +657,17 @@ def run_heartbeat():
 
 工作节奏:
 1. 先检查记忆中 will_retry 的任务 → 有就先续接
-2. 读 MASONHUB.md 了解完整行为空间和巡逻清单
-3. 逐项执行检查，发现问题时走决策树（自主修/排队/等审批/不碰）
-4. ≤3 轮 tool use 能修好的 → 立即修，save_memory status=resolved
-5. 修不完的 → save_memory status=will_retry + context，继续巡逻
-6. 需要 Mason 的 → save_memory status=pending_mason + send_slack
-7. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报"""
+2. 检查 data/repair_queue.json 里 status=repair_attempted 的条目 → 重新验证问题是否已修复
+   - 已修复 → 运行 python3 scripts/submit-repair.py resolve <id>
+   - 未修复 且 attempts<3 → 运行 python3 scripts/submit-repair.py update <id> --status pending（触发再次修复）
+   - 未修复 且 attempts>=3 → 运行 python3 scripts/submit-repair.py update <id> --status pending_mason
+3. 读 MASONHUB.md 了解完整行为空间和巡逻清单
+4. 逐项执行检查，发现问题时走决策树（自主修/排队/等审批/不碰）
+5. ≤3 轮 tool use 能修好的 → 立即修，save_memory status=resolved
+6. 修不完的 → 提交修复请求: python3 scripts/submit-repair.py submit --issue "描述" --symptom "症状" --location "文件:行号" --severity medium
+   然后 save_memory status=emitted，继续巡逻
+7. 需要 Mason 的 → save_memory status=pending_mason + send_slack
+8. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报"""
 
     user_prompt = f"""执行 heartbeat 检查。
 
@@ -857,11 +866,26 @@ def refresh_lock():
 # 主循环
 # ========================================
 
+def repair_session_active() -> bool:
+    """检查是否有 repair session 在运行"""
+    if REPAIR_LOCK.exists():
+        try:
+            pid = int(REPAIR_LOCK.read_text().strip())
+            os.kill(pid, 0)
+            return True
+        except (ProcessLookupError, ValueError):
+            pass
+    return False
+
+
 def process_queue():
     if not task_queue:
         return
     if mason_session_active():
         log("🛑 Mason session 活跃，让路")
+        return
+    if repair_session_active():
+        log("🔧 Repair session 运行中，heartbeat 跳过")
         return
 
     task = task_queue.popleft()

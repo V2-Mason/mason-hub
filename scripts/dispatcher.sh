@@ -65,6 +65,35 @@ check_dependencies_healthy() {
     return 0
 }
 
+# === Repair 队列检查 ===
+check_repair_queue() {
+    local repair_script="$HUB_DIR/scripts/repair-dispatch.sh"
+    local queue_file="$HUB_DIR/data/repair_queue.json"
+
+    [[ ! -f "$repair_script" ]] && return 1
+    [[ ! -f "$queue_file" ]] && return 1
+
+    # 检查有没有 pending 的修复任务
+    local pending_count
+    pending_count=$(python3 -c "
+import json
+queue = json.load(open('$queue_file'))
+print(len([i for i in queue if i.get('status') == 'pending' and i.get('attempts', 0) < 3]))
+" 2>/dev/null || echo "0")
+
+    if [[ "$pending_count" -gt 0 ]]; then
+        log "  发现 $pending_count 个 pending 修复任务，启动 repair-dispatch"
+        if $DRY_RUN; then
+            log "  [DRY-RUN] 会调用 repair-dispatch.sh"
+            return 0
+        fi
+        bash "$repair_script" 2>&1 | tee -a "$LOG_FILE"
+        return 0
+    fi
+
+    return 1
+}
+
 # === 安全门 4: 无正在运行的 agent ===
 check_no_running_agent() {
     if pgrep -f "claude.*-p" > /dev/null 2>&1; then
@@ -190,6 +219,12 @@ main() {
 
     # 再处理 pending 事件
     python3 "$HUB_DIR/scripts/event_router.py" --process-pending 2>&1 | tee -a "$LOG_FILE"
+
+    # 检查 repair 队列（优先于常规任务）
+    if check_repair_queue; then
+        log "  repair 任务已处理，本轮结束"
+        return 0
+    fi
 
     # 找可执行任务
     local task_info
