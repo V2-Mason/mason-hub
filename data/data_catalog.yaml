@@ -1,0 +1,296 @@
+# 数据目录 — Single Source of Truth
+#
+# 所有数据集的注册表。业务 agent 通过此文件查找数据位置和格式。
+# 维护者：EMP_0014 (Data Engineer)
+# 更新规则：新增/变更数据集时必须同步更新此文件
+#
+# 状态说明：
+#   active    — 正常产出中
+#   stale     — 超过预期更新周期未更新
+#   planned   — 计划中，尚未实现
+#   deprecated — 已废弃
+
+# =============================================================================
+# 采集层 (Raw Ingestion) — 外部数据进入系统的入口
+# =============================================================================
+
+datasets:
+
+  # --- XHS 内容采集 ---
+  - id: raw_xhs_notes
+    name: XHS 笔记原始数据
+    description: MediaCrawler 采集的小红书笔记（标题、互动数、作者、标签、类型）
+    owner: EMP_0014
+    producer: skills/xhs-crawl.sh → skills/_two_tier_crawl.py
+    storage:
+      type: sqlite
+      location: aliyun:/opt/mediacrawler/database/sqlite_tables.db
+      table: xhs_note
+    schema:
+      - note_id (TEXT, PK)
+      - title (TEXT)
+      - desc (TEXT)
+      - type (TEXT)  # video / normal
+      - liked_count (INT)
+      - collected_count (INT)
+      - comment_count (INT)
+      - share_count (INT)
+      - tag_list (TEXT, JSON)
+      - source_keyword (TEXT)
+      - note_url (TEXT)
+      - nickname (TEXT)
+      - user_id (TEXT)
+      - time (TEXT)
+      - crawl_timestamp (TEXT)
+    update_frequency: "周二/五 14:00 CST（EMP_0008 触发）"
+    consumers: [xhs-analyze-viral.py, _xhs_analyze_compare.py, _xhs_publish_log.py]
+    status: active
+    data_quality_notes: |
+      - 主号搜索被 XHS 软封，需小号采集
+      - 搜索 API 返回的互动数可能滞后 1-2 天
+      - 采集样本只含被推荐内容（幸存者偏差）
+
+  - id: raw_xhs_comments
+    name: XHS 评论数据
+    owner: EMP_0014
+    producer: skills/_xhs_collect_comments.py
+    storage:
+      type: sqlite
+      location: aliyun:/opt/mediacrawler/database/sqlite_tables.db
+      table: xhs_note_comment
+    schema:
+      - comment_id (TEXT, PK)
+      - note_id (TEXT, FK)
+      - content (TEXT)
+      - like_count (INT)
+      - comment_user_id (TEXT)
+      - comment_date (TEXT)
+    update_frequency: "随 xhs-analyze.sh 触发（非阻塞步骤）"
+    consumers: [_xhs_comment_analysis.py]
+    status: active
+
+  - id: raw_xhs_creators
+    name: XHS 创作者画像
+    owner: EMP_0014
+    producer: skills/_xhs_enrich_creators.py
+    storage:
+      type: sqlite
+      location: aliyun:/opt/mediacrawler/database/sqlite_tables.db
+      table: xhs_creator
+    schema:
+      - user_id (TEXT, PK)
+      - nickname (TEXT)
+      - follower_count (INT)
+      - follows (INT)
+      - interaction (INT)
+      - desc (TEXT)
+      - gender (TEXT)
+      - updated_at (TEXT)
+    update_frequency: "随 xhs-analyze.sh 触发，7 天缓存"
+    consumers: [_xhs_strategy_briefing.py]
+    status: active
+
+  # --- TrendRadar 趋势采集 ---
+  - id: raw_trendradar_news
+    name: 热榜趋势数据（11 平台）
+    owner: EMP_0014
+    producer: tools/trendradar/（Docker + supercronic）
+    storage:
+      type: sqlite
+      location: gcp:~/mason-hub/tools/trendradar/output/news/YYYY-MM-DD.db
+    update_frequency: "每 30 分钟"
+    consumers: [weekly_report.py, trend_report.py]
+    status: active
+    data_quality_notes: |
+      - 每天生成新 db 文件，历史查询需遍历
+      - 无去重机制（同一条新闻不同平台重复出现）
+
+  - id: raw_trendradar_rss
+    name: RSS 订阅数据（20+ 源）
+    owner: EMP_0014
+    producer: tools/trendradar/（Docker + supercronic）
+    storage:
+      type: sqlite
+      location: gcp:~/mason-hub/tools/trendradar/output/rss/YYYY-MM-DD.db
+    update_frequency: "每 30 分钟"
+    consumers: [weekly_report.py, trend_report.py]
+    status: active
+
+  # --- Radar 用户行为 ---
+  - id: raw_radar_interactions
+    name: Radar 点击/Dismiss 行为数据
+    owner: EMP_0014
+    producer: tools/radar-tracker/tracker.py（Flask :8081）
+    storage:
+      type: sqlite
+      location: gcp:~/mason-hub/tools/radar-tracker/tracker.db
+      tables: [dismissals, seen_items, read_items]
+    update_frequency: "实时（用户操作触发）"
+    consumers: [weekly_report.py, optimization-cycle.sh]
+    status: active
+
+  # --- 素仁轩电商数据 ---
+  - id: raw_srx_sales
+    name: 素仁轩销售数据
+    owner: EMP_0014
+    producer: skills/data-coo-daily.sh → aliyun:8000/api/sales/summary
+    storage:
+      type: api_response
+      location: aliyun:106.14.44.68:8000
+      endpoints:
+        - /api/sales/summary
+        - /api/dashboard/overview
+        - /api/intelligence/risk-alerts
+    update_frequency: "每日 08:00 CST（EMP_0001 库存巡检）"
+    consumers: [data-coo-daily.sh → Slack]
+    status: active
+    data_quality_notes: |
+      - 目前无持久化存储，每次调 API 取实时值
+      - 历史销售数据只在阿里云 kbeauty.db 中
+
+  # --- Scout 情报 ---
+  - id: raw_scout_intel
+    name: Scout 情报产出
+    owner: EMP_0006
+    producer: skills/scout-*.sh（9 个脚本）
+    storage:
+      type: markdown_files
+      location: gcp:~/mason-hub/intel/digests/*.md
+    dedup: scripts/scout-dedup.py → intel/seen.jsonl
+    update_frequency: "每日 23:00 CST cron"
+    consumers: [optimization-cycle.sh]
+    status: active
+    data_quality_notes: |
+      - 9 个脚本全部只用 GitHub API，非真正多渠道
+      - 产出格式不统一（有的带日期有的不带）
+      - 没有结构化 schema，下游只能 grep 文件
+
+# =============================================================================
+# 加工层 (Transformation) — 清洗、聚合、生成分析指标
+# =============================================================================
+
+  - id: analysis_xhs_viral
+    name: XHS 互动分析（爆帖排行 + 关键词洞察）
+    owner: EMP_0014
+    producer: skills/xhs-analyze-viral.py
+    input: [raw_xhs_notes]
+    storage:
+      type: json
+      location: aliyun:/opt/mediacrawler/analysis/analysis_YYYY-MM-DD.json
+    key_metrics:
+      - interaction_score: "liked + collected×3 + comment×5 + shared×8"
+      - fake_traffic_flag: "engage_rate < 0.2% OR save_rate < 5%"
+      - keyword_density: "蓝海/红海/待观察"
+    update_frequency: "随 xhs-analyze.sh 触发"
+    consumers: [_xhs_strategy_briefing.py, _xhs_enrich_creators.py, xhs-trend-compare.py]
+    status: active
+
+  - id: analysis_xhs_trends
+    name: XHS 周度趋势对比
+    owner: EMP_0014
+    producer: skills/xhs-trend-compare.py
+    input: [analysis_xhs_viral]  # 当期 vs 上期
+    storage:
+      type: json
+      location: aliyun:/opt/mediacrawler/analysis/trends/YYYY-MM-DD.json
+    update_frequency: "随 xhs-analyze.sh 触发"
+    consumers: [_xhs_strategy_briefing.py]
+    status: active
+    data_quality_notes: |
+      - 两期数据相同时输出"0% 变化"，可能是采集缓存重复而非真无变化
+
+  - id: analysis_xhs_comments
+    name: XHS 评论洞察（痛点 + 用户问题）
+    owner: EMP_0014
+    producer: skills/_xhs_comment_analysis.py
+    input: [raw_xhs_comments]
+    storage:
+      type: json
+      location: aliyun:/opt/mediacrawler/analysis/comments/YYYY-MM-DD.json
+    update_frequency: "随 xhs-analyze.sh 触发（非阻塞）"
+    consumers: [_xhs_strategy_briefing.py]
+    status: active
+
+  - id: analysis_radar_weekly
+    name: Radar 关注率周报
+    owner: EMP_0014
+    producer: tools/radar-tracker/weekly_report.py
+    input: [raw_radar_interactions, raw_trendradar_news, raw_trendradar_rss]
+    storage:
+      type: stdout  # 目前无持久化
+      location: terminal output
+    key_metrics:
+      - focus_rate: "1 - (dismissed / total)"
+      - retirement_threshold: "< 30% for 2 consecutive weeks"
+    update_frequency: "optimization-cycle.sh 调用时"
+    consumers: [optimization-cycle.sh]
+    status: active
+    data_quality_notes: |
+      - 需要 2 周数据积累才有意义
+      - 输出到 stdout，没有存文件，无法回看历史
+
+# =============================================================================
+# 消费层 (Consumption) — 面向业务决策的最终产出
+# =============================================================================
+
+  - id: report_strategy_briefing
+    name: XHS 策略简报（内容方向建议）
+    owner: EMP_0008
+    producer: skills/_xhs_strategy_briefing.py
+    input: [analysis_xhs_viral, analysis_xhs_trends, analysis_xhs_comments]
+    storage:
+      type: json
+      location: aliyun:/opt/mediacrawler/analysis/briefings/YYYY-MM-DD.json
+    update_frequency: "周二/五"
+    consumers: [optimization-cycle.sh, EMP_0008, EMP_0010]
+    status: active
+
+  - id: report_optimization
+    name: 自优化周期报告
+    owner: optimization-cycle
+    producer: skills/optimization-cycle.sh
+    input: [analysis_radar_weekly, raw_scout_intel, report_strategy_briefing, raw_trendradar_news]
+    storage:
+      type: markdown
+      location: gcp:~/mason-hub/intel/optimization-reports/YYYY-MM-DD.md
+      backup: Google Drive "优化报告" 文件夹
+    update_frequency: "每周三 14:00 CST"
+    consumers: [Mason (Gate 3)]
+    status: active
+
+  - id: report_api_usage
+    name: API 消耗日报
+    owner: EMP_0004
+    producer: scripts/daily_usage_report.py
+    input: [logs/api_usage.jsonl]
+    storage:
+      type: slack_message
+      location: "#system-alerts"
+    update_frequency: "每日 23:00 CST"
+    consumers: [Mason, EMP_0004]
+    status: active
+
+# =============================================================================
+# 已知数据缺口 (Planned)
+# =============================================================================
+
+  - id: planned_srx_history
+    name: 素仁轩历史销售时序数据
+    description: 目前只有实时 API 查询，无历史快照，无法做趋势分析和因果推断
+    status: planned
+    priority: P1
+    notes: "需要定期快照 API 数据到时序表"
+
+  - id: planned_own_content_performance
+    name: 素仁轩自有账号内容表现
+    description: 所有分析基于竞品数据，缺少自身基线，优化建议的预期效果无法验证
+    status: planned
+    priority: P1
+    notes: "开店后 EMP_0013 采集自身账号数据"
+
+  - id: planned_unified_storage
+    name: 统一存储层
+    description: 当前 3 个 SQLite + 散落 JSON 跨两台机器，需统一
+    status: planned
+    priority: P0
+    notes: "Step 4 讨论方案"

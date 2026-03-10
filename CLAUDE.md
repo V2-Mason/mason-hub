@@ -28,9 +28,11 @@ Mason (人类，最终决策者)
 │     │     │
 │     │     └── EMP_0009 Content-Tech Dev  ← 三级：业务执行层
 │     │
-│     ├── EMP_0004 SRE Agent            ← 二级：基础设施运维
+│     ├── EMP_0004 SRE Agent            ← 二级：基础设施运维 + 数据管道监控
 │     │
-│     └── EMP_0002 Platform Dev         ← 二级：平台基础设施开发
+│     ├── EMP_0002 Platform Dev         ← 二级：平台基础设施开发
+│     │
+│     └── EMP_0014 Data Engineer        ← 二级：数据中台（管道/存储/加工/目录）
 │
 ├── EMP_0011 Account Manager     ← 独立：品牌上下文管理，桥接品牌与内容团队
 │
@@ -54,6 +56,7 @@ Mason (人类，最终决策者)
 - EMP_0011 Account Manager — 品牌上下文管理，产出 brief，桥接品牌与内容团队
 - EMP_0012 Product Architect — 产品参谋，按需激活，帮 Mason 问对问题（归属判断/边界定义），不主动扫描不管理
 - EMP_0013 店铺运营 — XHS 店铺日常运营（客服/评分/售后/合规/对账）
+- EMP_0014 Data Engineer — 数据中台建设与维护（管道/存储/加工/目录/SDK）
 
 ## Backlog 管理规则
 
@@ -85,6 +88,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | Account Manager | agents/EMP_0011.md | 品牌上下文管理，跨域桥梁 |
 | Product Architect | agents/EMP_0012.md | 按需激活，归属判断、边界定义（不管理、不审计） |
 | 店铺运营 | agents/EMP_0013.md | XHS 店铺日常运营（客服/评分/售后/合规/对账） |
+| Data Engineer | agents/EMP_0014.md | 数据中台（管道/存储/加工/目录/SDK） |
 
 **加载流程**：
 1. 识别自己被分配的角色名称

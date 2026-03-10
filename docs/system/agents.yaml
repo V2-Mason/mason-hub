@@ -109,3 +109,10 @@ agents:
     domain: ecommerce
     status: active
     can_own_tasks: true
+
+  - id: EMP_0014
+    name: Data Engineer
+    role: 数据中台建设与维护（管道/存储/加工/目录/工具）
+    domain: platform
+    status: active
+    can_own_tasks: true

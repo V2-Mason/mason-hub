@@ -172,6 +172,7 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] Lesson Triage 机制 — 2026-03-09 完成，lesson 强制 gap 分类 + EMP_0012 triage + EMP_0000 晨会检查（shared/templates/lesson_format.md）
 - [x] 自优化闭环协议 — 2026-03-09 完成，shared/qa/optimization_loop.md，3 轮上限 + 多维目标防漂移
 - [x] Gate 2 bias 修正 + Agent 名册 SSOT — 2026-03-10 完成，docs/system/agents.yaml 单一来源 + Gate 2 注入结构化上下文（agent 清单/数据限制/执行容量）+ Step 3 因果推理要求
+- [x] 数据中台框架 + EMP_0014 Data Engineer — 2026-03-10 完成，混合式架构（中台+嵌入式分析），data/data_catalog.yaml 盘点 15 个数据集，agents/EMP_0014.md 配置
 - [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
 
@@ -426,6 +427,28 @@ P2 — Qwen Image Edit 模型下载（待部署）:
 已完成:
 - [x] Gemini Direct Pro 节点 — 2026-03-07，skills/comfyui-gemini-direct/，已部署并验证
 - [x] fix-comfyui-gemini.sh — NakanoSanku 插件第三方代理修复脚本
+
+**数据中台建设 — EMP_0014 Data Engineer（2026-03-10 Mason 确认混合式架构）**:
+
+> 架构模式：混合式（中台提供工程+工具+标准，业务线嵌入分析师用中台数据）
+> 中台职责：管道/存储/加工/目录/SDK，不做业务分析
+> 设计文档：agents/EMP_0014.md，数据目录：data/data_catalog.yaml
+
+Phase 1 — 数据治理基础:
+- [x] 数据全盘盘点 — 2026-03-10 完成，15 个数据集登记到 data_catalog.yaml
+- [x] EMP_0014 角色设计 — 2026-03-10 完成，混合式架构下的分工边界定义
+- [ ] 数据健康检查脚本 — 每个 active 数据集检查最后更新时间/行数/重复率，接入 EMP_0004 日报（EMP_0014 + EMP_0004）
+- [ ] 统一存储方案设计 — PostgreSQL vs SQLite 合并 vs 文件同步，消除 SSH 跨机器读取（EMP_0014）
+
+Phase 2 — 主干管道统一:
+- [ ] XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014）
+- [ ] 管道编排机制 — 上游完成写标记，下游检查后再跑，防止"趋势数据静止"类问题（EMP_0014）
+- [ ] Scout 产出标准化 — Scout 情报写入中台存储，下游通过目录读取（EMP_0014 + EMP_0006）
+
+Phase 3 — 数据 SDK + 扩展:
+- [ ] 数据读取 SDK — Python 模块，业务 agent 一行代码获取干净数据（EMP_0014）
+- [ ] 加工层标准化 — raw→clean→analysis→report 四层命名 + 指标唯一口径（EMP_0014）
+- [ ] 素仁轩历史销售快照 — 定期快照 API 到时序表，支持趋势分析（EMP_0014）
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 
