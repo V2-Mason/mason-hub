@@ -1,0 +1,4 @@
+# 镜像文件不入库（由 data-sync.sh 同步生成）
+*.db
+*.json
+.last_sync

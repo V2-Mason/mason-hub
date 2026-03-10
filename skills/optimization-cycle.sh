@@ -83,20 +83,27 @@ fi
 # 1c. XHS 最新分析/策略简报
 log "Step 1c: 读取 XHS 互动数据..."
 XHS_BRIEFING=""
-# 尝试从阿里云获取最新简报
-XHS_BRIEFING_FILE=$(ssh -o ConnectTimeout=5 root@106.14.44.68 \
-    "ls -t /opt/mediacrawler/analysis/briefings/*.json 2>/dev/null | head -1" 2>/dev/null) || true
+# 从本地 mirror 读取（由 data-sync.sh 定期同步自阿里云）
+MIRROR_BRIEFINGS="$HUB_DIR/data/mirror/briefings"
+XHS_BRIEFING_FILE=$(ls -t "$MIRROR_BRIEFINGS"/*.json 2>/dev/null | head -1) || true
 if [ -n "$XHS_BRIEFING_FILE" ]; then
-    XHS_BRIEFING=$(ssh root@106.14.44.68 "cat '$XHS_BRIEFING_FILE'" 2>/dev/null) || true
-    if [ -n "$XHS_BRIEFING" ]; then
-        DATA_SOURCES="$DATA_SOURCES\n- XHS 策略简报 ✅ ($(basename "$XHS_BRIEFING_FILE"))"
-        log "  XHS 简报获取成功: $(basename "$XHS_BRIEFING_FILE")"
+    # 检查文件新鲜度（>7 天视为过期）
+    BRIEFING_AGE_DAYS=$(( ($(date +%s) - $(stat -c %Y "$XHS_BRIEFING_FILE")) / 86400 ))
+    if [ "$BRIEFING_AGE_DAYS" -le 7 ]; then
+        XHS_BRIEFING=$(cat "$XHS_BRIEFING_FILE" 2>/dev/null) || true
+        if [ -n "$XHS_BRIEFING" ]; then
+            DATA_SOURCES="$DATA_SOURCES\n- XHS 策略简报 ✅ ($(basename "$XHS_BRIEFING_FILE"), mirror ${BRIEFING_AGE_DAYS}天前)"
+            log "  XHS 简报获取成功: $(basename "$XHS_BRIEFING_FILE") (mirror)"
+        else
+            DATA_ISSUES="$DATA_ISSUES\n- XHS 简报文件存在但内容为空"
+        fi
     else
-        DATA_ISSUES="$DATA_ISSUES\n- XHS 简报文件存在但读取失败"
+        DATA_ISSUES="$DATA_ISSUES\n- XHS 简报已过期（${BRIEFING_AGE_DAYS}天前），data-sync 可能未运行"
+        log "  XHS 简报过期: ${BRIEFING_AGE_DAYS}天 (mirror)"
     fi
 else
-    DATA_ISSUES="$DATA_ISSUES\n- 阿里云无 XHS 策略简报（可能采集未运行或连接失败）"
-    log "  XHS 简报获取失败（阿里云连接或文件不存在）"
+    DATA_ISSUES="$DATA_ISSUES\n- 无 XHS 策略简报（mirror 目录为空，请先运行 data-sync.sh）"
+    log "  XHS 简报获取失败（mirror 目录无文件）"
 fi
 
 # 1d. TrendRadar 最新数据

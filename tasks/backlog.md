@@ -439,7 +439,7 @@ Phase 1 — 数据治理基础:
 - [x] EMP_0014 角色设计 — 2026-03-10 完成，混合式架构下的分工边界定义
 - [x] 数据健康检查脚本 — 2026-03-10 完成，data/pipelines/data_health_check.sh（解析 catalog，检查所有 active 数据集新鲜度/可达性，支持 --slack）
 - [x] 统一存储方案设计 — 2026-03-10 完成，docs/plans/2026-03-10-data-unified-storage.md，Mason 选定方案 A（文件同步），方案 C（API 网关）作为 >50MB 触发升级
-- [ ] 方案 A 实施 — data-sync.sh 脚本（sqlite3 .backup + scp），cron 同步阿里云数据到 GCP data/mirror/，改下游脚本读本地路径（EMP_0014，~2-3h）
+- [x] 方案 A 实施 — 2026-03-10 完成，data/pipelines/data-sync.sh（sqlite3 .backup + scp + 7 天窗口），optimization-cycle.sh 改读本地 mirror，健康检查 cron 09:15 + 文档刷新提醒 cron 每月 1 日已注册
 - [ ] 方案 C 升级（触发条件：数据总量 >50MB）— 阿里云 FastAPI + GCP data_client.py SDK，参考设计文档（EMP_0014，~8-10h）
 
 Phase 2 — 主干管道统一:
