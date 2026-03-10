@@ -193,6 +193,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] Anthropic API 配置 — 2026-03-10 完成，API key 配到 .env，heartbeat 端到端验证通过（661 token/次 ≈ $0.002）
 - [x] Gateway v2 行为空间升级 — 2026-03-10 完成，三层权限边界（🟢自主/🟡审批/🔴禁止）+ 白名单对齐（git/scp/systemctl restart）+ 记忆 status 字段（resolved/pending_mason/will_retry/monitoring）+ heartbeat prompt 从"监督员"升级为"值班工程师"
 - [x] Repair Session 架构 — 2026-03-10 完成，claude -p + --allowedTools 硬门控。完整链路：Gateway 发现问题 → submit-repair.py 提交 → dispatcher 调度 → claude -p 修复 → 下次 heartbeat 验证。lockfile 互斥 + attempts 上限 3 + pending_mason 升级
+- [x] Gateway 运营优化三件套 — 2026-03-10 完成：记忆归档（scripts/archive-memory.sh，7 天窗口+按月切分）+ Slack 三级通知（🔴即时/🟡每日汇总/🟢静默）+ Token 意识（监控项不约束）
 - [ ] Gateway heartbeat 实际验证 — 行为空间升级后首次 heartbeat 验证 Sonnet 是否正确遵循三层边界 + will_retry 续接 + repair 提交
 - [ ] Repair session 端到端验证 — 手动注入一个修复请求，验证 dispatcher → claude -p → 修复 → heartbeat 确认 全链路
 - [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）

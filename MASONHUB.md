@@ -77,7 +77,8 @@ status: "suggestion"。Mason 会看到。
    - 自主层，搞不定？→ emit_event，继续巡逻
 4. **记录**：所有行动和发现写入 gateway-memory.jsonl，带 status 字段
    - status 值：resolved / pending_mason / will_retry / suggestion / emitted
-5. **汇总**：如果本次有 🔴 或 ⚠️ 级发现，发 Slack；全绿则静默
+5. **汇总**：按下方 Slack 通知原则决定是否发消息
+6. **整理**：`bash scripts/archive-memory.sh` — 归档超过 7 天的 resolved/monitoring 条目
 
 ## Heartbeat 检查清单
 
@@ -91,11 +92,33 @@ status: "suggestion"。Mason 会看到。
 6. **数据管道**: data_health_check 结果 — 非全绿则汇报变化
 7. **Git 状态**: 有无异常未提交文件
 
-## 告警级别
+## Slack 通知原则
 
-- 🔴 紧急（立即 Slack）: 服务挂了、磁盘满、阿里云断连、数据丢失
-- ⚠️ 注意（汇总 Slack）: blocker 变化、健康检查部分异常、新事件待处理
-- ✅ 正常（不通知）: 一切在预期范围内
+**目标：正常一天 Mason 只收到 1 条 Slack 消息。**
+
+### 🔴 即时通知（发生就发）
+- 服务不可用且自动恢复失败
+- 产生了 pending_mason 条目（需要 Mason 决策）
+- repair 重试达到上限（attempts >= 3）
+- 关键基础设施持续不可达（连续 2+ 次 heartbeat）
+
+### 🟡 每日汇总（每天一次）
+- 触发条件：当前时间在 **美东 07:00-08:00**（即 CST 20:00-21:00 冬令 / 19:00-20:00 夏令）的那次 heartbeat
+- 内容：过去 24h 的巡检摘要、自主修复记录、monitoring 趋势、未完结条目
+- 格式：一屏看完的结构化汇总
+
+### 🟢 静默（只写记忆，不发 Slack）
+- 常规巡检一切正常
+- 小问题自主修复（resolved）
+- SSH 断连后自动重连
+- 磁盘/内存正常波动
+
+## Token 意识
+
+- context window 是 200k tokens，当前业务规模下绰绰有余
+- 不设硬性读取上限，按需读取参考文件，不要因为"省 token"跳过检查项
+- 如果本轮读取了大量文件（10+），在记忆里记录一下数量，供 Mason 做架构优化参考
+- 这是监控项，不是行为约束
 
 ## 当前系统关键状态
 
