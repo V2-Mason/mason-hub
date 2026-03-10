@@ -2,47 +2,37 @@
 """
 Mason Gateway — 永驻 daemon，Mason Hub 的值班员工
 
-架构（对标 OpenClaw Gateway）:
+架构（对标 OpenClaw Gateway，v2: agentic loop + tool_use + 记忆回写）:
   MASONHUB.md       = 灵魂文件（权限 + 检查清单）
-  SYSTEM_MAP.md     = 系统状态（动态，session 写回）
+  SYSTEM_MAP.md     = 系统状态（Gateway 可读写）
   mason-gateway.py  = Gateway（本文件，永驻 daemon）
   scripts/          = Skills（纯脚本，零成本执行）
-  Anthropic API     = 推理引擎（按需调用，$0.005/次）
+  Anthropic API     = 推理引擎（tool_use + agentic loop）
 
 执行模型:
-  任务队列串行执行，一次只跑一个 → 天然无并发冲突
-  Mason 开 Claude Code session → Gateway 自动让路
-  Mason 不在 → Gateway 自主执行 heartbeat + 纯脚本任务
+  Agentic loop: 观察 → 思考 → 行动（tool_use）→ 观察结果 → ... 直到完成
+  Mason session 活跃 → Gateway 自动让路
+  每次 session 结束 → 自动回写记忆到 gateway-memory.jsonl
 
 两层执行:
   Tier 1: 纯脚本（data-sync, health-check）→ 直接 subprocess，零成本
-  Tier 2: 需要推理（判断异常, 分析事件）→ 调 Anthropic API，~$0.005/次
+  Tier 2: 需要推理 → agentic loop（tool_use），可读写文件 + 跑命令
+
+安全边界:
+  read_file:    只限 HUB_DIR 内
+  write_file:   只限白名单路径（SYSTEM_MAP, MASONHUB checklist, gateway-memory）
+  run_command:  白名单命令 + 超时 60s + 无 sudo
+  max_turns:    10（防止无限循环）
 
 成本:
-  heartbeat 每小时 1 次 × 14h = ~$0.07/天
-  事件触发按需调 API = ~$0.02/天（估）
-  合计 ~$3/月
+  heartbeat 每小时 1 次，平均 3-5 轮 tool_use ≈ $0.01-0.03/次
+  每天 14 次 ≈ $0.15-0.40/天 ≈ $5-12/月
 
 用法:
   python3 mason-gateway.py                # 前台运行
-  python3 mason-gateway.py --daemon       # 后台运行（systemd 推荐）
   python3 mason-gateway.py --once         # 只跑一轮（调试）
+  python3 mason-gateway.py --once --force # 忽略 Mason session + 时间窗口
   python3 mason-gateway.py --status       # 查看状态
-
-systemd:
-  [Unit]
-  Description=Mason Gateway
-  After=network.target
-
-  [Service]
-  Type=simple
-  ExecStart=/home/hangn/mason-hub/.venv/bin/python3 /home/hangn/mason-hub/scripts/mason-gateway.py
-  Restart=always
-  RestartSec=30
-  Environment=HUB_DIR=/home/hangn/mason-hub
-
-  [Install]
-  WantedBy=multi-user.target
 """
 
 import json
@@ -51,7 +41,6 @@ import signal
 import subprocess
 import sys
 import time
-import fcntl
 from collections import deque
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -60,31 +49,92 @@ from pathlib import Path
 
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
 MODEL = os.environ.get("HEARTBEAT_MODEL", "claude-sonnet-4-20250514")
-MAX_OUTPUT_TOKENS = 800
+MAX_OUTPUT_TOKENS = 1024
+MAX_TURNS = 15  # agentic loop 最大轮次
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL", "")
 
 LOG_FILE = HUB_DIR / "logs" / "gateway.log"
 LOCK_FILE = HUB_DIR / "data" / "gateway.lock"
 QUEUE_FILE = HUB_DIR / "data" / "events" / "queue.jsonl"
 MASONHUB_FILE = HUB_DIR / "MASONHUB.md"
+MEMORY_FILE = HUB_DIR / "data" / "gateway-memory.jsonl"
 
-HEARTBEAT_INTERVAL = 3600      # 秒（1 小时）
-QUEUE_CHECK_INTERVAL = 60      # 秒（1 分钟检查一次事件队列）
-LOCK_TIMEOUT = 600             # 秒（10 分钟无响应自动释放锁）
+HEARTBEAT_INTERVAL = 3600
+QUEUE_CHECK_INTERVAL = 60
+LOCK_TIMEOUT = 600
 
 CST = timezone(timedelta(hours=8))
+
+# 可写文件白名单（Gateway 只能写这些）
+WRITABLE_PATHS = [
+    "SYSTEM_MAP.md",
+    "MASONHUB.md",
+    "data/gateway-memory.jsonl",
+    "data/events/queue.jsonl",
+]
+
+# 可重启/reload 的服务白名单
+ALLOWED_SERVICES = [
+    "surenxuan-fastapi",
+    "ssh-tunnel",
+    "mason-gateway",
+]
+
+# 可执行命令白名单（前缀匹配）— 这是权限边界，不只是安全防护
+ALLOWED_COMMANDS = [
+    # 系统监控（只读）
+    "uptime",
+    "free",
+    "df",
+    "date",
+    "cat ",
+    "head ",
+    "tail ",
+    "wc ",
+    "ls ",
+    # Git（完整操作权限）
+    "git log",
+    "git status",
+    "git diff",
+    "git add",
+    "git commit",
+    "git push",
+    "git pull",
+    # 服务管理（限定服务名，见 ALLOWED_SERVICES）
+    "systemctl status",
+    "systemctl is-active",
+    "systemctl restart",
+    "systemctl reload",
+    # 脚本执行（信任脚本层）
+    "bash scripts/",
+    "bash data/pipelines/",
+    "python3 scripts/",
+    f"{sys.executable} scripts/",
+    # 部署 + 远程
+    "scp ",
+    "ssh -o ConnectTimeout",
+    # Cron（可读可写）
+    "crontab",
+    # 其他
+    "pgrep",
+    "curl -s",
+    "ping -c",
+    "cd ",
+    "timeout ",
+]
 
 # 全局状态
 running = True
 last_heartbeat = 0
 task_queue = deque()
-queue_file_pos = 0  # 记住 queue.jsonl 读到哪里了
+queue_file_pos = 0
 
 
-# --- 工具函数 ---
+# ========================================
+# 工具函数
+# ========================================
 
 def log(message: str):
-    """追加日志"""
     ts = datetime.now(CST).strftime("%Y-%m-%d %H:%M:%S CST")
     entry = f"[{ts}] {message}"
     print(entry, flush=True)
@@ -96,18 +146,7 @@ def log(message: str):
         pass
 
 
-def read_file(path: Path, max_lines: int = 0) -> str:
-    try:
-        text = path.read_text()
-        if max_lines > 0:
-            return "\n".join(text.strip().split("\n")[:max_lines])
-        return text
-    except FileNotFoundError:
-        return f"[文件不存在: {path}]"
-
-
 def in_time_window() -> bool:
-    """CST 08:00-22:00"""
     return 8 <= datetime.now(CST).hour < 22
 
 
@@ -125,10 +164,7 @@ def send_slack(message: str, prefix: str = "🫀 Gateway"):
         log(f"Slack 发送失败: {e}")
 
 
-# --- Mason Session 检测 ---
-
 def mason_session_active() -> bool:
-    """检测 Mason 是否在 Claude Code session 中"""
     try:
         result = subprocess.run(
             ["pgrep", "-f", "claude"],
@@ -139,91 +175,569 @@ def mason_session_active() -> bool:
         return False
 
 
-# --- 锁管理 ---
+# ========================================
+# P0: Tool Definitions (Anthropic tool_use)
+# ========================================
 
-def acquire_lock() -> bool:
-    """获取 Gateway 单例锁"""
+TOOLS = [
+    {
+        "name": "read_file",
+        "description": "读取 mason-hub 内的文件。路径相对于 ~/mason-hub/。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "相对路径，如 'SYSTEM_MAP.md' 或 'data/events/queue.jsonl'"
+                },
+                "tail": {
+                    "type": "integer",
+                    "description": "只读最后 N 行（大文件时用），默认读全文"
+                },
+            },
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "write_file",
+        "description": "写入文件（仅限白名单路径：SYSTEM_MAP.md, MASONHUB.md, gateway-memory.jsonl, queue.jsonl）。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "相对路径（必须在白名单内）"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "要写入的完整内容"
+                },
+                "append": {
+                    "type": "boolean",
+                    "description": "追加模式（默认 false = 覆盖）"
+                },
+            },
+            "required": ["path", "content"],
+        },
+    },
+    {
+        "name": "run_command",
+        "description": "执行 shell 命令（仅限白名单命令，超时 60s，无 sudo）。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "command": {
+                    "type": "string",
+                    "description": "要执行的命令"
+                },
+            },
+            "required": ["command"],
+        },
+    },
+    {
+        "name": "send_slack_message",
+        "description": "发送 Slack 消息到 #system-alerts。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "description": "消息内容"
+                },
+                "level": {
+                    "type": "string",
+                    "enum": ["info", "warning", "critical"],
+                    "description": "消息级别"
+                },
+            },
+            "required": ["message"],
+        },
+    },
+    {
+        "name": "list_directory",
+        "description": "列出目录内容。路径相对于 ~/mason-hub/。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "相对路径，如 'scripts/' 或 'data/events/'"
+                },
+            },
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "save_memory",
+        "description": "保存发现到持久化记忆（gateway-memory.jsonl）。下次 heartbeat 会优先读取未完结条目（will_retry/pending_mason）。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "finding": {
+                    "type": "string",
+                    "description": "发现的内容（一句话）"
+                },
+                "severity": {
+                    "type": "string",
+                    "enum": ["info", "warning", "critical"],
+                    "description": "严重程度"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["resolved", "pending_mason", "will_retry", "monitoring", "suggestion", "emitted"],
+                    "description": "resolved=已解决, pending_mason=等Mason决策, will_retry=下次续接, monitoring=持续关注, suggestion=建议, emitted=已发射给dispatcher"
+                },
+                "action_taken": {
+                    "type": "string",
+                    "description": "已采取的行动（如果有）"
+                },
+                "context": {
+                    "type": "object",
+                    "description": "续接上下文（will_retry 时建议填写）：file, progress, next_step, blockers"
+                },
+            },
+            "required": ["finding", "severity", "status"],
+        },
+    },
+]
+
+
+# ========================================
+# P0: Tool Execution
+# ========================================
+
+def execute_tool(name: str, input_data: dict) -> str:
+    """执行工具调用，返回结果字符串"""
     try:
-        LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
-        lock_data = {"pid": os.getpid(), "time": time.time()}
-
-        # 检查现有锁
-        if LOCK_FILE.exists():
-            try:
-                existing = json.loads(LOCK_FILE.read_text())
-                pid = existing.get("pid", 0)
-                lock_time = existing.get("time", 0)
-
-                # 进程还活着 → 已有 Gateway 在跑
-                try:
-                    os.kill(pid, 0)
-                    if time.time() - lock_time < LOCK_TIMEOUT:
-                        return False  # 真的在跑
-                except ProcessLookupError:
-                    pass  # 进程已死，接管
-
-            except (json.JSONDecodeError, KeyError):
-                pass  # 锁文件损坏，接管
-
-        LOCK_FILE.write_text(json.dumps(lock_data))
-        return True
+        if name == "read_file":
+            return _tool_read_file(input_data)
+        elif name == "write_file":
+            return _tool_write_file(input_data)
+        elif name == "run_command":
+            return _tool_run_command(input_data)
+        elif name == "send_slack_message":
+            return _tool_send_slack(input_data)
+        elif name == "list_directory":
+            return _tool_list_directory(input_data)
+        elif name == "save_memory":
+            return _tool_save_memory(input_data)
+        else:
+            return f"错误: 未知工具 {name}"
     except Exception as e:
-        log(f"锁获取失败: {e}")
-        return False
+        return f"错误: {e}"
 
 
-def release_lock():
+def _tool_read_file(input_data: dict) -> str:
+    rel_path = input_data["path"]
+    full_path = (HUB_DIR / rel_path).resolve()
+
+    # 安全检查：必须在 HUB_DIR 内
+    if not str(full_path).startswith(str(HUB_DIR.resolve())):
+        return "错误: 路径越界，只能读取 mason-hub 内的文件"
+
+    if not full_path.exists():
+        return f"文件不存在: {rel_path}"
+
+    if full_path.is_dir():
+        return f"这是目录，请用 list_directory"
+
     try:
-        LOCK_FILE.unlink(missing_ok=True)
-    except Exception:
-        pass
+        text = full_path.read_text()
+        tail = input_data.get("tail")
+        if tail:
+            lines = text.strip().split("\n")
+            text = "\n".join(lines[-tail:])
+
+        # 限制输出大小（防止塞爆 context）
+        if len(text) > 8000:
+            text = text[:8000] + f"\n\n... [截断，原文 {len(text)} 字符]"
+
+        return text
+    except Exception as e:
+        return f"读取失败: {e}"
 
 
-def refresh_lock():
-    """刷新锁的时间戳，防止超时"""
+def _tool_write_file(input_data: dict) -> str:
+    rel_path = input_data["path"]
+    content = input_data["content"]
+    append = input_data.get("append", False)
+
+    # 白名单检查
+    if rel_path not in WRITABLE_PATHS:
+        return f"错误: 不允许写入 {rel_path}。可写路径: {', '.join(WRITABLE_PATHS)}"
+
+    full_path = HUB_DIR / rel_path
+    full_path.parent.mkdir(parents=True, exist_ok=True)
+
     try:
-        lock_data = {"pid": os.getpid(), "time": time.time()}
-        LOCK_FILE.write_text(json.dumps(lock_data))
+        mode = "a" if append else "w"
+        with open(full_path, mode) as f:
+            f.write(content)
+        action = "追加" if append else "写入"
+        return f"✅ 已{action} {rel_path} ({len(content)} 字符)"
+    except Exception as e:
+        return f"写入失败: {e}"
+
+
+def _tool_run_command(input_data: dict) -> str:
+    command = input_data["command"]
+
+    # 白名单检查
+    allowed = False
+    for prefix in ALLOWED_COMMANDS:
+        if command.startswith(prefix):
+            allowed = True
+            break
+
+    if not allowed:
+        return f"错误: 命令不在白名单内。允许的前缀: {', '.join(ALLOWED_COMMANDS[:10])}..."
+
+    # systemctl restart/reload 限定服务名
+    for action in ("systemctl restart", "systemctl reload"):
+        if command.startswith(action):
+            service = command[len(action):].strip()
+            if service not in ALLOWED_SERVICES:
+                return f"错误: 不允许操作服务 '{service}'。允许的服务: {', '.join(ALLOWED_SERVICES)}"
+
+    # 安全：禁止危险操作
+    dangerous = ["rm ", "rm -", "sudo", "> /", "| sudo", "&& rm", "; rm", "dd if="]
+    for d in dangerous:
+        if d in command:
+            return f"错误: 检测到危险操作 '{d}'，拒绝执行"
+
+    try:
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+            cwd=str(HUB_DIR),
+            timeout=60,
+        )
+        output = ""
+        if result.stdout:
+            output += result.stdout[-2000:]
+        if result.stderr:
+            output += f"\n[stderr] {result.stderr[-500:]}"
+        if result.returncode != 0:
+            output += f"\n[exit code: {result.returncode}]"
+        return output.strip() if output.strip() else "(无输出)"
+    except subprocess.TimeoutExpired:
+        return "错误: 命令超时 (60s)"
+    except Exception as e:
+        return f"执行失败: {e}"
+
+
+def _tool_send_slack(input_data: dict) -> str:
+    message = input_data["message"]
+    level = input_data.get("level", "info")
+
+    prefix_map = {"info": "ℹ️", "warning": "⚠️", "critical": "🔴"}
+    prefix = prefix_map.get(level, "🫀")
+
+    send_slack(message, prefix=f"{prefix} Gateway")
+    return f"✅ Slack 已发送 ({level})"
+
+
+def _tool_list_directory(input_data: dict) -> str:
+    rel_path = input_data["path"]
+    full_path = (HUB_DIR / rel_path).resolve()
+
+    if not str(full_path).startswith(str(HUB_DIR.resolve())):
+        return "错误: 路径越界"
+
+    if not full_path.exists():
+        return f"目录不存在: {rel_path}"
+
+    if not full_path.is_dir():
+        return f"这是文件，不是目录"
+
+    try:
+        entries = sorted(full_path.iterdir())
+        lines = []
+        for e in entries[:50]:  # 最多 50 项
+            suffix = "/" if e.is_dir() else f" ({e.stat().st_size}B)"
+            lines.append(f"  {e.name}{suffix}")
+        result = f"{rel_path} ({len(entries)} 项):\n" + "\n".join(lines)
+        if len(entries) > 50:
+            result += f"\n  ... 还有 {len(entries) - 50} 项"
+        return result
+    except Exception as e:
+        return f"列目录失败: {e}"
+
+
+def _tool_save_memory(input_data: dict) -> str:
+    finding = input_data["finding"]
+    severity = input_data.get("severity", "info")
+    status = input_data.get("status", "resolved")
+    action_taken = input_data.get("action_taken", "")
+    context = input_data.get("context", None)
+
+    entry = {
+        "timestamp": datetime.now(CST).isoformat(),
+        "finding": finding,
+        "severity": severity,
+        "status": status,
+        "action_taken": action_taken,
+    }
+    if context:
+        entry["context"] = context
+
+    try:
+        MEMORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(MEMORY_FILE, "a") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        return f"✅ 记忆已保存 [{status}]: {finding[:50]}..."
+    except Exception as e:
+        return f"记忆保存失败: {e}"
+
+
+# ========================================
+# P1: Agentic Loop
+# ========================================
+
+def load_recent_memories(n: int = 5) -> str:
+    """加载 Gateway 记忆：先未完结条目（去重），再最近 N 条已完结条目"""
+    if not MEMORY_FILE.exists():
+        return "[无历史记忆]"
+
+    try:
+        lines = MEMORY_FILE.read_text().strip().split("\n")
+        all_entries = []
+        for line in lines:
+            if line.strip():
+                try:
+                    all_entries.append(json.loads(line))
+                except json.JSONDecodeError:
+                    pass
+
+        if not all_entries:
+            return "[无历史记忆]"
+
+        # 第一步：未完结条目（pending_mason / will_retry），按 finding 去重取最新
+        unfinished_statuses = {"pending_mason", "will_retry"}
+        unfinished_map = {}  # finding -> entry（后出现的覆盖前面的）
+        for entry in all_entries:
+            if entry.get("status") in unfinished_statuses:
+                unfinished_map[entry.get("finding", "")] = entry
+
+        # 第二步：最近 N 条已完结条目（resolved / monitoring / suggestion / emitted / 无 status 的旧条目）
+        finished = [e for e in all_entries if e.get("status") not in unfinished_statuses]
+        recent_finished = finished[-n:] if len(finished) > n else finished
+
+        def format_entry(entry):
+            status = entry.get("status", "?")
+            ts = entry.get("timestamp", "?")[:16]
+            finding = entry.get("finding", "?")
+            action = entry.get("action_taken", "")
+            context = entry.get("context", {})
+            line = f"  [{status}] {ts}: {finding}"
+            if action:
+                line += f" → {action}"
+            if context and isinstance(context, dict):
+                next_step = context.get("next_step", "")
+                if next_step:
+                    line += f"\n    下一步: {next_step}"
+            return line
+
+        result_parts = []
+        if unfinished_map:
+            result_parts.append("=== 未完结任务 (优先处理) ===")
+            for entry in unfinished_map.values():
+                result_parts.append(format_entry(entry))
+        if recent_finished:
+            result_parts.append("=== 近期背景 (参考) ===")
+            for entry in recent_finished:
+                result_parts.append(format_entry(entry))
+
+        return "\n".join(result_parts) if result_parts else "[无历史记忆]"
     except Exception:
-        pass
+        return "[记忆读取失败]"
 
 
-# --- 事件队列扫描 ---
+def run_agentic_session(system_prompt: str, user_prompt: str) -> str:
+    """
+    Agentic loop: 多轮 tool_use 直到任务完成。
 
-def scan_event_queue():
-    """扫描 queue.jsonl 的新事件，放入任务队列"""
-    global queue_file_pos
+    流程: prompt → API → (tool_use → 执行 → 结果 → API) × N → 最终文本
+    安全: 最多 MAX_TURNS 轮，每轮超时 60s
+    """
+    import anthropic
 
-    if not QUEUE_FILE.exists():
+    client = anthropic.Anthropic()
+    messages = [{"role": "user", "content": user_prompt}]
+
+    total_input_tokens = 0
+    total_output_tokens = 0
+
+    for turn in range(MAX_TURNS):
+        try:
+            response = client.messages.create(
+                model=MODEL,
+                max_tokens=MAX_OUTPUT_TOKENS,
+                system=system_prompt,
+                tools=TOOLS,
+                messages=messages,
+            )
+        except Exception as e:
+            log(f"[Agentic] Turn {turn + 1} API 失败: {e}")
+            return f"API 错误: {e}"
+
+        total_input_tokens += response.usage.input_tokens
+        total_output_tokens += response.usage.output_tokens
+
+        # 检查是否有 tool_use
+        tool_calls = [b for b in response.content if b.type == "tool_use"]
+        text_blocks = [b for b in response.content if b.type == "text"]
+
+        if not tool_calls:
+            # 没有工具调用 → 任务完成
+            final_text = "\n".join(b.text for b in text_blocks)
+            log(f"[Agentic] 完成: {turn + 1} 轮, {total_input_tokens}+{total_output_tokens} tokens")
+            return final_text
+
+        # 有工具调用 → 执行并继续
+        log(f"[Agentic] Turn {turn + 1}: {len(tool_calls)} 个工具调用")
+
+        # 将 assistant 的响应加入消息历史
+        messages.append({"role": "assistant", "content": response.content})
+
+        # 执行每个工具并收集结果
+        tool_results = []
+        for tc in tool_calls:
+            log(f"  🔧 {tc.name}({json.dumps(tc.input, ensure_ascii=False)[:80]})")
+            result = execute_tool(tc.name, tc.input)
+            log(f"  📎 结果: {result[:80]}...")
+            tool_results.append({
+                "type": "tool_result",
+                "tool_use_id": tc.id,
+                "content": result,
+            })
+
+        messages.append({"role": "user", "content": tool_results})
+
+        # stop_reason == "end_turn" 且有 tool_use → 继续循环
+        if response.stop_reason == "end_turn" and not tool_calls:
+            break
+
+    log(f"[Agentic] 达到最大轮次 {MAX_TURNS}")
+    return "[达到最大轮次限制]"
+
+
+# ========================================
+# Heartbeat (升级版: agentic loop)
+# ========================================
+
+def run_heartbeat():
+    """Heartbeat: 读 MASONHUB → agentic loop → 自主检查 + 修复 + 回写记忆"""
+    log("[Heartbeat] 开始")
+
+    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+    memories = load_recent_memories()
+
+    system_prompt = f"""你是 Mason Hub 的值班工程师。当前时间: {now_cst}
+
+你的完整行为空间定义在 MASONHUB.md 中，每次执行前必须先读取。
+简要原则：
+- 🟢 不涉及费用的执行类操作（改配置、重启白名单服务、git 操作、清日志）→ 自主做
+- 🟡 涉及费用的操作（付费 API、云资源启停、外部服务）→ 记录为 pending_mason，发 Slack，继续其他工作
+- 🔴 品牌定位、平台账号操作、推广预算、密钥管理、新建 Agent → 绝不碰，只记录建议
+
+你有以下工具：
+- read_file: 读取 mason-hub 内的任何文件
+- write_file: 写入白名单文件（SYSTEM_MAP.md, MASONHUB.md, gateway-memory.jsonl, queue.jsonl）
+- run_command: 执行白名单命令（系统检查、脚本执行、git、服务管理、scp 部署）
+- send_slack_message: 发 Slack 通知 Mason
+- list_directory: 列目录
+- save_memory: 保存发现到持久记忆（带 status 字段：resolved/pending_mason/will_retry/monitoring）
+
+工作节奏:
+1. 先检查记忆中 will_retry 的任务 → 有就先续接
+2. 读 MASONHUB.md 了解完整行为空间和巡逻清单
+3. 逐项执行检查，发现问题时走决策树（自主修/排队/等审批/不碰）
+4. ≤3 轮 tool use 能修好的 → 立即修，save_memory status=resolved
+5. 修不完的 → save_memory status=will_retry + context，继续巡逻
+6. 需要 Mason 的 → save_memory status=pending_mason + send_slack
+7. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报"""
+
+    user_prompt = f"""执行 heartbeat 检查。
+
+上次检查的记忆:
+{memories}
+
+请开始：先读 MASONHUB.md 了解检查清单，然后逐项检查。"""
+
+    try:
+        result = run_agentic_session(system_prompt, user_prompt)
+        log(f"[Heartbeat] 结果: {result[:150]}...")
+
+        # 如果结果不是"正常"，发 Slack
+        is_normal = result.strip().startswith("✅") and len(result.strip()) < 100
+        if not is_normal and result and not result.startswith("["):
+            send_slack(result)
+            log("[Heartbeat] 📨 已发 Slack")
+        else:
+            log("[Heartbeat] ✅ 正常")
+
+    except Exception as e:
+        error_msg = f"❌ Heartbeat 失败: {e}"
+        log(error_msg)
+        send_slack(error_msg)
+
+
+# ========================================
+# 事件分析 (升级版: agentic loop)
+# ========================================
+
+def analyze_event(event: dict):
+    """分析事件 — L0-1 脚本处理，L2-3 agentic loop"""
+    event_type = event.get("event", "unknown")
+    level = event.get("level", 0)
+
+    # Level 0-1: 纯脚本处理
+    if level <= 1:
+        log(f"[Tier 1] 事件 {event_type} (L{level}): 脚本处理")
+        if event_type in ("data-sync-complete", "health-check-all-green", "health-check-failed"):
+            _execute_script_task("event-router-process")
         return
 
+    # Level 2-3: agentic loop
+    log(f"[Agentic] 事件 {event_type} (L{level}): 需要推理")
+    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+
+    system_prompt = f"""你是 Mason Hub 的值班监督员。当前时间: {now_cst}
+
+你收到了一个需要分析的系统事件。你有工具可以读取文件、执行命令、发 Slack 通知。
+
+分析步骤:
+1. 理解事件含义
+2. 读取相关文件获取上下文
+3. 判断是否需要自动处理
+4. 能自动处理 → 执行脚本 + save_memory
+5. 需要 Mason → send_slack_message
+6. 更新 SYSTEM_MAP.md（如果事件改变了能力线状态）"""
+
+    user_prompt = f"""分析以下事件:
+
+{json.dumps(event, ensure_ascii=False, indent=2)}
+
+请开始分析。"""
+
     try:
-        with open(QUEUE_FILE) as f:
-            f.seek(queue_file_pos)
-            new_lines = f.readlines()
-            queue_file_pos = f.tell()
+        result = run_agentic_session(system_prompt, user_prompt)
+        log(f"[Agentic] 事件分析完成: {result[:100]}...")
 
-        for line in new_lines:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                event = json.loads(line)
-                task_queue.append({
-                    "type": "event",
-                    "event": event,
-                    "source": "queue.jsonl",
-                })
-            except json.JSONDecodeError:
-                continue
+        # L3 必须通知
+        if level >= 3 and "slack" not in result.lower():
+            send_slack(f"🔴 L3 事件: {event_type}\n{result}", prefix="🫀 Gateway")
 
-        if new_lines:
-            log(f"扫描到 {len(new_lines)} 个新事件")
     except Exception as e:
-        log(f"事件队列扫描失败: {e}")
+        log(f"[Agentic] 事件分析失败: {e}")
 
 
-# --- Tier 1: 纯脚本执行（零成本）---
+# ========================================
+# Tier 1: 纯脚本执行
+# ========================================
 
 SCRIPT_TASKS = {
     "data-sync": {
@@ -245,339 +759,205 @@ SCRIPT_TASKS = {
 }
 
 
-def execute_script(task_id: str) -> dict:
-    """Tier 1: 直接执行脚本，零 API 成本"""
+def _execute_script_task(task_id: str) -> dict:
     task_def = SCRIPT_TASKS.get(task_id)
     if not task_def:
-        return {"ok": False, "error": f"未知脚本任务: {task_id}"}
+        return {"ok": False, "error": f"未知: {task_id}"}
 
-    log(f"[Tier 1] 执行脚本: {task_def['desc']}")
-
+    log(f"[Tier 1] {task_def['desc']}")
     try:
         if "script_cmd" in task_def:
             cmd = task_def["script_cmd"]
         else:
-            script_path = HUB_DIR / task_def["script"]
-            if not script_path.exists():
-                return {"ok": False, "error": f"脚本不存在: {script_path}"}
-            cmd = ["bash", str(script_path)]
+            cmd = ["bash", str(HUB_DIR / task_def["script"])]
 
         result = subprocess.run(
-            cmd,
-            capture_output=True, text=True,
-            cwd=str(HUB_DIR),
-            timeout=300,  # 5 分钟超时
+            cmd, capture_output=True, text=True,
+            cwd=str(HUB_DIR), timeout=300,
         )
-
-        success = result.returncode == 0
-        log(f"[Tier 1] {task_def['desc']}: {'✅' if success else '❌'}")
-
-        return {
-            "ok": success,
-            "stdout": result.stdout[-500:] if result.stdout else "",
-            "stderr": result.stderr[-500:] if result.stderr else "",
-        }
+        ok = result.returncode == 0
+        log(f"[Tier 1] {task_def['desc']}: {'✅' if ok else '❌'}")
+        return {"ok": ok, "stdout": result.stdout[-500:], "stderr": result.stderr[-500:]}
     except subprocess.TimeoutExpired:
-        log(f"[Tier 1] {task_def['desc']}: ⏰ 超时")
-        return {"ok": False, "error": "执行超时 (5min)"}
+        return {"ok": False, "error": "超时"}
     except Exception as e:
         return {"ok": False, "error": str(e)}
 
 
-# --- Tier 2: API 推理（按需调用）---
+# ========================================
+# 事件队列扫描
+# ========================================
 
-def collect_context() -> dict:
-    """收集系统上下文"""
-    ctx = {}
-    ctx["masonhub"] = read_file(MASONHUB_FILE)
-
-    # 最近事件
-    if QUEUE_FILE.exists():
-        lines = QUEUE_FILE.read_text().strip().split("\n")
-        ctx["recent_events"] = "\n".join(lines[-10:])
-    else:
-        ctx["recent_events"] = "[无事件]"
-
-    # git log
-    try:
-        r = subprocess.run(
-            ["git", "log", "--oneline", "-5"],
-            capture_output=True, text=True, cwd=HUB_DIR, timeout=5,
-        )
-        ctx["recent_commits"] = r.stdout.strip()
-    except Exception:
-        ctx["recent_commits"] = "[git 失败]"
-
-    # 系统健康
-    health = []
-    for cmd in [["uptime"], ["free", "-h"], ["df", "-h", "/"]]:
-        try:
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
-            if cmd[0] == "uptime":
-                health.append(f"uptime: {r.stdout.strip()}")
-            elif cmd[0] == "free":
-                health.append("\n".join(r.stdout.strip().split("\n")[:2]))
-            else:
-                health.append(r.stdout.strip().split("\n")[-1])
-        except Exception:
-            pass
-    ctx["system_health"] = "\n".join(health) if health else "[检查失败]"
-
-    # 阿里云
-    try:
-        r = subprocess.run(
-            ["ssh", "-o", "ConnectTimeout=3", "root@106.14.44.68", "echo ok"],
-            capture_output=True, text=True, timeout=8,
-        )
-        ctx["aliyun"] = "✅ 连通" if "ok" in r.stdout else "❌ 不通"
-    except Exception:
-        ctx["aliyun"] = "❌ 超时"
-
-    # dispatcher 日志
-    dlog = HUB_DIR / "logs" / "dispatcher.log"
-    ctx["dispatcher_log"] = read_file(dlog, max_lines=5) if dlog.exists() else "[未运行]"
-
-    return ctx
-
-
-def call_api(prompt: str) -> str:
-    """调用 Anthropic API"""
-    import anthropic
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=MAX_OUTPUT_TOKENS,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return response.content[0].text
-
-
-def run_heartbeat():
-    """Tier 2: Heartbeat 检查 — 调 API 判断系统状态"""
-    log("[Tier 2] Heartbeat 开始")
-
-    ctx = collect_context()
-    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
-
-    prompt = f"""当前时间: {now_cst}
-
-{ctx['masonhub']}
-
---- 实时数据 ---
-
-最近事件:
-{ctx['recent_events']}
-
-最近 commits:
-{ctx['recent_commits']}
-
-系统健康:
-{ctx['system_health']}
-阿里云: {ctx['aliyun']}
-
-Dispatcher 日志:
-{ctx['dispatcher_log']}
-
----
-
-按照 MASONHUB 检查清单逐项检查。
-如果一切正常，只回复"✅ 系统正常"。
-如果有异常，格式：[级别] 一句话总结 + 详情 + 建议行动。"""
-
-    try:
-        result = call_api(prompt)
-        log(f"[Tier 2] Heartbeat 响应: {result[:100]}...")
-
-        is_normal = result.strip().startswith("✅") and len(result.strip()) < 50
-        if not is_normal:
-            send_slack(result)
-            log("[Tier 2] 📨 异常已发 Slack")
-        else:
-            log("[Tier 2] ✅ 系统正常")
-
-    except Exception as e:
-        error_msg = f"❌ Heartbeat API 失败: {e}"
-        log(error_msg)
-        send_slack(error_msg)
-
-
-def analyze_event(event: dict):
-    """Tier 2: 分析事件 — 需要推理的事件调 API"""
-    event_type = event.get("event", "unknown")
-    level = event.get("level", 0)
-
-    # Level 0-1: 纯脚本处理，不调 API
-    if level <= 1:
-        log(f"[Tier 1] 事件 {event_type} (L{level}): 静默处理")
-        # 触发对应的脚本
-        if event_type == "data-sync-complete":
-            execute_script("event-router-process")
-        elif event_type in ("health-check-all-green", "health-check-failed"):
-            execute_script("event-router-process")
+def scan_event_queue():
+    global queue_file_pos
+    if not QUEUE_FILE.exists():
         return
-
-    # Level 2-3: 需要推理
-    log(f"[Tier 2] 事件 {event_type} (L{level}): 需要推理")
-    masonhub = read_file(MASONHUB_FILE)
-    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
-
-    prompt = f"""当前时间: {now_cst}
-
-{masonhub}
-
---- 需要处理的事件 ---
-
-{json.dumps(event, ensure_ascii=False, indent=2)}
-
----
-
-分析这个事件，判断：
-1. 这个事件意味着什么
-2. 是否需要通知 Mason
-3. 有没有可以自动执行的脚本来处理
-回复格式：[行动] 具体建议（一行即可）"""
-
     try:
-        result = call_api(prompt)
-        log(f"[Tier 2] 事件分析: {result[:100]}...")
-
-        # Level 3 事件必须通知 Mason
-        if level >= 3:
-            send_slack(f"🔴 L3 事件: {event_type}\n{result}", prefix="🫀 Gateway 事件")
-        elif "通知" in result or "告警" in result:
-            send_slack(f"⚠️ {event_type}\n{result}", prefix="🫀 Gateway 事件")
-
+        with open(QUEUE_FILE) as f:
+            f.seek(queue_file_pos)
+            new_lines = f.readlines()
+            queue_file_pos = f.tell()
+        for line in new_lines:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                event = json.loads(line)
+                task_queue.append({"type": "event", "event": event})
+            except json.JSONDecodeError:
+                continue
+        if new_lines:
+            log(f"扫描到 {len(new_lines)} 个新事件")
     except Exception as e:
-        log(f"[Tier 2] 事件分析失败: {e}")
+        log(f"事件队列扫描失败: {e}")
 
 
-# --- 主循环 ---
+# ========================================
+# 锁管理
+# ========================================
+
+def acquire_lock() -> bool:
+    try:
+        LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if LOCK_FILE.exists():
+            try:
+                existing = json.loads(LOCK_FILE.read_text())
+                pid = existing.get("pid", 0)
+                lock_time = existing.get("time", 0)
+                try:
+                    os.kill(pid, 0)
+                    if time.time() - lock_time < LOCK_TIMEOUT:
+                        return False
+                except ProcessLookupError:
+                    pass
+            except (json.JSONDecodeError, KeyError):
+                pass
+        LOCK_FILE.write_text(json.dumps({"pid": os.getpid(), "time": time.time()}))
+        return True
+    except Exception as e:
+        log(f"锁获取失败: {e}")
+        return False
+
+
+def release_lock():
+    try:
+        LOCK_FILE.unlink(missing_ok=True)
+    except Exception:
+        pass
+
+
+def refresh_lock():
+    try:
+        LOCK_FILE.write_text(json.dumps({"pid": os.getpid(), "time": time.time()}))
+    except Exception:
+        pass
+
+
+# ========================================
+# 主循环
+# ========================================
 
 def process_queue():
-    """处理任务队列（串行，一次一个）"""
     if not task_queue:
         return
-
-    # Mason 在 session 中 → 让路
     if mason_session_active():
-        log("🛑 Mason session 活跃，Gateway 让路")
+        log("🛑 Mason session 活跃，让路")
         return
 
     task = task_queue.popleft()
     task_type = task.get("type", "unknown")
-
     try:
         if task_type == "heartbeat":
             run_heartbeat()
         elif task_type == "event":
             analyze_event(task["event"])
         elif task_type == "script":
-            execute_script(task["task_id"])
+            _execute_script_task(task["task_id"])
         else:
-            log(f"未知任务类型: {task_type}")
+            log(f"未知任务: {task_type}")
     except Exception as e:
-        log(f"任务执行异常: {e}")
+        log(f"任务异常: {e}")
 
 
 def schedule_heartbeat():
-    """检查是否需要调度 heartbeat"""
     global last_heartbeat
     now = time.time()
-
     if now - last_heartbeat >= HEARTBEAT_INTERVAL:
         if in_time_window():
             task_queue.append({"type": "heartbeat"})
             last_heartbeat = now
             log("📅 Heartbeat 已排入队列")
         else:
-            log("⏰ 窗口外，跳过 heartbeat")
-            last_heartbeat = now  # 避免窗口外反复检查
+            last_heartbeat = now
 
 
 def main_loop():
-    """Gateway 主循环"""
     global running
+    log("🚀 Mason Gateway v2 启动 (agentic loop + tool_use + 记忆回写)")
+    send_slack("🚀 Mason Gateway v2 已启动", prefix="")
 
-    log("🚀 Mason Gateway 启动")
-    send_slack("🚀 Mason Gateway 已启动", prefix="")
-
-    # 立即跑一次 heartbeat
     last_check = time.time()
     schedule_heartbeat()
 
     while running:
         try:
             now = time.time()
-
-            # 1. 定期调度 heartbeat
             schedule_heartbeat()
-
-            # 2. 扫描事件队列（每分钟）
             if now - last_check >= QUEUE_CHECK_INTERVAL:
                 scan_event_queue()
                 last_check = now
-
-            # 3. 处理任务队列
             process_queue()
-
-            # 4. 刷新锁
             refresh_lock()
-
-            # 5. 休眠（30 秒一轮）
             time.sleep(30)
-
         except KeyboardInterrupt:
             break
         except Exception as e:
             log(f"主循环异常: {e}")
-            time.sleep(60)  # 异常后等 1 分钟再继续
+            time.sleep(60)
 
+
+# ========================================
+# 入口
+# ========================================
 
 def show_status():
-    """显示 Gateway 状态"""
-    print("Mason Gateway 状态:")
-
-    # 锁状态
+    print("Mason Gateway v2 状态:")
     if LOCK_FILE.exists():
         try:
             lock = json.loads(LOCK_FILE.read_text())
             pid = lock.get("pid", "?")
-            lock_time = lock.get("time", 0)
-            age = time.time() - lock_time
+            age = time.time() - lock.get("time", 0)
             alive = False
             try:
                 os.kill(pid, 0)
                 alive = True
             except (ProcessLookupError, TypeError):
                 pass
-            print(f"  锁: PID {pid} ({'运行中' if alive else '已死'}, {age:.0f}s 前)")
+            print(f"  锁: PID {pid} ({'运行中' if alive else '已死'}, {age:.0f}s)")
         except Exception:
             print("  锁: 损坏")
     else:
-        print("  锁: 无（Gateway 未运行）")
+        print("  锁: 无（未运行）")
 
-    # Mason session
     print(f"  Mason session: {'🟢 活跃' if mason_session_active() else '⚪ 不在'}")
+    print(f"  时间窗口: {'✅' if in_time_window() else '❌'} CST 08-22")
+    print(f"  工具: {len(TOOLS)} 个 (read_file, write_file, run_command, send_slack, list_dir, save_memory)")
+    print(f"  Agentic loop: 最大 {MAX_TURNS} 轮")
 
-    # 时间窗口
-    print(f"  时间窗口: {'✅ CST 08-22 内' if in_time_window() else '❌ 窗口外'}")
+    if MEMORY_FILE.exists():
+        lines = MEMORY_FILE.read_text().strip().split("\n")
+        print(f"  记忆: {len(lines)} 条")
+    else:
+        print("  记忆: 无")
 
-    # 事件队列
     if QUEUE_FILE.exists():
         lines = QUEUE_FILE.read_text().strip().split("\n")
-        print(f"  事件队列: {len(lines)} 条总记录")
-    else:
-        print("  事件队列: 无")
-
-    # 脚本任务
-    print(f"  可用脚本: {len(SCRIPT_TASKS)} 个")
-    for tid, tdef in SCRIPT_TASKS.items():
-        print(f"    - {tid}: {tdef['desc']}")
+        print(f"  事件队列: {len(lines)} 条")
 
 
 def handle_signal(signum, frame):
     global running
-    log(f"收到信号 {signum}，准备关闭...")
+    log(f"收到信号 {signum}，关闭...")
     running = False
 
 
@@ -589,21 +969,19 @@ def main():
         return
 
     if "--once" in args:
-        # 只跑一轮（调试用）
+        force = "--force" in args
         log("--- 单次运行模式 ---")
         scan_event_queue()
-        if not mason_session_active() and in_time_window():
+        if force or (not mason_session_active() and in_time_window()):
             run_heartbeat()
         else:
             log("跳过 heartbeat（Mason 活跃或窗口外）")
         return
 
-    # 获取锁
     if not acquire_lock():
-        print("Gateway 已在运行，退出")
+        print("Gateway 已在运行")
         sys.exit(1)
 
-    # 信号处理
     signal.signal(signal.SIGTERM, handle_signal)
     signal.signal(signal.SIGINT, handle_signal)
 
@@ -611,8 +989,8 @@ def main():
         main_loop()
     finally:
         release_lock()
-        log("🛑 Mason Gateway 已关闭")
-        send_slack("🛑 Mason Gateway 已关闭", prefix="")
+        log("🛑 Mason Gateway v2 已关闭")
+        send_slack("🛑 Gateway 已关闭", prefix="")
 
 
 if __name__ == "__main__":

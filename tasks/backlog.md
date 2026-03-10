@@ -191,6 +191,8 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] 汇报链 Manager 聚合 — 2026-03-10 完成，scripts/aggregate_reports.py（L0-L3 分级 + Slack）
 - [x] Mason Gateway 永驻 daemon — 2026-03-10 完成，mason-gateway.py（对标 OpenClaw Gateway：串行队列 + heartbeat + Mason session 让路 + Tier 1 脚本 / Tier 2 API 双层执行）+ MASONHUB.md 灵魂文件 + systemd 部署
 - [x] Anthropic API 配置 — 2026-03-10 完成，API key 配到 .env，heartbeat 端到端验证通过（661 token/次 ≈ $0.002）
+- [x] Gateway v2 行为空间升级 — 2026-03-10 完成，三层权限边界（🟢自主/🟡审批/🔴禁止）+ 白名单对齐（git/scp/systemctl restart）+ 记忆 status 字段（resolved/pending_mason/will_retry/monitoring）+ heartbeat prompt 从"监督员"升级为"值班工程师"
+- [ ] Gateway heartbeat 实际验证 — 行为空间升级后首次 heartbeat 验证 Sonnet 是否正确遵循三层边界 + will_retry 续接机制
 - [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):

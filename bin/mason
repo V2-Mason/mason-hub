@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec ~/mason-hub/.venv/bin/python3 ~/mason-hub/scripts/mason-cli.py "$@"
