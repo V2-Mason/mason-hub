@@ -437,8 +437,10 @@ P2 — Qwen Image Edit 模型下载（待部署）:
 Phase 1 — 数据治理基础:
 - [x] 数据全盘盘点 — 2026-03-10 完成，15 个数据集登记到 data_catalog.yaml
 - [x] EMP_0014 角色设计 — 2026-03-10 完成，混合式架构下的分工边界定义
-- [ ] 数据健康检查脚本 — 每个 active 数据集检查最后更新时间/行数/重复率，接入 EMP_0004 日报（EMP_0014 + EMP_0004）
-- [ ] 统一存储方案设计 — PostgreSQL vs SQLite 合并 vs 文件同步，消除 SSH 跨机器读取（EMP_0014）
+- [x] 数据健康检查脚本 — 2026-03-10 完成，data/pipelines/data_health_check.sh（解析 catalog，检查所有 active 数据集新鲜度/可达性，支持 --slack）
+- [x] 统一存储方案设计 — 2026-03-10 完成，docs/plans/2026-03-10-data-unified-storage.md，Mason 选定方案 A（文件同步），方案 C（API 网关）作为 >50MB 触发升级
+- [ ] 方案 A 实施 — data-sync.sh 脚本（sqlite3 .backup + scp），cron 同步阿里云数据到 GCP data/mirror/，改下游脚本读本地路径（EMP_0014，~2-3h）
+- [ ] 方案 C 升级（触发条件：数据总量 >50MB）— 阿里云 FastAPI + GCP data_client.py SDK，参考设计文档（EMP_0014，~8-10h）
 
 Phase 2 — 主干管道统一:
 - [ ] XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014）
