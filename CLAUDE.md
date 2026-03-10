@@ -2,7 +2,9 @@
 
 ## 授权边界（所有 Agent 必读）
 
-**必须在 session 启动时读取 `MASON_AUTHORITY.md`**，了解什么可以自主做、什么必须问 Mason。
+**必须在 session 启动时读取 `MASON_AUTHORITY.md` + `SYSTEM_MAP.md`**：
+- `MASON_AUTHORITY.md` — 什么可以自主做、什么必须问 Mason
+- `SYSTEM_MAP.md` — 当前系统受力分析（四条能力线状态 + 耦合 + 推荐行动）
 
 核心规则：
 - 授权范围内 → 直接做完，commit 记录
