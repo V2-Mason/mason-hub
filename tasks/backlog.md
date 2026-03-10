@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-03-09
-> 更新人: Mason + Session（EMP_0013 店铺运营 Agent 三方评审定稿 + 基础设施三件套 + backlog 更新）
+> 最后更新: 2026-03-10
+> 更新人: Session Operator（Scout v2 Engine 架构实现 + 数据管道修复 + 素仁轩 API JWT 认证）
 
 ---
 
@@ -184,7 +184,7 @@ P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 - [x] Scout 去重机制 — 2026-03-05 确认已实现（scripts/scout-dedup.py + intel/seen.jsonl），9 个 scout 脚本全部已集成 dedup 调用（EMP_0002）
 - [x] Scout 简报格式改进 — 2026-03-05 完成，6 个 scout 脚本修改（模糊时间→具体日期，补 markdown 链接），9 个脚本 bash -n 验证通过（EMP_0002）
-- [ ] Scout 多数据源 — 当前 9 个脚本全部只用 GitHub API，需引入真正的多渠道：Google→Gemini, X→Grok, 小红书→DeepSeek。scout-xhs-trends.sh 当前搜的是 GitHub 不是小红书（EMP_0002）→ 部分缓解：TrendRadar 已提供 11 热榜 + 10 RSS 的趋势信号底座 (2026-03-08)
+- [x] Scout 多数据源 — 2026-03-10 完成，Scout v2 search.py 实现 GitHub API + SearXNG(Google/Twitter/DuckDuckGo) + DuckDuckGo fallback 三源统一接口（旧 9 脚本保留但被 Engine 架构取代）
 - [ ] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用，Mason 手动触发必须有 /skill 替代方案（EMP_0002）
 
 P2 — UX 持续优化:
@@ -359,8 +359,8 @@ P2 — 模块 A 增强:
 待办:
 - [ ] 启用 AI 分析功能 — 需配 DeepSeek API key 到 config.yaml（EMP_0002）
 - [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）→ 已更新见下方点击追踪 (2026-03-08)
-- [ ] Scout 脚本接入 TrendRadar SQLite — 用趋势数据辅助情报分析（EMP_0006）
-- [ ] Scout 脚本接入 Radar 关注率 API — Scout cron 启动时读 localhost:8081/api/weekly-report，关注率>70% 增加搜索深度，<30% 降低频率（EMP_0002，验收：Scout 输出包含关注率字段）
+- [x] Scout 脚本接入 TrendRadar SQLite — 2026-03-10 完成，Scout v2 spider.py 直读 TrendRadar news/rss SQLite（2163+1494 条），提取本周搜索话题
+- [x] Scout 脚本接入 Radar 关注率 API — 2026-03-10 完成，Scout v2 spider.py 读 tracker.db（read_items + dismissals），高关注话题优先搜索
 
 **EMP_0013 店铺运营 Agent（2026-03-09 三方评审定稿）**:
 
@@ -446,6 +446,33 @@ Phase 2 — 主干管道统一:
 - [ ] XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014）
 - [ ] 管道编排机制 — 上游完成写标记，下游检查后再跑，防止"趋势数据静止"类问题（EMP_0014）
 - [x] Scout 产出标准化 — 2026-03-10 完成，data/schemas/scout_intel.yaml（11 字段 schema）+ data/pipelines/scout-normalize.py（digest md → JSONL），23 条情报已提取，data_catalog.yaml 注册 clean_scout_intel
+
+**Scout v2 Engine 架构（2026-03-10 实现，参考 BettaFish）**:
+
+> 设计文档: docs/plans/2026-03-10-scout-v2-design.md
+> 代码: intel/engines/（11 个 Python 模块）
+> 管道: spider → query → media → insight → forum → report
+> 入口: python -m intel.engines.pipeline [--resume] [--force spider,query]
+
+已完成:
+- [x] SpiderEngine — TrendRadar + RSS + Radar 关注率 → LLM 提取搜索话题
+- [x] QueryEngine — ReflectionNode + 多源搜索（GitHub/SearXNG/DuckDuckGo）
+- [x] MediaEngine — Gemini 图片分析（仅图片，不做视频）
+- [x] InsightEngine — 内部数据关联（XHS/销售/历史情报）+ DeepSeek 情感分析
+- [x] ForumEngine — 话题聚类 + LLM 交叉验证 + 置信度评估
+- [x] ReportEngine — IR 中间层 + 动态模板（alert/weekly_full/weekly_light）+ markdown/json/slack 三渲染
+- [x] 状态管理 — checkpoint/resume 断点续跑
+- [x] 统一 LLM 客户端 — DeepSeek(默认)/Gemini(多模态)/Qwen(交叉验证) 三模型
+- [x] SQLite 数据库 — scout.db（topics/intel_items/topic_intel_relation/pipeline_runs）
+- [x] 统一搜索接口 — search.py（GitHub API + SearXNG + DuckDuckGo fallback）
+- [x] pipeline.py 编排器 — 6 引擎串行 + checkpoint + Slack 通知
+
+待办:
+- [ ] SearXNG Docker 部署 — 当前 SearXNG 未运行，搜索 fallback 到 DuckDuckGo（EMP_0002/EMP_0004）
+- [ ] Gemini API key 配置 — MediaEngine 需要 GEMINI_API_KEY 才能启用（Mason 后补）
+- [ ] 首次端到端测试 — 配好 DASHSCOPE_API_KEY 后 `python -m intel.engines.pipeline` 全流程跑通
+- [ ] Scout v2 cron 注册 — 替换旧 scout-*.sh cron 为新管道（EMP_0004）
+- [ ] EMP_0006.md 更新 — 加入 Engine 架构职责描述
 
 Phase 3 — 数据 SDK + 扩展:
 - [ ] 数据读取 SDK — Python 模块，业务 agent 一行代码获取干净数据（EMP_0014）

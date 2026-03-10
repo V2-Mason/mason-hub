@@ -1,0 +1,12 @@
+[
+  {"keyword": "claude code agent", "domain": "tech", "priority": "high", "search_source": "github"},
+  {"keyword": "AI agent framework", "domain": "tech", "priority": "high", "search_source": "github"},
+  {"keyword": "MCP server", "domain": "tech", "priority": "medium", "search_source": "github"},
+  {"keyword": "小红书 运营", "domain": "ecom", "priority": "high", "search_source": "web"},
+  {"keyword": "跨境电商 韩国护肤", "domain": "ecom", "priority": "high", "search_source": "web"},
+  {"keyword": "DTC brand", "domain": "ecom", "priority": "medium", "search_source": "github"},
+  {"keyword": "content automation", "domain": "content", "priority": "medium", "search_source": "github"},
+  {"keyword": "video generation AI", "domain": "content", "priority": "medium", "search_source": "github"},
+  {"keyword": "social media trend", "domain": "content", "priority": "medium", "search_source": "web"},
+  {"keyword": "GEO generative engine optimization", "domain": "content", "priority": "medium", "search_source": "web"}
+]

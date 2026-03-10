@@ -67,5 +67,26 @@
 
 ### Gap: 📚 纯知识
 - data-sync.sh 还需注册 cron（依赖阿里云采集完成信号）
-- health check 的 TrendRadar 阈值需要调整（30min 频率但检测窗口过窄）
+- health check 的 TrendRadar 阈值需要调整（30min 频率但检测窗口过窄）→ 已修复为 6h (2026-03-10)
 - catalog 中 aliyun: 路径的数据集，方案 A 后应考虑同时注册 gcp:mirror 路径
+- 素仁轩 API 401 → 已修复，data-coo-daily.sh + data_health_check.sh 加 JWT 登录 (2026-03-10)
+
+## Lesson: Scout v2 Engine 架构构建 (2026-03-10)
+
+### 做了什么
+- 参考 BettaFish 的 5-Engine 架构，构建 Scout v2 共 11 个 Python 模块
+- 6 引擎管道：spider → query → media → insight → forum → report
+- 基础设施层：llm_client.py（多模型路由）+ state.py（checkpoint）+ database.py（scout.db）+ search.py（统一搜索）
+- pipeline.py 编排器：checkpoint/resume + 优雅降级 + Slack 通知
+- scout.db 已有 23 条 intel_items（从 JSONL 迁移），4 张表
+
+### 发现
+- TrendRadar news_items 表有 2163 条（3 天），rss_items 有 1494 条——数据量足够 Spider 提取话题
+- tracker.db 只有 11 read_items + 43 dismissals——关注率数据还很少，需要积累
+- SearXNG 未部署，搜索当前只走 GitHub API + DuckDuckGo
+- Gemini API key 未配置，MediaEngine 会自动跳过
+- 所有引擎 import 测试通过，但未做端到端 pipeline 运行（需要 DASHSCOPE_API_KEY）
+
+### Gap: 🏗️ 系统能力缺失
+- SearXNG Docker 部署 — 搜索多样性依赖此服务（建议 Owner: EMP_0002/EMP_0004，验收: localhost:8888/healthz 返回 OK + search.py 测试通过）
+- Scout v2 cron 注册 — 新管道取代旧 scout-*.sh（建议 Owner: EMP_0004）

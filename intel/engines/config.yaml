@@ -1,0 +1,88 @@
+# Scout v2 Engine 配置
+llm:
+  models:
+    default:
+      provider: dashscope
+      model: deepseek-chat
+      api_key_env: DASHSCOPE_API_KEY
+      base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      max_tokens: 4096
+      temperature: 0.3
+    gemini:
+      provider: google
+      model: gemini-2.5-flash
+      api_key_env: GEMINI_API_KEY
+      base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+      max_tokens: 4096
+      temperature: 0.3
+    qwen:
+      provider: dashscope
+      model: qwen-plus
+      api_key_env: DASHSCOPE_API_KEY
+      base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      max_tokens: 4096
+      temperature: 0.3
+  retry:
+    max_retries: 3
+    retry_delay: 2  # seconds
+    backoff_multiplier: 2
+
+spider:
+  trendradar_news_dir: ~/mason-hub/tools/trendradar/output/news/
+  trendradar_rss_dir: ~/mason-hub/tools/trendradar/output/rss/
+  lookback_days: 3
+  fixed_keywords_file: ~/mason-hub/data/scout_keywords_fixed.json
+  domains:
+    - name: ecom
+      description: "跨境电商、韩国护肤、小红书运营、DTC品牌"
+    - name: tech
+      description: "AI 工具、Agent 框架、Claude/Anthropic、MCP"
+    - name: content
+      description: "内容自动化、视频生成、社交媒体趋势、GEO"
+
+query:
+  max_results_per_topic: 10
+  reflection_enabled: true
+  reflection_model: default
+  search_diversity: true  # search multiple sources per topic
+  max_reflection_rounds: 1
+  min_coverage_per_domain: 3
+  search_sources:
+    - name: github
+      type: api
+      enabled: true
+    - name: searxng
+      type: searxng
+      base_url: http://localhost:8888  # SearXNG Docker
+      enabled: false  # 待部署后启用
+      engines: [google, twitter, duckduckgo]
+
+insight:
+  mirror_db: ~/mason-hub/data/mirror/sqlite_tables.db
+  sales_api_url: http://106.14.44.68:8000
+  sales_auth_env: SRX_API_EMAIL,SRX_API_PASSWORD
+  historical_intel: ~/mason-hub/intel/processed/scout_normalized.jsonl
+
+media:
+  model: gemini  # 使用 gemini 模型配置
+  enabled: false  # 待 API key 配置后启用
+  max_images_per_batch: 10
+
+forum:
+  min_cluster_size: 2
+  model: default  # 使用 default(deepseek) 模型
+
+sentiment:
+  method: llm  # llm 或 local
+  model: default
+
+report:
+  output_dir: ~/mason-hub/intel/reports/
+  validated_dir: ~/mason-hub/intel/validated/
+  slack_channel: "#scout"
+
+database:
+  path: ~/mason-hub/intel/scout.db
+
+slack:
+  channel: ""  # 留空则不发 Slack，设置后 pipeline 完成时通知

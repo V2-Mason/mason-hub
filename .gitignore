@@ -25,3 +25,6 @@ logs/archive/
 tools/trendradar/
 logs/trendradar.log
 tools/trendradar-config/reports/
+
+# SQLite databases (runtime data, not code)
+*.db
