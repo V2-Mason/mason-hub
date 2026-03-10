@@ -1,5 +1,14 @@
 # Mason Hub — 工作规范
 
+## 授权边界（所有 Agent 必读）
+
+**必须在 session 启动时读取 `MASON_AUTHORITY.md`**，了解什么可以自主做、什么必须问 Mason。
+
+核心规则：
+- 授权范围内 → 直接做完，commit 记录
+- 授权范围外 → 收集所有待决策项，一次性问，不要逐个打断
+- 3 步以上的任务 → 先输出执行计划确认单，Mason 说"执行"后再动手
+
 ## Token 消耗记录规范
 - 每次 Claude API 调用必须经过 api_logger.log_api_call() 记录
 - 日志路径：~/mason-hub/logs/api_usage.jsonl
