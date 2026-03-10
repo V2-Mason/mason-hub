@@ -48,4 +48,24 @@
 - 建议行动/负责人只有 4/23 条有——大部分情报缺少 actionable 信息
 
 ### Gap: 📚 纯知识
-- optimization-cycle.sh 还在读原始 markdown，可以改为读 JSONL 按 priority=red 过滤
+- optimization-cycle.sh 还在读原始 markdown，可以改为读 JSONL 按 priority=red 过滤 → 已完成 (2026-03-10)
+
+## Lesson: Layer 2 前置条件验证 (2026-03-10)
+
+### 做了什么
+- data-sync.sh 修复子目录同步：maxdepth 1→2，新增 mkdir -p 创建 comments/trends 子目录
+- data_health_check.sh 新增 jsonl 类型支持（clean_scout_intel 从"未知类型"变 ✅）
+- optimization-cycle.sh Step 1b 改为读 scout_normalized.jsonl（priority=red 过滤），保留 markdown fallback
+- data-sync.sh 实测：3/3 成功，6 个 JSON 文件同步（含 comments/trends 子目录）
+- health check 实测：8/15 健康，1 警告，6 异常
+
+### 发现
+- analysis_xhs_* 数据集 ❌ 不是 sync 问题——catalog location 指向 aliyun: 路径，health check 用 SSH 查今天/昨天文件，但最近采集是 3/7（3 天前）。下次周二采集后会自动变绿
+- TrendRadar ❌ 是阈值问题——30min 频率数据集 5h 没更新就算异常，阈值太严格
+- raw_srx_sales ⚠️ HTTP 401 是独立的 API 认证问题
+- 总数据量 16MB，远低于 50MB 升级阈值
+
+### Gap: 📚 纯知识
+- data-sync.sh 还需注册 cron（依赖阿里云采集完成信号）
+- health check 的 TrendRadar 阈值需要调整（30min 频率但检测窗口过窄）
+- catalog 中 aliyun: 路径的数据集，方案 A 后应考虑同时注册 gcp:mirror 路径

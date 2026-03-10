@@ -57,27 +57,70 @@ else
     log "  tracker.db 不存在"
 fi
 
-# 1b. Scout 最新情报
+# 1b. Scout 最新情报（优先读标准化 JSONL，fallback 到 markdown）
 log "Step 1b: 读取 Scout 最新情报..."
 LATEST_DIGEST=""
-DIGEST_DIR="$HUB_DIR/intel/digests"
-if [ -d "$DIGEST_DIR" ]; then
-    LATEST_DIGEST_FILE=$(ls -t "$DIGEST_DIR"/*.md 2>/dev/null | head -1)
-    if [ -n "$LATEST_DIGEST_FILE" ]; then
-        DIGEST_AGE_DAYS=$(( ($(date +%s) - $(stat -c %Y "$LATEST_DIGEST_FILE")) / 86400 ))
-        if [ "$DIGEST_AGE_DAYS" -le 14 ]; then
-            LATEST_DIGEST=$(head -100 "$LATEST_DIGEST_FILE")
-            DATA_SOURCES="$DATA_SOURCES\n- Scout 情报简报 ✅ ($(basename "$LATEST_DIGEST_FILE"), ${DIGEST_AGE_DAYS}天前)"
-            log "  Scout 情报获取成功: $(basename "$LATEST_DIGEST_FILE")"
+SCOUT_JSONL="$HUB_DIR/intel/processed/scout_normalized.jsonl"
+if [ -f "$SCOUT_JSONL" ] && [ -s "$SCOUT_JSONL" ]; then
+    # 从 JSONL 提取 priority=red 条目，格式化为结构化文本
+    JSONL_RESULT=$("$HUB_DIR/.venv/bin/python3" -c "
+import json, sys
+red_items = []
+with open('$SCOUT_JSONL', 'r') as f:
+    for line in f:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            item = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if item.get('priority') == 'red':
+            red_items.append(item)
+if not red_items:
+    sys.exit(1)
+for i, item in enumerate(red_items, 1):
+    title = item.get('title', '无标题')
+    summary = item.get('summary', '无摘要')
+    action = item.get('suggested_action', '无建议行动')
+    print(f'[{i}] {title}')
+    print(f'    摘要: {summary}')
+    print(f'    建议行动: {action}')
+    print()
+print(f'共 {len(red_items)} 条 red 优先级情报')
+" 2>/dev/null)
+    JSONL_EXIT=$?
+    if [ "$JSONL_EXIT" -eq 0 ] && [ -n "$JSONL_RESULT" ]; then
+        LATEST_DIGEST="$JSONL_RESULT"
+        RED_COUNT=$(echo "$JSONL_RESULT" | tail -1 | grep -oP '\d+' | head -1)
+        DATA_SOURCES="$DATA_SOURCES\n- Scout 情报简报 ✅ (JSONL, ${RED_COUNT:-0} 条 red)"
+        log "  Scout 情报获取成功: JSONL, ${RED_COUNT:-0} 条 red 优先级"
+    else
+        log "  JSONL 无 red 条目，fallback 到 markdown..."
+    fi
+fi
+
+# Fallback: 如果 JSONL 不存在/为空/无 red 条目，读 markdown
+if [ -z "$LATEST_DIGEST" ]; then
+    DIGEST_DIR="$HUB_DIR/intel/digests"
+    if [ -d "$DIGEST_DIR" ]; then
+        LATEST_DIGEST_FILE=$(ls -t "$DIGEST_DIR"/*.md 2>/dev/null | head -1)
+        if [ -n "$LATEST_DIGEST_FILE" ]; then
+            DIGEST_AGE_DAYS=$(( ($(date +%s) - $(stat -c %Y "$LATEST_DIGEST_FILE")) / 86400 ))
+            if [ "$DIGEST_AGE_DAYS" -le 14 ]; then
+                LATEST_DIGEST=$(head -100 "$LATEST_DIGEST_FILE")
+                DATA_SOURCES="$DATA_SOURCES\n- Scout 情报简报 ✅ ($(basename "$LATEST_DIGEST_FILE"), ${DIGEST_AGE_DAYS}天前, markdown fallback)"
+                log "  Scout 情报获取成功 (markdown fallback): $(basename "$LATEST_DIGEST_FILE")"
+            else
+                DATA_ISSUES="$DATA_ISSUES\n- Scout 最新情报已过期（${DIGEST_AGE_DAYS}天前），数据时效性低"
+                log "  Scout 情报过期: ${DIGEST_AGE_DAYS}天"
+            fi
         else
-            DATA_ISSUES="$DATA_ISSUES\n- Scout 最新情报已过期（${DIGEST_AGE_DAYS}天前），数据时效性低"
-            log "  Scout 情报过期: ${DIGEST_AGE_DAYS}天"
+            DATA_ISSUES="$DATA_ISSUES\n- 无 Scout 情报简报文件"
         fi
     else
-        DATA_ISSUES="$DATA_ISSUES\n- 无 Scout 情报简报文件"
+        DATA_ISSUES="$DATA_ISSUES\n- intel/digests/ 目录不存在，且 JSONL 不可用"
     fi
-else
-    DATA_ISSUES="$DATA_ISSUES\n- intel/digests/ 目录不存在"
 fi
 
 # 1c. XHS 最新分析/策略简报

@@ -343,6 +343,25 @@ while IFS=$'\t' read -r ds_id stype location table freq endpoint; do
       detail="Slack 消息类型，跳过"
       ;;
 
+    jsonl)
+      # JSONL file — check like regular file
+      if echo "$location" | grep -q "^gcp:"; then
+        raw_path="${location#gcp:}"
+        expanded_path=$(echo "$raw_path" | sed "s|~|/home/hangn|g")
+        if [ -f "$expanded_path" ]; then
+          file_mtime=$(stat -c %Y "$expanded_path" 2>/dev/null || echo 0)
+          age=$(( NOW_EPOCH - file_mtime ))
+          line_count=$(wc -l < "$expanded_path" 2>/dev/null || echo "?")
+          fsize=$(du -h "$expanded_path" 2>/dev/null | cut -f1)
+          status=$(classify "$age" "$expected_sec")
+          detail="更新于 $(time_ago "$age")，${line_count} 条，大小 ${fsize}"
+        else
+          status="err"
+          detail="文件不存在"
+        fi
+      fi
+      ;;
+
     stdout)
       status="skip"
       detail="stdout 类型，跳过"

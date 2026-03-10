@@ -77,14 +77,18 @@ fi
 # ─── Step 2: 同步分析 JSON（最近 7 天） ───
 log "Step 2: 同步分析 JSON..."
 
-RECENT_JSON=$(ssh -o ConnectTimeout="$SSH_TIMEOUT" "$SSH_HOST" \
-  "find '$REMOTE_ANALYSIS_DIR' -maxdepth 1 -name 'analysis_*.json' -mtime -7 -printf '%f\n' 2>/dev/null" 2>/dev/null) || true
+# 同步顶层 analysis_*.json + 子目录 (comments/, trends/)
+RECENT_JSON=$(ssh -n -o ConnectTimeout="$SSH_TIMEOUT" "$SSH_HOST" \
+  "find '$REMOTE_ANALYSIS_DIR' -maxdepth 2 -name '*.json' -mtime -7 -printf '%P\n' 2>/dev/null" 2>/dev/null) || true
 
 if [ -n "$RECENT_JSON" ]; then
   JSON_COUNT=0
   JSON_FAIL_COUNT=0
   while IFS= read -r fname; do
     [ -z "$fname" ] && continue
+    # 创建子目录（如 comments/, trends/）
+    fname_dir=$(dirname "$fname")
+    [ "$fname_dir" != "." ] && mkdir -p "$MIRROR_DIR/analysis/$fname_dir"
     if scp -o ConnectTimeout="$SSH_TIMEOUT" \
         "$SSH_HOST:$REMOTE_ANALYSIS_DIR/$fname" "$MIRROR_DIR/analysis/$fname" 2>/dev/null; then
       JSON_COUNT=$(( JSON_COUNT + 1 ))
