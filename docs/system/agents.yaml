@@ -1,0 +1,111 @@
+# Mason Hub Agent 名册 — Single Source of Truth
+#
+# 更新规则：
+#   决策权：Mason 确认新 agent 立项时更新
+#   操作权：EMP_0000 (Meta Manager) 执行更新
+#   同步：optimization-cycle.sh Gate 2 动态读取此文件
+#
+# status 说明：
+#   active      — 当前在用
+#   deprecated  — 已废弃（保留历史记录，不出现在合法清单中）
+#   on-demand   — 按需激活，不常驻
+
+agents:
+  - id: EMP_0000
+    name: Meta Manager
+    role: 跨域总调度，Mason 的主要 AI 对接人
+    domain: meta
+    status: active
+    can_own_tasks: false  # 协调者，不直接执行
+
+  - id: EMP_0001
+    name: 素仁轩 PM
+    role: 素仁轩项目管理
+    domain: ecommerce
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0002
+    name: Platform Dev
+    role: 平台基础设施开发（mason-hub 专属）
+    domain: platform
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0003
+    name: 电商 Domain Manager
+    role: 电商行业判断和项目间协调
+    domain: ecommerce
+    status: active
+    can_own_tasks: false  # 管理者，不直接执行
+
+  - id: EMP_0004
+    name: SRE
+    role: 全局基础设施运维
+    domain: platform
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0005
+    name: 电商 Dev
+    role: 电商业务开发（/opt/surenxuan/ 专属）
+    domain: ecommerce
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0006
+    name: 斥候 Scout
+    role: 全域情报搜集（技术/内容/电商/技术选型）
+    domain: independent
+    status: active
+    can_own_tasks: false  # 情报角色，不执行优化任务
+
+  - id: EMP_0007
+    name: Content-Tech Domain Manager
+    role: 已归档，知识沉淀到 knowledge_base.md
+    domain: content-tech
+    status: deprecated
+    deprecated_date: "2026-02"
+    deprecated_reason: 降级合并，GEO 知识 → shared/mkt/，社媒知识 → content-tech/
+
+  - id: EMP_0008
+    name: SocialMesh 内容运营总监
+    role: 内容策略 + 发布排程 + 效果复盘
+    domain: socialmesh
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0009
+    name: Content-Tech Dev
+    role: 内容技术开发（socialmesh 专属）
+    domain: socialmesh
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0010
+    name: Content Creator
+    role: 多平台内容生产 + 社区互动
+    domain: socialmesh
+    status: active
+    can_own_tasks: true
+
+  - id: EMP_0011
+    name: Account Manager
+    role: 品牌上下文管理，桥接品牌与内容团队
+    domain: independent
+    status: active
+    can_own_tasks: false  # 桥梁角色，不直接执行
+
+  - id: EMP_0012
+    name: Product Architect
+    role: 产品定义、归属判断、边界管理
+    domain: independent
+    status: on-demand
+    can_own_tasks: false  # 参谋角色，不执行
+
+  - id: EMP_0013
+    name: 店铺运营
+    role: XHS 店铺日常运营（客服/评分/售后/合规/对账）
+    domain: ecommerce
+    status: active
+    can_own_tasks: true

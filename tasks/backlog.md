@@ -171,6 +171,7 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] EMP_0008 新增发布前质量门控 — 2026-03-09 完成，Gate 1 自动 → Gate 2 EMP_0008 执行 → Gate 3 Mason 签批
 - [x] Lesson Triage 机制 — 2026-03-09 完成，lesson 强制 gap 分类 + EMP_0012 triage + EMP_0000 晨会检查（shared/templates/lesson_format.md）
 - [x] 自优化闭环协议 — 2026-03-09 完成，shared/qa/optimization_loop.md，3 轮上限 + 多维目标防漂移
+- [x] Gate 2 bias 修正 + Agent 名册 SSOT — 2026-03-10 完成，docs/system/agents.yaml 单一来源 + Gate 2 注入结构化上下文（agent 清单/数据限制/执行容量）+ Step 3 因果推理要求
 - [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
 

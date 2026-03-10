@@ -172,6 +172,13 @@ ANALYSIS_PROMPT="你是 SocialMesh 内容运营总监（EMP_0008），正在执�
 - 反馈是症状不是诊断：先定位根因再给方案
 - 参照 shared/qa/optimization_loop.md 的反馈解析规则
 
+## 因果推理要求（必须遵守）
+- 区分相关性和因果性：数据显示 A 和 B 共现，不等于 A 导致 B
+- 标注幸存者偏差：采集数据只含"被推荐的内容"，失败内容不在样本中，预期效果必须注明置信度
+- 考虑混淆变量：比如"含数字标题互动高"可能是因为清单/教程类内容本身互动高，而非数字的功劳
+- 预期效果的数字来源：如果来自竞品均值而非自身历史数据，必须标注"基于市场均值推算，置信度中等"
+- Owner 只能从 Gate 2 审核时提供的合法 Agent 清单中选择，不要编造不存在的 EMP 编号
+
 ## 数据输入
 
 ### Radar 关注率
@@ -239,20 +246,90 @@ fi
 # =============================================================================
 log "Step 4: Gate 2 建议合理性检查..."
 
+# 动态获取 backlog 待办数量
+BACKLOG_SUMMARY=""
+if [ -f "$HUB_DIR/tasks/backlog.md" ]; then
+    OPEN_TASKS=$(grep -c '^\- \[ \]' "$HUB_DIR/tasks/backlog.md" || true)
+    BACKLOG_SUMMARY="当前 backlog 有 ${OPEN_TASKS} 个未完成任务。新建议要考虑执行容量，避免积压。"
+fi
+
+# 动态读取合法 Agent 清单（Single Source of Truth: docs/system/agents.yaml）
+AGENTS_YAML="$HUB_DIR/docs/system/agents.yaml"
+AGENT_ROSTER=""
+if [ -f "$AGENTS_YAML" ]; then
+    # 提取 status=active 且 can_own_tasks=true 的 agent 作为合法 Owner
+    AGENT_ROSTER=$("$HUB_DIR/.venv/bin/python3" -c "
+import yaml, sys
+with open('$AGENTS_YAML') as f:
+    data = yaml.safe_load(f)
+active = []
+deprecated = []
+non_owners = []
+for a in data.get('agents', []):
+    if a['status'] == 'deprecated':
+        deprecated.append(f\"- ~~{a['id']} {a['name']}~~ — 已废弃（{a.get('deprecated_reason', '')}）\")
+    elif a.get('can_own_tasks'):
+        active.append(f\"- {a['id']} {a['name']} — {a['role']}\")
+    else:
+        non_owners.append(f\"- {a['id']} {a['name']} — {a['role']}（不可作为 Owner）\")
+print('### 可作为 Owner 的 Agent')
+print('\n'.join(active))
+print()
+print('### 非执行角色（不可作为 Owner）')
+print('\n'.join(non_owners))
+if deprecated:
+    print()
+    print('### 已废弃（历史记录）')
+    print('\n'.join(deprecated))
+" 2>/dev/null) || true
+fi
+
+if [ -z "$AGENT_ROSTER" ]; then
+    log "  WARN: 无法读取 agents.yaml，使用硬编码 fallback"
+    AGENT_ROSTER="### 可作为 Owner 的 Agent
+- EMP_0002 Platform Dev — 平台基础设施开发（mason-hub 专属）
+- EMP_0004 SRE — 全局基础设施运维
+- EMP_0008 SocialMesh 内容运营总监 — 内容策略 + 排程 + 复盘
+- EMP_0009 Content-Tech Dev — 内容技术开发（socialmesh 专属）
+- EMP_0010 Content Creator — 内容生产 + 社区互动
+- EMP_0013 店铺运营 — XHS 店铺日常运营"
+fi
+
 GATE2_PROMPT="你是质量审核员。检查以下优化建议是否合理。
 
-## 检查项（逐条过）
-1. 每条建议是否有数据依据（不能凭空建议）
-2. 是否有越界建议（改产品定位/平台优先级/品牌调性 = 越界）
-3. 是否有单指标优化风险（只看完播率而忽略互动 = 有风险）
-4. Owner 是否合理（EMP_0002 不做内容，EMP_0010 不做代码）
-5. 是否有数据盲点声明
+## 系统上下文（审查时必须参考）
+
+### 合法 Agent 清单（Owner 只能从这里选）
+$AGENT_ROSTER
+
+### 本次建议的数据来源限制
+- 所有 XHS 互动数据来自竞品采集（搜索 API），不含素仁轩自身账号数据
+- 采集样本只含"被推荐的内容"——失败帖子不在样本中（幸存者偏差）
+- 趋势数据如果两期相同，可能是采集缓存重复，"趋势"结论的置信度应降低
+- 视频 vs 图文的互动差距中，制作成本维度缺失
+
+### 执行容量
+$BACKLOG_SUMMARY
+
+## 硬性检查项（任何一条 FAIL → 整体 FAIL）
+1. **Owner 合法性**：Owner 必须在上方合法 Agent 清单中。不存在的 EMP 编号 = 立即 FAIL
+2. **越界检查**：改产品定位/平台优先级/品牌调性 = 越界 FAIL
+3. **数据盲点声明**：必须有，且不能为空话套话
+
+## 软性检查项（标注警告，不一定 FAIL）
+4. 每条建议是否有数据依据（不能凭空建议）
+5. 是否有单指标优化风险（只看完播率而忽略互动 = 有风险）
+6. **幸存者偏差**：如果建议的数据依据来自竞品采集，预期效果是否标注了置信度？未标注 → 警告
+7. **因果 vs 相关**：建议是否把相关性当因果（如"含数字标题互动高"→"用数字就能提高互动"）？有此问题 → 警告
+8. **执行可行性**：建议的行动是否超出 Owner 的能力范围？当前 backlog 是否能承受新增任务？
 
 ## 待审核的建议
 $SUGGESTIONS
 
 ## 输出格式
-逐条给出 PASS 或 FAIL + 原因。最后给总结论：PASS（可以发给 Mason）或 FAIL（需要修改）+ 原因。
+逐条给出 PASS / FAIL / WARN + 原因。
+最后给总结论：PASS（可以发给 Mason）或 FAIL（需要修改）+ 原因。
+如果有 WARN，在总结论中列出所有警告供 Mason 参考。
 如果 FAIL，列出具体哪条建议有什么问题。"
 
 GATE2_RESULT=$(echo "$GATE2_PROMPT" | claude -p --output-format text 2>/dev/null) || true
