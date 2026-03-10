@@ -445,7 +445,7 @@ Phase 1 — 数据治理基础:
 Phase 2 — 主干管道统一:
 - [ ] XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014）
 - [ ] 管道编排机制 — 上游完成写标记，下游检查后再跑，防止"趋势数据静止"类问题（EMP_0014）
-- [ ] Scout 产出标准化 — Scout 情报写入中台存储，下游通过目录读取（EMP_0014 + EMP_0006）
+- [x] Scout 产出标准化 — 2026-03-10 完成，data/schemas/scout_intel.yaml（11 字段 schema）+ data/pipelines/scout-normalize.py（digest md → JSONL），23 条情报已提取，data_catalog.yaml 注册 clean_scout_intel
 
 Phase 3 — 数据 SDK + 扩展:
 - [ ] 数据读取 SDK — Python 模块，业务 agent 一行代码获取干净数据（EMP_0014）

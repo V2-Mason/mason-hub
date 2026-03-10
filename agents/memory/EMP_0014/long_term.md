@@ -34,3 +34,18 @@
 
 ### Gap: 📚 纯知识
 - data-sync.sh 需要注册 cron（在阿里云采集完成后触发），目前手动运行
+
+## Lesson: Scout 产出标准化 (2026-03-10)
+
+### 做了什么
+- 定义 scout_intel.yaml schema（11 字段：id/date/source/priority/title/summary/url/relevance/suggested_action/suggested_owner/digest_file）
+- scout-normalize.py 解析 digest markdown → JSONL，支持 --file 单文件和 --stats 统计
+- 3 个 digest 文件提取 23 条情报（10 red / 13 yellow），去重幂等
+
+### 发现
+- Scout 脚本全部输出到 stdout，不写文件——标准化只能在 digest 层面做，不能在单脚本层面
+- 所有 23 条 source=mixed，因为 digest 是多脚本汇总后的产物。要精确到脚本级别需要改 Scout 产出流程
+- 建议行动/负责人只有 4/23 条有——大部分情报缺少 actionable 信息
+
+### Gap: 📚 纯知识
+- optimization-cycle.sh 还在读原始 markdown，可以改为读 JSONL 按 priority=red 过滤

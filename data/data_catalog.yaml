@@ -165,6 +165,20 @@ datasets:
       - 产出格式不统一（有的带日期有的不带）
       - 没有结构化 schema，下游只能 grep 文件
 
+  - id: clean_scout_intel
+    name: Scout 情报标准化数据
+    description: Scout digest markdown 解析后的结构化 JSONL，带优先级/来源/建议行动等字段
+    owner: EMP_0014
+    producer: data/pipelines/scout-normalize.py
+    input: [raw_scout_intel]
+    storage:
+      type: jsonl
+      location: gcp:~/mason-hub/intel/processed/scout_normalized.jsonl
+    schema: data/schemas/scout_intel.yaml
+    update_frequency: "随 Scout 产出触发"
+    consumers: [optimization-cycle.sh, EMP_0000（晨会）]
+    status: active
+
   # --- XHS 平台规则文档 ---
   - id: raw_xhs_helper_docs
     name: 小红书电商帮助中心文档
