@@ -86,7 +86,15 @@ cd ~/surenxuan && git status --short | head -5
 - 如果 intel/ 目录不存在或为空，显示"暂无情报"
 - 🔴 级情报必须逐条列出标题和建议行动
 
-## 6. 成本概览
+## 6. Gateway 未提交变更检查
+- 运行 `git status --short` 检查是否有 Gateway 产生的未提交文件变更（排除 logs/ 和 data/gateway-memory.jsonl）
+- 如果有代码变更（scripts/、skills/、SYSTEM_MAP.md 等）：
+  - 用 EMP_0012 Checklist A 判断归属
+  - 执行 git add + commit，lesson 写入对应 agent 记忆
+  - 在输出中标注："🔧 Gateway 变更已提交: <文件列表> → EMP_XXXX"
+- 如果没有 → 跳过
+
+## 7. 成本概览
 - 如果 logs/token-usage.log 存在，显示最近 7 天的 API 消耗趋势
 - 如果不存在，跳过此项
 
