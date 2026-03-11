@@ -10,11 +10,15 @@
 | beads 记忆系统 | 2026-02-27 | steveyegge/beads ⭐17k+，迁移至 Dolt DB，新增 Gas Town TUI 监控面板 | 2026-03-22 |
 | MCP server 生态 | 2026-02-27 | fastmcp ⭐23k, activepieces ~400 servers，可集成 | 2026-03-13 |
 | OpenClaw 框架 | 2026-02-27 | 架构参考，部分 pattern 已采纳 | 2026-04 |
-| superset (AI Agent IDE) | 2026-02-27 | 多 agent 并行运行 IDE ⭐2046，观察成熟度 | 2026-03-13 |
+| superset (AI Agent IDE) | 2026-02-27 | → 已更新 (2026-03-11) 见下方新增条目 | - |
 | quoroom-ai/room (Swarm Engine) | 2026-02-27 | queen/worker 蜂群架构参考 ⭐440 | 2026-03-13 |
 | kibitz (Agent 实时监控) | 2026-02-28 | 多 agent session 实时解码面板 ⭐304，triggers.log 替代方案 | 2026-03-14 |
 | FastSkills (Skills→MCP) | 2026-02-28 | Agent Skills 标准化为 MCP server ⭐102，趋势信号 | 2026-03-14 |
 | memorix (跨 Agent 记忆桥) | 2026-02-28 | 跨 Cursor/Claude Code 共享记忆 ⭐138，记忆 v2 参考 | 2026-03-14 |
+| superset (AI Agent IDE) | 2026-02-27 | ⭐2046→6626 爆发式增长(+224%)，多 agent 并行 IDE | 2026-03-18 | → 已更新 (2026-03-11)
+| ask-search (自托管搜索 Skill) | 2026-03-11 | SearxNG 自托管搜索，Scout v2 搜索引擎层候选 ⭐177 | 2026-03-18 |
+| claude-code-plugins-plus-skills | 2026-03-11 | 340 插件+1367 skills 合集+CCPI 包管理 ⭐1583 | 2026-03-18 |
+| googleapis/genai-toolbox | 2026-03-11 | Google 官方 MCP 数据库网关 ⭐13378，企业级 MCP 信号 | 2026-03-25 |
 
 ## Active — UI/UX 情报 (Design)
 

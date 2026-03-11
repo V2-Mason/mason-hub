@@ -31,6 +31,14 @@
 - 更新了数据存储目录，加入 engines/scout.db/validated/reports/
 - Gap 分类：📄 文档更新 → 已更新 agents/EMP_0006/config.md
 
+## 2026-03-11: 每日快扫
+- 三脚本并行执行（anthropic/trending/github），总耗时约 2 分钟
+- 发现 superset ⭐2046→6626 爆发增长，多 agent IDE 赛道验证
+- claude-mem ⭐34k 说明社区对 agent 记忆需求极高
+- ask-search (SearxNG) 可能是 Scout v2 搜索引擎层候选方案
+- plugins-plus-skills 1367 个 skills 合集值得深入挖掘
+- Gap 分类：📚 纯知识 → 留存
+
 ## 巡逻经验
 
 ### 当前所有脚本只用 GitHub REST API（无认证）
