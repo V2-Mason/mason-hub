@@ -6,7 +6,7 @@
 
 ## 1. 写 Lesson
 
-写入 `agents/memory/{你的agent_id}/long_term.md`，使用以下格式：
+写入 `agents/{你的agent_id}/memory/long_term.md`，使用以下格式：
 
 ```
 ## YYYY-MM-DD: <模块名>
@@ -32,7 +32,7 @@
 ## 3. Git Commit
 
 ```bash
-git add agents/memory/ tasks/backlog.md <你修改的文件>
+git add agents/*/memory/ tasks/backlog.md <你修改的文件>
 # 不要 add: logs/, .env, *.db, data/gateway-memory.jsonl
 git commit -m "<一句话总结变更>"
 ```

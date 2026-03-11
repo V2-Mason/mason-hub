@@ -26,7 +26,7 @@ SocialMesh（内容运营中台）
 │
 ├── 模块1：内容生产
 │   ├── 图文生产（image_engine，已在 socialmesh）
-│   └── 视频生产（video pipeline，从 mason-hub/skills/video-download/ 迁入）
+│   └── 视频生产（video pipeline，从 mason-hub/skills/video/video-download/ 迁入）
 │
 ├── 模块2：内容管理
 │   ├── 多账号管理
@@ -61,7 +61,7 @@ SocialMesh（内容运营中台）
 - 不做：视频剪辑（用 ffmpeg 自动组装，不做交互式剪辑）；不做实时渲染预览
 
 ### 现有代码迁移清单
-从 `mason-hub/skills/video-download/` 迁入：
+从 `mason-hub/skills/video/video-download/` 迁入：
 - content_pipeline.py（总调度，8 步）
 - download.py（视频下载）
 - gemini_analyze.py（Gemini 拆解）

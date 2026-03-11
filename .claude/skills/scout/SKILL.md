@@ -16,9 +16,9 @@ cat ~/mason-hub/intel/watchlist.md
 ## 2. GitHub 搜索
 对 watchlist 中的高优先级和中优先级主题，运行 GitHub 搜索：
 ```bash
-bash ~/mason-hub/skills/scout-github.sh "claude code agent"
-bash ~/mason-hub/skills/scout-github.sh "MCP server tool"
-bash ~/mason-hub/skills/scout-github.sh "AI agent orchestration"
+bash ~/mason-hub/skills/scout/scout-github.sh "claude code agent"
+bash ~/mason-hub/skills/scout/scout-github.sh "MCP server tool"
+bash ~/mason-hub/skills/scout/scout-github.sh "AI agent orchestration"
 ```
 （根据 watchlist.md 的实际内容调整搜索词）
 

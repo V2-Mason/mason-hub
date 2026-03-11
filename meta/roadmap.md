@@ -65,14 +65,14 @@
 
 | 组件 | 文件 | 状态 |
 |------|------|------|
-| 语法检查 | skills/check-syntax.sh | ✅ |
-| 后端测试（自动服务管理） | skills/run-backend-tests.sh | ✅ |
-| 冒烟测试（阿里云端点） | skills/run-smoke-tests.sh | ✅ |
-| 三层验证循环 | skills/dev-verify-loop.sh | ✅ |
-| 健康检查 | skills/health-check-full.sh | ✅ |
-| 验收测试 | skills/run-acceptance-tests.sh | ✅ |
-| 文件→测试映射 | skills/test-map.json | ✅ |
-| 系统诊断 | skills/agent-doctor.sh | ✅ |
+| 语法检查 | skills/monitoring/check-syntax.sh | ✅ |
+| 后端测试（自动服务管理） | skills/dev-tools/run-backend-tests.sh | ✅ |
+| 冒烟测试（阿里云端点） | skills/dev-tools/run-smoke-tests.sh | ✅ |
+| 三层验证循环 | skills/dev-tools/dev-verify-loop.sh | ✅ |
+| 健康检查 | skills/monitoring/health-check-full.sh | ✅ |
+| 验收测试 | skills/dev-tools/run-acceptance-tests.sh | ✅ |
+| 文件→测试映射 | skills/dev-tools/test-map.json | ✅ |
+| 系统诊断 | skills/monitoring/agent-doctor.sh | ✅ |
 
 ### 2.2 四层 Escalation
 
@@ -97,11 +97,11 @@
 
 | 组件 | 状态 |
 |------|------|
-| 角色文件 agents/EMP_0006.md | ✅ 已创建 |
-| skills/scout-github.sh | ✅ 已创建并测试 |
-| skills/scout-trending.sh | ✅ 已创建并测试 |
-| skills/scout-anthropic.sh | ✅ 已创建并测试 |
-| skills/scout-search-topic.sh | ✅ 已创建并测试 |
+| 角色文件 agents/EMP_0006/config.md | ✅ 已创建 |
+| skills/scout/scout-github.sh | ✅ 已创建并测试 |
+| skills/scout/scout-trending.sh | ✅ 已创建并测试 |
+| skills/scout/scout-anthropic.sh | ✅ 已创建并测试 |
+| skills/scout/scout-search-topic.sh | ✅ 已创建并测试 |
 | intel/{raw,digests,archive}/ 目录 | ✅ 已创建 |
 | intel/watchlist.md | ✅ 已创建（8 项） |
 | 首次巡逻 W09 digest | ✅ 已完成并发送 Slack #scout |
@@ -291,7 +291,7 @@ Layer 3（语义搜索，✅ 已实现）：
   ## [COMPACTED] test_report: 需要seed数据,date_range可能None,与sales模块共享函数
 ```
 
-**实现：** ✅ skills/compact-memory.sh 已创建
+**实现：** ✅ skills/agent-ops/compact-memory.sh 已创建
 - 输入：agent ID（或 all）+ --dry-run
 - 按日期阈值分类 sections（7d/30d）
 - 中期用 claude -p 压缩为关键信息

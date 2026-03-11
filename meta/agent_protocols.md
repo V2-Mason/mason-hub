@@ -177,7 +177,7 @@ Agent 收到 alert 后的标准处理流程：
 - Phase 结束时，Domain Manager 做全局复盘
 
 ## 复盘写入位置
-- 单次任务复盘 → PM 的 agents/memory/EMP_0001/long_term.md
+- 单次任务复盘 → PM 的 agents/EMP_0001/memory/long_term.md
 - 周度总结 → 对应项目的 decisions.md（如果产生了新的判断模式）
 - Phase 总结 → domain 的 knowledge_base.md（由 Domain Manager 执行）
 

@@ -104,7 +104,7 @@ Scout v2（cron 触发，串行管道，CLI 输出）:
 
 ```
 当前:
-  skills/scout-*.sh          ← 9 个独立脚本，平铺
+  skills/scout/scout-*.sh          ← 9 个独立脚本，平铺
   data/pipelines/scout-normalize.py
   intel/raw/                 ← 原始情报
   intel/processed/           ← JSONL
@@ -127,7 +127,7 @@ Scout v2:
   ├── validated/             ← 新增：交叉验证后的 JSONL
   └── reports/               ← 新增：结构化周报 markdown
 
-  skills/scout-*.sh          ← 不动：继续作为 SpiderEngine 的采集器
+  skills/scout/scout-*.sh          ← 不动：继续作为 SpiderEngine 的采集器
   tools/trendradar/          ← 不动：继续作为 SpiderEngine 的数据源
   data/mirror/               ← 不动：InsightEngine 读取
 ```
@@ -489,7 +489,7 @@ def run_scout_v2_pipeline():
     topics = spider.extract_topics()              # 新增：从热榜提取关键词
 
     # 跑现有 scout 脚本（用新关键词）
-    run_existing_scouts(topics)                    # 调用 skills/scout-*.sh
+    run_existing_scouts(topics)                    # 调用 skills/scout/scout-*.sh
 
     # ═══ Phase 2: QueryEngine ═══
     log("Phase 2: 反思搜索")
@@ -606,7 +606,7 @@ report:
 ## 改动范围
 
 **不改的**:
-- skills/scout-*.sh（9 个脚本）
+- skills/scout/scout-*.sh（9 个脚本）
 - tools/trendradar/
 - data/pipelines/scout-normalize.py
 - data/mirror/

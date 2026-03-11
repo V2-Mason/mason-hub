@@ -152,8 +152,8 @@ P0 — 选品准确率追踪闭环:
 - [ ] 用销售数据反馈优化 Agent 评估模型的权重 — 等销售数据积累
 
 P1 — Agent 上线:
-- [x] Agent #0（数据COO）— 2026-02-28 完成，skills/data-coo-daily.sh + cron 08:30 CST，调现有 API 汇总发 Slack
-- [x] Agent #2（营销引擎）— 2026-02-28 完成，skills/marketing-daily.sh 数据采集层，现有 cron（CST 10:00）已覆盖话术生成
+- [x] Agent #0（数据COO）— 2026-02-28 完成，skills/agent-ops/data-coo-daily.sh + cron 08:30 CST，调现有 API 汇总发 Slack
+- [x] Agent #2（营销引擎）— 2026-02-28 完成，skills/agent-ops/marketing-daily.sh 数据采集层，现有 cron（CST 10:00）已覆盖话术生成
 - [x] 风险提示行动指引 — 2026-02-28 完成，5 种风险类型动态 action_suggestions + 前端可展开跳转
 
 P1 — 通知 + 稳定性:
@@ -264,7 +264,7 @@ P0 — 基础功能（模块2 内容管理）:
 - [ ] 内容列表显示发布状态 badge — 已发布/已排程/失败（EMP_0009）
 
 P1 — 模块化代码迁移（Phase A）:
-- [ ] 模块1 代码迁移：mason-hub/skills/video-download/ → socialmesh/backend/content/video_pipeline/（EMP_0009）
+- [ ] 模块1 代码迁移：mason-hub/skills/video/video-download/ → socialmesh/backend/content/video_pipeline/（EMP_0009）
 - [ ] 模块3 代码迁移：mason-hub/skills/ 下 xhs-*.sh + 分析脚本 → socialmesh/scripts/ 或 socialmesh/backend/analytics/（EMP_0009）
 - [ ] 依赖项处理：Google OAuth credentials 共享方案、环境变量统一（EMP_0009 + EMP_0004）
 - [ ] Agent 角色定义更新：EMP_0008 + EMP_0009 + EMP_0010 加入视频/分析职责（EMP_0012 产出定义，Mason 批准）
@@ -431,7 +431,7 @@ P1 — 话题淘汰点击追踪（2026-03-08 Mason 批准方案 1）:
 > Docker: yanwk/comfyui-boot:cu128-slim, 持久化卷 ~/comfyui-storage:/root
 
 P1 — 可灵 Kling Direct 节点（代码已写好，待部署）:
-- [x] ComfyUI 节点代码 — 2026-03-08 完成，skills/comfyui-kling-direct/（KlingTextToVideo + KlingImageToVideo）
+- [x] ComfyUI 节点代码 — 2026-03-08 完成，skills/video/comfyui-kling-direct/（KlingTextToVideo + KlingImageToVideo）
   - 支持模型: kling-v3-omni / kling-v2-5-turbo / kling-v2-6 / kling-v2-1 / kling-v1-6
   - JWT 认证纯 stdlib，无额外依赖
   - 异步任务轮询，支持 text2video + image2video + tail_image（结束帧控制）
@@ -453,7 +453,7 @@ P2 — Qwen Image Edit 模型下载（待部署）:
   - LoRA 2: Qwen-Edit-2509-Multiple-angles.safetensors (236MB)
 
 已完成:
-- [x] Gemini Direct Pro 节点 — 2026-03-07，skills/comfyui-gemini-direct/，已部署并验证
+- [x] Gemini Direct Pro 节点 — 2026-03-07，skills/video/comfyui-gemini-direct/，已部署并验证
 - [x] fix-comfyui-gemini.sh — NakanoSanku 插件第三方代理修复脚本
 
 **数据中台建设 — EMP_0014 Data Engineer（2026-03-10 Mason 确认混合式架构）**:

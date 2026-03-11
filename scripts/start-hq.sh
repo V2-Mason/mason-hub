@@ -24,15 +24,15 @@ LOGGED="$PROJECT_DIR/scripts/claude-logged.sh"
 
 # 创建 session，pane 0: Meta Manager（左上）
 tmux new-session -d -s "$SESSION" -c "$PROJECT_DIR" -x 200 -y 50
-tmux send-keys -t "$SESSION:0.0" "$ENV && cd $PROJECT_DIR && $LOGGED EMP_0000 'Meta Manager' '读取 agents/EMP_0000.md，你是 Meta Manager。遵守该文件中的所有职责定义和行为边界。启动后说一句简短的状态报告。'" Enter
+tmux send-keys -t "$SESSION:0.0" "$ENV && cd $PROJECT_DIR && $LOGGED EMP_0000 'Meta Manager' '读取 agents/EMP_0000/config.md，你是 Meta Manager。遵守该文件中的所有职责定义和行为边界。启动后说一句简短的状态报告。'" Enter
 
 # 左右分屏，pane 1: Platform Dev（右侧）
 tmux split-window -h -t "$SESSION:0.0" -c "$PROJECT_DIR"
-tmux send-keys -t "$SESSION:0.1" "$ENV && cd $PROJECT_DIR && $LOGGED EMP_0002 'Platform Dev' '读取 agents/EMP_0002.md，你是 Platform Dev。遵守该文件中的所有职责定义和行为边界。启动后说一句简短的状态报告。'" Enter
+tmux send-keys -t "$SESSION:0.1" "$ENV && cd $PROJECT_DIR && $LOGGED EMP_0002 'Platform Dev' '读取 agents/EMP_0002/config.md，你是 Platform Dev。遵守该文件中的所有职责定义和行为边界。启动后说一句简短的状态报告。'" Enter
 
 # pane 0 上下分屏，pane 2: SRE（左下）
 tmux split-window -v -t "$SESSION:0.0" -c "$PROJECT_DIR"
-tmux send-keys -t "$SESSION:0.2" "$ENV && cd $PROJECT_DIR && $LOGGED EMP_0004 'SRE Agent' '读取 agents/EMP_0004.md，你是 SRE Agent。遵守该文件中的所有职责定义和行为边界。运行 uptime、df -h、free -h、systemctl status slack-bot，给出简短健康报告。'" Enter
+tmux send-keys -t "$SESSION:0.2" "$ENV && cd $PROJECT_DIR && $LOGGED EMP_0004 'SRE Agent' '读取 agents/EMP_0004/config.md，你是 SRE Agent。遵守该文件中的所有职责定义和行为边界。运行 uptime、df -h、free -h、systemctl status slack-bot，给出简短健康报告。'" Enter
 
 # 等待启动
 sleep 3
@@ -61,7 +61,7 @@ echo ""
 echo "📌 添加业务 domain:"
 echo "   Ctrl+B 然后 % (左右分屏) 或 \" (上下分屏)"
 echo "   cd ~/mason-hub && claude"
-echo "   进去后: 读取 agents/EMP_0003.md，你是电商 Manager"
+echo "   进去后: 读取 agents/EMP_0003/config.md，你是电商 Manager"
 echo ""
 echo "🔑 快捷键:"
 echo "   切换 pane:    Ctrl+B 然后方向键"

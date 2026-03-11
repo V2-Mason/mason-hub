@@ -10,7 +10,7 @@
 数据源:
   1. memory/*_lessons.md           — agent lessons (existing)
   2. domains/ecommerce/.../decisions.md — project decisions (existing)
-  3. agents/memory/EMP_*/long_term.md  — agent long-term memory (new)
+  3. agents/EMP_*/memory/long_term.md  — agent long-term memory (new)
   4. ~/.claude/projects/-home-hangn-mason-hub/memory/*.md — global memory (new)
 
 依赖: chromadb, sentence-transformers (在 ~/mason-hub/.venv 中)
@@ -27,7 +27,7 @@ HUB_DIR = Path.home() / "mason-hub"
 MEMORY_DIR = HUB_DIR / "memory"
 CHROMA_DIR = MEMORY_DIR / "chroma_db"
 DECISIONS_DIR = HUB_DIR / "domains" / "ecommerce" / "projects" / "srx"
-LONG_TERM_DIR = HUB_DIR / "agents" / "memory"
+LONG_TERM_DIR = HUB_DIR / "agents"
 GLOBAL_MEMORY_DIR = Path.home() / ".claude" / "projects" / "-home-hangn-mason-hub" / "memory"
 LAST_INDEXED_FILE = CHROMA_DIR / ".last_indexed"
 
@@ -220,7 +220,7 @@ def collect_all_sources(agent_id: str = None) -> list[tuple[Path, str]]:
 
     # 3. Agent long-term memory files
     if LONG_TERM_DIR.exists():
-        for lt_file in sorted(LONG_TERM_DIR.glob("EMP_*/long_term.md")):
+        for lt_file in sorted(LONG_TERM_DIR.glob("EMP_*/memory/long_term.md")):
             sources.append((lt_file, "long_term"))
 
     # 4. Global memory files
@@ -266,8 +266,8 @@ def parse_file(filepath: Path, source_type: str) -> tuple[list[str], list[str], 
             })
 
     elif source_type == "long_term":
-        # Extract agent ID from path: agents/memory/EMP_XXXX/long_term.md
-        agent = filepath.parent.name  # e.g., EMP_0005
+        # Extract agent ID from path: agents/EMP_XXXX/memory/long_term.md
+        agent = filepath.parent.parent.name  # e.g., EMP_0005
         sections = parse_long_term(filepath)
         for i, s in enumerate(sections):
             doc_id = f"{agent}_longterm_{s['topic'][:30]}_{i}"

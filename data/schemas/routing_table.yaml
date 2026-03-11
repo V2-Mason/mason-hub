@@ -14,7 +14,7 @@ routes:
         description: "data_health_check 无 ❌"
     actions:
       - type: script
-        target: "skills/xhs-analyze.sh"
+        target: "skills/xhs/xhs-analyze.sh"
         description: "触发 XHS 数据分析"
       - type: event
         target: "data-fresh"

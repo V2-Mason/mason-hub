@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+# 确保 cron 环境能找到正确版本的 claude（~/.local/bin 优先于 /usr/bin）
+export PATH="$HOME/.local/bin:$PATH"
+
 HUB_DIR="$HOME/mason-hub"
 SKILLS_DIR="$HUB_DIR/skills"
 NOTIFY_MASON="$SKILLS_DIR/notify-mason.sh"
@@ -11,6 +14,14 @@ TASK_LOG_DIR="$HUB_DIR/logs/tasks"
 MEMORY_DIR="$HUB_DIR/memory"
 MAX_VERIFY_ROUNDS=3
 MAX_PM_RETRIES=2
+
+# --- 结构化任务元数据（Dispatcher 通过环境变量传入）---
+TASK_EXPECTED_OUTPUT="${TASK_EXPECTED_OUTPUT:-}"
+TASK_VERIFY_COMMAND="${TASK_VERIFY_COMMAND:-}"
+TASK_OUTPUT_PATH="${TASK_OUTPUT_PATH:-}"
+TASK_MAX_DURATION="${TASK_MAX_DURATION:-0}"
+TASK_CONTEXT_FILES="${TASK_CONTEXT_FILES:-}"
+TASK_TYPE="${TASK_TYPE:-execute}"
 
 # --- Chain depth 限制（防止无限递归）---
 CHAIN_DEPTH=${CHAIN_DEPTH:-0}
@@ -28,7 +39,7 @@ fi
 # --- 参数检查 ---
 if [ $# -lt 2 ]; then
   echo "用法: $0 <agent配置文件> <任务内容>"
-  echo "示例: $0 agents/EMP_0000.md \"读取context.json并分析\""
+  echo "示例: $0 agents/EMP_0000/config.md \"读取context.json并分析\""
   exit 1
 fi
 
@@ -46,7 +57,12 @@ if [ ! -f "$AGENT_FILE" ]; then
 fi
 
 # --- 提取 agent 名称 ---
-AGENT_NAME=$(basename "$1" .md)
+# 支持新格式 agents/EMP_0002/config.md 和旧格式 agents/EMP_0002/config.md
+if [[ "$(basename "$1")" == "config.md" ]]; then
+  AGENT_NAME=$(basename "$(dirname "$1")")
+else
+  AGENT_NAME=$(basename "$1" .md)
+fi
 
 # --- Lane Queue: serial execution lock ---
 LANE_LOCK="$HUB_DIR/scripts/lane-lock.sh"
@@ -58,7 +74,7 @@ if [ -x "$LANE_LOCK" ]; then
     if [ "${LANE_LOCK_HELD:-}" = "$AGENT_LANE" ]; then
       echo "[lane-lock] Lane $AGENT_LANE inherited from parent" >&2
       AGENT_LANE=""  # don't release on exit
-    elif ! "$LANE_LOCK" acquire "$AGENT_LANE" "$AGENT_NAME" "${TASK_ID:-unknown}" --wait 60; then
+    elif ! "$LANE_LOCK" acquire "$AGENT_LANE" "$AGENT_NAME" "${TASK_ID:-unknown}" --wait 1200; then
       echo "❌ Cannot acquire $AGENT_LANE lane lock" >&2
       exit 1
     else
@@ -124,23 +140,9 @@ if [ -z "$TASK_ID" ]; then
 fi
 mkdir -p "$TASK_LOG_DIR"
 
-# --- Phase 2: 经验记忆注入 ---
-LESSONS_FILE="$MEMORY_DIR/${AGENT_NAME}_lessons.md"
-if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
-  SYSPROMPT="${SYSPROMPT}
-
----
-## 历史经验（来自过去任务的教训，请参考但不必完全遵循）
-
-$(cat "$LESSONS_FILE")"
-fi
-
-# --- Phase 2.5: 共享知识层注入（含上下文预算控制）---
+# --- Phase 2: 经验记忆注入（语义搜索优先，全量回退）---
 # 预算：注入内容不超过 MAX_INJECT_CHARS 字符（约 MAX_INJECT_CHARS/4 tokens）
 MAX_INJECT_CHARS=16000  # ~4000 tokens
-INJECT_USED=0
-
-# 计算当前已注入的字符数（lessons 部分）
 INJECT_USED=${#SYSPROMPT}
 
 inject_if_exists() {
@@ -167,14 +169,12 @@ $(cat "$file")"
   fi
 }
 
-# 尝试语义搜索（Layer 3），如果 ChromaDB 可用且 lessons 大于 10KB
 VENV_PYTHON="$HUB_DIR/.venv/bin/python3"
 inject_semantic_search() {
   local task_desc="$1"
   if [ ! -x "$VENV_PYTHON" ]; then
     return 1
   fi
-  # 检查 ChromaDB 是否已初始化且有数据
   if [ ! -d "$HUB_DIR/memory/chroma_db" ]; then
     return 1
   fi
@@ -200,8 +200,8 @@ except:
   return 1
 }
 
-# 决定 lessons 注入策略：始终尝试语义搜索（Layer 3），失败则回退全量注入（Layer 2）
-# 语义搜索能跨 agent 召回相关记忆，比全量注入单个 lessons 文件更有价值
+# 策略：语义搜索优先（跨 agent 精准召回），失败才回退全量 lessons
+# 之前两个都注入，浪费 ~1000-2000 tokens
 SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
 if [ -n "$SEMANTIC_RESULT" ]; then
   SYSPROMPT="${SYSPROMPT}
@@ -209,54 +209,99 @@ if [ -n "$SEMANTIC_RESULT" ]; then
 ---
 ${SEMANTIC_RESULT}"
   INJECT_USED=${#SYSPROMPT}
-  echo "[context] Using Layer 3 semantic search for $AGENT_NAME" >&2
-fi
-# 如果语义搜索失败（ChromaDB 空或无结果），Layer 2 全量注入已在上面的 Phase 2 完成
+  echo "[context] Layer 3 semantic search for $AGENT_NAME (skipping full lessons)" >&2
+else
+  # 回退：全量注入 lessons 文件
+  LESSONS_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/lessons.md"
+  if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
+    SYSPROMPT="${SYSPROMPT}
 
-# 根据 agent 角色注入对应的知识文件（按优先级排列，高优先级先注入）
-case "$AGENT_NAME" in
-  EMP_0000)  # Meta Manager — 全局知识
-    inject_if_exists "$HUB_DIR/meta/knowledge_base.md" "系统知识库"
-    ;;
-  EMP_0001)  # PM — 项目决策 + 电商知识
-    inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
-    inject_if_exists "$HUB_DIR/domains/ecommerce/knowledge_base.md" "电商知识库"
-    ;;
-  EMP_0003)  # Domain Manager — 电商知识 + 决策
-    inject_if_exists "$HUB_DIR/domains/ecommerce/knowledge_base.md" "电商知识库"
-    inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
-    ;;
-  EMP_0005)  # Dev — 项目决策（轻量）
-    inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
-    ;;
-  # EMP_0002 (Platform Dev), EMP_0004 (SRE), EMP_0006 (Scout) — 无额外知识注入
-esac
+---
+## 历史经验（来自过去任务的教训，请参考但不必完全遵循）
 
-# --- Phase 2.6: 收工流程注入 ---
-POST_TASK_FILE="$HUB_DIR/docs/procedures/post-task.md"
-if [ -f "$POST_TASK_FILE" ]; then
-  inject_if_exists "$POST_TASK_FILE" "⚠️ 收工流程（任务完成后必须执行）"
+$(cat "$LESSONS_FILE")"
+    INJECT_USED=${#SYSPROMPT}
+  fi
+  echo "[context] Layer 2 full lessons fallback for $AGENT_NAME" >&2
 fi
 
-# --- Phase 2.7: Gene 行为原语注入 ---
-# 根据 agent 角色注入可组合的行为基因（shared/genes/）
-GENES_DIR="$HUB_DIR/shared/genes"
-case "$AGENT_NAME" in
-  EMP_0002|EMP_0004|EMP_0005|EMP_0009|EMP_0014)
-    # 执行层 agent：注入质疑验证基因
-    inject_if_exists "$GENES_DIR/skeptical_verification.md" "🧬 Gene: Skeptical Verification"
-    ;;
-  EMP_0000|EMP_0001|EMP_0003|EMP_0008)
-    # PM/Manager agent：注入知行转化基因
-    inject_if_exists "$GENES_DIR/practical_epistemology.md" "🧬 Gene: Practical Epistemology"
-    ;;
-esac
-case "$AGENT_NAME" in
-  EMP_0002|EMP_0004)
-    # SRE + Platform Dev：注入 Ashby 多样性基因
-    inject_if_exists "$GENES_DIR/ashby_variety.md" "🧬 Gene: Ashby Variety Check"
-    ;;
-esac
+# --- Phase 2.5: 知识注入（context_files 优先，否则按角色默认）---
+if [ -n "$TASK_CONTEXT_FILES" ]; then
+  # 任务指定了精确的 context files → 跳过默认 knowledge 注入
+  IFS=',' read -ra CTX_FILES <<< "$TASK_CONTEXT_FILES"
+  for ctx_file in "${CTX_FILES[@]}"; do
+    ctx_file=$(echo "$ctx_file" | xargs)  # trim whitespace
+    local_path="$HUB_DIR/$ctx_file"
+    if [ -f "$local_path" ]; then
+      inject_if_exists "$local_path" "📄 Context: $ctx_file"
+    fi
+  done
+  echo "[context] Task-specific context files: $TASK_CONTEXT_FILES" >&2
+else
+  # 默认：按 agent 角色注入知识文件
+  case "$AGENT_NAME" in
+    EMP_0000)  # Meta Manager — 全局知识
+      inject_if_exists "$HUB_DIR/meta/knowledge_base.md" "系统知识库"
+      ;;
+    EMP_0001)  # PM — 项目决策 + 电商知识
+      inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
+      inject_if_exists "$HUB_DIR/domains/ecommerce/knowledge_base.md" "电商知识库"
+      ;;
+    EMP_0003)  # Domain Manager — 电商知识 + 决策
+      inject_if_exists "$HUB_DIR/domains/ecommerce/knowledge_base.md" "电商知识库"
+      inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
+      ;;
+    EMP_0005)  # Dev — 项目决策（轻量）
+      inject_if_exists "$HUB_DIR/domains/ecommerce/projects/srx/decisions.md" "素仁轩决策记录"
+      ;;
+    # EMP_0002 (Platform Dev), EMP_0004 (SRE), EMP_0006 (Scout) — 无额外知识注入
+  esac
+fi
+
+# --- Phase 2.6: 收工流程注入（query 类任务跳过）---
+if [ "$TASK_TYPE" != "query" ]; then
+  POST_TASK_FILE="$HUB_DIR/docs/procedures/post-task.md"
+  if [ -f "$POST_TASK_FILE" ]; then
+    inject_if_exists "$POST_TASK_FILE" "⚠️ 收工流程（任务完成后必须执行）"
+  fi
+else
+  echo "[context] SKIP post-task (task_type=query)" >&2
+fi
+
+# --- Phase 2.7: Gene 行为原语注入（query 类任务跳过）---
+if [ "$TASK_TYPE" != "query" ]; then
+  GENES_DIR="$HUB_DIR/shared/genes"
+  case "$AGENT_NAME" in
+    EMP_0002|EMP_0004|EMP_0005|EMP_0009|EMP_0014)
+      inject_if_exists "$GENES_DIR/skeptical_verification.md" "🧬 Gene: Skeptical Verification"
+      ;;
+    EMP_0000|EMP_0001|EMP_0003|EMP_0008)
+      inject_if_exists "$GENES_DIR/practical_epistemology.md" "🧬 Gene: Practical Epistemology"
+      ;;
+  esac
+  case "$AGENT_NAME" in
+    EMP_0002|EMP_0004)
+      # SRE + Platform Dev：注入 Ashby 多样性基因
+      inject_if_exists "$GENES_DIR/ashby_variety.md" "🧬 Gene: Ashby Variety Check"
+      ;;
+  esac
+else
+  echo "[context] SKIP genes (task_type=query)" >&2
+fi
+
+# --- Phase 2.8: 结构化任务元数据注入 ---
+if [ -n "$TASK_EXPECTED_OUTPUT" ]; then
+  TASK="${TASK}
+
+## 预期产出
+${TASK_EXPECTED_OUTPUT}"
+fi
+if [ -n "$TASK_OUTPUT_PATH" ]; then
+  TASK="${TASK}
+
+## 输出路径
+结果写入: ${TASK_OUTPUT_PATH}"
+fi
 
 # --- 提取 launcher_args（从 YAML frontmatter）---
 LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
@@ -312,7 +357,7 @@ extract_modified_files() {
 # --- 辅助函数：用 test-map.json 查找测试模块 ---
 find_test_modules() {
   local modified_files="$1"
-  local map_file="$SKILLS_DIR/test-map.json"
+  local map_file="$SKILLS_DIR/dev-tools/test-map.json"
   if [ ! -f "$map_file" ]; then
     echo ""
     return
@@ -401,20 +446,32 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
   # Phase 1: 保存输入日志
   echo "$TASK" > "${TASK_LOG_DIR}/${TASK_ID}_round1_input.txt"
 
-  JSON_OUTPUT=$(call_claude "$TASK")
+  JSON_OUTPUT=$(call_claude "$TASK") || true
   OUTPUT=$(extract_result "$JSON_OUTPUT")
 
   # Phase 1: 保存输出日志
   echo "$JSON_OUTPUT" > "${TASK_LOG_DIR}/${TASK_ID}_round1_output.json"
-
-  echo "$OUTPUT"
-  echo "$OUTPUT" >> "$LOG_FILE"
 
   END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   END_EPOCH=$(date +%s)
   DURATION=$((END_EPOCH - START_EPOCH))
   TASK_SUMMARY=$(printf %s "$TASK" | head -c 50)
   TASK_SUMMARY=${TASK_SUMMARY//$'\n'/ }
+
+  # 检查 claude -p 是否返回有效输出
+  if [ -z "$OUTPUT" ] || [ ${#OUTPUT} -lt 10 ]; then
+    echo "❌ claude -p 返回空或无效输出 (len=${#OUTPUT})" >&2
+    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"failed\",\"error\":\"empty_output\",\"duration\":$DURATION}" >> "$AUDIT_LOG"
+    EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+    if [ -x "$EMIT_EVENT" ]; then
+      "$EMIT_EVENT" "agent-task-failed" "$AGENT_NAME" "error" 2 \
+        "{\"task_id\":\"$TASK_ID\",\"agent\":\"$AGENT_NAME\",\"error\":\"empty_output\",\"duration\":$DURATION}" 2>/dev/null || true
+    fi
+    exit 1
+  fi
+
+  echo "$OUTPUT"
+  echo "$OUTPUT" >> "$LOG_FILE"
 
   # Phase 1: 生成 summary
   cat > "${TASK_LOG_DIR}/${TASK_ID}_summary.json" <<EOSUMMARY
@@ -445,14 +502,14 @@ EOSUMMARY
         echo "🔄 PM reassigning to Dev (retry $RETRY_COUNT, chain depth: $((CHAIN_DEPTH+1)))"
         send_slack_notify "🔄 PM 重新分配任务给 Dev（第 ${RETRY_COUNT} 次重分配）"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0005.md "$NEW_TASK" "${SLACK_CHANNEL:-}"
+          agents/EMP_0005/config.md "$NEW_TASK" "${SLACK_CHANNEL:-}"
         ;;
       "escalate_to_platform_dev")
         CONTEXT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('context',''))" 2>/dev/null)
         echo "⬆️ Escalating to Platform Dev (chain depth: $((CHAIN_DEPTH+1)))"
         send_slack_notify "⬆️ PM escalate 给 Platform Dev"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0002.md "Escalation from PM. task_id: $TASK_ID. $CONTEXT" "${SLACK_CHANNEL:-}"
+          agents/EMP_0002/config.md "Escalation from PM. task_id: $TASK_ID. $CONTEXT" "${SLACK_CHANNEL:-}"
         ;;
       "escalate_to_mason")
         CONTEXT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('context',''))" 2>/dev/null)
@@ -486,7 +543,7 @@ else
     echo "$CURRENT_PROMPT" > "${TASK_LOG_DIR}/${TASK_ID}_round${ROUND}_input.txt"
 
     # Step 1: Call claude -p
-    JSON_OUTPUT=$(call_claude "$CURRENT_PROMPT")
+    JSON_OUTPUT=$(call_claude "$CURRENT_PROMPT") || true
     OUTPUT=$(extract_result "$JSON_OUTPUT")
 
     # Phase 1: 保存本轮输出
@@ -495,6 +552,16 @@ else
     ROUND_EPOCH=$(date +%s)
     ROUND_DURATION=$((ROUND_EPOCH - START_EPOCH))
     log_api_usage "$JSON_OUTPUT" "$ROUND_DURATION"
+
+    # 检查 claude -p 是否返回有效输出
+    if [ -z "$OUTPUT" ] || [ ${#OUTPUT} -lt 10 ]; then
+      echo "❌ claude -p 返回空或无效输出 (round $ROUND, len=${#OUTPUT})" >&2
+      TASK_SUMMARY=$(printf %s "$TASK" | head -c 50)
+      TASK_SUMMARY=${TASK_SUMMARY//$'\n'/ }
+      END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"failed\",\"error\":\"empty_output_round${ROUND}\",\"duration\":$ROUND_DURATION}" >> "$AUDIT_LOG"
+      exit 1
+    fi
 
     echo "$OUTPUT" >> "$LOG_FILE"
 
@@ -515,7 +582,7 @@ else
     # Step 4: Run dev-verify-loop
     echo "[verify] Running verification..."
     VERIFY_EXIT=0
-    VERIFY_OUTPUT=$("$SKILLS_DIR/dev-verify-loop.sh" "$MODIFIED" "$TEST_MODULE" 2>&1) || VERIFY_EXIT=$?
+    VERIFY_OUTPUT=$("$SKILLS_DIR/dev-tools/dev-verify-loop.sh" "$MODIFIED" "$TEST_MODULE" 2>&1) || VERIFY_EXIT=$?
 
     echo "$VERIFY_OUTPUT" >> "$LOG_FILE"
 
@@ -687,14 +754,14 @@ EOSUMMARY
         echo "🔄 Auto-triggering PM evaluation (chain depth: $((CHAIN_DEPTH+1)), PM retry: $((PM_RETRY_COUNT+1))/$MAX_PM_RETRIES)"
         send_slack_notify "🔄 任务 $TASK_ID_EXTRACTED Dev 修复失败，自动触发 PM 评估（第 $((PM_RETRY_COUNT+1))/$MAX_PM_RETRIES 次）"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0001.md \
-          "评估 Dev 失败任务。task_id: $TASK_ID_EXTRACTED。PM 重试次数: $PM_RETRY_COUNT/$MAX_PM_RETRIES。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json 和 $AUDIT_LOG。运行 ~/mason-hub/skills/check-escalation.sh --task $TASK_ID_EXTRACTED 查看完整历史。判断失败类型（A-E），决定下一步。在回复最后一行输出 ACTION。" \
+          agents/EMP_0001/config.md \
+          "评估 Dev 失败任务。task_id: $TASK_ID_EXTRACTED。PM 重试次数: $PM_RETRY_COUNT/$MAX_PM_RETRIES。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json 和 $AUDIT_LOG。运行 ~/mason-hub/skills/monitoring/check-escalation.sh --task $TASK_ID_EXTRACTED 查看完整历史。判断失败类型（A-E），决定下一步。在回复最后一行输出 ACTION。" \
           "${SLACK_CHANNEL:-}"
       else
         echo "⬆️ PM retries exhausted. Auto-escalating to Platform Dev (chain depth: $((CHAIN_DEPTH+1)))"
         send_slack_notify "⬆️ 任务 $TASK_ID_EXTRACTED 已耗尽 PM 重试次数（$MAX_PM_RETRIES/$MAX_PM_RETRIES），自动 escalate 给 Platform Dev"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0002.md \
+          agents/EMP_0002/config.md \
           "接收 escalation。task_id: $TASK_ID_EXTRACTED。Dev 3轮×$((PM_RETRY_COUNT+1))次均失败。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json，分析根因并尝试修复。" \
           "${SLACK_CHANNEL:-}"
       fi

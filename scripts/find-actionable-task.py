@@ -58,7 +58,9 @@ def parse_yaml_tasks(filepath: Path) -> list[dict]:
             key, val = stripped.split(":", 1)
             key = key.strip()
             val = val.strip().strip('"').strip("'")
-            if key in ("agent", "line", "backlog_match", "description", "priority"):
+            if key in ("agent", "line", "backlog_match", "description", "priority",
+                       "expected_output", "verify_command", "output_path",
+                       "max_duration", "depends_on", "context_files", "task_type"):
                 current[key] = val
 
     if current:
@@ -94,12 +96,16 @@ def is_incomplete_in_backlog(backlog_text: str, match_str: str) -> bool:
     return False
 
 
-def get_today_completed_tasks() -> set[str]:
-    """从 audit.jsonl 读取今天已完成的 task 描述关键词，用于去重"""
-    completed = set()
+def get_today_task_status() -> dict[str, str]:
+    """从 audit.jsonl 读取今天的 task 状态，用于去重和失败限流。
+
+    返回 {task_desc_prefix: status}，status 为 completed 或 failed。
+    completed 的任务不再派发；failed 的任务当天最多重试 2 次。
+    """
+    task_status: dict[str, list[str]] = {}  # desc -> [status1, status2, ...]
     today_str = str(date.today())
     if not AUDIT_LOG.exists():
-        return completed
+        return {}
     try:
         for line in AUDIT_LOG.read_text().strip().split("\n"):
             if not line.strip():
@@ -107,15 +113,25 @@ def get_today_completed_tasks() -> set[str]:
             try:
                 entry = json.loads(line)
                 ts = entry.get("timestamp", "")
-                if today_str in ts and entry.get("status") == "completed":
+                if today_str in ts:
                     task_desc = entry.get("task", "")
-                    if task_desc:
-                        completed.add(task_desc)
+                    status = entry.get("status", "")
+                    if task_desc and status:
+                        task_status.setdefault(task_desc, []).append(status)
             except json.JSONDecodeError:
                 pass
     except Exception:
         pass
-    return completed
+
+    # 合并：completed → 不再派；failed ≥2 次 → 不再派
+    result = {}
+    for desc, statuses in task_status.items():
+        if "completed" in statuses:
+            result[desc] = "completed"
+        elif statuses.count("failed") >= 2:
+            result[desc] = "failed_max"
+        # failed 1 次 → 不加入 result，允许重试
+    return result
 
 
 def is_task_running(task_id: str) -> bool:
@@ -155,7 +171,7 @@ def main():
 
     backlog_text = BACKLOG_FILE.read_text() if BACKLOG_FILE.exists() else ""
     system_map_text = SYSTEM_MAP_FILE.read_text() if SYSTEM_MAP_FILE.exists() else ""
-    today_completed = get_today_completed_tasks()
+    today_task_status = get_today_task_status()
 
     # --- 静态任务过滤 ---
     static_actionable = []
@@ -172,10 +188,21 @@ def main():
                 print(f"  ✅ [{priority}] {tid}: 已完成")
             continue
 
-        # 检查今天是否已成功执行过（audit.jsonl 去重）
-        if any(desc[:30] in tc for tc in today_completed):
-            if mode == "--list":
-                print(f"  ✅ [{priority}] {tid}: 今日已执行")
+        # 检查今天是否已成功执行过或失败超限（audit.jsonl 去重）
+        skip_audit = False
+        for tc, ts in today_task_status.items():
+            if desc[:30] in tc:
+                if ts == "completed":
+                    if mode == "--list":
+                        print(f"  ✅ [{priority}] {tid}: 今日已完成")
+                    skip_audit = True
+                    break
+                elif ts == "failed_max":
+                    if mode == "--list":
+                        print(f"  ❌ [{priority}] {tid}: 今日失败 ≥2 次，停止重试")
+                    skip_audit = True
+                    break
+        if skip_audit:
             continue
 
         # 检查是否正在运行
@@ -183,6 +210,20 @@ def main():
             if mode == "--list":
                 print(f"  🔄 [{priority}] {tid}: 正在运行")
             continue
+
+        # 检查依赖是否满足
+        depends = task.get("depends_on", "")
+        if depends:
+            dep_ids = [d.strip() for d in depends.split(",") if d.strip()]
+            deps_met = all(
+                any(dep_id in tc and ts == "completed" for tc, ts in today_task_status.items())
+                or is_completed_in_backlog(backlog_text, dep_id)
+                for dep_id in dep_ids
+            )
+            if not deps_met:
+                if mode == "--list":
+                    print(f"  ⏳ [{priority}] {tid}: 依赖未满足 ({depends})")
+                continue
 
         line_status = get_line_status(system_map_text, line)
         if line_status != "active":
@@ -262,21 +303,33 @@ AGENT_LANE = {
 
 def get_agent_lane(agent_path: str) -> str:
     """从 agent 配置路径推断 lane"""
-    # agents/EMP_0002.md → EMP_0002
-    basename = os.path.basename(agent_path).replace(".md", "")
-    return AGENT_LANE.get(basename, "independent")
+    # 新格式: agents/EMP_0002/config.md → EMP_0002
+    # 旧格式: agents/EMP_0002.md → EMP_0002
+    basename = os.path.basename(agent_path)
+    if basename == "config.md":
+        agent_id = os.path.basename(os.path.dirname(agent_path))
+    else:
+        agent_id = basename.replace(".md", "")
+    return AGENT_LANE.get(agent_id, "independent")
 
 
 def get_batch_by_lane(actionable: list[dict]) -> list[dict]:
-    """按 lane 分组，每 lane 取优先级最高的一个任务"""
-    seen_lanes = set()
+    """按 lane+agent 分组，同 lane 不同 agent 可并行，同 agent 只取 1 个。
+
+    原逻辑：每 lane 只取 1 个任务 → 5 个 platform 任务只出 1 个。
+    新逻辑：同 lane 同 agent 互斥（真正的资源竞争），不同 agent 可并行。
+    例如 EMP_0002(platform) 和 EMP_0004(platform) 做不同的事，不应互斥。
+    """
+    seen_lane_agent = set()  # (lane, agent) 对去重
     batch = []
 
     for t in actionable:
         lane = get_agent_lane(t.get("agent", ""))
-        if lane in seen_lanes and lane != "independent":
-            continue  # 同 lane 只取第一个
-        seen_lanes.add(lane)
+        agent = t.get("agent", "")
+        key = (lane, agent)
+        if key in seen_lane_agent and lane != "independent":
+            continue  # 同 lane 同 agent 只取第一个
+        seen_lane_agent.add(key)
         batch.append({
             "id": t.get("id", ""),
             "agent": t.get("agent", ""),
@@ -285,6 +338,12 @@ def get_batch_by_lane(actionable: list[dict]) -> list[dict]:
             "description": t.get("description", ""),
             "priority": t.get("priority", "P2"),
             "source": t.get("_source", t.get("source", "static")),
+            "expected_output": t.get("expected_output", ""),
+            "verify_command": t.get("verify_command", ""),
+            "output_path": t.get("output_path", ""),
+            "max_duration": t.get("max_duration", "0"),
+            "context_files": t.get("context_files", ""),
+            "task_type": t.get("task_type", "execute"),
         })
 
     return batch

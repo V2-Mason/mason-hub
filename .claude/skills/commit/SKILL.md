@@ -40,7 +40,7 @@
 如果有 → 追加到 MEMORY.md 对应 section（遵循铁律 3：追加不删除）
 如果没有 → 跳过
 
-### 4b. Agent 记忆（agents/memory/EMP_*/long_term.md 或 lessons.md）
+### 4b. Agent 记忆（agents/EMP_*/memory/long_term.md 或 lessons.md）
 基于步骤 3 的归属判断，写 lesson 到**对应 agent** 的记忆文件：
 - 内容：做了什么、发现了什么、踩了什么坑
 - 控制在 5-15 行

@@ -52,5 +52,5 @@
 - 养号期（3-5 天）手动操作，不上爬虫
 
 ## 文件路径
-- GCP: `skills/_two_tier_crawl.py` + `skills/xhs-crawl.sh` + `shared/accounts.template.json`
+- GCP: `skills/xhs/_two_tier_crawl.py` + `skills/xhs/xhs-crawl.sh` + `shared/accounts.template.json`
 - 阿里云: `/opt/mediacrawler/two_tier_crawl.py`（SCP 覆盖）+ `accounts.json`

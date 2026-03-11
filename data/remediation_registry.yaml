@@ -21,7 +21,7 @@ entries:
   - monitor: raw_scout_intel
     freshness: 172800          # 2 天（每日 cron，允许 1 天 buffer）
     remediation: "重跑 Scout 每日快扫"
-    command: "/home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0006.md '自愈触发：Scout 产出过期，执行快扫' C0AHCMUC057"
+    command: "/home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0006/config.md '自愈触发：Scout 产出过期，执行快扫' C0AHCMUC057"
     max_retries: 2
     cooldown: 7200             # 2 小时
     escalate_to: mason
@@ -30,7 +30,7 @@ entries:
   - monitor: raw_xhs_notes
     freshness: 604800          # 7 天（周二/五采集）
     remediation: "重跑 XHS 内容灵感采集"
-    command: "/home/hangn/mason-hub/skills/xhs-crawl.sh --task 1"
+    command: "/home/hangn/mason-hub/skills/xhs/xhs-crawl.sh --task 1"
     max_retries: 2
     cooldown: 3600
     escalate_to: mason
@@ -56,7 +56,7 @@ entries:
   - monitor: raw_srx_sales
     freshness: 172800          # 2 天
     remediation: "检查阿里云连通性 + 重跑数据 COO"
-    command: "timeout 10 ssh -o ConnectTimeout=5 root@106.14.44.68 'systemctl is-active surenxuan' && /home/hangn/mason-hub/skills/data-coo-daily.sh"
+    command: "timeout 10 ssh -o ConnectTimeout=5 root@106.14.44.68 'systemctl is-active surenxuan' && /home/hangn/mason-hub/skills/agent-ops/data-coo-daily.sh"
     max_retries: 2
     cooldown: 7200
     escalate_to: mason

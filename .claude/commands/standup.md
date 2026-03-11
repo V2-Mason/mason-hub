@@ -1,10 +1,10 @@
 执行晨会流程：
 
-1. 读取 agents/EMP_0000.md 获取 Meta Manager 角色定义
+1. 读取 agents/EMP_0000/config.md 获取 Meta Manager 角色定义
 2. 读取 tasks/backlog.md 了解当前状态
 3. 检查 git log --since="yesterday" 获取最近变更
 4. 检查 logs/audit.jsonl 最近 24h 的 agent 活动
-5. 运行 skills/agent-status-report.sh 获取系统状态
+5. 运行 skills/monitoring/agent-status-report.sh 获取系统状态
 6. 趋势热榜 — 运行以下命令获取分层趋势报告：
    ```bash
    cd ~/mason-hub && .venv/bin/python3 tools/trendradar-config/trend_report.py

@@ -78,18 +78,18 @@ AGENT_INLINE_PATTERN = re.compile(r'EMP_(\d{4})')
 
 # Agent ID → 配置文件路径
 AGENT_CONFIG = {
-    "0001": "agents/EMP_0001.md",
-    "0002": "agents/EMP_0002.md",
-    "0003": "agents/EMP_0003.md",
-    "0004": "agents/EMP_0004.md",
-    "0005": "agents/EMP_0005.md",
-    "0006": "agents/EMP_0006.md",
-    "0008": "agents/EMP_0008.md",
-    "0009": "agents/EMP_0009.md",
-    "0010": "agents/EMP_0010.md",
-    "0013": "agents/EMP_0013.md",
-    "0014": "agents/EMP_0014.md",
-    "0015": "agents/EMP_0015.md",
+    "0001": "agents/EMP_0001/config.md",
+    "0002": "agents/EMP_0002/config.md",
+    "0003": "agents/EMP_0003/config.md",
+    "0004": "agents/EMP_0004/config.md",
+    "0005": "agents/EMP_0005/config.md",
+    "0006": "agents/EMP_0006/config.md",
+    "0008": "agents/EMP_0008/config.md",
+    "0009": "agents/EMP_0009/config.md",
+    "0010": "agents/EMP_0010/config.md",
+    "0013": "agents/EMP_0013/config.md",
+    "0014": "agents/EMP_0014/config.md",
+    "0015": "agents/EMP_0015/config.md",
 }
 
 # 能力线关键词映射（backlog section → SYSTEM_MAP 能力线名称）

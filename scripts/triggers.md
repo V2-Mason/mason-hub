@@ -13,13 +13,13 @@ run-agent.sh 已支持 `<agent配置文件> <任务内容>` 格式。
 # === 感知层触发器 ===
 
 # 1. PM 每日库存巡检 (20:00 ET = 00:00 UTC)
-0 0 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001.md "库存巡检任务：1) 读取最新库存数据 2) 检查临期SKU（30天内）3) 检查低库存SKU（remaining_quantity < 5）4) 检查滞销SKU（30天无销售）5) 有异常则通过 slack_notify.sh 发送 alert 到 #srx-alerts 6) 无异常则记录巡检正常" "C0AGXNH7F6J" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+0 0 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "库存巡检任务：1) 读取最新库存数据 2) 检查临期SKU（30天内）3) 检查低库存SKU（remaining_quantity < 5）4) 检查滞销SKU（30天无销售）5) 有异常则通过 slack_notify.sh 发送 alert 到 #srx-alerts 6) 无异常则记录巡检正常" "C0AGXNH7F6J" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
 
 # 2. SRE 每日基础设施报告 (21:00 ET = 01:00 UTC)
-0 1 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0004.md "每日基础设施报告：1) 检查 slack-bot 服务状态 2) 检查磁盘和内存 3) 统计过去24小时 agent 调用次数和成功率（从 audit.jsonl）4) 汇总发送到 #system-alerts" "C0AHCMUC057" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+0 1 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0004/config.md "每日基础设施报告：1) 检查 slack-bot 服务状态 2) 检查磁盘和内存 3) 统计过去24小时 agent 调用次数和成功率（从 audit.jsonl）4) 汇总发送到 #system-alerts" "C0AHCMUC057" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
 
 # 3. PM 每周记忆压缩 (周一 22:00 ET = 02:00 UTC)
-0 2 * * 1 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001.md "每周记忆压缩任务：1) 读取 task_list.json 中本周 completed_tasks 2) 读取 agents/memory/EMP_0001/long_term.md 3) 从完成任务中提取可复用经验 4) 更新 long_term.md 5) 汇报压缩结果" "C0AGWBWU0BF" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+0 2 * * 1 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "每周记忆压缩任务：1) 读取 task_list.json 中本周 completed_tasks 2) 读取 agents/EMP_0001/memory/long_term.md 3) 从完成任务中提取可复用经验 4) 更新 long_term.md 5) 汇报压缩结果" "C0AGWBWU0BF" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
 ```
 
 ## 部署步骤

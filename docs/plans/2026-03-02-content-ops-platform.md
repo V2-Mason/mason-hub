@@ -414,7 +414,7 @@ Agent 从 Slack 线程读取 Mason 的回复，按关键词分类：
 
 ```
 任务 1.1: 视频下载自动化
-- 编写 skills/video-download/download.sh
+- 编写 skills/video/video-download/download.sh
   输入：原帖链接 + 平台类型
   过程：Playwright 打开对应 greenvideo.cc 页面 → 粘贴链接 → 下载
   输出：本地视频文件 + 元数据（平台、原链接、下载时间）

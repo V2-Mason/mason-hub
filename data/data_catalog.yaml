@@ -21,7 +21,7 @@ datasets:
     name: XHS 笔记原始数据
     description: MediaCrawler 采集的小红书笔记（标题、互动数、作者、标签、类型）
     owner: EMP_0014
-    producer: skills/xhs-crawl.sh → skills/_two_tier_crawl.py
+    producer: skills/xhs/xhs-crawl.sh → skills/xhs/_two_tier_crawl.py
     storage:
       type: sqlite
       location: aliyun:/opt/mediacrawler/database/sqlite_tables.db
@@ -53,7 +53,7 @@ datasets:
   - id: raw_xhs_comments
     name: XHS 评论数据
     owner: EMP_0014
-    producer: skills/_xhs_collect_comments.py
+    producer: skills/xhs/_xhs_collect_comments.py
     storage:
       type: sqlite
       location: aliyun:/opt/mediacrawler/database/sqlite_tables.db
@@ -72,7 +72,7 @@ datasets:
   - id: raw_xhs_creators
     name: XHS 创作者画像
     owner: EMP_0014
-    producer: skills/_xhs_enrich_creators.py
+    producer: skills/xhs/_xhs_enrich_creators.py
     storage:
       type: sqlite
       location: aliyun:/opt/mediacrawler/database/sqlite_tables.db
@@ -133,7 +133,7 @@ datasets:
   - id: raw_srx_sales
     name: 素仁轩销售数据
     owner: EMP_0014
-    producer: skills/data-coo-daily.sh → aliyun:8000/api/sales/summary
+    producer: skills/agent-ops/data-coo-daily.sh → aliyun:8000/api/sales/summary
     storage:
       type: api_response
       location: aliyun:106.14.44.68:8000
@@ -152,7 +152,7 @@ datasets:
   - id: raw_scout_intel
     name: Scout 情报产出
     owner: EMP_0006
-    producer: skills/scout-*.sh（9 个脚本）
+    producer: skills/scout/scout-*.sh（9 个脚本）
     storage:
       type: markdown_files
       location: gcp:~/mason-hub/intel/digests/*.md
@@ -184,7 +184,7 @@ datasets:
     name: 小红书电商帮助中心文档
     description: school.xiaohongshu.com 帮助中心 + 商家学堂规则，开店/合规/运营参考
     owner: EMP_0014
-    producer: skills/_xhs_helper_full_crawl.py + skills/_xhs_school_fetch_details.py
+    producer: skills/xhs/_xhs_helper_full_crawl.py + skills/xhs/_xhs_school_fetch_details.py
     storage:
       type: markdown_files
       location: gcp:~/mason-hub/intel/processed/小红书电商帮助中心-完整文档.md
@@ -204,7 +204,7 @@ datasets:
   - id: analysis_xhs_viral
     name: XHS 互动分析（爆帖排行 + 关键词洞察）
     owner: EMP_0014
-    producer: skills/xhs-analyze-viral.py
+    producer: skills/xhs/xhs-analyze-viral.py
     input: [raw_xhs_notes]
     storage:
       type: json
@@ -220,7 +220,7 @@ datasets:
   - id: analysis_xhs_trends
     name: XHS 周度趋势对比
     owner: EMP_0014
-    producer: skills/xhs-trend-compare.py
+    producer: skills/xhs/xhs-trend-compare.py
     input: [analysis_xhs_viral]  # 当期 vs 上期
     storage:
       type: json
@@ -234,7 +234,7 @@ datasets:
   - id: analysis_xhs_comments
     name: XHS 评论洞察（痛点 + 用户问题）
     owner: EMP_0014
-    producer: skills/_xhs_comment_analysis.py
+    producer: skills/xhs/_xhs_comment_analysis.py
     input: [raw_xhs_comments]
     storage:
       type: json
@@ -268,7 +268,7 @@ datasets:
   - id: report_strategy_briefing
     name: XHS 策略简报（内容方向建议）
     owner: EMP_0008
-    producer: skills/_xhs_strategy_briefing.py
+    producer: skills/xhs/_xhs_strategy_briefing.py
     input: [analysis_xhs_viral, analysis_xhs_trends, analysis_xhs_comments]
     storage:
       type: json
@@ -280,7 +280,7 @@ datasets:
   - id: report_optimization
     name: 自优化周期报告
     owner: optimization-cycle
-    producer: skills/optimization-cycle.sh
+    producer: skills/agent-ops/optimization-cycle.sh
     input: [analysis_radar_weekly, raw_scout_intel, report_strategy_briefing, raw_trendradar_news]
     storage:
       type: markdown

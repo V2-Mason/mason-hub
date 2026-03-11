@@ -11,7 +11,7 @@
 
 ### 真空 1：视频管线无人负责
 
-`skills/video-download/` 下有 14 个文件组成完整的 8 步视频管线（下载→拆解→本地化→选品匹配→分镜→故事板→VEO 生成→组装），但没有任何 agent 角色文件明确提到视频管线的维护或使用职责。
+`skills/video/video-download/` 下有 14 个文件组成完整的 8 步视频管线（下载→拆解→本地化→选品匹配→分镜→故事板→VEO 生成→组装），但没有任何 agent 角色文件明确提到视频管线的维护或使用职责。
 
 当前状态：Mason 手动触发，代码质量和 bug 修复没有归属人。
 
@@ -70,7 +70,7 @@ XHS 数据采集 + 分析脚本（`xhs-crawl.sh`、`xhs-analyze.sh`、`xhs-analy
 ```markdown
 ## 视频管线代码维护 (新增)
 
-- 归属代码路径：skills/video-download/*（当前），迁移后 socialmesh/backend/content/video_pipeline/
+- 归属代码路径：skills/video/video-download/*（当前），迁移后 socialmesh/backend/content/video_pipeline/
 - 职责：bug 修复、依赖更新、性能优化、新功能开发
 - 关键约束：
   - 修改视频生成流程（步骤增减、模型切换）需 EMP_0008 签字
@@ -84,7 +84,7 @@ XHS 数据采集 + 分析脚本（`xhs-crawl.sh`、`xhs-analyze.sh`、`xhs-analy
 ```markdown
 ## 分析代码维护 (新增)
 
-- 归属代码路径：skills/xhs-crawl.sh、skills/xhs-analyze.sh、阿里云分析脚本
+- 归属代码路径：skills/xhs/xhs-crawl.sh、skills/xhs/xhs-analyze.sh、阿里云分析脚本
 - 职责：代码质量、测试、性能优化、bug 修复
 - 关键约束：
   - 修改分析规则（阈值、评分公式、过滤条件）必须 EMP_0008 签字

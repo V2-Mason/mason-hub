@@ -142,10 +142,17 @@ find_actionable_task() {
 # dispatcher 不需要额外的 pgrep 检查
 execute_task() {
     local task_id="$1" agent_path="$2" line="$3" desc="$4"
+    local expected_output="${5:-}" verify_command="${6:-}" output_path="${7:-}"
+    local max_duration="${8:-0}" context_files="${9:-}" task_type="${10:-execute}"
     local agent_name
-    agent_name=$(basename "$agent_path" .md)
+    # 支持新格式 agents/EMP_0002/config.md 和旧格式 agents/EMP_0002.md
+    if [[ "$(basename "$agent_path")" == "config.md" ]]; then
+      agent_name=$(basename "$(dirname "$agent_path")")
+    else
+      agent_name=$(basename "$agent_path" .md)
+    fi
 
-    log ">>> 启动任务: $desc ($task_id → $agent_name)"
+    log ">>> 启动任务: $desc ($task_id → $agent_name, type=$task_type)"
 
     if $DRY_RUN; then
         log "  [DRY-RUN] 会启动 $agent_name 执行: $desc"
@@ -156,12 +163,17 @@ execute_task() {
     echo "{\"event\":\"dispatcher-task-start\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":1,\"data\":{\"task_id\":\"$task_id\",\"agent\":\"$agent_name\",\"desc\":\"$desc\"}}" \
         >> "$EVENTS_QUEUE"
 
-    # 启动 agent
+    # 启动 agent（结构化元数据通过环境变量传递）
     local report_dir="$REPORTS_DIR/$(date +%Y-%m-%d)"
     mkdir -p "$report_dir"
 
     if [[ -x "$RUN_AGENT" ]]; then
-        # 通过 run-agent.sh 启动（自带 lane lock + token tracking）
+        TASK_EXPECTED_OUTPUT="$expected_output" \
+        TASK_VERIFY_COMMAND="$verify_command" \
+        TASK_OUTPUT_PATH="$output_path" \
+        TASK_MAX_DURATION="$max_duration" \
+        TASK_CONTEXT_FILES="$context_files" \
+        TASK_TYPE="$task_type" \
         "$RUN_AGENT" "$agent_path" "自主任务: $desc" \
             > "$report_dir/${agent_name}_${task_id}.log" 2>&1 &
         local pid=$!
@@ -249,35 +261,38 @@ main() {
     local task_count
     task_count=$(echo "$batch_json" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
 
-    log "  批量扫描到 $task_count 个任务（按 lane 去重）"
+    log "  批量扫描到 $task_count 个任务（按 lane+agent 去重）"
 
     for idx in $(seq 0 $((task_count - 1))); do
-        local task_id agent_path lane line desc
-        read -r task_id agent_path lane line desc < <(echo "$batch_json" | python3 -c "
-import sys, json
+        # 用 Python 提取所有字段到临时文件，避免 read 的空格切分问题
+        local tmp_task
+        tmp_task=$(echo "$batch_json" | python3 -c "
+import sys, json, shlex
 tasks = json.load(sys.stdin)
 t = tasks[$idx]
-print(t['id'], t['agent'], t['lane'], t.get('line',''), t.get('description','')[:200])
-" 2>/dev/null || echo "")
+for k in ('id','agent','lane','line','description',
+          'expected_output','verify_command','output_path',
+          'max_duration','context_files','task_type'):
+    v = str(t.get(k, ''))[:200]
+    print(f'TASK_{k.upper()}={shlex.quote(v)}')
+" 2>/dev/null) || continue
+        eval "$tmp_task"
 
-        if [[ -z "$task_id" ]]; then
+        if [[ -z "${TASK_ID:-}" ]]; then
             continue
         fi
 
         # 检查该 lane 是否空闲
-        if [[ "$lane" != "independent" ]] && ! echo "$free_lanes" | grep -qw "$lane"; then
-            log "  ⏸️  $task_id: lane $lane 正忙，跳过"
+        if [[ "$TASK_LANE" != "independent" ]] && ! echo "$free_lanes" | grep -qw "$TASK_LANE"; then
+            log "  ⏸️  $TASK_ID: lane $TASK_LANE 正忙，跳过"
             continue
         fi
 
-        # 派发任务
-        execute_task "$task_id" "$agent_path" "$line" "$desc"
+        # 派发任务（lane lock 由 run-agent.sh 自行管理互斥）
+        execute_task "$TASK_ID" "$TASK_AGENT" "$TASK_LINE" "$TASK_DESCRIPTION" \
+            "$TASK_EXPECTED_OUTPUT" "$TASK_VERIFY_COMMAND" "$TASK_OUTPUT_PATH" \
+            "$TASK_MAX_DURATION" "$TASK_CONTEXT_FILES" "$TASK_TASK_TYPE"
         dispatched=$((dispatched + 1))
-
-        # 从空闲列表移除已占用的 lane（independent 不移除）
-        if [[ "$lane" != "independent" ]]; then
-            free_lanes=$(echo "$free_lanes" | sed "s/\b${lane}\b//")
-        fi
     done
 
     log "  本轮派发: $dispatched 个任务"

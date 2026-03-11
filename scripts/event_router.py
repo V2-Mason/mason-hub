@@ -47,7 +47,7 @@ ROUTING_TABLE = {
     "data-sync-complete": {
         "preconditions": ["health_check_green"],
         "actions": [
-            {"type": "script", "target": "skills/xhs-analyze.sh"},
+            {"type": "script", "target": "skills/xhs/xhs-analyze.sh"},
             {"type": "emit", "event": "data-fresh"},
         ],
     },
@@ -56,6 +56,7 @@ ROUTING_TABLE = {
         "actions": [
             {"type": "update_system_map", "line": "数据线", "status": "active"},
             {"type": "check_pending"},
+            {"type": "dispatch"},  # 健康恢复可能解锁被阻塞的任务
         ],
     },
     "health-check-failed": {
@@ -81,13 +82,14 @@ ROUTING_TABLE = {
     "agent-task-complete": {
         "preconditions": [],
         "actions": [
-            {"type": "check_downstream"},
+            {"type": "dispatch"},  # 立刻检查是否有下游任务可派发
             {"type": "slack_if_level", "min_level": 2},
         ],
     },
     "agent-task-failed": {
         "preconditions": [],
         "actions": [
+            {"type": "dispatch"},  # 失败后也触发 dispatcher，尝试派发其他任务
             {"type": "slack", "message": "❌ Agent 任务失败", "level": 2},
         ],
     },
@@ -95,6 +97,7 @@ ROUTING_TABLE = {
         "preconditions": [],
         "actions": [
             {"type": "check_pending"},
+            {"type": "dispatch"},  # blocker 解除可能解锁新任务
             {"type": "slack", "message": "✅ Blocker 已解除", "level": 2},
         ],
     },
@@ -245,9 +248,19 @@ def execute_actions(event: dict, actions: list):
         elif action_type == "check_pending":
             process_pending()
 
-        elif action_type == "check_downstream":
-            # 检查是否有下游任务因此解锁 — dispatcher 负责
-            log(f"  check_downstream: 等待 dispatcher 下次扫描")
+        elif action_type == "check_downstream" or action_type == "dispatch":
+            # 立刻触发 dispatcher 检查是否有下游任务可执行
+            dispatch_script = HUB_DIR / "scripts" / "dispatcher.sh"
+            if dispatch_script.exists():
+                log(f"  触发 dispatcher 实时派发")
+                subprocess.Popen(
+                    ["bash", str(dispatch_script)],
+                    cwd=str(HUB_DIR),
+                    stdout=open(LOG_FILE, "a"),
+                    stderr=subprocess.STDOUT,
+                )
+            else:
+                log(f"  dispatcher.sh 不存在")
 
         elif action_type == "update_system_map":
             # 标记需要更新，实际更新由 /standup 执行

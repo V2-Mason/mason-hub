@@ -4,7 +4,7 @@
 
 执行步骤：
 1. 将用户的任务描述格式化为 task_id（格式: srx_YYYYMMDD_简短描述）
-2. 运行: bash ~/mason-hub/scripts/run-agent.sh agents/EMP_0005.md "$ARGUMENTS"
+2. 运行: bash ~/mason-hub/scripts/run-agent.sh agents/EMP_0005/config.md "$ARGUMENTS"
 3. 监控输出，如果 agent 完成：
    - 汇报修改了哪些文件
    - 汇报验证结果（通过/失败）
