@@ -83,3 +83,10 @@
 - **gap 类型**：📚 纯知识 → 留存
 
 ## 监控与告警教训
+
+### Scout Cron 首次执行验证 (2026-03-11)
+- 每日快扫 cron（23:00 UTC）首次触发成功，EMP_0006 完整执行 3 个 skill（anthropic/trending/github）
+- 产物路径：每日快扫 → `intel/raw/`，周度深度巡逻 → `intel/digests/`。最初任务描述说"确认 digests/ 有新文件"，实际每日快扫不产 digest
+- 三档 Scout cron 调度：每日 23:00 UTC（快扫）/ 一三五 23:30 UTC（中频）/ 周一 00:00 UTC（深度）
+- triggers.log 作为 cron 执行审计日志运转正常，包含完整 agent 输出
+- **gap 类型**：📚 纯知识 → 留存（scout 三档产物路径差异）

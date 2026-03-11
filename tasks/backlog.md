@@ -208,7 +208,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）
 - [x] Skills 去重 — 2026-03-05 检查完毕，user 级 skills 目录为空，无重复项（EMP_0002）
-- [ ] Scout cron 首次执行验证 — 每日 19:00 ET (23:00 UTC) 触发，确认 triggers.log 有输出且 intel/digests/ 有新文件（EMP_0004）
+- [x] Scout cron 首次执行验证 — 2026-03-11 完成，23:00 UTC 每日快扫成功触发，triggers.log 有完整输出，intel/raw/2026-W11-daily-0311-tech.md 已生成。注：digests/ 仅由周一深度巡逻产出，每日快扫产物在 raw/（EMP_0004）
 
 P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 - [x] Scout 去重机制 — 2026-03-05 确认已实现（scripts/scout-dedup.py + intel/seen.jsonl），9 个 scout 脚本全部已集成 dedup 调用（EMP_0002）
