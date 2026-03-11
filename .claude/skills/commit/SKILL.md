@@ -16,9 +16,21 @@
 - 过时的任务描述 → 标注更新（如发现某功能已存在）
 - 如果没有需要更新的内容，跳过此步
 
-## 3. 更新记忆
+## 3. EMP_0012 归属判断（必须在写记忆前完成）
 
-### 3a. 全局记忆（~/.claude/projects/-home-hangn-mason-hub/memory/MEMORY.md）
+**每次 commit 前，用 EMP_0012 的 Checklist A 判断本次工作的 lesson 归谁：**
+
+1. 这次工作的输出是什么？
+2. 它属于现有哪个 agent 的职责范围？
+3. 如果横跨多个 agent → 拆分：哪部分归谁？
+
+**判断完成后，明确声明**："本次 lesson 归 EMP_XXXX，理由：XXX"
+
+如果归属不清 → **停下来问 Mason**，不要跳过或默认存全局记忆。
+
+## 4. 更新记忆
+
+### 4a. 全局记忆（~/.claude/projects/-home-hangn-mason-hub/memory/MEMORY.md）
 检查本次 session 是否有跨 session 价值的信息：
 - Mason 的新偏好或决策
 - 新的技术限制或踩坑
@@ -28,15 +40,13 @@
 如果有 → 追加到 MEMORY.md 对应 section（遵循铁律 3：追加不删除）
 如果没有 → 跳过
 
-### 3b. Agent 记忆（agents/memory/EMP_*/long_term.md 或 lessons.md）
-如果本次 session 涉及特定 agent 的工作：
-- 写 lesson 到该 agent 的记忆文件
+### 4b. Agent 记忆（agents/memory/EMP_*/long_term.md 或 lessons.md）
+基于步骤 3 的归属判断，写 lesson 到**对应 agent** 的记忆文件：
 - 内容：做了什么、发现了什么、踩了什么坑
 - 控制在 5-15 行
+- **禁止跳过**：即使是"纯讨论/规划"，只要产出了决策或方法论，就必须有归属
 
-如果本次是纯讨论/规划，无特定 agent 参与 → 跳过
-
-## 4. 执行 Git Commit
+## 5. 执行 Git Commit
 
 - `git add` 所有相关文件（包括步骤 2-3 更新的记忆和 backlog）
 - **不要 add** 敏感文件（.env、credentials）、大型二进制文件（.db）、日志文件（logs/）
@@ -46,7 +56,7 @@
   - 结尾加 `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>`
 - 运行 `git status` 确认提交成功
 
-## 5. 汇报
+## 6. 汇报
 
 简洁输出：
 ```
