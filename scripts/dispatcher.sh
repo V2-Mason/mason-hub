@@ -205,6 +205,12 @@ main() {
 
     log "=== Dispatcher 开始扫描 ==="
 
+    # 安全门 0: Mason /pause
+    if [[ -f "/tmp/mason-pause" ]]; then
+        log "⏸️ Mason /pause 生效中，跳过派发"
+        return 0
+    fi
+
     # 安全门 1: 时间
     check_time_window || return 0
 

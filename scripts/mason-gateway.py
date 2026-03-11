@@ -80,6 +80,7 @@ WRITABLE_PATHS = [
     "data/learned-skills-stats.json",
 ]
 
+PAUSE_FILE = Path("/tmp/mason-pause")
 REPAIR_LOCK = Path("/tmp/repair-session.lock")
 REPAIR_QUEUE_FILE = HUB_DIR / "data" / "repair_queue.json"
 
@@ -1227,6 +1228,8 @@ def process_queue():
     global _was_yielding
     if not task_queue:
         return
+    if PAUSE_FILE.exists():
+        return  # Mason 发了 /pause，静默等待
     if mason_session_active():
         if not _was_yielding:
             log("🛑 Mason session 活跃，开始让路")

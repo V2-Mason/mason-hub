@@ -30,6 +30,7 @@ from pathlib import Path
 HUB_DIR = Path(os.environ.get("HUB_DIR", Path.home() / "mason-hub"))
 LOG_FILE = HUB_DIR / "logs" / "slack-ask.log"
 ENV_FILE = HUB_DIR / ".env"
+PAUSE_FILE = Path("/tmp/mason-pause")
 
 
 def load_env():
@@ -175,16 +176,12 @@ def start_socket_mode():
 
     @app.command("/ask")
     def handle_ask(ack, command, respond):
-        # 立即 ack，Slack 要求 3 秒内响应
         ack("🤔 查询中...")
-
         text = command.get("text", "").strip()
         if not text:
             text = "现在什么状态"
-
         user = command.get("user_name", "unknown")
         log(f"Slack /ask from {user}: {text}")
-
         try:
             answer = handle_question(text)
             respond(answer)
@@ -193,6 +190,39 @@ def start_socket_mode():
             error_msg = f"❌ 查询失败: {e}"
             log(error_msg)
             respond(error_msg)
+
+    @app.command("/pause")
+    def handle_pause(ack, command, respond):
+        ack()
+        PAUSE_FILE.write_text(datetime.now().isoformat())
+        log("⏸️ Mason 发出 /pause — 系统进入暂停模式")
+
+        # 检查当前有没有 agent 在跑
+        running = []
+        try:
+            result = subprocess.run(
+                ["bash", str(HUB_DIR / "scripts" / "lane-lock.sh"), "status"],
+                capture_output=True, text=True, timeout=5)
+            for line in result.stdout.splitlines():
+                if "occupied" in line.lower() or "EMP_" in line:
+                    running.append(line.strip())
+        except Exception:
+            pass
+
+        if running:
+            respond(f"⏸️ 系统已暂停（不接新任务）\n\n当前还有 agent 在跑，会自然完成：\n" + "\n".join(f"• {r}" for r in running) + "\n\n完成后不会再派发新任务。你可以等它们做完再上线。")
+        else:
+            respond("⏸️ 系统已暂停，当前无 agent 在跑，可以直接上线。")
+
+    @app.command("/resume")
+    def handle_resume(ack, command, respond):
+        ack()
+        if PAUSE_FILE.exists():
+            PAUSE_FILE.unlink()
+            log("▶️ Mason 发出 /resume — 系统恢复运转")
+            respond("▶️ 系统已恢复，Gateway 和 Dispatcher 重新开始工作。")
+        else:
+            respond("系统没在暂停状态。")
 
     handler = SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"])
     log("🚀 Slack Ask 服务启动 (Socket Mode)")
