@@ -69,4 +69,10 @@
 - **教训**：部署保活脚本时，IP 不要硬编码，应该用 SSH config 别名或环境变量
 - **gap 类型**：🔧 配置错误 → 已修复
 
+### repair-dispatch.sh 日志双写 (2026-03-12)
+- **问题**：`log()` 用 `tee -a $LOG_FILE` 同时写 stdout 和文件，cron/dispatcher 用 `>> repair.log` 重定向 stdout，导致每行写入两次
+- **修复**：`tee -a` 改为 `>> $LOG_FILE` 直接追加 + `>&2` 输出到 stderr。同步修复 3 处 `submit-repair.py` 调用的 `| tee -a`
+- **教训**：shell 脚本如果会被 cron 用 stdout 重定向调用，log 函数不能用 tee（stdout+file），应该直接写文件+stderr
+- **gap 类型**：🔧 配置错误 → 已修复
+
 ## 监控与告警教训
