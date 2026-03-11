@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/hangn/mason-hub/scripts/hooks/guardrail.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/hangn/mason-hub/scripts/hooks/format-validator.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
