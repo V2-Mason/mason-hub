@@ -25,7 +25,8 @@ DRY_RUN=false
 log() {
     local ts
     ts=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$ts] $*" | tee -a "$LOG_FILE"
+    echo "[$ts] $*" >> "$LOG_FILE"
+    echo "[$ts] $*" >&2
 }
 
 # 检查是否有 pending 的修复任务
@@ -127,6 +128,8 @@ $item_json
     # claude -p 执行修复
     # --permission-mode dontAsk: 不在 allowedTools 里的操作自动拒绝
     # --allowedTools: 精确控制放行范围
+    # unset CLAUDECODE: 允许在 Gateway/Dispatcher 子进程中启动 claude -p（非嵌套）
+    unset CLAUDECODE 2>/dev/null || true
     cd "$HUB_DIR"
     claude -p "$task_prompt" \
         --permission-mode dontAsk \
@@ -143,7 +146,7 @@ $item_json
         python3 "$HUB_DIR/scripts/submit-repair.py" update "$item_id" \
             --status repair_attempted \
             --fix "claude -p 异常退出 (exit $exit_code)" \
-            --test-result "未完成" 2>&1 | tee -a "$LOG_FILE"
+            --test-result "未完成" >> "$LOG_FILE" 2>&1
     fi
 
     # 检查修复结果（claude -p 应该已经调了 submit-repair.py update）
@@ -162,7 +165,7 @@ for item in queue:
         log "⚠️ claude -p 未更新队列状态，标记为 repair_attempted"
         python3 "$HUB_DIR/scripts/submit-repair.py" update "$item_id" \
             --status repair_attempted \
-            --fix "session 完成但未更新状态" 2>&1 | tee -a "$LOG_FILE"
+            --fix "session 完成但未更新状态" >> "$LOG_FILE" 2>&1
     fi
 
     # 检查 attempts 是否达到上限
@@ -180,7 +183,7 @@ for item in queue:
         log "🔴 $item_id 已尝试 $attempts 次，升级为 pending_mason"
         python3 "$HUB_DIR/scripts/submit-repair.py" update "$item_id" \
             --status pending_mason \
-            --fix "已尝试 $attempts 次修复均未成功" 2>&1 | tee -a "$LOG_FILE"
+            --fix "已尝试 $attempts 次修复均未成功" >> "$LOG_FILE" 2>&1
 
         # 发 Slack 通知
         if [[ -n "${SLACK_WEBHOOK_URL:-}" ]]; then
