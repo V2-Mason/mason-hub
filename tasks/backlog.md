@@ -199,6 +199,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] Gateway 首夜运行 3 bug 修复 — 2026-03-11 完成：① _was_yielding 状态持久化（从日志恢复，避免 systemd 重启后让路日志刷屏）② data_health_check.sh 加 --no-emit（Gateway 内部调用不发射事件，避免自产自消）③ 白名单支持 &&/||/; 组合命令逐段校验
 - [x] Learned Skills 机制 — 2026-03-11 完成：MASONHUB.md 新增 ## Learned Skills section（5 条种子 skill）+ heartbeat prompt 第 9 步自动写 skill。受 SkillRL 论文启发，最小可行方案：不建目录、不加文件、复用现有 patch_file 能力
 - [x] Slack /ask 实时查询 — 2026-03-11 完成：slack-ask.py（Socket Mode + Claude Haiku），Mason 在 Slack 发 /ask 即时查询系统状态，无需公网端口
+- [x] Backlog 主动消化能力 — 2026-03-11 完成：backlog-scanner.py（5 层过滤：红线/Section 阻塞/外部依赖/agent 标注/能力线状态）+ find-actionable-task.py 合并静态+动态任务 + MASONHUB.md 检查清单第 8 步。每天上限 6 个任务，Dispatcher 自动派发
 - [ ] Dispatcher 两个 bug 修复 — 2026-03-11 发现：① 日志双写（tee + cron >> 同一文件）② Gateway 与 Dispatcher 竞争 pending 目录（FileNotFoundError）
 - [ ] Repair session 端到端验证 — 手动注入一个修复请求，验证 dispatcher → claude -p → 修复 → heartbeat 确认 全链路
 - [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）

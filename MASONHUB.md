@@ -91,6 +91,7 @@ status: "suggestion"。Mason 会看到。
 5. **Dispatcher 日志**: 最近一次运行结果 — 失败则告警。注意：CST 22-08 窗口外 dispatcher 不运行是正常设计，不要误报
 6. **数据管道**: data_health_check 结果 — 非全绿则汇报变化
 7. **Git 状态**: 有无异常未提交文件
+8. **Backlog 消化**: `python3 scripts/backlog-scanner.py --list` — 查看有多少可自动执行的 backlog 任务。有可执行项时记录到每日汇总，Dispatcher 会自动派发（每天上限 6 个任务）。不需要手动干预，只观察消化进度
 
 ## Slack 通知原则
 

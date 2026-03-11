@@ -83,4 +83,13 @@
   - GCP: skills/_two_tier_crawl.py + skills/xhs-crawl.sh
   - 阿里云: /opt/mediacrawler/two_tier_crawl.py（每次 SCP 覆盖）+ accounts.json
 
+### Backlog 主动消化系统 (2026-03-11, Mason 确认)
+- 新建 `scripts/backlog-scanner.py`：解析 backlog.md 中所有 `[ ]` 任务，5 层过滤
+- 过滤层：① 红线（品牌/账号/密钥）② Section 阻塞（Phase 前置条件）③ 外部依赖关键词 ④ agent 标注 ⑤ 能力线状态
+- 改造 `find-actionable-task.py`：合并静态注册表（autonomous_tasks.yaml）+ 动态扫描结果
+- 静态任务优先于动态任务（同优先级时），防止重复执行
+- 全角括号 `（EMP_XXXX）` 需要正则同时匹配半角和全角
+- 每日计数器 `data/.backlog_dispatch_today`：JSON 文件记录日期+计数，次日自动归零
+- Mason 决策：直接执行不需先通知，每天上限按 8 小时工作量（6 个任务）
+
 ## 踩坑记录

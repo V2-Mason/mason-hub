@@ -2,7 +2,7 @@
 """
 find-actionable-task.py — 从任务注册表中找到下一个可执行任务
 
-读取 data/autonomous_tasks.yaml + tasks/backlog.md + SYSTEM_MAP.md
+读取 data/autonomous_tasks.yaml + backlog-scanner 动态任务 + tasks/backlog.md + SYSTEM_MAP.md
 输出格式: task_id|agent|line|description（供 dispatcher.sh 消费）
 
 用法:
@@ -11,8 +11,10 @@ find-actionable-task.py — 从任务注册表中找到下一个可执行任务
   python3 scripts/find-actionable-task.py --count    # 输出可执行任务数
 """
 
+import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -20,6 +22,7 @@ HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
 TASKS_FILE = HUB_DIR / "data" / "autonomous_tasks.yaml"
 BACKLOG_FILE = HUB_DIR / "tasks" / "backlog.md"
 SYSTEM_MAP_FILE = HUB_DIR / "SYSTEM_MAP.md"
+BACKLOG_SCANNER = HUB_DIR / "scripts" / "backlog-scanner.py"
 
 # 优先级权重
 PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
@@ -88,27 +91,34 @@ def is_incomplete_in_backlog(backlog_text: str, match_str: str) -> bool:
     return False
 
 
+def load_backlog_scanner_tasks() -> list[dict]:
+    """从 backlog-scanner.py 获取动态任务"""
+    if not BACKLOG_SCANNER.exists():
+        return []
+    try:
+        result = subprocess.run(
+            ["python3", str(BACKLOG_SCANNER)],
+            capture_output=True, text=True, timeout=10)
+        if result.returncode != 0:
+            return []
+        tasks = json.loads(result.stdout)
+        return tasks if isinstance(tasks, list) else []
+    except (subprocess.TimeoutExpired, json.JSONDecodeError, Exception):
+        return []
+
+
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else None
 
-    # 读取数据
-    tasks = parse_yaml_tasks(TASKS_FILE)
-    if not tasks:
-        if mode != "--count":
-            print("无任务注册表", file=sys.stderr)
-        if mode == "--count":
-            print("0")
-        sys.exit(1)
+    # 读取静态注册表
+    static_tasks = parse_yaml_tasks(TASKS_FILE)
 
     backlog_text = BACKLOG_FILE.read_text() if BACKLOG_FILE.exists() else ""
     system_map_text = SYSTEM_MAP_FILE.read_text() if SYSTEM_MAP_FILE.exists() else ""
 
-    # 按优先级排序
-    tasks.sort(key=lambda t: PRIORITY_ORDER.get(t.get("priority", "P2"), 2))
-
-    actionable = []
-
-    for task in tasks:
+    # --- 静态任务过滤 ---
+    static_actionable = []
+    for task in static_tasks:
         tid = task.get("id", "?")
         agent = task.get("agent", "")
         line = task.get("line", "")
@@ -116,40 +126,68 @@ def main():
         desc = task.get("description", "")
         priority = task.get("priority", "P2")
 
-        # 检查 1: backlog 中是否已完成
         if is_completed_in_backlog(backlog_text, match_str):
             if mode == "--list":
                 print(f"  ✅ [{priority}] {tid}: 已完成")
             continue
 
-        # 检查 2: 能力线状态
         line_status = get_line_status(system_map_text, line)
         if line_status != "active":
             if mode == "--list":
                 print(f"  ⏸️  [{priority}] {tid}: 能力线 {line} = {line_status}")
             continue
 
-        # 检查 3: backlog 中是否存在该任务（可选，有些任务可能没在 backlog 里）
-        # 不强制要求，注册表本身就是授权
-
         if mode == "--list":
             print(f"  🟢 [{priority}] {tid} → {agent}: {desc[:60]}")
 
-        actionable.append(task)
+        static_actionable.append(task)
+
+    # --- 动态任务（backlog-scanner）---
+    dynamic_tasks = load_backlog_scanner_tasks()
+    if mode == "--list" and dynamic_tasks:
+        print(f"\n--- Backlog 动态扫描 ({len(dynamic_tasks)} 个) ---")
+        for t in dynamic_tasks:
+            print(f"  📋 [{t.get('priority', 'P2')}] {t['id']} → {t.get('agent', '?')}: {t.get('description', '')[:60]}")
+
+    # --- 合并 + 排序（静态优先，同优先级静态在前）---
+    all_actionable = []
+    for t in static_actionable:
+        t["_source"] = "static"
+        all_actionable.append(t)
+    for t in dynamic_tasks:
+        t["_source"] = "dynamic"
+        all_actionable.append(t)
+
+    all_actionable.sort(key=lambda t: (
+        PRIORITY_ORDER.get(t.get("priority", "P2"), 2),
+        0 if t["_source"] == "static" else 1,
+    ))
 
     if mode == "--list":
-        print(f"\n可执行: {len(actionable)} / 总计: {len(tasks)}")
+        static_count = len(static_actionable)
+        dynamic_count = len(dynamic_tasks)
+        total = static_count + dynamic_count
+        print(f"\n总可执行: {total} (静态 {static_count} + 动态 {dynamic_count}) / 静态注册 {len(static_tasks)}")
         return
 
     if mode == "--count":
-        print(len(actionable))
+        print(len(all_actionable))
         return
 
     # 默认模式: 输出第一个可执行任务
-    if actionable:
-        t = actionable[0]
+    if all_actionable:
+        t = all_actionable[0]
         # 格式: task_id|agent|line|description
         print(f"{t['id']}|{t['agent']}|{t.get('line', '')}|{t.get('description', '')}")
+
+        # 如果是动态任务，增加每日计数
+        if t.get("_source") == "dynamic" or t.get("source") == "backlog-scanner":
+            try:
+                subprocess.run(
+                    ["python3", str(BACKLOG_SCANNER), "--increment"],
+                    timeout=5, capture_output=True)
+            except Exception:
+                pass
     else:
         sys.exit(1)
 
