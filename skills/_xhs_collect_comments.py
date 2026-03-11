@@ -196,7 +196,7 @@ async def fetch_comments_page(page, cookie_str, a1, ua, note_id, xsec_token, cur
     return comments, next_cursor, has_more
 
 
-async def collect(account_id: str, top_n: int, max_comments: int):
+async def collect(account_id: str, top_n: int, max_comments: int, note_id: str = ''):
     from playwright.async_api import async_playwright
     from tools import utils
 
@@ -224,8 +224,28 @@ async def collect(account_id: str, top_n: int, max_comments: int):
     ua = account.get('user_agent',
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
 
-    # --- Get top notes ---
-    notes = get_top_notes_for_comments(top_n)
+    # --- Get notes to process ---
+    if note_id:
+        # Single note mode
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        row = cur.execute(
+            'SELECT note_id, title, comment_count, xsec_token FROM xhs_note WHERE note_id = ?',
+            (note_id,)).fetchone()
+        conn.close()
+        if not row or not row['xsec_token']:
+            print(f'ERROR: Note {note_id} not found or has no xsec_token')
+            return 3
+        notes = [{
+            'note_id': row['note_id'],
+            'title': row['title'] or '',
+            'score': 0,
+            'comment_count': parse_count(row['comment_count']),
+            'xsec_token': row['xsec_token'],
+        }]
+    else:
+        notes = get_top_notes_for_comments(top_n)
     if not notes:
         print('No notes with xsec_token found')
         return 3
@@ -346,9 +366,10 @@ def main():
     parser.add_argument('--account', default='MAIN', help='Account ID')
     parser.add_argument('--top-n', type=int, default=10, help='Number of top notes to collect comments from')
     parser.add_argument('--max-comments', type=int, default=20, help='Max comments per note')
+    parser.add_argument('--note-id', default='', help='Collect comments for a specific note ID only')
     args = parser.parse_args()
 
-    return asyncio.run(collect(args.account, args.top_n, args.max_comments))
+    return asyncio.run(collect(args.account, args.top_n, args.max_comments, note_id=args.note_id))
 
 
 if __name__ == '__main__':
