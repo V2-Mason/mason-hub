@@ -1,0 +1,15 @@
+[Unit]
+Description=Mason Hub Slack Ask Service
+After=network.target
+
+[Service]
+Type=simple
+User=hangn
+WorkingDirectory=/home/hangn/mason-hub
+ExecStart=/home/hangn/mason-hub/.venv/bin/python3 /home/hangn/mason-hub/scripts/slack-ask.py
+Restart=on-failure
+RestartSec=5
+EnvironmentFile=/home/hangn/mason-hub/.env
+
+[Install]
+WantedBy=multi-user.target
