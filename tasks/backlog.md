@@ -175,7 +175,7 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] Gate 2 bias 修正 + Agent 名册 SSOT — 2026-03-10 完成，docs/system/agents.yaml 单一来源 + Gate 2 注入结构化上下文（agent 清单/数据限制/执行容量）+ Step 3 因果推理要求
 - [x] 数据中台框架 + EMP_0014 Data Engineer — 2026-03-10 完成，混合式架构（中台+嵌入式分析），data/data_catalog.yaml 盘点 15 个数据集，agents/EMP_0014.md 配置
 - [x] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug（EMP_0002）— 2026-03-11 完成，55 个测试用例，tests/test_xhs_analyze.py
-- [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）（EMP_0002）
+- [x] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）（EMP_0002）— 2026-03-11 完成
 
 P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] SYSTEM_MAP 受力分析 — 2026-03-10 完成，四条能力线动态状态 + 耦合触发机制
@@ -533,7 +533,8 @@ Phase 2 — 主干管道统一:
 
 Phase 3 — 数据 SDK + 扩展:
 - [x] 数据读取 SDK — 2026-03-11 完成，data/tools/（5 模块：metrics/catalog/readers/sdk/__init__），`get_xhs_notes()`/`get_xhs_analysis()`/`get_scout_intel()` 等一行代码接口，标准指标唯一口径（EMP_0014）
-- [ ] 加工层标准化 — raw→clean→analysis→report 四层命名 + 指标唯一口径（EMP_0014）
+- [x] 加工层标准化 — 2026-03-11 完成：data_catalog.yaml 四层结构（raw/clean/analysis/report）+ 8 指标唯一口径注册 + 3 个 schema 文件（xhs_metrics/xhs_clean_notes/xhs_analysis_viral）+ xhs-clean.py 清洗管道（1168 条验证通过）+ catalog.py 新增 layer 查询/指标查询/血缘追踪（EMP_0014）
+- [ ] clean_xhs_notes 集成到 xhs-analyze.sh — 在阿里云注册 xhs-clean.py 为分析前置步骤，analysis 层改读 clean JSON（EMP_0014）
 - [ ] 素仁轩历史销售快照 — 定期快照 API 到时序表，支持趋势分析（EMP_0014）
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）

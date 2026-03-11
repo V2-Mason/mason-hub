@@ -130,3 +130,25 @@
 ### Gap: 📄 文档更新
 - 下游消费者（xhs-analyze-viral.py 等）还未改为 `from data.tools import interaction_score`，需渐进迁移
 - backlog 已更新 SDK 完成状态
+
+## Lesson: 加工层四层标准化 (2026-03-11)
+
+### 做了什么
+- data_catalog.yaml 重构：新增 `metrics:` 指标注册表（8 个指标唯一口径）+ 所有数据集增加 `layer` 字段
+- 四层分布：raw(11) → clean(2) → analysis(4) → report(3)，1 个 planned 无 layer
+- 新增 `clean_xhs_notes` 数据集定义（planned），定义了从 raw SQLite 到 clean JSON 的转换规则
+- 创建 3 个 schema 文件：xhs_metrics.yaml（指标机器可读定义）、xhs_clean_notes.yaml（clean 层输出 schema）、xhs_analysis_viral.yaml（analysis 层输出 schema）
+- 创建 `data/pipelines/xhs-clean.py`（clean 层加工脚本），端到端验证：1168 条笔记清洗通过
+- catalog.py 新增 5 个函数：get_metric / list_metrics / get_layer_datasets / get_lineage / list_datasets(layer=)
+
+### 发现
+- 5 个 XHS 脚本各有 `parse_count` 重复实现：xhs-analyze-viral.py / _two_tier_crawl.py / _xhs_publish_log.py / _xhs_comment_analysis.py / _xhs_collect_comments.py / _xhs_analyze_compare.py
+- 这些脚本运行在阿里云，无法直接 `from data.tools import metrics`，所以 xhs-clean.py 必须内联指标函数
+- 解决方案：先并行产出 clean JSON，验证一致性后再切 analysis 输入源。最终目标是 analysis 层只读 clean 数据
+- `_xhs_analyze_compare.py` 的 `engage_rate`/`save_rate` 是内联计算（未用函数），精度与 metrics.py 一致但风格不同
+
+### Gap: 📄 文档更新 → 已更新 data_catalog.yaml + 3 个 schema 文件
+### Gap: 🏗️ 系统能力缺失
+- clean_xhs_notes 目前 status: planned，需要在 xhs-analyze.sh 流程中注册 xhs-clean.py 作为前置步骤
+- 阿里云 /opt/mediacrawler/clean/ 目录尚未创建，首次实际运行时需 mkdir
+- 下游 xhs-analyze-viral.py 还未改为读 clean JSON，需逐步迁移

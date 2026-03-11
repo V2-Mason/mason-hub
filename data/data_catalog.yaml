@@ -4,20 +4,113 @@
 # 维护者：EMP_0014 (Data Engineer)
 # 更新规则：新增/变更数据集时必须同步更新此文件
 #
+# 四层架构：
+#   Layer 1: raw_     — 原始采集数据，不做任何加工
+#   Layer 2: clean_   — 清洗归一化（去重、格式标准化、计数归一化）
+#   Layer 3: analysis_ — 聚合分析（指标计算、排行、趋势）
+#   Layer 4: report_  — 面向业务消费的最终产出
+#
 # 状态说明：
-#   active    — 正常产出中
-#   stale     — 超过预期更新周期未更新
-#   planned   — 计划中，尚未实现
+#   active     — 正常产出中
+#   stale      — 超过预期更新周期未更新
+#   planned    — 计划中，尚未实现
 #   deprecated — 已废弃
 
 # =============================================================================
-# 采集层 (Raw Ingestion) — 外部数据进入系统的入口
+# 指标注册表 (Metrics Registry) — 唯一口径，全系统统一
+# =============================================================================
+#
+# 所有指标的计算公式在此定义，代码实现在 data/tools/metrics.py。
+# 任何脚本使用这些指标时，必须引用 metrics.py 或严格遵循此处公式。
+# 修改指标公式前必须评估下游影响并通知消费者。
+
+metrics:
+
+  # --- XHS 互动指标 ---
+  - id: interaction_score
+    name: 互动评分
+    formula: "liked + collected×3 + comment×5 + shared×8"
+    unit: 分（无量纲）
+    description: XHS 笔记综合互动价值，权重反映各行为的营销价值（转发最贵，点赞最便宜）
+    implementation: data/tools/metrics.py::interaction_score()
+    consumers: [xhs-analyze-viral.py, _two_tier_crawl.py, _xhs_publish_log.py, _xhs_comment_analysis.py, sdk.py]
+    version: "1.0"
+    since: "2026-03-10"
+
+  - id: engage_rate
+    name: 评赞比
+    formula: "comment / liked × 100"
+    unit: "%"
+    description: 话题讨论热度指标，高评赞比 = 内容引发争议或好奇
+    threshold_high: 2.0  # >2% 视为高互动
+    implementation: data/tools/metrics.py::engage_rate()
+    version: "1.0"
+
+  - id: save_rate
+    name: 藏赞比
+    formula: "collected / liked × 100"
+    unit: "%"
+    description: 内容实用性指标，高藏赞比 = 教程/清单/工具类内容
+    threshold_high: 30.0  # >30% 视为高价值干货
+    implementation: data/tools/metrics.py::save_rate()
+    version: "1.0"
+
+  - id: share_rate
+    name: 转赞比
+    formula: "shared / liked × 100"
+    unit: "%"
+    description: 社交货币指标，高转赞比 = 内容有传播动力
+    threshold_high: 3.0  # >3% 视为高传播
+    implementation: data/tools/metrics.py::share_rate()
+    version: "1.0"
+
+  - id: fake_traffic_flag
+    name: 假流量标记
+    formula: "liked > 1000 AND (engage_rate < 0.2% OR save_rate < 5%)"
+    unit: "标记列表"
+    description: 检测疑似刷量帖子——高赞但无实质互动
+    flags: ["评赞比过低", "藏赞比过低"]
+    implementation: data/tools/metrics.py::fake_traffic_flags()
+    version: "1.0"
+
+  - id: keyword_competition
+    name: 关键词竞争密度
+    formula: |
+      蓝海: count < 5 AND avg_score > global_median
+      红海: count > 15 OR (count >= 5 AND avg_score < 0.5 × global_median)
+      待观察: 其他
+    unit: "蓝海 | 红海 | 待观察"
+    description: 关键词市场机会判定
+    implementation: data/tools/metrics.py::keyword_competition()
+    version: "1.0"
+
+  - id: parse_count
+    name: 中文数字归一化
+    formula: "万→×10000, 亿→×100000000, +号去除"
+    unit: int
+    description: 将 XHS 中文数字格式（1.2万、3亿）转为整数
+    implementation: data/tools/metrics.py::parse_count()
+    version: "1.0"
+
+  # --- Radar 指标 ---
+  - id: focus_rate
+    name: 关注率
+    formula: "1 - (dismissed / total)"
+    unit: "%"
+    description: Mason 对情报话题的关注度，用于淘汰低价值关键词
+    threshold_retire: 30.0  # 连续 2 周 < 30% 触发淘汰建议
+    implementation: tools/radar-tracker/weekly_report.py
+    version: "1.0"
+
+# =============================================================================
+# Layer 1: 采集层 (Raw) — 外部数据原样进入系统
 # =============================================================================
 
 datasets:
 
   # --- XHS 内容采集 ---
   - id: raw_xhs_notes
+    layer: raw
     name: XHS 笔记原始数据
     description: MediaCrawler 采集的小红书笔记（标题、互动数、作者、标签、类型）
     owner: EMP_0014
@@ -43,14 +136,15 @@ datasets:
       - time (TEXT)
       - crawl_timestamp (TEXT)
     update_frequency: "周二/五 10:00 ET（EMP_0008 触发）"
-    consumers: [xhs-analyze-viral.py, _xhs_analyze_compare.py, _xhs_publish_log.py]
+    consumers: [clean_xhs_notes]
     status: active
     data_quality_notes: |
-      - 主号搜索被 XHS 软封，需小号采集
+      - 互动数为中文格式（"1.2万"），需 parse_count 归一化
       - 搜索 API 返回的互动数可能滞后 1-2 天
       - 采集样本只含被推荐内容（幸存者偏差）
 
   - id: raw_xhs_comments
+    layer: raw
     name: XHS 评论数据
     owner: EMP_0014
     producer: skills/xhs/_xhs_collect_comments.py
@@ -66,10 +160,11 @@ datasets:
       - comment_user_id (TEXT)
       - comment_date (TEXT)
     update_frequency: "随 xhs-analyze.sh 触发（非阻塞步骤）"
-    consumers: [_xhs_comment_analysis.py]
+    consumers: [analysis_xhs_comments]
     status: active
 
   - id: raw_xhs_creators
+    layer: raw
     name: XHS 创作者画像
     owner: EMP_0014
     producer: skills/xhs/_xhs_enrich_creators.py
@@ -87,11 +182,12 @@ datasets:
       - gender (TEXT)
       - updated_at (TEXT)
     update_frequency: "随 xhs-analyze.sh 触发，7 天缓存"
-    consumers: [_xhs_strategy_briefing.py]
+    consumers: [report_strategy_briefing]
     status: active
 
   # --- TrendRadar 趋势采集 ---
   - id: raw_trendradar_news
+    layer: raw
     name: 热榜趋势数据（11 平台）
     owner: EMP_0014
     producer: tools/trendradar/（Docker + supercronic）
@@ -99,13 +195,14 @@ datasets:
       type: sqlite
       location: gcp:~/mason-hub/tools/trendradar/output/news/YYYY-MM-DD.db
     update_frequency: "每 6 小时"
-    consumers: [weekly_report.py, trend_report.py]
+    consumers: [analysis_radar_weekly, report_optimization]
     status: active
     data_quality_notes: |
       - 每天生成新 db 文件，历史查询需遍历
       - 无去重机制（同一条新闻不同平台重复出现）
 
   - id: raw_trendradar_rss
+    layer: raw
     name: RSS 订阅数据（20+ 源）
     owner: EMP_0014
     producer: tools/trendradar/（Docker + supercronic）
@@ -113,11 +210,12 @@ datasets:
       type: sqlite
       location: gcp:~/mason-hub/tools/trendradar/output/rss/YYYY-MM-DD.db
     update_frequency: "每 6 小时"
-    consumers: [weekly_report.py, trend_report.py]
+    consumers: [analysis_radar_weekly]
     status: active
 
   # --- Radar 用户行为 ---
   - id: raw_radar_interactions
+    layer: raw
     name: Radar 点击/Dismiss 行为数据
     owner: EMP_0014
     producer: tools/radar-tracker/tracker.py（Flask :8081）
@@ -126,11 +224,12 @@ datasets:
       location: gcp:~/mason-hub/tools/radar-tracker/tracker.db
       tables: [dismissals, seen_items, read_items]
     update_frequency: "实时（用户操作触发）"
-    consumers: [weekly_report.py, optimization-cycle.sh]
+    consumers: [analysis_radar_weekly]
     status: active
 
   # --- 素仁轩电商数据 ---
   - id: raw_srx_sales
+    layer: raw
     name: 素仁轩销售数据
     owner: EMP_0014
     producer: skills/agent-ops/data-coo-daily.sh → aliyun:8000/api/sales/summary
@@ -150,37 +249,25 @@ datasets:
 
   # --- Scout 情报 ---
   - id: raw_scout_intel
+    layer: raw
     name: Scout 情报产出
     owner: EMP_0006
-    producer: skills/scout/scout-*.sh（9 个脚本）
+    producer: skills/scout/scout-*.sh（9 个脚本）+ intel/engines/pipeline.py (v2)
     storage:
       type: markdown_files
       location: gcp:~/mason-hub/intel/digests/*.md
     dedup: scripts/scout-dedup.py → intel/seen.jsonl
     update_frequency: "每日 19:00 ET cron"
-    consumers: [optimization-cycle.sh]
+    consumers: [clean_scout_intel]
     status: active
     data_quality_notes: |
-      - 9 个脚本全部只用 GitHub API，非真正多渠道
+      - v1: 9 个脚本全部只用 GitHub API，非真正多渠道
+      - v2: 6 引擎管道（spider→query→media→insight→forum→report）
       - 产出格式不统一（有的带日期有的不带）
-      - 没有结构化 schema，下游只能 grep 文件
-
-  - id: clean_scout_intel
-    name: Scout 情报标准化数据
-    description: Scout digest markdown 解析后的结构化 JSONL，带优先级/来源/建议行动等字段
-    owner: EMP_0014
-    producer: data/pipelines/scout-normalize.py
-    input: [raw_scout_intel]
-    storage:
-      type: jsonl
-      location: gcp:~/mason-hub/intel/processed/scout_normalized.jsonl
-    schema: data/schemas/scout_intel.yaml
-    update_frequency: "随 Scout 产出触发"
-    consumers: [optimization-cycle.sh, EMP_0000（晨会）]
-    status: active
 
   # --- XHS 平台规则文档 ---
   - id: raw_xhs_helper_docs
+    layer: raw
     name: 小红书电商帮助中心文档
     description: school.xiaohongshu.com 帮助中心 + 商家学堂规则，开店/合规/运营参考
     owner: EMP_0014
@@ -195,29 +282,77 @@ datasets:
     data_quality_notes: |
       - 通过 Playwright 爬取，API 拦截 + DOM 回退双保险
       - 帮助中心内容可能滞后于实际平台规则变更
-      - 4 个爬取脚本：_xhs_helper_crawl.py / _xhs_helper_full_crawl.py / _xhs_helper_pro.py / _xhs_school_fetch_details.py
 
 # =============================================================================
-# 加工层 (Transformation) — 清洗、聚合、生成分析指标
+# Layer 2: 清洗层 (Clean) — 归一化、去重、标准化字段
 # =============================================================================
+# 原则：clean 层只做格式转换，不做业务判断
+# 输出：字段名统一、数值类型正确、去重完成、时间戳标准化
 
-  - id: analysis_xhs_viral
-    name: XHS 互动分析（爆帖排行 + 关键词洞察）
+  - id: clean_xhs_notes
+    layer: clean
+    name: XHS 笔记清洗数据
+    description: |
+      对 raw_xhs_notes 做归一化处理：
+      1. parse_count 将中文数字转整数（"1.2万"→12000）
+      2. 时间戳统一为 ISO 8601（毫秒/秒自动判断）
+      3. 计算标准化派生字段（interaction_score, engage_rate, save_rate, share_rate）
+      4. 标记假流量（fake_traffic_flags）
+      5. 按 note_id 去重（保留最新 crawl_timestamp）
     owner: EMP_0014
-    producer: skills/xhs/xhs-analyze-viral.py
+    producer: data/pipelines/xhs-clean.py
     input: [raw_xhs_notes]
     storage:
       type: json
+      location: aliyun:/opt/mediacrawler/clean/notes_YYYY-MM-DD.json
+    schema: data/schemas/xhs_clean_notes.yaml
+    metrics_applied: [parse_count, interaction_score, engage_rate, save_rate, share_rate, fake_traffic_flag]
+    update_frequency: "随采集完成触发"
+    consumers: [analysis_xhs_viral, analysis_xhs_trends]
+    status: planned
+    notes: |
+      当前 xhs-analyze-viral.py 内联做了清洗+分析两步。
+      拆分 clean 层后，analysis 层只读 clean 数据，不再直接读 raw SQLite。
+      迁移策略：先并行产出 clean JSON，验证一致性后再切换 analysis 输入源。
+
+  - id: clean_scout_intel
+    layer: clean
+    name: Scout 情报标准化数据
+    description: Scout digest markdown 解析后的结构化 JSONL，带优先级/来源/建议行动等字段
+    owner: EMP_0014
+    producer: data/pipelines/scout-normalize.py
+    input: [raw_scout_intel]
+    storage:
+      type: jsonl
+      location: gcp:~/mason-hub/intel/processed/scout_normalized.jsonl
+    schema: data/schemas/scout_intel.yaml
+    update_frequency: "随 Scout 产出触发"
+    consumers: [report_optimization, EMP_0000（晨会）]
+    status: active
+
+# =============================================================================
+# Layer 3: 分析层 (Analysis) — 聚合、排行、趋势、洞察
+# =============================================================================
+# 原则：analysis 层做业务聚合，输入必须是 clean 层（或已归一化的 raw 数据）
+# 每个 analysis 数据集必须声明使用了哪些指标（metrics_used）
+
+  - id: analysis_xhs_viral
+    layer: analysis
+    name: XHS 互动分析（爆帖排行 + 关键词洞察）
+    owner: EMP_0014
+    producer: skills/xhs/xhs-analyze-viral.py
+    input: [raw_xhs_notes]  # → 目标: 改为 [clean_xhs_notes]
+    storage:
+      type: json
       location: aliyun:/opt/mediacrawler/analysis/analysis_YYYY-MM-DD.json
-    key_metrics:
-      - interaction_score: "liked + collected×3 + comment×5 + shared×8"
-      - fake_traffic_flag: "engage_rate < 0.2% OR save_rate < 5%"
-      - keyword_density: "蓝海/红海/待观察"
+    schema: data/schemas/xhs_analysis_viral.yaml
+    metrics_used: [interaction_score, engage_rate, save_rate, share_rate, fake_traffic_flag, keyword_competition]
     update_frequency: "随 xhs-analyze.sh 触发"
-    consumers: [_xhs_strategy_briefing.py, _xhs_enrich_creators.py, xhs-trend-compare.py]
+    consumers: [analysis_xhs_trends, report_strategy_briefing]
     status: active
 
   - id: analysis_xhs_trends
+    layer: analysis
     name: XHS 周度趋势对比
     owner: EMP_0014
     producer: skills/xhs/xhs-trend-compare.py
@@ -226,12 +361,13 @@ datasets:
       type: json
       location: aliyun:/opt/mediacrawler/analysis/trends/YYYY-MM-DD.json
     update_frequency: "随 xhs-analyze.sh 触发"
-    consumers: [_xhs_strategy_briefing.py]
+    consumers: [report_strategy_briefing]
     status: active
     data_quality_notes: |
       - 两期数据相同时输出"0% 变化"，可能是采集缓存重复而非真无变化
 
   - id: analysis_xhs_comments
+    layer: analysis
     name: XHS 评论洞察（痛点 + 用户问题）
     owner: EMP_0014
     producer: skills/xhs/_xhs_comment_analysis.py
@@ -240,10 +376,11 @@ datasets:
       type: json
       location: aliyun:/opt/mediacrawler/analysis/comments/YYYY-MM-DD.json
     update_frequency: "随 xhs-analyze.sh 触发（非阻塞）"
-    consumers: [_xhs_strategy_briefing.py]
+    consumers: [report_strategy_briefing]
     status: active
 
   - id: analysis_radar_weekly
+    layer: analysis
     name: Radar 关注率周报
     owner: EMP_0014
     producer: tools/radar-tracker/weekly_report.py
@@ -251,21 +388,22 @@ datasets:
     storage:
       type: stdout  # 目前无持久化
       location: terminal output
-    key_metrics:
-      - focus_rate: "1 - (dismissed / total)"
-      - retirement_threshold: "< 30% for 2 consecutive weeks"
+    metrics_used: [focus_rate]
     update_frequency: "optimization-cycle.sh 调用时"
-    consumers: [optimization-cycle.sh]
+    consumers: [report_optimization]
     status: active
     data_quality_notes: |
       - 需要 2 周数据积累才有意义
       - 输出到 stdout，没有存文件，无法回看历史
 
 # =============================================================================
-# 消费层 (Consumption) — 面向业务决策的最终产出
+# Layer 4: 报告层 (Report) — 面向业务决策的最终产出
 # =============================================================================
+# 原则：report 层直接服务于人或下游 agent 的决策
+# 每个 report 必须声明消费者是谁
 
   - id: report_strategy_briefing
+    layer: report
     name: XHS 策略简报（内容方向建议）
     owner: EMP_0008
     producer: skills/xhs/_xhs_strategy_briefing.py
@@ -274,14 +412,15 @@ datasets:
       type: json
       location: aliyun:/opt/mediacrawler/analysis/briefings/YYYY-MM-DD.json
     update_frequency: "周二/五"
-    consumers: [optimization-cycle.sh, EMP_0008, EMP_0010]
+    consumers: [report_optimization, EMP_0008, EMP_0010]
     status: active
 
   - id: report_optimization
+    layer: report
     name: 自优化周期报告
     owner: optimization-cycle
     producer: skills/agent-ops/optimization-cycle.sh
-    input: [analysis_radar_weekly, raw_scout_intel, report_strategy_briefing, raw_trendradar_news]
+    input: [analysis_radar_weekly, clean_scout_intel, report_strategy_briefing, raw_trendradar_news]
     storage:
       type: markdown
       location: gcp:~/mason-hub/intel/optimization-reports/YYYY-MM-DD.md
@@ -291,6 +430,7 @@ datasets:
     status: active
 
   - id: report_api_usage
+    layer: report
     name: API 消耗日报
     owner: EMP_0004
     producer: scripts/daily_usage_report.py
@@ -307,6 +447,7 @@ datasets:
 # =============================================================================
 
   - id: planned_srx_history
+    layer: raw
     name: 素仁轩历史销售时序数据
     description: 目前只有实时 API 查询，无历史快照，无法做趋势分析和因果推断
     status: planned
@@ -314,6 +455,7 @@ datasets:
     notes: "需要定期快照 API 数据到时序表"
 
   - id: planned_own_content_performance
+    layer: raw
     name: 素仁轩自有账号内容表现
     description: 所有分析基于竞品数据，缺少自身基线，优化建议的预期效果无法验证
     status: planned
@@ -325,4 +467,4 @@ datasets:
     description: 当前 3 个 SQLite + 散落 JSON 跨两台机器，需统一
     status: planned
     priority: P0
-    notes: "Step 4 讨论方案"
+    notes: "方案 A（文件同步）已实施，方案 C（API 网关）>50MB 触发"

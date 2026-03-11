@@ -1,0 +1,119 @@
+# XHS 笔记清洗层 Schema — clean_xhs_notes
+#
+# Layer 2 (Clean) 输出格式定义
+# 输入: raw_xhs_notes (SQLite xhs_note 表)
+# 输出: JSON 数组，每条笔记包含以下字段
+#
+# 维护者: EMP_0014
+
+schema:
+  type: array
+  items:
+    type: object
+    required:
+      - note_id
+      - title
+      - type
+      - liked
+      - collected
+      - comment
+      - shared
+      - score
+      - engage_rate
+      - save_rate
+      - share_rate
+      - keyword
+      - pub_date
+      - clean_timestamp
+    properties:
+
+      # --- 原始字段（归一化后） ---
+      note_id:
+        type: string
+        description: 笔记唯一 ID（PK，去重键）
+      title:
+        type: string
+        description: 笔记标题（空值替换为 ""）
+      desc:
+        type: string
+        description: 笔记正文摘要
+      type:
+        type: string
+        enum: [video, normal]
+        description: 内容类型
+      liked:
+        type: integer
+        description: 点赞数（parse_count 归一化后）
+      collected:
+        type: integer
+        description: 收藏数（parse_count 归一化后）
+      comment:
+        type: integer
+        description: 评论数（parse_count 归一化后）
+      shared:
+        type: integer
+        description: 转发数（parse_count 归一化后）
+      tags:
+        type: string
+        description: 标签列表（JSON 字符串）
+      keyword:
+        type: string
+        description: 采集时的搜索关键词
+      url:
+        type: string
+        description: 笔记链接
+      nickname:
+        type: string
+        description: 作者昵称
+      user_id:
+        type: string
+        description: 作者 ID
+
+      # --- 时间字段（标准化） ---
+      pub_date:
+        type: string
+        format: "YYYY-MM-DD"
+        description: 发布日期（从时间戳转换，毫秒/秒自动判断）
+      post_age_days:
+        type: integer
+        description: 帖子年龄（天数，-1 表示无法计算）
+      clean_timestamp:
+        type: string
+        format: "ISO 8601"
+        description: 清洗处理时间
+
+      # --- 派生指标（标准口径） ---
+      score:
+        type: integer
+        description: "互动评分 = liked + collected×3 + comment×5 + shared×8"
+        metric_ref: interaction_score
+      engage_rate:
+        type: number
+        description: "评赞比 (%) = comment / liked × 100"
+        metric_ref: engage_rate
+      save_rate:
+        type: number
+        description: "藏赞比 (%) = collected / liked × 100"
+        metric_ref: save_rate
+      share_rate:
+        type: number
+        description: "转赞比 (%) = shared / liked × 100"
+        metric_ref: share_rate
+      fake_flags:
+        type: array
+        items:
+          type: string
+        description: "假流量标记列表（空 = 正常）"
+        metric_ref: fake_traffic_flag
+
+# 去重规则
+dedup:
+  key: note_id
+  strategy: "保留最新 crawl_timestamp 的记录"
+
+# 输出约定
+output:
+  format: json
+  filename_pattern: "notes_YYYY-MM-DD.json"
+  location: "aliyun:/opt/mediacrawler/clean/"
+  encoding: utf-8
