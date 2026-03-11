@@ -30,6 +30,15 @@ SYSTEM_MAP = HUB_DIR / "SYSTEM_MAP.md"
 OFFSET_FILE = EVENTS_DIR / ".offset"
 LOG_FILE = HUB_DIR / "logs" / "event_router.log"
 
+# cron 环境不继承 .env，手动加载
+_env_file = HUB_DIR / ".env"
+if _env_file.exists():
+    for line in _env_file.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, _, val = line.partition("=")
+            os.environ.setdefault(key.strip(), val.strip())
+
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL", "")
 
 # --- 路由表 ---

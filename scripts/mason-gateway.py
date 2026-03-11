@@ -140,6 +140,10 @@ last_heartbeat = 0
 task_queue = deque()
 queue_file_pos = 0
 _last_event_analysis = {}  # {event_type: timestamp} — 同类事件去重
+_last_heavy_heartbeat = 0  # 上次重巡时间
+_last_light_result = None  # 上次轻巡结果（用于变化检测）
+_was_yielding = False  # Mason 让路状态（用于日志去重）
+HEAVY_HEARTBEAT_INTERVAL = 14400  # 4 小时强制一次重巡
 
 
 # ========================================
@@ -713,6 +717,63 @@ def run_agentic_session(system_prompt: str, user_prompt: str) -> str:
 # Heartbeat (升级版: agentic loop)
 # ========================================
 
+def run_light_heartbeat() -> bool:
+    """轻巡：纯脚本检查，零 token。返回 True=正常，False=异常需重巡"""
+    global _last_light_result
+    log("[Heartbeat] 轻巡开始")
+    try:
+        # 跑 data_health_check
+        result = subprocess.run(
+            ["bash", str(HUB_DIR / "data/pipelines/data_health_check.sh")],
+            capture_output=True, text=True, cwd=str(HUB_DIR), timeout=120,
+        )
+        health_output = result.stdout[-500:] if result.stdout else ""
+
+        # 检查磁盘
+        disk = subprocess.run(
+            ["df", "-h", "/"], capture_output=True, text=True, timeout=10,
+        )
+        disk_output = disk.stdout if disk.stdout else ""
+
+        # 检查内存
+        mem = subprocess.run(
+            ["free", "-m"], capture_output=True, text=True, timeout=10,
+        )
+        mem_output = mem.stdout if mem.stdout else ""
+
+        # 提取关键指标做变化检测
+        current = f"{health_output[:200]}|{disk_output[:100]}|{mem_output[:100]}"
+        changed = (_last_light_result is not None and current != _last_light_result)
+        _last_light_result = current
+
+        # 判断是否异常
+        has_error = result.returncode != 0 or "❌" in health_output or ":x:" in health_output
+        # 磁盘 >85%
+        disk_critical = False
+        for line in disk_output.split("\n"):
+            if "%" in line:
+                try:
+                    pct = int(line.split()[-2].replace("%", ""))
+                    if pct > 85:
+                        disk_critical = True
+                except (ValueError, IndexError):
+                    pass
+
+        if has_error or disk_critical:
+            log(f"[Heartbeat] 轻巡发现异常，升级为重巡")
+            return False
+
+        if changed:
+            log(f"[Heartbeat] 轻巡发现变化，升级为重巡")
+            return False
+
+        log("[Heartbeat] 轻巡 ✅ 正常")
+        return True
+    except Exception as e:
+        log(f"[Heartbeat] 轻巡异常: {e}，升级为重巡")
+        return False
+
+
 def run_heartbeat():
     """Heartbeat: 读 MASONHUB → agentic loop → 自主检查 + 修复 + 回写记忆"""
     log("[Heartbeat] 开始")
@@ -991,11 +1052,17 @@ def repair_session_active() -> bool:
 
 
 def process_queue():
+    global _was_yielding
     if not task_queue:
         return
     if mason_session_active():
-        log("🛑 Mason session 活跃，让路")
+        if not _was_yielding:
+            log("🛑 Mason session 活跃，开始让路")
+            _was_yielding = True
         return
+    if _was_yielding:
+        log("✅ Mason session 结束，恢复工作")
+        _was_yielding = False
     if repair_session_active():
         log("🔧 Repair session 运行中，heartbeat 跳过")
         return
@@ -1004,7 +1071,14 @@ def process_queue():
     task_type = task.get("type", "unknown")
     try:
         if task_type == "heartbeat":
-            run_heartbeat()
+            global _last_heavy_heartbeat
+            now = time.time()
+            force_heavy = (now - _last_heavy_heartbeat >= HEAVY_HEARTBEAT_INTERVAL)
+            if force_heavy or not run_light_heartbeat():
+                # 异常或每 4 小时强制 → 重巡（agentic，花 token）
+                _last_heavy_heartbeat = now
+                run_heartbeat()
+            # 轻巡正常 → 什么都不做，省 token
         elif task_type == "event":
             analyze_event(task["event"])
         elif task_type == "script":
