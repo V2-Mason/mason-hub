@@ -327,7 +327,7 @@ P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
   - 分析存档: docs/analysis/ + 阿里云 /opt/mediacrawler/analysis/
   - EMP_0008 新增数据分析职责（Mason: "策略必须基于数据"）
   - 周六自动跑（分析 + 简报），cron 待注册
-  - **注意**: 主号搜索被 XHS 软封（API 返回 200+success 但 items 为空），等小号就绪后才能采集新数据
+  - **注意**: ~~主号搜索被 XHS 软封~~ → 已更新 (2026-03-11) 根因是 `_two_tier_crawl.py` 的 `search_id` 生成 bug（`utils.get_search_id()` 不存在 → fallback 空字符串 → XHS API 返回空），已修复，采集正常
 
 P1 — 模块 C：china-hub 分析看板（阿里云本地 :8080）:
 - [ ] 看板后端 — FastAPI 查询采集数据库，提供品类热度/爆款排行/竞品分析/关键词监控 API（EMP_0005）

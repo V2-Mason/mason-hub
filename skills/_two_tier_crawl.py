@@ -37,6 +37,28 @@ ACCOUNTS_FILE = '/opt/mediacrawler/accounts.json'
 DB_PATH = '/opt/mediacrawler/database/sqlite_tables.db'
 
 
+def _base36encode(number, alphabet='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
+    if not isinstance(number, int):
+        raise TypeError('number must be an integer')
+    base36 = ''
+    sign = ''
+    if number < 0:
+        sign = '-'
+        number = -number
+    if 0 <= number < len(alphabet):
+        return sign + alphabet[number]
+    while number != 0:
+        number, i = divmod(number, len(alphabet))
+        base36 = alphabet[i] + base36
+    return sign + base36
+
+
+def get_search_id():
+    e = int(time.time() * 1000) << 64
+    t = int(random.uniform(0, 2147483646))
+    return _base36encode(e + t)
+
+
 # ===== 拟人化延迟 =====
 
 async def human_delay(min_s: float, max_s: float, label: str = ""):
@@ -433,7 +455,7 @@ async def run(account_id: str, keywords: str, top_n: int, pages: int,
                 'keyword': keyword,
                 'page': pg,
                 'page_size': 20,
-                'search_id': utils.get_search_id() if hasattr(utils, 'get_search_id') else '',
+                'search_id': get_search_id(),
                 'sort': sort,
                 'note_type': 0,
                 'ext_flags': [],
