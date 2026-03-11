@@ -532,7 +532,7 @@ Phase 2 — 主干管道统一:
 - [x] EMP_0006.md 更新 — 2026-03-11 完成，config.md 加入 Scout v2 Engine 架构章节（6 引擎职责表/管道流程/多模型策略/数据流/调度更新）
 
 Phase 3 — 数据 SDK + 扩展:
-- [ ] 数据读取 SDK — Python 模块，业务 agent 一行代码获取干净数据（EMP_0014）
+- [x] 数据读取 SDK — 2026-03-11 完成，data/tools/（5 模块：metrics/catalog/readers/sdk/__init__），`get_xhs_notes()`/`get_xhs_analysis()`/`get_scout_intel()` 等一行代码接口，标准指标唯一口径（EMP_0014）
 - [ ] 加工层标准化 — raw→clean→analysis→report 四层命名 + 指标唯一口径（EMP_0014）
 - [ ] 素仁轩历史销售快照 — 定期快照 API 到时序表，支持趋势分析（EMP_0014）
 

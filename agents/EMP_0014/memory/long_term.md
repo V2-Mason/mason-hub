@@ -90,3 +90,43 @@
 ### Gap: 🏗️ 系统能力缺失
 - SearXNG Docker 部署 — 搜索多样性依赖此服务（建议 Owner: EMP_0002/EMP_0004，验收: localhost:8888/healthz 返回 OK + search.py 测试通过）
 - Scout v2 cron 注册 — 新管道取代旧 scout-*.sh（建议 Owner: EMP_0004）
+
+## Lesson: 数据健康检查补跑修复 (2026-03-11)
+
+### 做了什么
+- 运行 data_health_check.sh 发现 4 红 1 黄：analysis_xhs_trends/comments/report_strategy_briefing/report_optimization ❌ + raw_scout_intel ⚠️
+- 根因分析：Gateway 60s 超时导致 xhs-analyze.sh 在完成 Step 1-2（viral + enrichment）后、Step 3-5 前被杀
+- 手动 SSH 到阿里云补跑 3 个缺失步骤：_trend_compare.py → _comment_analysis.py → xhs_briefing.py
+- 发现时区不匹配 bug：阿里云脚本用 CST 命名文件（03-12），GCP health check 用本地日期（03-11）查找
+- 临时修复：在阿里云创建 symlink（2026-03-11.json → 2026-03-12.json）
+- 修复后：13/15 健康，1 黄 1 红
+
+### 发现
+- xhs-analyze.sh 链式 SSH 操作（4+ 步串行，每步 ConnectTimeout=10-60s），Gateway 60s 超时根本不够
+- 手动补跑各步骤时，脚本都没 `TZ='America/New_York'` 设置，导致文件名用了 CST 日期
+- report_optimization 预期周三 10:00 ET 但未产出 — optimization-cycle.sh cron 可能失效（非 EMP_0014 职责）
+- raw_scout_intel 3 天未更新 — Scout cron 可能失效（EMP_0006 职责）
+
+### Gap
+- 🔧 配置错误 → 已修（symlink 临时对齐日期）
+- 🏗️ 系统能力缺失 → 触发动作: Gateway 超时 60s 不足以完成完整 XHS 分析管道，需要 EMP_0002 增加超时或改为异步执行
+- 🏗️ 系统能力缺失 → 触发动作: 管道脚本应统一用 `TZ='America/New_York'` 生成文件名，避免跨时区命名不一致
+
+## Lesson: 数据读取 SDK v0.1.0 (2026-03-11)
+
+### 做了什么
+- 构建 `data/tools/` Python 包（5 个模块）：metrics.py / catalog.py / readers.py / sdk.py / __init__.py
+- 标准指标提取为唯一口径：`interaction_score`/`parse_count`/`engage_rate`/`save_rate`/`fake_traffic_flags` 等
+- catalog.py 解析 data_catalog.yaml，`resolve_location()` 自动将 `aliyun:` 路径映射到 `data/mirror/`
+- readers.py 支持 4 种存储类型：sqlite / json / jsonl / markdown_files
+- sdk.py 提供一行代码 API：`get_xhs_notes()`/`get_xhs_analysis()`/`get_scout_intel()` 等
+- 端到端验证：1168 条笔记、分析报告、趋势、评论、简报、23 条情报全部正确读取
+
+### 发现
+- 当前所有 XHS 脚本各自复制 `parse_count()` 和 `interaction_score()`，至少 3 处重复
+- aliyun → mirror 路径映射规则是硬编码的（基于已知目录结构），后续需配置化
+- API 类型数据集（raw_srx_sales）和 stdout 类型（analysis_radar_weekly）无法离线读取，需专用方案
+
+### Gap: 📄 文档更新
+- 下游消费者（xhs-analyze-viral.py 等）还未改为 `from data.tools import interaction_score`，需渐进迁移
+- backlog 已更新 SDK 完成状态
