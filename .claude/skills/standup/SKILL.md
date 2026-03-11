@@ -87,12 +87,15 @@ cd ~/surenxuan && git status --short | head -5
 - 🔴 级情报必须逐条列出标题和建议行动
 
 ## 6. Gateway 未提交变更检查
-- 运行 `git status --short` 检查是否有 Gateway 产生的未提交文件变更（排除 logs/ 和 data/gateway-memory.jsonl）
-- 如果有代码变更（scripts/、skills/、SYSTEM_MAP.md 等）：
-  - 用 EMP_0012 Checklist A 判断归属
-  - 执行 git add + commit，lesson 写入对应 agent 记忆
-  - 在输出中标注："🔧 Gateway 变更已提交: <文件列表> → EMP_XXXX"
-- 如果没有 → 跳过
+- 运行 `git status --short` 检查是否有 Gateway 产生的未提交文件变更（排除 logs/ 和 data/gateway-memory.jsonl 和 data/events/）
+- 如果有代码变更（scripts/、skills/、SYSTEM_MAP.md、MASONHUB.md 等）：
+  - **执行完整的 /commit 流程**（不是简单 git add + commit）：
+    1. EMP_0012 Checklist A 归属判断
+    2. 对应 agent 记忆写 lesson（铁律 4）
+    3. Gateway 决策广播检查
+    4. git commit
+  - 在输出中标注："🔧 Gateway 变更已提交: <文件列表> → EMP_XXXX (含 lesson)"
+- 如果没有代码变更 → 在报告中标注 "🔧 Gateway 变更: 无代码变更"（不省略此行）
 
 ## 7. 成本概览
 - 如果 logs/token-usage.log 存在，显示最近 7 天的 API 消耗趋势
@@ -129,6 +132,8 @@ Git：mason-hub clean | surenxuan clean
 今日待办：
   P1: ...
   P2: ...
+
+🔧 Gateway 变更: 无代码变更 / 已提交 X 个文件 → EMP_XXXX
 
 情报：🔴 x 条 | 🟡 x 条
   🔴 标题 — 建议行动
