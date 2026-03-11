@@ -94,6 +94,20 @@
 - 并行升级 (2026-03-11)：dispatcher.sh 从串行改为按 lane 并行。`--batch` 模式按 lane 去重，每 lane 取优先级最高的 1 个。dispatcher 检查 lane-lock 空闲状态后同时派发。repair 任务仍独占（不和常规并行）
 - lane-lock.sh 补齐映射：EMP_0014→platform, EMP_0015→ecommerce
 
+### Gateway 成本优化三层方案 (2026-03-11)
+- **问题**：首日实际成本 $11.71（预估 $0.5-0.8），29 次 API 调用，轻巡每次都升级为重巡
+- **根因**：① prompt caching 未开启（cache_write/read 全 0）② 全用 Sonnet（$3/M）③ 轻巡因 XHS 已知缺失的 ❌ 每次都触发重巡
+- **方案**：① `cache_control: ephemeral` 注入 system prompt → cache read $0.30/M ② 常规用 Haiku（$0.80/M），4h 强制/L3 事件用 Sonnet ③ 轻巡读 gateway-known-states.yaml 抑制已知基线内的失败
+- **参考**：OpenClaw 55min heartbeat + 60min cache TTL 保持缓存热；SkillRL 蒸馏 10-20x token 压缩
+- **gap 类型**：🔧 配置错误 → 已修复
+
+### Skill 自动蒸馏器 (2026-03-11)
+- `scripts/distill-skills.py` — 从 gateway-memory.jsonl 提取可复用 skill
+- 两阶段：纯规则分析（重复 finding ≥3 / 升级链 / 监控疲劳）→ Haiku 蒸馏（$0.01/次）
+- cron 每周日 11:30 CST，compact-memory.sh 之后
+- 灵感来源：SkillRL 论文（分层 SkillBank + 递归演化 + 失败蒸馏）
+- **gap 类型**：🏗️ 系统能力缺失 → 已修复
+
 ### Gateway 决策广播机制 (2026-03-11)
 - **问题**：Gateway（mason-gateway.py）和 Mason 的 Claude Code session 是两个独立循环，Mason 做的决策（如"XHS 小号先不配"）不会自动传播到 Gateway，导致 Gateway 反复对已知状态误报告警
 - **方案**：`data/gateway-known-states.yaml` 结构化注册表 + `/commit` skill 步骤 5 强制检查 + Gateway heartbeat 自动加载（`load_known_states()`）

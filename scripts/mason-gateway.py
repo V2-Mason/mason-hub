@@ -48,9 +48,12 @@ from pathlib import Path
 # --- 配置 ---
 
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
-MODEL = os.environ.get("HEARTBEAT_MODEL", "claude-sonnet-4-20250514")
+MODEL_HEAVY = os.environ.get("HEARTBEAT_MODEL", "claude-sonnet-4-20250514")
+MODEL_LIGHT = os.environ.get("HEARTBEAT_MODEL_LIGHT", "claude-haiku-4-5-20251001")
+MODEL = MODEL_HEAVY  # 默认用重模型，heartbeat 动态切换
 MAX_OUTPUT_TOKENS = 1024
-MAX_TURNS = 20  # agentic loop 最大轮次（完整巡逻 ~12 轮 + 记忆写入 + 余量）
+MAX_TURNS_HEAVY = 20  # 重巡最大轮次
+MAX_TURNS_LIGHT = 8   # 轻量 agentic（Haiku 常规巡检）最大轮次
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL", "")
 
 LOG_FILE = HUB_DIR / "logs" / "gateway.log"
@@ -677,27 +680,41 @@ def load_recent_memories(n: int = 5) -> str:
         return "[记忆读取失败]"
 
 
-def run_agentic_session(system_prompt: str, user_prompt: str) -> str:
+def run_agentic_session(system_prompt: str, user_prompt: str, model: str = None, max_turns: int = None) -> str:
     """
     Agentic loop: 多轮 tool_use 直到任务完成。
 
     流程: prompt → API → (tool_use → 执行 → 结果 → API) × N → 最终文本
-    安全: 最多 MAX_TURNS 轮，每轮超时 60s
+    安全: 最多 max_turns 轮，每轮超时 60s
+    支持 prompt caching: system prompt 标记为 ephemeral cache，降低 90% 重复 token 成本
     """
     import anthropic
+
+    use_model = model or MODEL
+    use_max_turns = max_turns or MAX_TURNS_HEAVY
 
     client = anthropic.Anthropic()
     messages = [{"role": "user", "content": user_prompt}]
 
+    # Prompt caching: 将 system prompt 包装为带 cache_control 的格式
+    # Anthropic API 会缓存 5 分钟，后续请求命中缓存降低 90% 输入成本
+    system_with_cache = [
+        {
+            "type": "text",
+            "text": system_prompt,
+            "cache_control": {"type": "ephemeral"},
+        }
+    ]
+
     total_input_tokens = 0
     total_output_tokens = 0
 
-    for turn in range(MAX_TURNS):
+    for turn in range(use_max_turns):
         try:
             response = client.messages.create(
-                model=MODEL,
+                model=use_model,
                 max_tokens=MAX_OUTPUT_TOKENS,
-                system=system_prompt,
+                system=system_with_cache,
                 tools=TOOLS,
                 messages=messages,
             )
@@ -708,6 +725,15 @@ def run_agentic_session(system_prompt: str, user_prompt: str) -> str:
         total_input_tokens += response.usage.input_tokens
         total_output_tokens += response.usage.output_tokens
 
+        # 记录 cache 命中情况（首轮）
+        if turn == 0:
+            cache_read = getattr(response.usage, 'cache_read_input_tokens', 0) or 0
+            cache_write = getattr(response.usage, 'cache_creation_input_tokens', 0) or 0
+            if cache_read > 0:
+                log(f"[Agentic] Cache hit: {cache_read} tokens cached ({use_model})")
+            elif cache_write > 0:
+                log(f"[Agentic] Cache write: {cache_write} tokens ({use_model})")
+
         # 检查是否有 tool_use
         tool_calls = [b for b in response.content if b.type == "tool_use"]
         text_blocks = [b for b in response.content if b.type == "text"]
@@ -715,7 +741,7 @@ def run_agentic_session(system_prompt: str, user_prompt: str) -> str:
         if not tool_calls:
             # 没有工具调用 → 任务完成
             final_text = "\n".join(b.text for b in text_blocks)
-            log(f"[Agentic] 完成: {turn + 1} 轮, {total_input_tokens}+{total_output_tokens} tokens")
+            log(f"[Agentic] 完成: {turn + 1} 轮, {total_input_tokens}+{total_output_tokens} tokens ({use_model})")
             return final_text
 
         # 有工具调用 → 执行并继续
@@ -742,7 +768,7 @@ def run_agentic_session(system_prompt: str, user_prompt: str) -> str:
         if response.stop_reason == "end_turn" and not tool_calls:
             break
 
-    log(f"[Agentic] 达到最大轮次 {MAX_TURNS}")
+    log(f"[Agentic] 达到最大轮次 {use_max_turns} ({use_model})")
     return "[达到最大轮次限制]"
 
 
@@ -779,8 +805,28 @@ def run_light_heartbeat() -> bool:
         changed = (_last_light_result is not None and current != _last_light_result)
         _last_light_result = current
 
-        # 判断是否异常
+        # 判断是否异常（排除 known-states 中已确认的问题）
         has_error = result.returncode != 0 or "❌" in health_output or ":x:" in health_output
+
+        # 如果有已知状态声明"健康检查基线是 10/15"，则部分失败不算异常
+        if has_error and KNOWN_STATES_FILE.exists():
+            try:
+                import yaml
+                known = yaml.safe_load(KNOWN_STATES_FILE.read_text()) or []
+                today = datetime.now(CST).strftime("%Y-%m-%d")
+                suppressed = any(
+                    s.get("id") == "health-check-baseline"
+                    and str(s.get("expires", "")) >= today
+                    for s in known
+                )
+                if suppressed:
+                    # 检查是否比基线更差（新增失败项）
+                    fail_count = health_output.count("❌") + health_output.count(":x:")
+                    if fail_count <= 5:  # 基线是 10/15 = 5 个已知失败
+                        has_error = False
+                        log(f"[Heartbeat] 轻巡: {fail_count} 个失败项在已知基线内，不升级")
+            except Exception:
+                pass  # YAML 解析失败不影响主逻辑
         # 磁盘 >85%
         disk_critical = False
         for line in disk_output.split("\n"):
@@ -807,9 +853,16 @@ def run_light_heartbeat() -> bool:
         return False
 
 
-def run_heartbeat():
-    """Heartbeat: 读 MASONHUB → agentic loop → 自主检查 + 修复 + 回写记忆"""
-    log("[Heartbeat] 开始")
+def run_heartbeat(force_heavy: bool = False):
+    """Heartbeat: 读 MASONHUB → agentic loop → 自主检查 + 修复 + 回写记忆
+
+    force_heavy=True: 每 4 小时或异常时用 Sonnet + 20 轮（深度诊断）
+    force_heavy=False: 常规用 Haiku + 8 轮（快速确认，省 token）
+    """
+    use_model = MODEL_HEAVY if force_heavy else MODEL_LIGHT
+    use_turns = MAX_TURNS_HEAVY if force_heavy else MAX_TURNS_LIGHT
+    mode_label = "重巡 Sonnet" if force_heavy else "轻量 Haiku"
+    log(f"[Heartbeat] 开始 ({mode_label})")
 
     now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
     memories = load_recent_memories()
@@ -867,8 +920,8 @@ def run_heartbeat():
 请开始：先读 MASONHUB.md 了解检查清单，然后逐项检查。"""
 
     try:
-        result = run_agentic_session(system_prompt, user_prompt)
-        log(f"[Heartbeat] 结果: {result[:150]}...")
+        result = run_agentic_session(system_prompt, user_prompt, model=use_model, max_turns=use_turns)
+        log(f"[Heartbeat] 结果 ({mode_label}): {result[:150]}...")
 
         # 如果结果不是"正常"，发 Slack
         is_normal = result.strip().startswith("✅") and len(result.strip()) < 100
@@ -944,8 +997,11 @@ def analyze_event(event: dict):
 请开始分析。"""
 
     try:
-        result = run_agentic_session(system_prompt, user_prompt)
-        log(f"[Agentic] 事件分析完成: {result[:100]}...")
+        # 事件分析用 Haiku（大部分是重复事件），L3 级用 Sonnet
+        event_model = MODEL_HEAVY if level >= 3 else MODEL_LIGHT
+        event_turns = MAX_TURNS_HEAVY if level >= 3 else MAX_TURNS_LIGHT
+        result = run_agentic_session(system_prompt, user_prompt, model=event_model, max_turns=event_turns)
+        log(f"[Agentic] 事件分析完成 ({event_model.split('-')[1]}): {result[:100]}...")
 
         # L3 必须通知
         if level >= 3 and "slack" not in result.lower():
@@ -1111,11 +1167,12 @@ def process_queue():
         if task_type == "heartbeat":
             global _last_heavy_heartbeat
             now = time.time()
-            force_heavy = (now - _last_heavy_heartbeat >= HEAVY_HEARTBEAT_INTERVAL)
-            if force_heavy or not run_light_heartbeat():
-                # 异常或每 4 小时强制 → 重巡（agentic，花 token）
+            is_heavy = (now - _last_heavy_heartbeat >= HEAVY_HEARTBEAT_INTERVAL)
+            light_ok = run_light_heartbeat()
+            if is_heavy or not light_ok:
+                # 异常或每 4 小时强制 → agentic heartbeat
                 _last_heavy_heartbeat = now
-                run_heartbeat()
+                run_heartbeat(force_heavy=is_heavy)  # 4h 强制用 Sonnet，轻巡异常用 Haiku
             # 轻巡正常 → 什么都不做，省 token
         elif task_type == "event":
             analyze_event(task["event"])
