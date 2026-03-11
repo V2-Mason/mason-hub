@@ -171,3 +171,24 @@
 ### Gap: 📚 纯知识
 - 下次实际 cron 触发时需确认阿里云端到端跑通（本次为代码级验证，未实际 SSH 执行）
 - content_tier 字段长期应由 clean 层产出（需要 _two_tier_crawl.py 写入 raw 数据）
+
+## Lesson: 素仁轩历史销售快照管道 (2026-03-11)
+
+### 做了什么
+- srx-snapshot.py：调 3 个 API 端点（sales/summary, dashboard/overview, risk-alerts）写入 SQLite 时序表
+- srx_sales_snapshot.yaml schema 定义（3 张业务表 + 1 张元信息表）
+- SDK 新增 get_srx_history(days=30, metric='all') 和 get_srx_snapshot(date='latest')
+- data_catalog.yaml 注册 raw_srx_history（planned→active），首条快照已入库
+- 幂等设计：同一天重复运行自动跳过，raw_response 保留原始 JSON 防信息丢失
+
+### 发现
+- API 返回嵌套在 `data` 键下（不是顶层），data-coo-daily.sh 的 fallback 字段名映射恰好跳过了正确路径
+- dashboard API 返回非常丰富：库存按品牌/品类分布、临期预警（10 个产品 expiry_critical）、低库存（3 个产品）、客户数（17 总/4 活跃）、库存价值（成本 ¥169K/零售 ¥439K）
+- 当前 revenue=0、orders=0 — 素仁轩还没正式开售，但库存数据已有价值（58 个 SKU、63 件总量）
+- risk API 字段是 `type: "inventory"` 而非 `type: "low_stock"` — 告警类型粒度与预想不同
+
+### Gap: 🔧 配置错误 → 已修
+- snapshot 脚本初版未处理 API 嵌套 `data` 键 → 已修复为 `data.get('data', data)` 解包
+### Gap: 📚 纯知识
+- srx-snapshot.py 需注册 cron（每日 20:00 ET，与 data-coo-daily.sh 同步）— EMP_0004 负责
+- data-coo-daily.sh 也有同样的 `data` 键解包问题，revenue 和 orders 一直报 N/A — 不在 EMP_0014 职责但值得通知 EMP_0002

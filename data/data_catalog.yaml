@@ -446,13 +446,27 @@ datasets:
 # 已知数据缺口 (Planned)
 # =============================================================================
 
-  - id: planned_srx_history
+  - id: raw_srx_history
     layer: raw
     name: 素仁轩历史销售时序数据
-    description: 目前只有实时 API 查询，无历史快照，无法做趋势分析和因果推断
-    status: planned
-    priority: P1
-    notes: "需要定期快照 API 数据到时序表"
+    description: |
+      定期快照 3 个 API 端点（sales/summary, dashboard/overview, risk-alerts）到 SQLite 时序表。
+      每天 1 条快照，保留原始 JSON 响应。支持日级趋势分析和因果推断。
+    owner: EMP_0014
+    producer: data/pipelines/srx-snapshot.py
+    input: [raw_srx_sales]
+    storage:
+      type: sqlite
+      location: gcp:~/mason-hub/data/srx_history.db
+      tables: [sales_snapshots, dashboard_snapshots, risk_snapshots, snapshot_meta]
+    schema: data/schemas/srx_sales_snapshot.yaml
+    update_frequency: "每日 20:00 ET（与 data-coo-daily.sh 同步）"
+    consumers: [EMP_0001（趋势分析）, EMP_0008（内容→转化因果）, data-coo-daily.sh]
+    status: active
+    data_quality_notes: |
+      - 幂等设计：同一天重复运行不会产生重复数据
+      - raw_response 字段保留 API 原始 JSON，防信息丢失
+      - SDK 接口：get_srx_history(days=30, metric='all') / get_srx_snapshot(date='latest')
 
   - id: planned_own_content_performance
     layer: raw

@@ -1,1 +1,48 @@
-{}
+{
+  "last_health_check": "2026-03-11T19:10:00-04:00",
+  "health_summary": "13/15 ok, 1 warn, 1 err, 2 skip",
+  "open_issues": [
+    {
+      "dataset": "report_optimization",
+      "status": "err",
+      "detail": "周三 10:00 ET 未产出，optimization-cycle.sh cron 疑似失效",
+      "owner": "EMP_0004",
+      "since": "2026-03-11"
+    },
+    {
+      "dataset": "raw_scout_intel",
+      "status": "warn",
+      "detail": "3 天未更新（上次 2026-03-08），Scout cron 疑似失效",
+      "owner": "EMP_0006",
+      "since": "2026-03-11"
+    }
+  ],
+  "remediation_performed": [
+    {
+      "date": "2026-03-11",
+      "datasets": ["analysis_xhs_trends", "analysis_xhs_comments", "report_strategy_briefing"],
+      "action": "手动补跑 trend_compare + comment_analysis + strategy_briefing on aliyun",
+      "root_cause": "Gateway 60s 超时导致 xhs-analyze.sh 下游步骤未执行"
+    }
+  ],
+  "known_bugs": [
+    {
+      "id": "tz_mismatch",
+      "description": "阿里云脚本手动运行时用 CST 命名文件，GCP health check 用 ET 日期查找",
+      "workaround": "symlink 2026-03-11 → 2026-03-12",
+      "fix_needed": "统一 TZ='America/New_York' 环境变量"
+    },
+    {
+      "id": "data_coo_field_mapping",
+      "description": "data-coo-daily.sh 的 sales/dashboard 字段映射未处理嵌套 data 键，revenue/orders 一直报 N/A",
+      "workaround": "srx-snapshot.py 已正确处理",
+      "fix_needed": "data-coo-daily.sh 需更新字段解析逻辑（EMP_0002 职责）"
+    }
+  ],
+  "last_task": {
+    "id": "srx_history_snapshot",
+    "date": "2026-03-11",
+    "status": "completed",
+    "summary": "srx-snapshot.py + schema + SDK + catalog 注册，首条快照已入库"
+  }
+}

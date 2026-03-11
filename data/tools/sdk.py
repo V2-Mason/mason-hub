@@ -290,6 +290,153 @@ def get_scout_intel(priority=None, source=None):
 
 
 # =============================================================================
+# 素仁轩销售历史接口
+# =============================================================================
+
+def get_srx_history(days=30, metric='revenue'):
+    """获取素仁轩销售历史时序数据（用于趋势分析）。
+
+    Args:
+        days: 最近 N 天，默认 30
+        metric: 'revenue' | 'orders' | 'inventory' | 'risk' | 'all'
+
+    Returns:
+        list[dict]: 按日期升序排列的时序数据
+            metric='revenue': [{"date": "2026-03-11", "revenue": 1234.5, "orders": 10}, ...]
+            metric='inventory': [{"date": ..., "inventory": 100, "products": 50}, ...]
+            metric='risk': [{"date": ..., "alert_count": 3, "expiring": 1, ...}, ...]
+            metric='all': 包含所有字段的合并视图
+
+    Raises:
+        DataError: 数据库不存在或查询失败
+    """
+    import sqlite3
+    from pathlib import Path
+
+    db_path = Path(__file__).parent.parent / 'srx_history.db'
+    if not db_path.exists():
+        raise DataError("素仁轩历史数据库不存在，请先运行 data/pipelines/srx-snapshot.py")
+
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+
+    queries = {
+        'revenue': (
+            "SELECT snapshot_date AS date, total_revenue AS revenue, total_orders AS orders "
+            "FROM sales_snapshots ORDER BY snapshot_date DESC LIMIT ?",
+        ),
+        'orders': (
+            "SELECT snapshot_date AS date, total_revenue AS revenue, total_orders AS orders "
+            "FROM sales_snapshots ORDER BY snapshot_date DESC LIMIT ?",
+        ),
+        'inventory': (
+            "SELECT snapshot_date AS date, total_inventory AS inventory, total_products AS products "
+            "FROM dashboard_snapshots ORDER BY snapshot_date DESC LIMIT ?",
+        ),
+        'risk': (
+            "SELECT snapshot_date AS date, alert_count, expiring_count AS expiring, "
+            "low_stock_count AS low_stock, slow_moving_count AS slow_moving "
+            "FROM risk_snapshots ORDER BY snapshot_date DESC LIMIT ?",
+        ),
+        'all': (
+            "SELECT s.snapshot_date AS date, s.total_revenue AS revenue, s.total_orders AS orders, "
+            "d.total_inventory AS inventory, d.total_products AS products, "
+            "r.alert_count, r.expiring_count AS expiring, r.low_stock_count AS low_stock, "
+            "r.slow_moving_count AS slow_moving "
+            "FROM sales_snapshots s "
+            "LEFT JOIN dashboard_snapshots d ON s.snapshot_date = d.snapshot_date "
+            "LEFT JOIN risk_snapshots r ON s.snapshot_date = r.snapshot_date "
+            "ORDER BY s.snapshot_date DESC LIMIT ?",
+        ),
+    }
+
+    if metric not in queries:
+        conn.close()
+        raise DataError(f"不支持的 metric: {metric}，可选: {', '.join(queries.keys())}")
+
+    rows = conn.execute(queries[metric][0], (days,)).fetchall()
+    conn.close()
+    return [dict(r) for r in reversed(rows)]
+
+
+def get_srx_snapshot(date='latest'):
+    """获取素仁轩某日的完整快照。
+
+    Args:
+        date: "latest" 或 "YYYY-MM-DD"
+
+    Returns:
+        dict: {
+            "date": "2026-03-11",
+            "sales": {"revenue": ..., "orders": ...},
+            "dashboard": {"inventory": ..., "products": ...},
+            "risk": {"alert_count": ..., "expiring": ..., ...},
+            "raw": {"sales": {...}, "dashboard": {...}, "risk": {...}}
+        }
+    """
+    import sqlite3
+    import json as _json
+    from pathlib import Path
+
+    db_path = Path(__file__).parent.parent / 'srx_history.db'
+    if not db_path.exists():
+        raise DataError("素仁轩历史数据库不存在，请先运行 data/pipelines/srx-snapshot.py")
+
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+
+    if date == 'latest':
+        row = conn.execute(
+            "SELECT snapshot_date FROM sales_snapshots ORDER BY snapshot_date DESC LIMIT 1"
+        ).fetchone()
+        if not row:
+            conn.close()
+            raise DataError("无快照数据")
+        date = row['snapshot_date']
+
+    sales = conn.execute(
+        "SELECT * FROM sales_snapshots WHERE snapshot_date = ?", (date,)
+    ).fetchone()
+    dash = conn.execute(
+        "SELECT * FROM dashboard_snapshots WHERE snapshot_date = ?", (date,)
+    ).fetchone()
+    risk = conn.execute(
+        "SELECT * FROM risk_snapshots WHERE snapshot_date = ?", (date,)
+    ).fetchone()
+    conn.close()
+
+    if not sales and not dash and not risk:
+        raise DataError(f"日期 {date} 无快照数据")
+
+    result = {"date": date, "sales": {}, "dashboard": {}, "risk": {}, "raw": {}}
+    if sales:
+        result["sales"] = {"revenue": sales["total_revenue"], "orders": sales["total_orders"]}
+        try:
+            result["raw"]["sales"] = _json.loads(sales["raw_response"])
+        except (ValueError, TypeError):
+            pass
+    if dash:
+        result["dashboard"] = {"inventory": dash["total_inventory"], "products": dash["total_products"]}
+        try:
+            result["raw"]["dashboard"] = _json.loads(dash["raw_response"])
+        except (ValueError, TypeError):
+            pass
+    if risk:
+        result["risk"] = {
+            "alert_count": risk["alert_count"],
+            "expiring": risk["expiring_count"],
+            "low_stock": risk["low_stock_count"],
+            "slow_moving": risk["slow_moving_count"],
+        }
+        try:
+            result["raw"]["risk"] = _json.loads(risk["raw_response"])
+        except (ValueError, TypeError):
+            pass
+
+    return result
+
+
+# =============================================================================
 # TrendRadar 接口
 # =============================================================================
 

@@ -33,6 +33,8 @@ from .sdk import (
     get_xhs_comments,
     get_xhs_briefing,
     get_scout_intel,
+    get_srx_history,
+    get_srx_snapshot,
     get_trendradar_news,
     list_datasets,
     dataset_info,
@@ -58,6 +60,7 @@ __all__ = [
     # SDK
     'get_dataset', 'get_xhs_analysis', 'get_xhs_notes', 'get_xhs_trends',
     'get_xhs_comments', 'get_xhs_briefing', 'get_scout_intel',
+    'get_srx_history', 'get_srx_snapshot',
     'get_trendradar_news', 'list_datasets', 'dataset_info', 'check_freshness',
     # Errors
     'DataError', 'DatasetNotFoundError', 'DataStaleError',
