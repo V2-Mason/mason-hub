@@ -1,6 +1,6 @@
 # System Map — 受力分析
 
-> 最后更新: 2026-03-11
+> 最后更新: 2026-03-11 (standup)
 > 更新权: Agent 自动更新可推断字段，耦合关系变更需 Mason 确认
 > 所有 Agent session 启动时读取此文件 + MASON_AUTHORITY.md
 
@@ -32,13 +32,13 @@
 里程碑:  data_health_check 全绿（当前 8/15）
 阻力:    混合
          - 内部工程: trendradar 阈值配置（已修）、optimization-cycle 读数据源切换
-         - 外部依赖: srx_sales API 401（JWT 认证问题，已修待验证）
+
          - 外部依赖: XHS 采集需小号 cookie（等 Mason 注册）
 耦合:    ↓ 阻塞 → 内容线（策略输入不可信 = 盲飞）
          ↓ 阻塞 → 商业线（无销售数据 = 无法归因）
-上次更新: 2026-03-10
+上次更新: 2026-03-11
 ```
-**解读**: **关键路径**。这条线在阻塞两条下游线。内部可解决的 blocker 是最高优先级。外部依赖（小号 cookie）只能等。
+**解读**: **关键路径**。data_health_check 稳定在 10/15，analysis_xhs_viral 已恢复。剩余 4 个异常（analysis_xhs_trends/comments、report_strategy_briefing/optimization）全是 XHS 分析下游产物，根因是小号 cookie 缺失导致无法采集新数据。内部可解决的 blocker 已基本清零。
 
 ### 3. 内容生产线
 ```
@@ -109,10 +109,10 @@
 
 | 优先级 | 行动 | 理由 | Owner |
 |--------|------|------|-------|
-| 1 | 验证 srx_sales JWT 修复是否生效 | 数据线 blocker，阻塞两条下游线 | EMP_0005 |
-| 2 | data_health_check 剩余数据集修复 | 数据线里程碑（全绿）的前置条件 | EMP_0014 |
-| 3 | Scout v2 首次端到端测试 | 需 DASHSCOPE_API_KEY | EMP_0002 |
-| 4 | Gateway 第二夜验证 | 确认 patch_file + 事件去重 + 终端 idle 检测正常工作 | 自动 |
+
+| 1 | Gateway 持续运行验证 | 已运行 ~12h，事件去重正常，3/13 检查点确认稳定性 | 自动 |
+| 2 | Scout v2 首次端到端测试 | 需 DASHSCOPE_API_KEY | EMP_0002 |
+| 3 | data_health_check 剩余 4 异常修复 | 根因是 XHS 小号 cookie 缺失，内部可做的有限 | EMP_0014 |
 
 **不推荐现在做的**:
 - 商业运营线任何事 → 全是外部依赖

@@ -142,7 +142,7 @@ queue_file_pos = 0
 _last_event_analysis = {}  # {event_type: timestamp} — 同类事件去重
 _last_heavy_heartbeat = 0  # 上次重巡时间
 _last_light_result = None  # 上次轻巡结果（用于变化检测）
-_was_yielding = False  # Mason 让路状态（用于日志去重）
+_was_yielding = False  # Mason 让路状态（用于日志去重，启动时从日志恢复）
 HEAVY_HEARTBEAT_INTERVAL = 14400  # 4 小时强制一次重巡
 
 
@@ -466,18 +466,23 @@ def _tool_patch_file(input_data: dict) -> str:
         return f"编辑失败: {e}"
 
 
+def _check_command_allowed(cmd: str) -> bool:
+    """检查单条命令是否在白名单内（前缀匹配）"""
+    cmd = cmd.strip()
+    return any(cmd.startswith(prefix) for prefix in ALLOWED_COMMANDS)
+
+
 def _tool_run_command(input_data: dict) -> str:
     command = input_data["command"]
 
-    # 白名单检查
-    allowed = False
-    for prefix in ALLOWED_COMMANDS:
-        if command.startswith(prefix):
-            allowed = True
-            break
+    # 白名单检查：支持 && / || / ; 组合命令，逐段校验
+    import re
+    sub_commands = re.split(r'\s*(?:&&|\|\||;)\s*', command)
+    all_allowed = all(_check_command_allowed(sub) for sub in sub_commands if sub.strip())
 
-    if not allowed:
-        return f"错误: 命令不在白名单内。允许的前缀: {', '.join(ALLOWED_COMMANDS[:10])}..."
+    if not all_allowed:
+        failed = [sub.strip() for sub in sub_commands if sub.strip() and not _check_command_allowed(sub)]
+        return f"错误: 命令不在白名单内: {failed[0][:60]}... 允许的前缀: {', '.join(ALLOWED_COMMANDS[:10])}..."
 
     # systemctl restart/reload 限定服务名
     for action in ("systemctl restart", "systemctl reload"):
@@ -722,9 +727,9 @@ def run_light_heartbeat() -> bool:
     global _last_light_result
     log("[Heartbeat] 轻巡开始")
     try:
-        # 跑 data_health_check
+        # 跑 data_health_check（--no-emit 避免自产自消：Gateway 内部调用不发射事件）
         result = subprocess.run(
-            ["bash", str(HUB_DIR / "data/pipelines/data_health_check.sh")],
+            ["bash", str(HUB_DIR / "data/pipelines/data_health_check.sh"), "--no-emit"],
             capture_output=True, text=True, cwd=str(HUB_DIR), timeout=120,
         )
         health_output = result.stdout[-500:] if result.stdout else ""
@@ -819,7 +824,8 @@ def run_heartbeat():
 6. 修不完的 → 提交修复请求: python3 scripts/submit-repair.py submit --issue "描述" --symptom "症状" --location "文件:行号" --severity medium
    然后 save_memory status=emitted，继续巡逻
 7. 需要 Mason 的 → save_memory status=pending_mason + send_slack
-8. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报"""
+8. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报
+9. 如果本次 heartbeat 发现了新的可复用经验（不是一次性修复，而是"下次遇到类似情况也该这么做"的规律），用 patch_file 追加到 MASONHUB.md 的 "## Learned Skills" section。格式：`- **skill_NNN: 标题** — 规则。[来源: 日期]`。编号递增，不要重复已有 skill。"""
 
     user_prompt = f"""执行 heartbeat 检查。
 
@@ -1101,8 +1107,31 @@ def schedule_heartbeat():
             last_heartbeat = now
 
 
+def _recover_yielding_state():
+    """从 gateway.log 最后几行恢复让路状态，避免 systemd 重启后状态丢失"""
+    global _was_yielding
+    try:
+        if not LOG_FILE.exists():
+            return
+        # 读最后 5KB 够了（约 50 行）
+        with open(LOG_FILE, "rb") as f:
+            f.seek(0, 2)
+            size = f.tell()
+            f.seek(max(0, size - 5000))
+            tail = f.read().decode("utf-8", errors="ignore")
+        # 找最后一条让路相关的日志
+        last_yield_start = tail.rfind("Mason session 活跃，开始让路")
+        last_yield_end = tail.rfind("Mason session 结束，恢复工作")
+        if last_yield_start > last_yield_end:
+            _was_yielding = True
+            log("📋 从日志恢复状态: 上次是让路中")
+    except Exception:
+        pass  # 恢复失败无所谓，默认 False 安全
+
+
 def main_loop():
     global running
+    _recover_yielding_state()
     log("🚀 Mason Gateway v2 启动 (agentic loop + tool_use + 记忆回写)")
     send_slack("🚀 Mason Gateway v2 已启动", prefix="")
 

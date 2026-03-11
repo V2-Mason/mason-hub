@@ -120,13 +120,24 @@ status: "suggestion"。Mason 会看到。
 - 如果本轮读取了大量文件（10+），在记忆里记录一下数量，供 Mason 做架构优化参考
 - 这是监控项，不是行为约束
 
+## Learned Skills
+
+> 从实际运行中验证过的经验。每次 heartbeat 发现新模式时用 patch_file 追加。
+> 格式：`- **skill_NNN: 标题** — 规则。[来源: 日期]`
+
+- **skill_001: 大文件用 patch_file** — 超过 50 行的文件（SYSTEM_MAP.md 等），用 patch_file 增量编辑，不用 write_file。write_file 需要单 turn 输出完整内容，容易撞 output token 上限导致内容为空。[来源: 2026-03-11 首夜验证]
+- **skill_002: 文件路径查找表** — 先查已知路径，不要用 find 搜索浪费轮次。已知：data_health_check.sh → `data/pipelines/`，xhs-analyze.sh → `skills/`，SYSTEM_MAP.md → 项目根目录，emit_event.sh → `scripts/`。[来源: 2026-03-11 首夜验证]
+- **skill_003: XHS 分析缺失的根因** — analysis_xhs_trends/comments/briefing 缺失时，根因是 XHS 小号 cookie 未配置，上游无数据可分析。标记 monitoring，不要升级 critical，不要反复告警。等 Mason 注册小号。[来源: 2026-03-11 连续 5 次误升级]
+- **skill_004: 渐进式严重性升级** — 发现问题后先标 monitoring，等 2-3 次 heartbeat 确认持续恶化再升 warning，再持续才升 critical。不要第一次发现就发 🔴。但服务不可用（SSH 不通、进程挂了）例外，可以直接 🔴。[来源: 2026-03-11 数据管道追踪]
+- **skill_005: blocker 解决后更新 SYSTEM_MAP** — 收到 blocker-resolved 事件时，用 patch_file 删除 SYSTEM_MAP.md 中对应的阻力条目，更新推荐行动。这是已验证有效的自动化行为，保留。[来源: 2026-03-11 srx_sales_401 自动修复]
+
 ## 当前系统关键状态
 
 > 此区块由 heartbeat 自动维护，反映最近一次检查结果
 
 ```
-自治线: active — 验证期（3/13 检查）
-数据线: blocked — srx_sales JWT 待验证, XHS 采集等小号
+自治线: active — 验证期（3/13 检查），Gateway 已稳定运行 12h+
+数据线: blocked — 10/15 健康，剩余 4 异常全是 XHS 下游（等小号 cookie）
 内容线: waiting — 被数据线阻塞
 商业线: waiting — 全外部依赖
 审计线: waiting — 等自治线稳定

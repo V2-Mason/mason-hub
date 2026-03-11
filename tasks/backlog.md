@@ -196,6 +196,8 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] Gateway 运营优化三件套 — 2026-03-10 完成：记忆归档（scripts/archive-memory.sh，7 天窗口+按月切分）+ Slack 三级通知（🔴即时/🟡每日汇总/🟢静默）+ Token 意识（监控项不约束）
 - [x] 收工流程统一 + Dispatcher 动态化 — 2026-03-10 完成：docs/procedures/post-task.md（single source of truth）注入 run-agent.sh + repair-prompt.md。Dispatcher 从硬编码 5 任务改为读 data/autonomous_tasks.yaml（12 条已注册）。dispatcher.sh agent 路径 bug 修复
 - [x] Gateway heartbeat 实际验证 — 2026-03-11 首夜验证完成。发现 4 个 bug（dispatcher 八进制、write_file schema、白名单太窄、Slack 假成功），已全部修复。新增 patch_file 工具 + 事件去重（1h）+ 终端 idle 检测（15min）+ 命令超时 120s + 白名单扩充（ssh/find/grep/chmod/ps/ping）
+- [x] Gateway 首夜运行 3 bug 修复 — 2026-03-11 完成：① _was_yielding 状态持久化（从日志恢复，避免 systemd 重启后让路日志刷屏）② data_health_check.sh 加 --no-emit（Gateway 内部调用不发射事件，避免自产自消）③ 白名单支持 &&/||/; 组合命令逐段校验
+- [x] Learned Skills 机制 — 2026-03-11 完成：MASONHUB.md 新增 ## Learned Skills section（5 条种子 skill）+ heartbeat prompt 第 9 步自动写 skill。受 SkillRL 论文启发，最小可行方案：不建目录、不加文件、复用现有 patch_file 能力
 - [ ] Repair session 端到端验证 — 手动注入一个修复请求，验证 dispatcher → claude -p → 修复 → heartbeat 确认 全链路
 - [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）
 

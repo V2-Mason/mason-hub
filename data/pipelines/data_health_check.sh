@@ -2,7 +2,7 @@
 # data_health_check.sh — 数据健康检查
 # 检查 data_catalog.yaml 中所有 active 数据集的健康状态
 # 维护者: EMP_0014 (Data Engineer)
-# 用法: bash data_health_check.sh [--slack]
+# 用法: bash data_health_check.sh [--slack] [--no-emit]
 
 set -uo pipefail
 
@@ -11,6 +11,7 @@ SLACK_NOTIFY="/home/hangn/slack-bot/slack_notify.sh"
 SSH_HOST="root@106.14.44.68"
 SSH_TIMEOUT=5
 SEND_SLACK=false
+EMIT_EVENT=true
 NOW_EPOCH=$(date +%s)
 TIMESTAMP=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')
 
@@ -24,6 +25,7 @@ SRX_TOKEN=""
 for arg in "$@"; do
   case "$arg" in
     --slack) SEND_SLACK=true ;;
+    --no-emit) EMIT_EVENT=false ;;
   esac
 done
 
@@ -450,12 +452,14 @@ if [ "$SEND_SLACK" = true ]; then
   echo ">>> 已发送"
 fi
 
-# 发射事件: 健康检查结果
+# 发射事件: 健康检查结果（--no-emit 时跳过，避免 Gateway 自产自消）
 HUB_DIR="${HUB_DIR:-$HOME/mason-hub}"
-if [ "$COUNT_ERR" -eq 0 ]; then
-  "$HUB_DIR/scripts/emit_event.sh" "health-check-all-green" "data_health_check.sh" "ok" 1 \
-    "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"warn\":$COUNT_WARN}" 2>/dev/null || true
-else
-  "$HUB_DIR/scripts/emit_event.sh" "health-check-failed" "data_health_check.sh" "failed" 2 \
-    "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"errors\":$COUNT_ERR}" 2>/dev/null || true
+if [ "$EMIT_EVENT" = true ]; then
+  if [ "$COUNT_ERR" -eq 0 ]; then
+    "$HUB_DIR/scripts/emit_event.sh" "health-check-all-green" "data_health_check.sh" "ok" 1 \
+      "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"warn\":$COUNT_WARN}" 2>/dev/null || true
+  else
+    "$HUB_DIR/scripts/emit_event.sh" "health-check-failed" "data_health_check.sh" "failed" 2 \
+      "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"errors\":$COUNT_ERR}" 2>/dev/null || true
+  fi
 fi

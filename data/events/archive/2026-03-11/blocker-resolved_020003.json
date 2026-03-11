@@ -1,0 +1,11 @@
+{
+  "event": "blocker-resolved",
+  "source": "manual-test",
+  "timestamp": "2026-03-10T18:44:01+00:00",
+  "status": "ok",
+  "level": 2,
+  "data": {
+    "blocker": "srx_sales_401",
+    "line": "\u6570\u636e\u7ebf"
+  }
+}
