@@ -165,4 +165,11 @@
 - **教训**：变化检测的比较对象必须是「稳态指纹」（只含状态，不含时间/计数等动态值），否则每次都是"变化"
 - Gap 分类：🔧 设计缺陷 → 已修
 
+### Scout v2 Cron 注册 (2026-03-11)
+- 旧 Scout 三档调度（每日快扫/中频/深扫）全部通过 `run-agent.sh agents/EMP_0006/config.md` 调用，每次启动完整 Claude session 来跑 shell 脚本 — 成本高
+- 新 Scout v2 pipeline 直接 `python -m intel.engines.pipeline`，6 引擎串行 + checkpoint，无需 Claude session
+- 旧条目注释保留（不删除），新条目加 `cd /home/hangn/mason-hub &&` 前缀确保 cwd 安全
+- 从 每天+周一三五+周一 共 ~10 次/周 减少到 周二+周五 = 2 次/周，与 Mason 建议一致
+- Gap 分类：📄 文档更新 → 已更新 backlog
+
 ## 踩坑记录

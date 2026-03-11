@@ -528,7 +528,7 @@ Phase 2 — 主干管道统一:
 - [x] SearXNG Docker 部署 — 2026-03-11 完成，localhost:8889，--restart always，JSON API 已启用（EMP_0002）
 - [ ] Gemini API key 配置 — MediaEngine 需要 GEMINI_API_KEY 才能启用（Mason 后补）
 - [ ] 首次端到端测试 — 配好 DASHSCOPE_API_KEY 后 `python -m intel.engines.pipeline` 全流程跑通
-- [ ] Scout v2 cron 注册 — 替换旧 scout-*.sh cron 为新管道（EMP_0004）
+- [x] Scout v2 cron 注册 — 2026-03-11 完成，周二+周五 23:00 UTC (19:00 ET) `python -m intel.engines.pipeline`，旧三档 scout cron 已注释保留（EMP_0002）
 - [x] EMP_0006.md 更新 — 2026-03-11 完成，config.md 加入 Scout v2 Engine 架构章节（6 引擎职责表/管道流程/多模型策略/数据流/调度更新）
 
 Phase 3 — 数据 SDK + 扩展:
