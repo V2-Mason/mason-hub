@@ -325,7 +325,7 @@ P1 — 模块 B：MediaCrawler 采集系统（阿里云本地）:
   - xhs-strategy-briefing.sh: SCP 策略脚本到阿里云执行 + 读取最新分析 JSON
   - _xhs_slack_summary.py: 独立 Slack 摘要生成器
   - 分析存档: docs/analysis/ + 阿里云 /opt/mediacrawler/analysis/
-  - EMP_0008 新增数据分析职责（Mason: "策略必须基于数据"）
+  - ~~EMP_0008 新增数据分析职责~~ → 已更新 (2026-03-11) 数据分析独立为 EMP_0015，不再嵌入 EMP_0008
   - 周六自动跑（分析 + 简报），cron 待注册
   - **注意**: ~~主号搜索被 XHS 软封~~ → 已更新 (2026-03-11) 根因是 `_two_tier_crawl.py` 的 `search_id` 生成 bug（`utils.get_search_id()` 不存在 → fallback 空字符串 → XHS API 返回空），已修复，采集正常
 
@@ -457,7 +457,8 @@ P2 — Qwen Image Edit 模型下载（待部署）:
 
 **数据中台建设 — EMP_0014 Data Engineer（2026-03-10 Mason 确认混合式架构）**:
 
-> 架构模式：混合式（中台提供工程+工具+标准，业务线嵌入分析师用中台数据）
+> 架构模式：混合式（中台提供工程+工具+标准，EMP_0015 数据分析师用中台数据产出洞察）
+> → 已更新 (2026-03-11)：原"业务线嵌入分析师"改为独立 EMP_0015 角色
 > 中台职责：管道/存储/加工/目录/SDK，不做业务分析
 > 设计文档：agents/EMP_0014.md，数据目录：data/data_catalog.yaml
 

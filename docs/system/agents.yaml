@@ -116,3 +116,10 @@ agents:
     domain: platform
     status: active
     can_own_tasks: true
+
+  - id: EMP_0015
+    name: 数据分析师
+    role: 执行四维判断框架+五方法论，持续产出分析结论
+    domain: ecommerce
+    status: active
+    can_own_tasks: true

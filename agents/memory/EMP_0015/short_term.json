@@ -1,0 +1,8 @@
+{
+  "agent_id": "EMP_0015",
+  "created": "2026-03-11",
+  "pending_analyses": [],
+  "active_ab_tests": [],
+  "data_freshness_alerts": [],
+  "notes": "初始化状态，待首次 cron 触发后开始工作"
+}

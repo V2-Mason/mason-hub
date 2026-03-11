@@ -33,6 +33,8 @@ Mason (人类，最终决策者)
 │     │
 │     │     └── EMP_0013 店铺运营      ← 三级：XHS 店铺日常运营
 │     │
+│     │     └── EMP_0015 数据分析师    ← 三级：执行分析框架，产出业务洞察
+│     │
 │     ├── EMP_0008 SocialMesh 内容运营总监  ← 二级：内容策略 + 项目管理
 │     │     │
 │     │     ├── EMP_0010 Content Creator   ← 三级：内容生产 + 社区互动
@@ -68,6 +70,7 @@ Mason (人类，最终决策者)
 - EMP_0012 Product Architect — 产品参谋，按需激活，帮 Mason 问对问题（归属判断/边界定义），不主动扫描不管理
 - EMP_0013 店铺运营 — XHS 店铺日常运营（客服/评分/售后/合规/对账）
 - EMP_0014 Data Engineer — 数据中台建设与维护（管道/存储/加工/目录/SDK）
+- EMP_0015 数据分析师 — 执行四维判断框架+五方法论，持续产出分析结论
 
 ## Backlog 管理规则
 
@@ -100,6 +103,7 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 | Product Architect | agents/EMP_0012.md | 按需激活，归属判断、边界定义（不管理、不审计） |
 | 店铺运营 | agents/EMP_0013.md | XHS 店铺日常运营（客服/评分/售后/合规/对账） |
 | Data Engineer | agents/EMP_0014.md | 数据中台（管道/存储/加工/目录/SDK） |
+| 数据分析师 | agents/EMP_0015.md | 执行分析框架，产出业务洞察 |
 
 **加载流程**：
 1. 识别自己被分配的角色名称
