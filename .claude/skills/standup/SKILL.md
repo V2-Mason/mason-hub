@@ -79,6 +79,12 @@ cd ~/surenxuan && git status --short | head -5
 - 与 SYSTEM_MAP 的推荐行动交叉验证：推荐行动中的事项应该出现在待办里
 - 如果没有待办，说"今日无待办任务"
 
+## 4b. 知行转化率
+- 运行 `python3 scripts/backlog-scanner.py --count` 获取可自动执行任务数
+- 统计 tasks/backlog.md 中 `[ ]` 的总数（grep -c '\[ \]' tasks/backlog.md）
+- 计算转化率 = 可自动执行 / 总未完成 × 100%
+- 输出到报告的固定位置（在 API 消耗之前）
+
 ## 5. Scout 情报摘要
 - 读取 ~/mason-hub/intel/raw/ 目录下最近的情报文件（按日期排序取最新）
 - 读取 ~/mason-hub/intel/digests/ 目录下最近一期周度简报
@@ -138,6 +144,7 @@ Git：mason-hub clean | surenxuan clean
 情报：🔴 x 条 | 🟡 x 条
   🔴 标题 — 建议行动
 
+知行转化率: N/M (X%) — backlog 可自动执行 / 总未完成
 API 消耗：本周 $X.XX（日均 $X.XX）
 ```
 

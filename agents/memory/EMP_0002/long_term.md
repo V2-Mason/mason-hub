@@ -123,4 +123,13 @@
 - **关键教训**：backlog 里没标 `(EMP_XXXX)` 的任务不会被 scanner 发现 → 所有可自动执行的任务必须标注 owner
 - **gap 类型**：🏗️ 系统能力缺失 → 已修复
 
+### OS-Model 架构 + Gene 系统 + 理论框架融入 (2026-03-11)
+- **灵感来源**：王军杰 × 小军杰 "Model 派 vs Harness 派" 讨论
+- **Gene 系统**：`shared/genes/` 目录，3 个行为原语（skeptical_verification / practical_epistemology / ashby_variety），通过 run-agent.sh Phase 2.7 按角色自动注入
+- **Self-Evolution Flywheel 度量**：Gateway 新增 `track_skill` 工具 + `data/learned-skills-stats.json` 追踪 Skill applied_count
+- **知行转化率**：/standup 每日输出 backlog 可自动执行 / 总未完成
+- **Ashby 审视**：SYSTEM_MAP.md 更新协议新增多样性覆盖率检查（能力线 active 时触发）
+- **skeptical_verification prompt**：MASONHUB.md 工作节奏步骤 3b，Gateway 诊断后强制自我质疑
+- **gap 类型**：🏗️ 系统能力缺失 → 已修复
+
 ## 踩坑记录

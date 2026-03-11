@@ -238,6 +238,26 @@ if [ -f "$POST_TASK_FILE" ]; then
   inject_if_exists "$POST_TASK_FILE" "⚠️ 收工流程（任务完成后必须执行）"
 fi
 
+# --- Phase 2.7: Gene 行为原语注入 ---
+# 根据 agent 角色注入可组合的行为基因（shared/genes/）
+GENES_DIR="$HUB_DIR/shared/genes"
+case "$AGENT_NAME" in
+  EMP_0002|EMP_0004|EMP_0005|EMP_0009|EMP_0014)
+    # 执行层 agent：注入质疑验证基因
+    inject_if_exists "$GENES_DIR/skeptical_verification.md" "🧬 Gene: Skeptical Verification"
+    ;;
+  EMP_0000|EMP_0001|EMP_0003|EMP_0008)
+    # PM/Manager agent：注入知行转化基因
+    inject_if_exists "$GENES_DIR/practical_epistemology.md" "🧬 Gene: Practical Epistemology"
+    ;;
+esac
+case "$AGENT_NAME" in
+  EMP_0002|EMP_0004)
+    # SRE + Platform Dev：注入 Ashby 多样性基因
+    inject_if_exists "$GENES_DIR/ashby_variety.md" "🧬 Gene: Ashby Variety Check"
+    ;;
+esac
+
 # --- 提取 launcher_args（从 YAML frontmatter）---
 LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
   if(/^launcher_args:/){in_la=1; next}

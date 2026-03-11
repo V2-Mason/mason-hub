@@ -62,6 +62,7 @@ QUEUE_FILE = HUB_DIR / "data" / "events" / "queue.jsonl"
 MASONHUB_FILE = HUB_DIR / "MASONHUB.md"
 KNOWN_STATES_FILE = HUB_DIR / "data" / "gateway-known-states.yaml"
 MEMORY_FILE = HUB_DIR / "data" / "gateway-memory.jsonl"
+SKILL_STATS_FILE = HUB_DIR / "data" / "learned-skills-stats.json"
 
 HEARTBEAT_INTERVAL = 3600
 QUEUE_CHECK_INTERVAL = 60
@@ -76,6 +77,7 @@ WRITABLE_PATHS = [
     "data/gateway-memory.jsonl",
     "data/events/queue.jsonl",
     "data/repair_queue.json",
+    "data/learned-skills-stats.json",
 ]
 
 REPAIR_LOCK = Path("/tmp/repair-session.lock")
@@ -362,6 +364,24 @@ TOOLS = [
             "required": ["path", "old_text", "new_text"],
         },
     },
+    {
+        "name": "track_skill",
+        "description": "记录 Learned Skill 被应用。当你因为某条 Learned Skill 跳过了告警或改变了行为时调用此工具。用于追踪 Skill 的实际使用频率。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "skill_id": {
+                    "type": "string",
+                    "description": "Skill 编号，如 skill_003"
+                },
+                "reason": {
+                    "type": "string",
+                    "description": "本次应用的具体场景（一句话）"
+                },
+            },
+            "required": ["skill_id"],
+        },
+    },
 ]
 
 
@@ -386,6 +406,8 @@ def execute_tool(name: str, input_data: dict) -> str:
             return _tool_save_memory(input_data)
         elif name == "patch_file":
             return _tool_patch_file(input_data)
+        elif name == "track_skill":
+            return _tool_track_skill(input_data)
         else:
             return f"错误: 未知工具 {name}"
     except Exception as e:
@@ -606,6 +628,36 @@ def _tool_save_memory(input_data: dict) -> str:
         return f"✅ 记忆已保存 [{status}]: {finding[:50]}..."
     except Exception as e:
         return f"记忆保存失败: {e}"
+
+
+def _tool_track_skill(input_data: dict) -> str:
+    """追踪 Learned Skill 被应用的次数"""
+    skill_id = input_data.get("skill_id", "")
+    reason = input_data.get("reason", "")
+    if not skill_id:
+        return "❌ 缺少 skill_id"
+
+    try:
+        stats = {}
+        if SKILL_STATS_FILE.exists():
+            stats = json.loads(SKILL_STATS_FILE.read_text())
+
+        if skill_id not in stats:
+            stats[skill_id] = {"applied_count": 0, "first_applied": None, "last_applied": None, "reasons": []}
+
+        stats[skill_id]["applied_count"] += 1
+        now = datetime.now(CST).isoformat()
+        if not stats[skill_id]["first_applied"]:
+            stats[skill_id]["first_applied"] = now
+        stats[skill_id]["last_applied"] = now
+        if reason:
+            # 只保留最近 5 条 reason
+            stats[skill_id]["reasons"] = (stats[skill_id]["reasons"] + [reason])[-5:]
+
+        SKILL_STATS_FILE.write_text(json.dumps(stats, ensure_ascii=False, indent=2))
+        return f"✅ Skill {skill_id} applied_count={stats[skill_id]['applied_count']}"
+    except Exception as e:
+        return f"Skill 追踪失败: {e}"
 
 
 # ========================================

@@ -75,6 +75,11 @@ status: "suggestion"。Mason 会看到。
    - 审批层？→ pending_mason + Slack
    - 自主层，3 轮能搞定？→ 立即修
    - 自主层，搞不定？→ emit_event，继续巡逻
+3b. **自我质疑**（诊断完成后必做）：
+   - 这个诊断依赖了什么假设？假设可能错吗？
+   - 如果根因不是我想的这个，还有什么可能？
+   - 最容易验证/排除的替代假设是什么？先验证它
+   - 只有排除了替代假设，才能确定诊断结论
 4. **记录**：所有行动和发现写入 gateway-memory.jsonl，带 status 字段
    - status 值：resolved / pending_mason / will_retry / suggestion / emitted
 5. **汇总**：按下方 Slack 通知原则决定是否发消息
