@@ -139,4 +139,30 @@
 - Scout v2 的 search.py 可以把 SearXNG URL 从 fallback 改为 primary
 - Gap 分类：🔧 配置错误 → 已修（端口冲突 + JSON 格式未启用）
 
+### XHS 分析函数单元测试 (2026-03-11)
+- 为 parse_count / interaction_score / 假流量检测 / median 写了 55 个测试用例
+- 发现 2 个源码 bug：
+  1. `parse_count('万')` 会 ValueError — `'万'.replace('万','')` 变空字符串，`float('')` 失败。万/亿分支在 try/except 之外，没有防护
+  2. `parse_count('2.3亿')` 浮点精度丢失 → 229999999 而非 230000000。应改用 `round()` 包裹
+- parse_count 函数在 5+ 个文件中重复定义（viral / compare / crawl / collect_comments / publish_log），应抽成共享模块
+- Gap 分类：🔧 配置错误 → 已记录（bug 不在本次修复范围）+ 📚 纯知识 → 留存
+
+### run-agent.sh `set -euo pipefail` 静默崩溃 (2026-03-11)
+- `grep -oP` 无匹配时返回 exit 1，`pipefail` 传播，`set -e` 杀脚本 → 在 Task ID 提取（line 134）静默退出
+- Dispatcher 派发的任务描述是 "自主任务: ..." 格式，不含 `task_id:` 或 `srx_` 前缀 → grep 必定无匹配
+- 症状：lane lock acquire/release 之间无任何输出，`logs/tasks/` 无新文件，API 无消耗
+- 修复：所有可能无匹配的 grep 加 `|| true`；EXIT trap 增加异常退出日志（记录 exit code + agent name）
+- **教训**：`set -euo pipefail` 脚本中，任何 `grep` 在变量赋值中都必须 `|| true`，否则"没找到"就等于"崩溃"
+- Gap 分类：🔧 编码错误 → 已修
+
+### Gateway 轻巡变化检测导致成本失控 (2026-03-11)
+- 轻巡 `current = health_output[:200]` 包含时间戳 + 相对时间（"更新于 16h 前"）
+- 每次轻巡 current 都不同 → `changed=True` → 每小时都升级为 Sonnet 重巡
+- 重巡 18 轮 agentic loop，conversation history 累积 → 195K input tokens/次
+- 实际成本 $10+/天 vs 设计预期 $1/天
+- 修复：只比较 `emoji + 数据集名` 的 sorted fingerprint，忽略时间/描述
+- 同时修复 `has_error` 抑制逻辑：`returncode != 0` 也应被 known-states 覆盖
+- **教训**：变化检测的比较对象必须是「稳态指纹」（只含状态，不含时间/计数等动态值），否则每次都是"变化"
+- Gap 分类：🔧 设计缺陷 → 已修
+
 ## 踩坑记录

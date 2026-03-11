@@ -174,7 +174,7 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] 自优化闭环协议 — 2026-03-09 完成，shared/qa/optimization_loop.md，3 轮上限 + 多维目标防漂移
 - [x] Gate 2 bias 修正 + Agent 名册 SSOT — 2026-03-10 完成，docs/system/agents.yaml 单一来源 + Gate 2 注入结构化上下文（agent 清单/数据限制/执行容量）+ Step 3 因果推理要求
 - [x] 数据中台框架 + EMP_0014 Data Engineer — 2026-03-10 完成，混合式架构（中台+嵌入式分析），data/data_catalog.yaml 盘点 15 个数据集，agents/EMP_0014.md 配置
-- [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug（EMP_0002）
+- [x] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug（EMP_0002）— 2026-03-11 完成，55 个测试用例，tests/test_xhs_analyze.py
 - [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）（EMP_0002）
 
 P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
@@ -203,6 +203,9 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] Backlog 主动消化能力 — 2026-03-11 完成：backlog-scanner.py（5 层过滤：红线/Section 阻塞/外部依赖/agent 标注/能力线状态）+ find-actionable-task.py 合并静态+动态任务 + MASONHUB.md 检查清单第 8 步。每天上限 6 个任务，Dispatcher 自动派发
 - [x] Dispatcher 两个 bug 修复 — 2026-03-11 修复：① 日志双写 tee→直写 ② 任务去重（find-actionable-task.py audit 检查 + report 运行检查）
 - [x] Repair session 端到端验证 — 2026-03-11 完成：submit → repair_queue.json → repair-dispatch.sh → claude -p 修复 → 验证通过 → resolve。发现 CLAUDECODE 嵌套问题已修复（unset CLAUDECODE）
+- [x] run-agent.sh 静默崩溃修复 — 2026-03-11 完成：`set -euo pipefail` + `grep -oP` 无匹配返回 1 → 脚本在 Task ID 提取阶段静默退出。修复：4 处 grep 加 `|| true`，EXIT trap 增加异常退出日志
+- [x] Gateway 重巡成本失控修复 — 2026-03-11 完成：轻巡变化检测用了含时间戳的字符串 → 每次都"变化" → 每小时都升级重巡（设计是每 4h）。实际日成本 $10+ vs 预期 $1。修复：只比较 emoji+数据集名、has_error 抑制覆盖 returncode
+- [x] /standup 新增 Gateway token 追踪 — 2026-03-11 完成：§7a 每次晨会从 gateway.log 提取重巡/轻巡 token 数据，估算日成本，对比趋势
 - [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（EMP_0002，渐进）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):

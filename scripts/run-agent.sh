@@ -83,12 +83,21 @@ if [ -x "$LANE_LOCK" ]; then
   fi
 fi
 
-cleanup_lock() {
+cleanup() {
+  local exit_code=$?
+  # 记录异常退出（非正常结束 + 非参数错误）
+  if [ $exit_code -ne 0 ] && [ $exit_code -ne 1 ]; then
+    local ts
+    ts=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$ts] ❌ run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown}, line=${BASH_LINENO[0]:-?})" >> "$LOG_FILE" 2>/dev/null || true
+    echo "[$ts] ❌ run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown})" >&2
+  fi
+  # 释放 lane lock
   if [ -n "${AGENT_LANE:-}" ] && [ -x "${LANE_LOCK:-}" ]; then
     "$LANE_LOCK" release "$AGENT_LANE" "$AGENT_NAME" 2>/dev/null || true
   fi
 }
-trap cleanup_lock EXIT
+trap cleanup EXIT
 
 # --- 加载 API key ---
 source ~/slack-bot/.env
@@ -131,9 +140,9 @@ if echo "$SKILLS_RAW" | grep -q "dev-verify-loop"; then
 fi
 
 # --- Phase 1: Task ID 提取 ---
-TASK_ID=$(echo "$TASK" | grep -oP '(?:task_id:\s*)\K[A-Za-z0-9_\-]+' | head -1)
+TASK_ID=$(echo "$TASK" | grep -oP '(?:task_id:\s*)\K[A-Za-z0-9_\-]+' | head -1 || true)
 if [ -z "$TASK_ID" ]; then
-  TASK_ID=$(echo "$TASK" | grep -oP 'srx_\d{8}_\w+' | head -1)
+  TASK_ID=$(echo "$TASK" | grep -oP 'srx_\d{8}_\w+' | head -1 || true)
 fi
 if [ -z "$TASK_ID" ]; then
   TASK_ID="task_${AGENT_NAME}_$(date +%s)"
@@ -598,7 +607,7 @@ else
       echo "$VERIFY_OUTPUT"
       break
     else
-      ERROR_BRIEF=$(echo "$VERIFY_OUTPUT" | grep -E "FAIL|ERROR|assert|Error" | head -5 | tr '\n' ' ' | head -c 300)
+      ERROR_BRIEF=$(echo "$VERIFY_OUTPUT" | grep -E "FAIL|ERROR|assert|Error" | head -5 | tr '\n' ' ' | head -c 300 || true)
       ERROR_BRIEF=${ERROR_BRIEF//\"/\\\"}  # escape quotes for JSON
       ATTEMPTS_JSON="${ATTEMPTS_JSON}{\"round\":$ROUND,\"changes\":\"$CHANGES_BRIEF\",\"error\":\"$ERROR_BRIEF\"}"
       [ $ROUND -lt $MAX_VERIFY_ROUNDS ] && ATTEMPTS_JSON="${ATTEMPTS_JSON},"
@@ -669,7 +678,7 @@ EOSUMMARY
     echo "[repair_failed] Code restored to last commit state"
 
     # 3.2 生成失败摘要
-    ROOT_CAUSE=$(echo "$OUTPUT" | grep -iE "root.?cause|根因|原因|problem|issue" | head -2 | tr '\n' ' ' | head -c 200)
+    ROOT_CAUSE=$(echo "$OUTPUT" | grep -iE "root.?cause|根因|原因|problem|issue" | head -2 | tr '\n' ' ' | head -c 200 || true)
     ROOT_CAUSE=${ROOT_CAUSE//\"/\\\"}
     TASK_ID_EXTRACTED="$TASK_ID"
 

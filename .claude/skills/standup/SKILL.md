@@ -103,7 +103,26 @@ cd ~/surenxuan && git status --short | head -5
   - 在输出中标注："🔧 Gateway 变更已提交: <文件列表> → EMP_XXXX (含 lesson)"
 - 如果没有代码变更 → 在报告中标注 "🔧 Gateway 变更: 无代码变更"（不省略此行）
 
-## 7. 成本概览
+## 7. 成本概览 + Gateway Token 追踪
+
+### 7a. Gateway 重巡 Token 追踪（每次 /standup 必做）
+从 `logs/gateway.log` 提取过去 24 小时的数据：
+```bash
+# 提取所有 agentic session 的 token 数据
+grep '完成:.*tokens' logs/gateway.log | tail -30
+```
+统计并输出：
+- 重巡次数 + 平均 input tokens/次（>50K tokens 的 session 算重巡）
+- 轻巡/事件分析次数 + 平均 tokens
+- 估算日成本（Sonnet: $3/M input + $15/M output, Haiku: $0.80/M input + $4/M output, cache read 按 80% 折算）
+- 与前一天对比（如果有历史数据），标注趋势 ↑↓→
+
+输出格式（放在报告固定位置）：
+```
+Gateway: 重巡 N 次 (avg XK tok) | 轻巡+事件 N 次 (avg XK tok) | 日成本 ~$X.XX
+```
+
+### 7b. API 消耗汇总
 - 如果 logs/token-usage.log 存在，显示最近 7 天的 API 消耗趋势
 - 如果不存在，跳过此项
 
@@ -145,6 +164,7 @@ Git：mason-hub clean | surenxuan clean
   🔴 标题 — 建议行动
 
 知行转化率: N/M (X%) — backlog 可自动执行 / 总未完成
+Gateway: 重巡 N 次 (avg XK tok) | 轻巡+事件 N 次 (avg XK tok) | 日成本 ~$X.XX
 API 消耗：本周 $X.XX（日均 $X.XX）
 ```
 

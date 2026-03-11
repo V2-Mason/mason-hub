@@ -874,15 +874,27 @@ def run_light_heartbeat() -> bool:
         )
         mem_output = mem.stdout if mem.stdout else ""
 
-        # 提取关键指标做变化检测（只比较 health 状态，忽略内存/磁盘波动）
-        current = health_output[:200]
+        # 提取关键指标做变化检测（只比较 状态emoji+数据集名 的组合）
+        # 之前用 health_output[:200] 包含时间戳和相对时间，导致每次都"变化" → 每小时都触发重巡
+        import re
+        status_lines = []
+        for l in health_output.split("\n"):
+            for emoji in (":white_check_mark:", ":x:", ":warning:"):
+                if emoji in l:
+                    # 只取 emoji + 数据集名（-- 之前的部分），忽略动态描述
+                    name_part = l.split("--")[0].strip() if "--" in l else l.strip()
+                    status_lines.append(name_part)
+                    break
+        current = "\n".join(sorted(status_lines))
         changed = (_last_light_result is not None and current != _last_light_result)
         _last_light_result = current
 
         # 判断是否异常（排除 known-states 中已确认的问题）
-        has_error = result.returncode != 0 or "❌" in health_output or ":x:" in health_output
+        fail_count = health_output.count("❌") + health_output.count(":x:")
+        has_error = result.returncode != 0 or fail_count > 0
 
         # 如果有已知状态声明"健康检查基线是 10/15"，则部分失败不算异常
+        # 注意：returncode != 0 也要被抑制（health check 有失败项时 exit 非零是正常的）
         if has_error and KNOWN_STATES_FILE.exists():
             try:
                 import yaml
@@ -893,12 +905,9 @@ def run_light_heartbeat() -> bool:
                     and str(s.get("expires", "")) >= today
                     for s in known
                 )
-                if suppressed:
-                    # 检查是否比基线更差（新增失败项）
-                    fail_count = health_output.count("❌") + health_output.count(":x:")
-                    if fail_count <= 5:  # 基线是 10/15 = 5 个已知失败
-                        has_error = False
-                        log(f"[Heartbeat] 轻巡: {fail_count} 个失败项在已知基线内，不升级")
+                if suppressed and fail_count <= 5:  # 基线是 10/15 = 5 个已知失败
+                    has_error = False
+                    log(f"[Heartbeat] 轻巡: {fail_count} 个失败项在已知基线内，不升级")
             except Exception:
                 pass  # YAML 解析失败不影响主逻辑
         # 磁盘 >85%
