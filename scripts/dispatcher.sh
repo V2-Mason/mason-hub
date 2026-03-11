@@ -34,13 +34,8 @@ log() {
 
 # === 安全门 1: 时间窗口 ===
 check_time_window() {
-    local cst_hour
-    cst_hour=$(TZ=Asia/Shanghai date +%-H)
-    if (( cst_hour >= 8 && cst_hour < 22 )); then
-        return 0
-    fi
-    log "安全门 [时间]: 当前 CST $cst_hour 时，不在 08:00-22:00 窗口内"
-    return 1
+    # 24h 运行：任务去重 + lane lock + 每日上限 + 失败自动回滚已兜底
+    return 0
 }
 
 # === 安全门 2: 系统状态 ===

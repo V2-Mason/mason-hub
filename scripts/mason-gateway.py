@@ -168,7 +168,8 @@ def log(message: str):
 
 
 def in_time_window() -> bool:
-    return 8 <= datetime.now(CST).hour < 22
+    # 24h 运行：轻巡零成本 + Mason 让路机制 + 任务去重已兜底
+    return True
 
 
 def send_slack(message: str, prefix: str = "🫀 Gateway") -> bool:

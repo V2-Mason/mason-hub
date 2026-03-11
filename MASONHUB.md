@@ -166,4 +166,4 @@ status: "suggestion"。Mason 会看到。
 - Slack #system-alerts webhook: 环境变量 SLACK_WEBHOOK_URL
 - 工作目录: ~/mason-hub
 - Python venv: ~/mason-hub/.venv/
-- 时间窗口: CST 08:00-22:00
+- 时间窗口: 24h（Mason 上线时自动让路）
