@@ -132,4 +132,11 @@
 - **skeptical_verification prompt**：MASONHUB.md 工作节奏步骤 3b，Gateway 诊断后强制自我质疑
 - **gap 类型**：🏗️ 系统能力缺失 → 已修复
 
+### SearXNG Docker 部署 (2026-03-11)
+- 部署 SearXNG 到 GCP，`--restart always`，端口 8889（8888 被 nginx/SocialMesh 占用）
+- SearXNG 默认 `formats: [html]` 只允许 HTML 输出，JSON API 返回 403。需手动编辑 `/opt/searxng/settings.yml` 添加 json/csv/rss
+- 配置文件路径：`/opt/searxng/settings.yml`（容器 volume 挂载）
+- Scout v2 的 search.py 可以把 SearXNG URL 从 fallback 改为 primary
+- Gap 分类：🔧 配置错误 → 已修（端口冲突 + JSON 格式未启用）
+
 ## 踩坑记录

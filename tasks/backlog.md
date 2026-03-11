@@ -27,6 +27,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 ### GCP (34.63.188.198) — 指挥中心
 - slack-bot (systemd)
 - reports (:8080)
+- SearXNG Docker (:8889) — 2026-03-11 部署，--restart always，JSON API 已启用
 - 反向SSH隧道入口 (:2222)
 - 隧道保活: tunnel-keepalive.sh (cron */5, 2026-02-26 部署)
 - Cron 守护脚本: /opt/surenxuan/scripts/
@@ -521,7 +522,7 @@ Phase 2 — 主干管道统一:
 - [x] pipeline.py 编排器 — 6 引擎串行 + checkpoint + Slack 通知
 
 待办:
-- [ ] SearXNG Docker 部署 — 当前 SearXNG 未运行，搜索 fallback 到 DuckDuckGo（EMP_0002/EMP_0004）
+- [x] SearXNG Docker 部署 — 2026-03-11 完成，localhost:8889，--restart always，JSON API 已启用（EMP_0002）
 - [ ] Gemini API key 配置 — MediaEngine 需要 GEMINI_API_KEY 才能启用（Mason 后补）
 - [ ] 首次端到端测试 — 配好 DASHSCOPE_API_KEY 后 `python -m intel.engines.pipeline` 全流程跑通
 - [ ] Scout v2 cron 注册 — 替换旧 scout-*.sh cron 为新管道（EMP_0004）
