@@ -362,9 +362,9 @@ P2 — 模块 A 增强:
 - [x] MediaCrawler 首次采集测试 — 2026-03-01 完成，"韩国护肤" 关键词成功采集 20 条笔记入库
 - [ ] XHS 爬虫小号注册（2 个）— 用不同手机号，养号 3-5 天后提供 cookie
 - [ ] XHS 采集 cron 注册 — 等小号 cookie 就绪后注册（晚高峰 A 号 + 午休 B 号 + 每天 cookie 检测）
-- [ ] Reddit OAuth API Key 配置 — 需在 reddit.com/prefs/apps 注册
-- [ ] LinkedIn OAuth API Key 配置 — 需在 LinkedIn Developer Portal 注册
-- [ ] Twitter/X Client Secret 配置 — 需在 developer.x.com 注册
+- [x] Twitter/X Client Secret 配置 — 2026-03-11 完成，X_CONSUMER_KEY + X_CONSUMER_SECRET 已配到 .env
+- [-] Reddit OAuth API Key 配置 — Mason 确认暂不接
+- [-] LinkedIn OAuth API Key 配置 — Mason 确认暂不接
 
 **Radar — Mason 个人情报系统（原 TrendRadar + RSSHub，2026-03-08 正式命名）**:
 

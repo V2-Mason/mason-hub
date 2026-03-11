@@ -75,4 +75,11 @@
 - **教训**：shell 脚本如果会被 cron 用 stdout 重定向调用，log 函数不能用 tee（stdout+file），应该直接写文件+stderr
 - **gap 类型**：🔧 配置错误 → 已修复
 
+### X/Twitter API 配置 (2026-03-11)
+- Mason 提供 Consumer Key + Consumer Secret + Bearer Token，已配到 ~/mason-hub/.env
+- 变量名：X_CONSUMER_KEY / X_CONSUMER_SECRET / X_BEARER_TOKEN
+- 用途：Scout v2 搜索 Twitter/X 数据源
+- Reddit/LinkedIn API — Mason 确认暂不接入
+- **gap 类型**：📚 纯知识 → 留存
+
 ## 监控与告警教训
