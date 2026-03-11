@@ -18,10 +18,10 @@ mkdir -p "$LOCK_DIR"
 cmd_get_lane() {
   local agent_id="${1:-}"
   case "$agent_id" in
-    EMP_0001|EMP_0003|EMP_0005|EMP_0013) echo "ecommerce" ;;
-    EMP_0008|EMP_0009|EMP_0010)           echo "socialmesh" ;;
-    EMP_0002|EMP_0004)                     echo "platform" ;;
-    *)                                      echo "" ;;
+    EMP_0001|EMP_0003|EMP_0005|EMP_0013|EMP_0015) echo "ecommerce" ;;
+    EMP_0008|EMP_0009|EMP_0010)                    echo "socialmesh" ;;
+    EMP_0002|EMP_0004|EMP_0014)                    echo "platform" ;;
+    *)                                       echo "" ;;
   esac
 }
 

@@ -94,27 +94,43 @@ print(len([i for i in queue if i.get('status') == 'pending' and i.get('attempts'
     return 1
 }
 
-# === 安全门 4: 无正在运行的 agent ===
-check_no_running_agent() {
-    if pgrep -f "claude.*-p" > /dev/null 2>&1; then
-        log "安全门 [并发]: 已有 claude agent 在运行，跳过本轮"
-        return 1
-    fi
-    return 0
+# === Lane 状态检查 ===
+# 返回当前空闲的 lane 列表（用换行分隔）
+get_free_lanes() {
+    local all_lanes="platform ecommerce socialmesh independent"
+    local free_lanes=""
+    for lane in $all_lanes; do
+        if [[ "$lane" == "independent" ]]; then
+            # 独立 agent 不需要 lane lock，始终可用
+            free_lanes="$free_lanes $lane"
+            continue
+        fi
+        local lock_path="$HOME/mason-hub/locks/${lane}.lock"
+        if [[ ! -d "$lock_path" ]]; then
+            free_lanes="$free_lanes $lane"
+        elif bash "$HUB_DIR/scripts/lane-lock.sh" cleanup 2>/dev/null | grep -q "Cleaning"; then
+            # Stale lock cleaned, lane now free
+            free_lanes="$free_lanes $lane"
+        fi
+    done
+    echo "$free_lanes"
 }
 
 # === 任务匹配 ===
-# 从 data/autonomous_tasks.yaml 动态读取，不再硬编码
-# Python 脚本处理: 读注册表 + 检查 backlog 完成状态 + 检查能力线状态
 TASK_REGISTRY="$HUB_DIR/data/autonomous_tasks.yaml"
 
+# 批量模式: 获取按 lane 分组的任务列表（JSON）
+find_batch_tasks() {
+    python3 "$HUB_DIR/scripts/find-actionable-task.py" --batch 2>/dev/null
+}
+
+# 兼容旧模式: 获取单个任务
 find_actionable_task() {
     local task_info
     task_info=$(python3 "$HUB_DIR/scripts/find-actionable-task.py" 2>/dev/null)
     local exit_code=$?
 
     if [[ $exit_code -ne 0 ]] || [[ -z "$task_info" ]]; then
-        # 列出所有任务状态供日志参考
         python3 "$HUB_DIR/scripts/find-actionable-task.py" --list 2>/dev/null | while read -r line; do
             log "  $line"
         done
@@ -194,9 +210,6 @@ main() {
     # 安全门 1: 时间
     check_time_window || return 0
 
-    # 安全门 4: 无并发
-    check_no_running_agent || return 0
-
     # 安全门 3: 依赖
     check_dependencies_healthy || return 0
 
@@ -208,19 +221,62 @@ main() {
 
     # 检查 repair 队列（优先于常规任务）
     if check_repair_queue; then
-        log "  repair 任务已处理，本轮结束"
+        log "  repair 任务已处理（repair 不和常规任务并行）"
+        log "=== Dispatcher 扫描完成 ==="
         return 0
     fi
 
-    # 找可执行任务
-    local task_info
-    if task_info=$(find_actionable_task); then
-        IFS='|' read -r task_id agent_path line desc <<< "$task_info"
-        execute_task "$task_id" "$agent_path" "$line" "$desc"
-    else
+    # --- 批量派发: 按 lane 并行 ---
+    local free_lanes
+    free_lanes=$(get_free_lanes)
+    log "  空闲 lanes: $free_lanes"
+
+    local batch_json
+    batch_json=$(find_batch_tasks)
+
+    if [[ -z "$batch_json" ]] || [[ "$batch_json" == "[]" ]]; then
         log "  无可执行任务"
+        log "=== Dispatcher 扫描完成 ==="
+        return 0
     fi
 
+    # 解析批量任务，按 lane 匹配空闲 lane 后派发
+    local dispatched=0
+    local task_count
+    task_count=$(echo "$batch_json" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
+
+    log "  批量扫描到 $task_count 个任务（按 lane 去重）"
+
+    for idx in $(seq 0 $((task_count - 1))); do
+        local task_id agent_path lane line desc
+        read -r task_id agent_path lane line desc < <(echo "$batch_json" | python3 -c "
+import sys, json
+tasks = json.load(sys.stdin)
+t = tasks[$idx]
+print(t['id'], t['agent'], t['lane'], t.get('line',''), t.get('description','')[:200])
+" 2>/dev/null || echo "")
+
+        if [[ -z "$task_id" ]]; then
+            continue
+        fi
+
+        # 检查该 lane 是否空闲
+        if [[ "$lane" != "independent" ]] && ! echo "$free_lanes" | grep -qw "$lane"; then
+            log "  ⏸️  $task_id: lane $lane 正忙，跳过"
+            continue
+        fi
+
+        # 派发任务
+        execute_task "$task_id" "$agent_path" "$line" "$desc"
+        dispatched=$((dispatched + 1))
+
+        # 从空闲列表移除已占用的 lane（independent 不移除）
+        if [[ "$lane" != "independent" ]]; then
+            free_lanes=$(echo "$free_lanes" | sed "s/\b${lane}\b//")
+        fi
+    done
+
+    log "  本轮派发: $dispatched 个任务"
     log "=== Dispatcher 扫描完成 ==="
 }
 

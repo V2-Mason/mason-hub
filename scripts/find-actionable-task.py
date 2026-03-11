@@ -174,6 +174,12 @@ def main():
         print(len(all_actionable))
         return
 
+    if mode == "--batch":
+        # 批量模式: 按 lane 分组，每 lane 取第一个，输出 JSON
+        batch_output = get_batch_by_lane(all_actionable)
+        json.dump(batch_output, sys.stdout, ensure_ascii=False, indent=2)
+        return
+
     # 默认模式: 输出第一个可执行任务
     if all_actionable:
         t = all_actionable[0]
@@ -190,6 +196,45 @@ def main():
                 pass
     else:
         sys.exit(1)
+
+
+# Agent ID → Lane 映射（与 lane-lock.sh 保持一致）
+AGENT_LANE = {
+    "EMP_0001": "ecommerce", "EMP_0003": "ecommerce", "EMP_0005": "ecommerce",
+    "EMP_0013": "ecommerce", "EMP_0015": "ecommerce",
+    "EMP_0008": "socialmesh", "EMP_0009": "socialmesh", "EMP_0010": "socialmesh",
+    "EMP_0002": "platform", "EMP_0004": "platform", "EMP_0014": "platform",
+}
+
+
+def get_agent_lane(agent_path: str) -> str:
+    """从 agent 配置路径推断 lane"""
+    # agents/EMP_0002.md → EMP_0002
+    basename = os.path.basename(agent_path).replace(".md", "")
+    return AGENT_LANE.get(basename, "independent")
+
+
+def get_batch_by_lane(actionable: list[dict]) -> list[dict]:
+    """按 lane 分组，每 lane 取优先级最高的一个任务"""
+    seen_lanes = set()
+    batch = []
+
+    for t in actionable:
+        lane = get_agent_lane(t.get("agent", ""))
+        if lane in seen_lanes and lane != "independent":
+            continue  # 同 lane 只取第一个
+        seen_lanes.add(lane)
+        batch.append({
+            "id": t.get("id", ""),
+            "agent": t.get("agent", ""),
+            "lane": lane,
+            "line": t.get("line", ""),
+            "description": t.get("description", ""),
+            "priority": t.get("priority", "P2"),
+            "source": t.get("_source", t.get("source", "static")),
+        })
+
+    return batch
 
 
 if __name__ == "__main__":

@@ -91,5 +91,7 @@
 - 全角括号 `（EMP_XXXX）` 需要正则同时匹配半角和全角
 - 每日计数器 `data/.backlog_dispatch_today`：JSON 文件记录日期+计数，次日自动归零
 - Mason 决策：直接执行不需先通知，每天上限按 8 小时工作量（6 个任务）
+- 并行升级 (2026-03-11)：dispatcher.sh 从串行改为按 lane 并行。`--batch` 模式按 lane 去重，每 lane 取优先级最高的 1 个。dispatcher 检查 lane-lock 空闲状态后同时派发。repair 任务仍独占（不和常规并行）
+- lane-lock.sh 补齐映射：EMP_0014→platform, EMP_0015→ecommerce
 
 ## 踩坑记录
