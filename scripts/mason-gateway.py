@@ -571,6 +571,24 @@ def _tool_save_memory(input_data: dict) -> str:
     action_taken = input_data.get("action_taken", "")
     context = input_data.get("context", None)
 
+    # 去重：同 finding + 同 status 的 monitoring/resolved 条目不重复写入
+    if status in ("monitoring", "resolved"):
+        try:
+            if MEMORY_FILE.exists():
+                lines = MEMORY_FILE.read_text().strip().split("\n")
+                # 检查最近 10 条，如果有完全相同的 finding+status 就跳过
+                for line in lines[-10:]:
+                    if line.strip():
+                        try:
+                            existing = json.loads(line)
+                            if (existing.get("finding") == finding
+                                    and existing.get("status") == status):
+                                return f"⏭️ 记忆去重: 已有相同条目 [{status}]: {finding[:50]}..."
+                        except json.JSONDecodeError:
+                            pass
+        except Exception:
+            pass  # 去重失败不影响写入
+
     entry = {
         "timestamp": datetime.now(CST).isoformat(),
         "finding": finding,
@@ -800,8 +818,8 @@ def run_light_heartbeat() -> bool:
         )
         mem_output = mem.stdout if mem.stdout else ""
 
-        # 提取关键指标做变化检测
-        current = f"{health_output[:200]}|{disk_output[:100]}|{mem_output[:100]}"
+        # 提取关键指标做变化检测（只比较 health 状态，忽略内存/磁盘波动）
+        current = health_output[:200]
         changed = (_last_light_result is not None and current != _last_light_result)
         _last_light_result = current
 
@@ -912,12 +930,16 @@ def run_heartbeat(force_heavy: bool = False):
 
     known_states_block = f"\n\n{known_states}" if known_states else ""
 
+    # 精简记忆注入：只提供 will_retry/pending_mason + 最近 3 条（减少 input token）
+    memories_slim = load_recent_memories(n=3)
+
     user_prompt = f"""执行 heartbeat 检查。
 
 上次检查的记忆:
-{memories}{known_states_block}
+{memories_slim}{known_states_block}
 
-请开始：先读 MASONHUB.md 了解检查清单，然后逐项检查。"""
+请开始：先读 MASONHUB.md 了解检查清单，然后逐项检查。
+效率提醒：如果一切正常且与上次记忆一致，直接回复"✅ 系统正常"，不需要逐项读文件确认。只有发现异常或状态变化时才深入诊断。"""
 
     try:
         result = run_agentic_session(system_prompt, user_prompt, model=use_model, max_turns=use_turns)
@@ -987,14 +1009,17 @@ def analyze_event(event: dict):
 
 效率原则：同一类事件连续出现时，不要每次都完整诊断。先读 data/gateway-memory.jsonl 看之前的分析结论，状态没变就只 save_memory 记录时间戳即可。"""
 
+    # 精简记忆注入：事件分析只需最近 3 条，不需要全量
+    memories_short = load_recent_memories(n=3)
+
     user_prompt = f"""分析以下事件:
 
 {json.dumps(event, ensure_ascii=False, indent=2)}
 
 上次检查的记忆（先看这里，避免重复诊断）:
-{memories}
+{memories_short}
 
-请开始分析。"""
+请开始分析。如果记忆中已有相同结论，直接 save_memory 记录即可，不要重复读文件诊断。"""
 
     try:
         # 事件分析用 Haiku（大部分是重复事件），L3 级用 Sonnet

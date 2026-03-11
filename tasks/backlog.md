@@ -173,8 +173,8 @@ P1 — 开发流程强化 (2026-03-02 superpowers 参考):
 - [x] 自优化闭环协议 — 2026-03-09 完成，shared/qa/optimization_loop.md，3 轮上限 + 多维目标防漂移
 - [x] Gate 2 bias 修正 + Agent 名册 SSOT — 2026-03-10 完成，docs/system/agents.yaml 单一来源 + Gate 2 注入结构化上下文（agent 清单/数据限制/执行容量）+ Step 3 因果推理要求
 - [x] 数据中台框架 + EMP_0014 Data Engineer — 2026-03-10 完成，混合式架构（中台+嵌入式分析），data/data_catalog.yaml 盘点 15 个数据集，agents/EMP_0014.md 配置
-- [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug
-- [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）
+- [ ] 关键函数单元测试 — parse_count() / interaction_score() / 假流量过滤逻辑，防回归 bug（EMP_0002）
+- [ ] git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）（EMP_0002）
 
 P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] SYSTEM_MAP 受力分析 — 2026-03-10 完成，四条能力线动态状态 + 耦合触发机制
@@ -200,9 +200,9 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] Learned Skills 机制 — 2026-03-11 完成：MASONHUB.md 新增 ## Learned Skills section（5 条种子 skill）+ heartbeat prompt 第 9 步自动写 skill。受 SkillRL 论文启发，最小可行方案：不建目录、不加文件、复用现有 patch_file 能力
 - [x] Slack /ask 实时查询 — 2026-03-11 完成：slack-ask.py（Socket Mode + Claude Haiku），Mason 在 Slack 发 /ask 即时查询系统状态，无需公网端口
 - [x] Backlog 主动消化能力 — 2026-03-11 完成：backlog-scanner.py（5 层过滤：红线/Section 阻塞/外部依赖/agent 标注/能力线状态）+ find-actionable-task.py 合并静态+动态任务 + MASONHUB.md 检查清单第 8 步。每天上限 6 个任务，Dispatcher 自动派发
-- [ ] Dispatcher 两个 bug 修复 — 2026-03-11 发现：① 日志双写（tee + cron >> 同一文件）② Gateway 与 Dispatcher 竞争 pending 目录（FileNotFoundError）
-- [ ] Repair session 端到端验证 — 手动注入一个修复请求，验证 dispatcher → claude -p → 修复 → heartbeat 确认 全链路
-- [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（渐进）
+- [x] Dispatcher 两个 bug 修复 — 2026-03-11 修复：① 日志双写 tee→直写 ② 任务去重（find-actionable-task.py audit 检查 + report 运行检查）
+- [x] Repair session 端到端验证 — 2026-03-11 完成：submit → repair_queue.json → repair-dispatch.sh → claude -p 修复 → 验证通过 → resolve。发现 CLAUDECODE 嵌套问题已修复（unset CLAUDECODE）
+- [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（EMP_0002，渐进）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）

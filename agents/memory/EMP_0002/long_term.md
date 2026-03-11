@@ -115,4 +115,12 @@
 - **参考**：OpenClaw Gateway 架构 — 所有通道汇聚单一 Gateway 天然无信息孤岛；mason-hub 有双入口（session + daemon），需要显式同步机制
 - **gap 类型**：🏗️ 系统能力缺失 → 已修复
 
+### 自治闭环 v2 — 效率修复 + 闭环补全 (2026-03-11)
+- **问题诊断**：Gateway 首日自治运行效率低 — 3.4M tokens/$3-11 消耗，信噪比 15%。三个根因：① save_memory 重复写（同 finding+status 反复写入）② Dispatcher 不检查任务完成状态（同任务每小时重复派发 12 次）③ heartbeat 轻巡误触发（内存波动导致不必要的重巡 API 调用）
+- **效率修复**：save_memory 加去重（最近 10 条 finding+status 匹配跳过）、轻巡变化检测只比较 health 状态不比较内存/磁盘波动、记忆注入从 5 条减到 3 条、dispatcher log() tee→直写
+- **闭环补全 4 组件**：① MASONHUB.md 检查清单 8→10 项（dispatcher 行为模式+agent 产出验证+完成确认）② run-agent.sh 完成/失败时 emit agent-task-complete 事件 ③ find-actionable-task.py 检查 audit.jsonl 跳过今日已完成任务 + report 运行检查 ④ backlog-scanner.py 增强外部依赖检测
+- **Repair 端到端验证**：首次成功跑通全链路（submit → repair_queue.json → repair-dispatch.sh → claude -p → 修复代码 → bash -n 验证 → resolve）。发现 CLAUDECODE 嵌套问题：repair-dispatch.sh 需要 `unset CLAUDECODE` 才能在 Gateway 子进程中启动 claude -p
+- **关键教训**：backlog 里没标 `(EMP_XXXX)` 的任务不会被 scanner 发现 → 所有可自动执行的任务必须标注 owner
+- **gap 类型**：🏗️ 系统能力缺失 → 已修复
+
 ## 踩坑记录

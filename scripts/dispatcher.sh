@@ -28,7 +28,8 @@ DRY_RUN=false
 log() {
     local ts
     ts=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$ts] $*" | tee -a "$LOG_FILE"
+    # 直接写文件，不用 tee（cron 的 >> 重定向会导致日志双写）
+    echo "[$ts] $*" >> "$LOG_FILE"
 }
 
 # === 安全门 1: 时间窗口 ===
@@ -142,6 +143,8 @@ find_actionable_task() {
 }
 
 # === 执行任务 ===
+# 注意：任务去重已在 find-actionable-task.py 中完成（audit.jsonl 已完成检查 + report 运行检查）
+# dispatcher 不需要额外的 pgrep 检查
 execute_task() {
     local task_id="$1" agent_path="$2" line="$3" desc="$4"
     local agent_name

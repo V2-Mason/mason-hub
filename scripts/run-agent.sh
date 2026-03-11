@@ -405,6 +405,13 @@ EOSUMMARY
   echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"duration\":$DURATION,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_LOG"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
 
+  # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
+  EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+  if [ -x "$EMIT_EVENT" ]; then
+    "$EMIT_EVENT" "agent-task-complete" "$AGENT_NAME" "ok" 1 \
+      "{\"task_id\":\"$TASK_ID\",\"agent\":\"$AGENT_NAME\",\"status\":\"completed\",\"duration\":$DURATION}" 2>/dev/null || true
+  fi
+
   # Phase 3: 非开发类 agent 的 ACTION 解析
   ACTION_LINE=$(echo "$OUTPUT" | grep "^ACTION:" | tail -1)
   if [ -n "$ACTION_LINE" ]; then
@@ -540,6 +547,13 @@ EOSUMMARY
     echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
     echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"duration\":$DURATION,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_LOG"
 
+    # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
+    EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+    if [ -x "$EMIT_EVENT" ]; then
+      "$EMIT_EVENT" "agent-task-complete" "$AGENT_NAME" "ok" 1 \
+        "{\"task_id\":\"$TASK_ID\",\"agent\":\"$AGENT_NAME\",\"status\":\"completed\",\"rounds\":$ROUND,\"duration\":$DURATION}" 2>/dev/null || true
+    fi
+
     # Slack 结构化成功通知
     SLACK_SUCCESS_MSG=$(format_slack_message "success" "$AGENT_NAME" "$TASK_ID" "$ROUND" "修改文件: ${MODIFIED:-none}" "$DURATION")
     send_slack_notify "$SLACK_SUCCESS_MSG"
@@ -603,6 +617,13 @@ EOSUMMARY
     # 3.3 写入审计日志
     echo "$FAIL_SUMMARY" >> "$AUDIT_LOG"
     echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"repair_failed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
+
+    # 发射任务失败事件（供 Dispatcher/Gateway 追踪）
+    EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+    if [ -x "$EMIT_EVENT" ]; then
+      "$EMIT_EVENT" "agent-task-complete" "$AGENT_NAME" "error" 2 \
+        "{\"task_id\":\"$TASK_ID\",\"agent\":\"$AGENT_NAME\",\"status\":\"repair_failed\",\"rounds\":$ROUND,\"duration\":$DURATION}" 2>/dev/null || true
+    fi
 
     # 3.4 Slack 通知
     # Build per-round error summary

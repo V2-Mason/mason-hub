@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "repair_20260312_012906",
+    "timestamp": "2026-03-12T01:29:06.468339+08:00",
+    "issue": "repair-dispatch.sh log() 函数使用 tee 导致日志双写",
+    "symptom": "logs/repair.log 每行出现两次（tee -a 加上 cron 的 >> 重定向）",
+    "location": "scripts/repair-dispatch.sh:28",
+    "error_log": "",
+    "severity": "low",
+    "status": "resolved",
+    "attempts": 1,
+    "fix_applied": "log()函数 tee -a 改为 >> 直接追加+stderr输出，消除 cron 重定向导致的双写。同步修复3处 submit-repair.py 调用的 tee -a",
+    "test_result": "bash -n 语法检查通过，grep 确认 tee 已完全移除",
+    "created_by": "gateway_heartbeat",
+    "last_attempt": "2026-03-12T01:46:20.177435+08:00",
+    "resolved_at": "2026-03-12T01:46:58.554249+08:00"
+  }
+]

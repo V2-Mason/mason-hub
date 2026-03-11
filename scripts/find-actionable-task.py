@@ -16,6 +16,7 @@ import os
 import re
 import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
@@ -23,6 +24,8 @@ TASKS_FILE = HUB_DIR / "data" / "autonomous_tasks.yaml"
 BACKLOG_FILE = HUB_DIR / "tasks" / "backlog.md"
 SYSTEM_MAP_FILE = HUB_DIR / "SYSTEM_MAP.md"
 BACKLOG_SCANNER = HUB_DIR / "scripts" / "backlog-scanner.py"
+AUDIT_LOG = HUB_DIR / "logs" / "audit.jsonl"
+TASK_LOG_DIR = HUB_DIR / "logs" / "tasks"
 
 # 优先级权重
 PRIORITY_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
@@ -91,6 +94,43 @@ def is_incomplete_in_backlog(backlog_text: str, match_str: str) -> bool:
     return False
 
 
+def get_today_completed_tasks() -> set[str]:
+    """从 audit.jsonl 读取今天已完成的 task 描述关键词，用于去重"""
+    completed = set()
+    today_str = str(date.today())
+    if not AUDIT_LOG.exists():
+        return completed
+    try:
+        for line in AUDIT_LOG.read_text().strip().split("\n"):
+            if not line.strip():
+                continue
+            try:
+                entry = json.loads(line)
+                ts = entry.get("timestamp", "")
+                if today_str in ts and entry.get("status") == "completed":
+                    task_desc = entry.get("task", "")
+                    if task_desc:
+                        completed.add(task_desc)
+            except json.JSONDecodeError:
+                pass
+    except Exception:
+        pass
+    return completed
+
+
+def is_task_running(task_id: str) -> bool:
+    """检查任务是否正在运行（通过 summary.json 状态判断）"""
+    # 检查今天的 report 日志是否有对应进程还活着
+    reports_dir = HUB_DIR / "data" / "reports" / str(date.today())
+    if reports_dir.exists():
+        for logfile in reports_dir.glob(f"*_{task_id}.log"):
+            # 文件存在且最近 30 分钟内有写入 = 可能还在运行
+            import time
+            if time.time() - logfile.stat().st_mtime < 1800:
+                return True
+    return False
+
+
 def load_backlog_scanner_tasks() -> list[dict]:
     """从 backlog-scanner.py 获取动态任务"""
     if not BACKLOG_SCANNER.exists():
@@ -115,6 +155,7 @@ def main():
 
     backlog_text = BACKLOG_FILE.read_text() if BACKLOG_FILE.exists() else ""
     system_map_text = SYSTEM_MAP_FILE.read_text() if SYSTEM_MAP_FILE.exists() else ""
+    today_completed = get_today_completed_tasks()
 
     # --- 静态任务过滤 ---
     static_actionable = []
@@ -129,6 +170,18 @@ def main():
         if is_completed_in_backlog(backlog_text, match_str):
             if mode == "--list":
                 print(f"  ✅ [{priority}] {tid}: 已完成")
+            continue
+
+        # 检查今天是否已成功执行过（audit.jsonl 去重）
+        if any(desc[:30] in tc for tc in today_completed):
+            if mode == "--list":
+                print(f"  ✅ [{priority}] {tid}: 今日已执行")
+            continue
+
+        # 检查是否正在运行
+        if is_task_running(tid):
+            if mode == "--list":
+                print(f"  🔄 [{priority}] {tid}: 正在运行")
             continue
 
         line_status = get_line_status(system_map_text, line)

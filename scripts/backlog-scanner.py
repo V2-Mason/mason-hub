@@ -35,10 +35,17 @@ EXTERNAL_DEPENDENCY_KEYWORDS = [
     "需 Mason", "需Mason", "Mason 协调", "Mason协调",
     "Mason 决定", "Mason决定", "Mason 选择", "Mason选择",
     "手动触发", "Mason 操作", "Mason操作",
-    "API key", "API Key", "api key",
+    "API key", "API Key", "api key", "API_KEY", "api_key",
     "需要.*营业执照", "需要.*手机号",
     "等.*cookie", "等.*授权书",
     "触发条件.*>",
+    # 中文等待/依赖模式
+    "等.*就绪", "等.*到期", "等.*开放",
+    "待.*配置", "待.*部署后",
+    "需.*手动", "需.*注册",
+    "观察中", "等销售数据积累",
+    # 英文模式
+    "waiting for", "depends on", "blocked by",
 ]
 
 # Section 级别的阻塞标记 — 整个 section 下的任务都不执行

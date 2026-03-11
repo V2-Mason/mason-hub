@@ -88,10 +88,12 @@ status: "suggestion"。Mason 会看到。
 2. **阿里云连通**: SSH 连通性 — 不通则 🔴
 3. **Cron 运行**: 关键 cron 是否还在 — data-sync / health-check / dispatcher
 4. **事件队列**: queue.jsonl 有无未处理事件 — 有则汇报
-5. **Dispatcher 日志**: 最近一次运行结果 — 失败则告警。注意：CST 22-08 窗口外 dispatcher 不运行是正常设计，不要误报
+5. **Dispatcher 行为**: 检查 logs/dispatcher.log 最近 24h — 同一 task_id 出现 >2 次 = 重复派发 bug，emit_event 报修。CST 22-08 窗口外不运行是正常设计
 6. **数据管道**: data_health_check 结果 — 非全绿则汇报变化
 7. **Git 状态**: 有无异常未提交文件
 8. **Backlog 消化**: `python3 scripts/backlog-scanner.py --list` — 查看有多少可自动执行的 backlog 任务。有可执行项时记录到每日汇总，Dispatcher 会自动派发（每天上限 6 个任务）。不需要手动干预，只观察消化进度
+9. **Agent 产出验证**: 检查 data/reports/今天/ 目录 — 读取每个 agent 日志的最后 20 行，exit code != 0 或包含"❌"/"Error"的任务标记为失败，emit_event 安排重试
+10. **任务完成确认**: 检查 logs/tasks/ 最近的 summary.json — final_status=completed 的任务，验证预期产出是否存在（如 SearXNG 部署完 → 检查 localhost:8888 是否响应）。验证失败则标记为需重做
 
 ## Slack 通知原则
 
