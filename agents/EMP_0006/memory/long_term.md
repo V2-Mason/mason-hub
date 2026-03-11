@@ -24,6 +24,13 @@
 - 如果脚本做不到名称暗示的能力，应在输出开头注明实际数据源
 - 未来方向：不同渠道用不同 API/模型（GitHub→Claude，Google→Gemini，X→Grok，小红书→DeepSeek）
 
+## 2026-03-11: config.md Engine 架构更新
+- 在 config.md 的"搜集规范"前新增 "Scout v2 Engine 架构" 章节
+- 涵盖：6 引擎职责表、入口命令、多模型策略、搜索源、与旧脚本关系、数据流目录
+- 更新了 weekly-deep-patrol cron 任务描述，从手动脚本改为 pipeline 调用
+- 更新了数据存储目录，加入 engines/scout.db/validated/reports/
+- Gap 分类：📄 文档更新 → 已更新 agents/EMP_0006/config.md
+
 ## 巡逻经验
 
 ### 当前所有脚本只用 GitHub REST API（无认证）

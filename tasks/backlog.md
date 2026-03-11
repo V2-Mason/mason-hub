@@ -525,7 +525,7 @@ Phase 2 — 主干管道统一:
 - [ ] Gemini API key 配置 — MediaEngine 需要 GEMINI_API_KEY 才能启用（Mason 后补）
 - [ ] 首次端到端测试 — 配好 DASHSCOPE_API_KEY 后 `python -m intel.engines.pipeline` 全流程跑通
 - [ ] Scout v2 cron 注册 — 替换旧 scout-*.sh cron 为新管道（EMP_0004）
-- [ ] EMP_0006.md 更新 — 加入 Engine 架构职责描述
+- [x] EMP_0006.md 更新 — 2026-03-11 完成，config.md 加入 Scout v2 Engine 架构章节（6 引擎职责表/管道流程/多模型策略/数据流/调度更新）
 
 Phase 3 — 数据 SDK + 扩展:
 - [ ] 数据读取 SDK — Python 模块，业务 agent 一行代码获取干净数据（EMP_0014）

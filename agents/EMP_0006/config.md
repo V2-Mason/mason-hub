@@ -38,13 +38,15 @@ schedules:
   - name: weekly-deep-patrol
     cron: "0 0 * * 1"
     task: |
-      每周深度巡逻（~15min）：
-      1. 运行 scout-ecom-compete.sh — 竞品深度分析
-      2. 运行 scout-ui-inspiration.sh — UI/设计趋势
-      3. 汇总本周所有情报（日扫+中扫+深扫），生成周度情报简报
-      4. 更新 ~/mason-hub/intel/watchlist.md
-      5. 发送情报简报到 Slack #scout，存档到 intel/digests/
-      6. 🔴 标记的重大发现单独上报 Meta Manager，由 Meta Manager 在晨会重点标注给 Mason
+      每周深度巡逻（~15min）— 使用 Scout v2 Engine 管道：
+      1. 运行 `python -m intel.engines.pipeline` 执行完整 6 引擎管道：
+         spider（话题提取）→ query（搜索+反思补搜）→ media（图片分析）
+         → insight（内部数据关联）→ forum（交叉验证）→ report（结构化报告）
+      2. 如管道中断，使用 `--resume` 从断点续跑
+      3. 更新 ~/mason-hub/intel/watchlist.md
+      4. 报告自动存档到 intel/reports/，🔴 级自动推送 Slack #scout
+      5. 🔴 标记的重大发现单独上报 Meta Manager
+      回退：如 Engine 管道失败，仍可手动运行 scout-*.sh + 手写周报
     max_runtime: 15m
 heartbeat:
   cron: "0 */12 * * *"
@@ -151,10 +153,64 @@ python3 ~/mason-hub/skills/semantic_snapshot.py "URL" --max-chars 6000
 - 支持 `--no-js` 轻量模式（不启动浏览器）和 `--json` 结构化输出
 - 中文页面完全支持
 
+## Scout v2 Engine 架构
+
+Scout v2 基于 BettaFish 多 Engine 模式，6 引擎串行管道，支持 checkpoint 断点续跑。
+
+### 管道流程
+```
+spider → query → media → insight → forum → report
+```
+
+### 入口与配置
+- **代码**: `intel/engines/`（11 个 Python 模块）
+- **入口**: `python -m intel.engines.pipeline [--resume] [--force spider,query] [--days 3]`
+- **配置**: `intel/engines/config.yaml`
+- **数据库**: `intel/scout.db`（4 表: topics / intel_items / topic_intel_relation / pipeline_runs）
+- **设计文档**: `docs/plans/2026-03-10-scout-v2-design.md`
+
+### 6 引擎职责
+
+| 引擎 | 文件 | 主函数 | 职责 |
+|------|------|--------|------|
+| **SpiderEngine** | spider.py | `extract_topics(days=3)` | 从 TrendRadar 热榜 + RSS 提取本周话题关键词 |
+| **QueryEngine** | query.py | `run_query(topics)` | 搜索 + 反思补搜（评估覆盖盲区，最多 1 轮补搜） |
+| **MediaEngine** | media.py | `enrich_intel_with_media(items)` | Gemini 图片分析，多模态内容理解 |
+| **InsightEngine** | insight.py | `enrich_with_internal_data(items)` | 关联内部数据（XHS mirror + sales API + 历史情报），从"通用信息"变为"对我们意味着什么" |
+| **ForumEngine** | forum.py | `cross_validate(items)` | Jaccard 聚类 + LLM 多源交叉验证，标注共识/分歧/置信度 |
+| **ReportEngine** | report.py | `generate_report(items, topics=)` | IR 中间层 → 三渲染器（markdown / json / slack） |
+
+### 多模型策略
+- **DeepSeek** (默认): 分析/提取/情感分析（低成本，¥~0.70/月）
+- **Gemini**: 图片分析（MediaEngine 专用）
+- **Qwen**: 中文交叉验证备用
+
+### 搜索源
+- **GitHub API**: 无需认证，60 次/h
+- **SearXNG**: Docker localhost:8888（待部署）
+- **DuckDuckGo**: 免费 fallback
+
+### 与旧版脚本的关系
+旧版 `skills/scout/scout-*.sh` 脚本继续作为 SpiderEngine 的采集器被调用，不废弃。
+Engine 层是在脚本之上加的智能编排层：话题提取 → 反思补搜 → 内部数据关联 → 交叉验证 → 结构化报告。
+
+### Engine 数据流
+```
+intel/
+├── engines/          ← Engine 代码 + config.yaml
+├── scout.db          ← 统一数据库（topics + items + relations + runs）
+├── raw/              ← 不变：Scout 脚本原始输出
+├── processed/        ← 不变：scout_normalized.jsonl
+├── validated/        ← 新增：交叉验证后的 JSONL
+└── reports/          ← 新增：结构化周报 markdown + json
+```
+
+---
+
 ## 搜集规范
 
 ### 技术情报（你自己搜集）
-使用 skills 脚本搜索：
+使用 skills 脚本搜索（由 SpiderEngine 编排调用，也可手动执行）：
 - `~/mason-hub/skills/scout/scout-github.sh` — GitHub 新仓库搜索
 - `~/mason-hub/skills/scout/scout-trending.sh` — GitHub trending 项目
 - `~/mason-hub/skills/scout/scout-anthropic.sh` — Anthropic/Claude 更新
@@ -293,9 +349,14 @@ python3 ~/mason-hub/skills/semantic_snapshot.py "URL" --max-chars 6000
 
 ```
 ~/mason-hub/intel/
-  raw/                         ← 原始情报快照
+  engines/                     ← Scout v2 Engine 代码 + config.yaml
+  scout.db                     ← Engine 统一数据库（topics/items/relations/runs）
+  raw/                         ← 原始情报快照（Scout 脚本输出）
     2026-WXX-tech.md
-  digests/                     ← 情报简报
+  processed/                   ← 结构化 JSONL（scout_normalized.jsonl）
+  validated/                   ← 交叉验证后的 JSONL（ForumEngine 输出）
+  reports/                     ← 结构化周报 markdown + json（ReportEngine 输出）
+  digests/                     ← 旧版手写情报简报（保留兼容）
     2026-WXX-digest.md
   skill-scouts/                ← find-skill 搜索结果
     2026-02-28-image-generator.md
