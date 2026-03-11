@@ -68,7 +68,9 @@ HEARTBEAT_INTERVAL = 3600
 QUEUE_CHECK_INTERVAL = 60
 LOCK_TIMEOUT = 600
 
-CST = timezone(timedelta(hours=8))
+# Mason 标准时区：美东时间 (ET = UTC-5 EST / UTC-4 EDT)
+# 注意：这里用固定 UTC-4 (EDT)，如需精确夏令时切换可改用 zoneinfo
+ET = timezone(timedelta(hours=-4))
 
 # 可写文件白名单（Gateway 只能写这些）
 WRITABLE_PATHS = [
@@ -158,7 +160,7 @@ HEAVY_HEARTBEAT_INTERVAL = 14400  # 4 小时强制一次重巡
 # ========================================
 
 def log(message: str):
-    ts = datetime.now(CST).strftime("%Y-%m-%d %H:%M:%S CST")
+    ts = datetime.now(ET).strftime("%Y-%m-%d %H:%M:%S ET")
     entry = f"[{ts}] {message}"
     try:
         LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -614,7 +616,7 @@ def _tool_save_memory(input_data: dict) -> str:
             pass  # 去重失败不影响写入
 
     entry = {
-        "timestamp": datetime.now(CST).isoformat(),
+        "timestamp": datetime.now(ET).isoformat(),
         "finding": finding,
         "severity": severity,
         "status": status,
@@ -648,7 +650,7 @@ def _tool_track_skill(input_data: dict) -> str:
             stats[skill_id] = {"applied_count": 0, "first_applied": None, "last_applied": None, "reasons": []}
 
         stats[skill_id]["applied_count"] += 1
-        now = datetime.now(CST).isoformat()
+        now = datetime.now(ET).isoformat()
         if not stats[skill_id]["first_applied"]:
             stats[skill_id]["first_applied"] = now
         stats[skill_id]["last_applied"] = now
@@ -677,7 +679,7 @@ def load_known_states() -> str:
         if not states:
             return ""
 
-        today = datetime.now(CST).strftime("%Y-%m-%d")
+        today = datetime.now(ET).strftime("%Y-%m-%d")
         active = []
         for s in states:
             expires = str(s.get("expires", "2099-12-31"))
@@ -885,7 +887,7 @@ def run_light_heartbeat() -> bool:
             try:
                 import yaml
                 known = yaml.safe_load(KNOWN_STATES_FILE.read_text()) or []
-                today = datetime.now(CST).strftime("%Y-%m-%d")
+                today = datetime.now(ET).strftime("%Y-%m-%d")
                 suppressed = any(
                     s.get("id") == "health-check-baseline"
                     and str(s.get("expires", "")) >= today
@@ -936,11 +938,11 @@ def run_heartbeat(force_heavy: bool = False):
     mode_label = "重巡 Sonnet" if force_heavy else "轻量 Haiku"
     log(f"[Heartbeat] 开始 ({mode_label})")
 
-    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+    now_et = datetime.now(ET).strftime("%Y-%m-%d %H:%M ET")
     memories = load_recent_memories()
     known_states = load_known_states()
 
-    system_prompt = f"""你是 Mason Hub 的值班工程师。当前时间: {now_cst}
+    system_prompt = f"""你是 Mason Hub 的值班工程师。当前时间: {now_et}
 
 你的完整行为空间定义在 MASONHUB.md 中，每次执行前必须先读取。
 简要原则：
@@ -1040,11 +1042,11 @@ def analyze_event(event: dict):
 
     # Level 2-3: agentic loop
     log(f"[Agentic] 事件 {event_type} (L{level}): 需要推理")
-    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+    now_et = datetime.now(ET).strftime("%Y-%m-%d %H:%M ET")
 
     memories = load_recent_memories()
 
-    system_prompt = f"""你是 Mason Hub 的值班监督员。当前时间: {now_cst}
+    system_prompt = f"""你是 Mason Hub 的值班监督员。当前时间: {now_et}
 
 你收到了一个需要分析的系统事件。你有工具可以读取文件、执行命令、发 Slack 通知。
 
@@ -1349,7 +1351,7 @@ def show_status():
         print("  锁: 无（未运行）")
 
     print(f"  Mason session: {'🟢 活跃' if mason_session_active() else '⚪ 不在'}")
-    print(f"  时间窗口: {'✅' if in_time_window() else '❌'} CST 08-22")
+    print(f"  时间窗口: {'✅' if in_time_window() else '❌'} ET 08-22")
     print(f"  工具: {len(TOOLS)} 个 (read_file, write_file, patch_file, run_command, send_slack, list_dir, save_memory)")
     print(f"  Agentic loop: 最大 {MAX_TURNS} 轮")
 

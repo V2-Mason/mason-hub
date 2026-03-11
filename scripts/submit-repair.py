@@ -22,7 +22,7 @@ import os
 import sys
 from datetime import datetime, timezone, timedelta
 
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 HUB_DIR = os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub"))
 QUEUE_FILE = os.path.join(HUB_DIR, "data", "repair_queue.json")
 
@@ -45,7 +45,7 @@ def save_queue(queue):
 
 def submit(args):
     queue = load_queue()
-    now = datetime.now(CST)
+    now = datetime.now(ET)
     item_id = f"repair_{now.strftime('%Y%m%d_%H%M%S')}"
 
     item = {
@@ -93,7 +93,7 @@ def resolve(item_id):
     for item in queue:
         if item["id"] == item_id:
             item["status"] = "resolved"
-            item["resolved_at"] = datetime.now(CST).isoformat()
+            item["resolved_at"] = datetime.now(ET).isoformat()
             save_queue(queue)
             print(f"✅ {item_id} 已标记为 resolved")
             return
@@ -111,7 +111,7 @@ def update_status(item_id, status, fix_applied="", test_result=""):
                 item["fix_applied"] = fix_applied
             if test_result:
                 item["test_result"] = test_result
-            item["last_attempt"] = datetime.now(CST).isoformat()
+            item["last_attempt"] = datetime.now(ET).isoformat()
             save_queue(queue)
             print(f"✅ {item_id} 状态更新为 {status} (第 {item['attempts']} 次尝试)")
             return

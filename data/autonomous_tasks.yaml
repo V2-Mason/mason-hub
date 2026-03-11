@@ -90,7 +90,7 @@ tasks:
     agent: agents/EMP_0002.md
     line: 自治线
     backlog_match: "Scout v2 cron 注册"
-    description: "注册 Scout v2 管道到 crontab，替换旧 scout-*.sh cron。入口: python -m intel.engines.pipeline。建议每周二/五 CST 23:00 运行"
+    description: "注册 Scout v2 管道到 crontab，替换旧 scout-*.sh cron。入口: python -m intel.engines.pipeline。建议每周二/五 19:00 ET 运行"
     priority: P1
 
   - id: emp0006-update

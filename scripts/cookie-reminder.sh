@@ -1,6 +1,6 @@
 #!/bin/bash
 # Cookie 过期提醒 — 每周随机一天提醒 Mason 更换 XHS cookie
-# cron: 每天 10:00 CST 运行，脚本内部控制每周只发一次
+# cron: 每天 22:00 ET (02:00 UTC) 运行，脚本内部控制每周只发一次
 
 LOCK_FILE="/tmp/.cookie_reminder_week"
 CURRENT_WEEK=$(date +%Y-%W)

@@ -29,7 +29,7 @@ MEMORY_FILE = HUB_DIR / "data" / "gateway-memory.jsonl"
 MASONHUB_FILE = HUB_DIR / "MASONHUB.md"
 ARCHIVE_DIR = HUB_DIR / "data" / "archive"
 
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 
 def load_memories(days: int = 7) -> list[dict]:
@@ -37,7 +37,7 @@ def load_memories(days: int = 7) -> list[dict]:
     if not MEMORY_FILE.exists():
         return []
 
-    cutoff = datetime.now(CST) - timedelta(days=days)
+    cutoff = datetime.now(ET) - timedelta(days=days)
     entries = []
     for line in MEMORY_FILE.read_text().strip().split("\n"):
         if not line.strip():
@@ -218,7 +218,7 @@ def format_skill_line(skill_id: int, skill: dict) -> str:
     title = skill.get("title", "未命名")
     rule = skill.get("rule", "")
     source = skill.get("source", "自动蒸馏")
-    today = datetime.now(CST).strftime("%Y-%m-%d")
+    today = datetime.now(ET).strftime("%Y-%m-%d")
     return f"- **skill_{skill_id:03d}: {title}** — {rule} [来源: {today} {source}]"
 
 

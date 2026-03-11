@@ -93,8 +93,8 @@ status: "suggestion"。Mason 会看到。
 2. **阿里云连通**: SSH 连通性 — 不通则 🔴
 3. **Cron 运行**: 关键 cron 是否还在 — data-sync / health-check / dispatcher
 4. **事件队列**: queue.jsonl 有无未处理事件 — 有则汇报
-5. **Dispatcher 行为**: 检查 logs/dispatcher.log 最近 24h — 同一 task_id 出现 >2 次 = 重复派发 bug，emit_event 报修。CST 22-08 窗口外不运行是正常设计
-6. **数据管道**: data_health_check 结果 — 非全绿则汇报变化
+5. **Dispatcher 行为**: 检查 logs/dispatcher.log 最近 24h — 同一 task_id 出现 >2 次 = 重复派发 bug，emit_event 报修
+6. **数据管道**: data_health_check 结果 — 非全绿则汇报变化。自愈系统会自动尝试修复（见 data/remediation_registry.yaml），检查 data/remediation_state.json 确认修复状态
 7. **Git 状态**: 有无异常未提交文件
 8. **Backlog 消化**: `python3 scripts/backlog-scanner.py --list` — 查看有多少可自动执行的 backlog 任务。有可执行项时记录到每日汇总，Dispatcher 会自动派发（每天上限 6 个任务）。不需要手动干预，只观察消化进度
 9. **Agent 产出验证**: 检查 data/reports/今天/ 目录 — 读取每个 agent 日志的最后 20 行，exit code != 0 或包含"❌"/"Error"的任务标记为失败，emit_event 安排重试
@@ -111,7 +111,7 @@ status: "suggestion"。Mason 会看到。
 - 关键基础设施持续不可达（连续 2+ 次 heartbeat）
 
 ### 🟡 每日汇总（每天一次）
-- 触发条件：当前时间在 **美东 07:00-08:00**（即 CST 20:00-21:00 冬令 / 19:00-20:00 夏令）的那次 heartbeat
+- 触发条件：当前时间在 **美东 07:00-08:00** 的那次 heartbeat
 - 内容：过去 24h 的巡检摘要、自主修复记录、monitoring 趋势、未完结条目
 - 格式：一屏看完的结构化汇总
 

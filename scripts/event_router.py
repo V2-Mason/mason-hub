@@ -158,11 +158,8 @@ def check_precondition(cond: str) -> bool:
 
 
 def check_time_window() -> bool:
-    """检查是否在允许执行的时间窗口内（CST 08:00-22:00）"""
-    from datetime import timedelta
-    now_utc = datetime.now(timezone.utc)
-    cst = now_utc + timedelta(hours=8)
-    return 8 <= cst.hour < 22
+    """24h 运行：Dispatcher 已有任务去重 + lane lock + 每日上限兜底"""
+    return True
 
 
 def send_slack(message: str):
@@ -277,11 +274,6 @@ def process_event(event: dict):
     route = ROUTING_TABLE.get(event_type)
     if not route:
         log(f"  无匹配路由，跳过")
-        return
-
-    # 检查时间窗口
-    if not check_time_window():
-        save_pending(event, "不在执行时间窗口 (CST 08:00-22:00)")
         return
 
     # 检查前置条件

@@ -16,7 +16,7 @@ Heartbeat — 系统监督脚本
 
 成本:
   每次调用 ~1500 input + ~300 output token ≈ $0.005
-  每天 14 次（CST 08-22，每小时）≈ $0.07/天 ≈ $2/月
+  每天 14 次（ET (24h)，每小时）≈ $0.07/天 ≈ $2/月
 
 Cron:
   0 * * * * cd ~/mason-hub && .venv/bin/python3 scripts/heartbeat.py >> logs/heartbeat.log 2>&1
@@ -36,13 +36,12 @@ MODEL = os.environ.get("HEARTBEAT_MODEL", "claude-sonnet-4-20250514")
 MAX_OUTPUT_TOKENS = 800
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL", "")
 LOG_FILE = HUB_DIR / "logs" / "heartbeat.log"
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 
 def in_time_window() -> bool:
-    """CST 08:00-22:00 窗口检查"""
-    now_cst = datetime.now(CST)
-    return 8 <= now_cst.hour < 22
+    """24h 运行：轻巡零成本 + Mason 让路已兜底"""
+    return True
 
 
 def read_file(path: Path, max_lines: int = 0) -> str:
@@ -129,9 +128,9 @@ def collect_context() -> dict:
 
 def build_prompt(ctx: dict) -> str:
     """构建监督 prompt"""
-    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+    now_et = datetime.now(ET).strftime("%Y-%m-%d %H:%M ET")
 
-    prompt = f"""当前时间: {now_cst}
+    prompt = f"""当前时间: {now_et}
 
 {ctx['masonhub']}
 
@@ -189,7 +188,7 @@ def send_slack(message: str):
 
 def log(message: str):
     """追加日志"""
-    timestamp = datetime.now(CST).strftime("%Y-%m-%d %H:%M:%S CST")
+    timestamp = datetime.now(ET).strftime("%Y-%m-%d %H:%M:%S ET")
     entry = f"[{timestamp}] {message}"
     print(entry)
     try:
@@ -208,7 +207,7 @@ def main():
 
     # 时间窗口检查
     if not in_time_window() and not force:
-        log("⏰ 窗口外（CST 08-22），跳过")
+        log("⏰ 窗口外（ET (24h)），跳过")
         return
 
     log("--- heartbeat 开始 ---")

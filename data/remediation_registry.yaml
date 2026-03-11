@@ -1,0 +1,79 @@
+# remediation_registry.yaml — 自愈路由表
+#
+# data_health_check.sh 发现数据过期 → 查此表 → 自动执行修复
+# 修复失败 N 次 → Slack 升级到 Mason
+#
+# 字段说明：
+#   monitor:       data_catalog.yaml 中的 dataset id（或特殊监控项）
+#   freshness:     最大允许过期时间（秒），超过触发修复
+#   remediation:   修复动作描述（人读）
+#   command:       修复命令（machine 执行）
+#   max_retries:   最大重试次数，超过升级
+#   escalate_to:   升级目标（mason = Slack 通知 Mason）
+#   cooldown:      两次修复之间最小间隔（秒），防止频繁重试
+#
+# 维护者：EMP_0002 (Platform Dev)
+# 更新规则：新增定期任务时，同步在此注册修复动作
+
+entries:
+
+  # === 情报系统 ===
+  - monitor: raw_scout_intel
+    freshness: 172800          # 2 天（每日 cron，允许 1 天 buffer）
+    remediation: "重跑 Scout 每日快扫"
+    command: "/home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0006.md '自愈触发：Scout 产出过期，执行快扫' C0AHCMUC057"
+    max_retries: 2
+    cooldown: 7200             # 2 小时
+    escalate_to: mason
+
+  # === XHS 采集 ===
+  - monitor: raw_xhs_notes
+    freshness: 604800          # 7 天（周二/五采集）
+    remediation: "重跑 XHS 内容灵感采集"
+    command: "/home/hangn/mason-hub/skills/xhs-crawl.sh --task 1"
+    max_retries: 2
+    cooldown: 3600
+    escalate_to: mason
+
+  # === 趋势数据 ===
+  - monitor: raw_trendradar_news
+    freshness: 43200           # 12 小时（每 6 小时产出）
+    remediation: "重跑 TrendRadar"
+    command: "cd /home/hangn/mason-hub/tools/trendradar && /home/hangn/mason-hub/.venv/bin/python -m trendradar"
+    max_retries: 2
+    cooldown: 3600
+    escalate_to: mason
+
+  - monitor: raw_trendradar_rss
+    freshness: 43200
+    remediation: "重跑 TrendRadar RSS"
+    command: "cd /home/hangn/mason-hub/tools/trendradar && /home/hangn/mason-hub/.venv/bin/python -m trendradar"
+    max_retries: 2
+    cooldown: 3600
+    escalate_to: mason
+
+  # === 素仁轩 API ===
+  - monitor: raw_srx_sales
+    freshness: 172800          # 2 天
+    remediation: "检查阿里云连通性 + 重跑数据 COO"
+    command: "timeout 10 ssh -o ConnectTimeout=5 root@106.14.44.68 'systemctl is-active surenxuan' && /home/hangn/mason-hub/skills/data-coo-daily.sh"
+    max_retries: 2
+    cooldown: 7200
+    escalate_to: mason
+
+  # === 系统基础设施（特殊监控项，不在 data_catalog 中）===
+  - monitor: _gateway_heartbeat
+    freshness: 7200            # 2 小时
+    remediation: "重启 Gateway daemon"
+    command: "sudo systemctl restart mason-gateway"
+    max_retries: 1
+    cooldown: 3600
+    escalate_to: mason
+
+  - monitor: _dispatcher_last_run
+    freshness: 7200            # 2 小时
+    remediation: "手动触发 Dispatcher"
+    command: "/home/hangn/mason-hub/scripts/dispatcher.sh"
+    max_retries: 1
+    cooldown: 3600
+    escalate_to: mason

@@ -414,7 +414,7 @@ done <<< "$PARSED"
 TOTAL=$(( COUNT_OK + COUNT_WARN + COUNT_ERR ))
 
 # ─── Build output ───
-OUTPUT=":bar_chart: 数据健康检查 -- ${TIMESTAMP} CST"$'\n'
+OUTPUT=":bar_chart: 数据健康检查 -- ${TIMESTAMP} ET"$'\n'
 OUTPUT+=""$'\n'
 OUTPUT+="$RESULTS"
 OUTPUT+=""$'\n'
@@ -462,4 +462,132 @@ if [ "$EMIT_EVENT" = true ]; then
     "$HUB_DIR/scripts/emit_event.sh" "health-check-failed" "data_health_check.sh" "failed" 2 \
       "{\"ok\":$COUNT_OK,\"total\":$TOTAL,\"errors\":$COUNT_ERR}" 2>/dev/null || true
   fi
+fi
+
+# ─── 自愈: 检查 remediation_registry，自动修复过期数据集 ───
+REMEDIATION_REGISTRY="$HUB_DIR/data/remediation_registry.yaml"
+REMEDIATION_STATE="$HUB_DIR/data/remediation_state.json"
+
+if [ -f "$REMEDIATION_REGISTRY" ] && ([ "$COUNT_WARN" -gt 0 ] || [ "$COUNT_ERR" -gt 0 ]); then
+  echo ">>> 自愈检查: 查询 remediation_registry ..."
+
+  /home/hangn/mason-hub/.venv/bin/python3 - "$REMEDIATION_REGISTRY" "$REMEDIATION_STATE" "$RESULTS" "$HUB_DIR" <<'PYEOF'
+import sys, yaml, json, os, subprocess, time
+from datetime import datetime, timezone, timedelta
+from pathlib import Path
+
+ET = timezone(timedelta(hours=-4))
+registry_path = sys.argv[1]
+state_path = sys.argv[2]
+results_text = sys.argv[3]
+hub_dir = sys.argv[4]
+
+# Load registry
+with open(registry_path) as f:
+    registry = yaml.safe_load(f)
+
+# Load state (tracks retries + last attempt)
+state = {}
+if os.path.exists(state_path):
+    with open(state_path) as f:
+        state = json.load(f)
+
+now = time.time()
+remediated = []
+escalated = []
+
+for entry in registry.get("entries", []):
+    monitor_id = entry["monitor"]
+    max_retries = entry.get("max_retries", 2)
+    cooldown = entry.get("cooldown", 3600)
+    command = entry.get("command", "")
+
+    # Check if this monitor shows warn/err in results
+    is_unhealthy = False
+    for line in results_text.split("\n"):
+        if monitor_id in line and (":warning:" in line or ":x:" in line):
+            is_unhealthy = True
+            break
+
+    # Special monitors (not in data_catalog)
+    if monitor_id.startswith("_"):
+        if monitor_id == "_gateway_heartbeat":
+            log_path = os.path.join(hub_dir, "logs", "heartbeat.log")
+            if os.path.exists(log_path):
+                age = now - os.path.getmtime(log_path)
+                is_unhealthy = age > entry.get("freshness", 7200)
+        elif monitor_id == "_dispatcher_last_run":
+            log_path = os.path.join(hub_dir, "logs", "dispatcher.log")
+            if os.path.exists(log_path):
+                age = now - os.path.getmtime(log_path)
+                is_unhealthy = age > entry.get("freshness", 7200)
+
+    if not is_unhealthy:
+        continue
+
+    # Check cooldown + retries
+    item_state = state.get(monitor_id, {"retries": 0, "last_attempt": 0})
+    if now - item_state.get("last_attempt", 0) < cooldown:
+        continue  # Too soon
+
+    if item_state.get("retries", 0) >= max_retries:
+        escalated.append({
+            "monitor": monitor_id,
+            "remediation": entry.get("remediation", ""),
+            "retries": item_state["retries"]
+        })
+        continue
+
+    # Execute remediation
+    print(f"  🔧 自愈: {monitor_id} — {entry.get('remediation', '')}")
+    try:
+        result = subprocess.run(
+            command, shell=True, capture_output=True, text=True, timeout=300
+        )
+        success = result.returncode == 0
+        print(f"     {'✅ 成功' if success else '❌ 失败'}: exit={result.returncode}")
+        if result.stderr and not success:
+            print(f"     stderr: {result.stderr[:200]}")
+    except subprocess.TimeoutExpired:
+        success = False
+        print(f"     ❌ 超时 (300s)")
+    except Exception as e:
+        success = False
+        print(f"     ❌ 异常: {e}")
+
+    item_state["retries"] = 0 if success else item_state.get("retries", 0) + 1
+    item_state["last_attempt"] = now
+    item_state["last_result"] = "ok" if success else "failed"
+    state[monitor_id] = item_state
+    remediated.append(monitor_id)
+
+# Escalate to Mason via Slack
+if escalated:
+    slack_webhook = os.environ.get("SLACK_WEBHOOK_URL", "")
+    if slack_webhook:
+        msg = "🚨 自愈失败，需要 Mason 介入:\n"
+        for item in escalated:
+            msg += f"• {item['monitor']}: {item['remediation']} (已重试 {item['retries']} 次)\n"
+        try:
+            subprocess.run(
+                ["curl", "-s", "-X", "POST", slack_webhook,
+                 "-H", "Content-Type: application/json",
+                 "-d", json.dumps({"text": msg})],
+                capture_output=True, timeout=10
+            )
+            print(f"  📢 已升级 {len(escalated)} 项到 Mason (Slack)")
+        except:
+            print(f"  ⚠️ Slack 通知失败")
+
+# Save state
+with open(state_path, "w") as f:
+    json.dump(state, f, indent=2)
+
+if remediated:
+    print(f"  >>> 自愈执行: {len(remediated)} 项 ({', '.join(remediated)})")
+if escalated:
+    print(f"  >>> 升级到 Mason: {len(escalated)} 项")
+if not remediated and not escalated:
+    print(f"  >>> 无需自愈（所有异常项无注册修复动作或在冷却期）")
+PYEOF
 fi

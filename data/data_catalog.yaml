@@ -42,7 +42,7 @@ datasets:
       - user_id (TEXT)
       - time (TEXT)
       - crawl_timestamp (TEXT)
-    update_frequency: "周二/五 14:00 CST（EMP_0008 触发）"
+    update_frequency: "周二/五 10:00 ET（EMP_0008 触发）"
     consumers: [xhs-analyze-viral.py, _xhs_analyze_compare.py, _xhs_publish_log.py]
     status: active
     data_quality_notes: |
@@ -141,7 +141,7 @@ datasets:
         - /api/sales/summary
         - /api/dashboard/overview
         - /api/intelligence/risk-alerts
-    update_frequency: "每日 08:00 CST（EMP_0001 库存巡检）"
+    update_frequency: "每日 20:00 ET（EMP_0001 库存巡检）"
     consumers: [data-coo-daily.sh → Slack]
     status: active
     data_quality_notes: |
@@ -157,7 +157,7 @@ datasets:
       type: markdown_files
       location: gcp:~/mason-hub/intel/digests/*.md
     dedup: scripts/scout-dedup.py → intel/seen.jsonl
-    update_frequency: "每日 23:00 CST cron"
+    update_frequency: "每日 19:00 ET cron"
     consumers: [optimization-cycle.sh]
     status: active
     data_quality_notes: |
@@ -286,7 +286,7 @@ datasets:
       type: markdown
       location: gcp:~/mason-hub/intel/optimization-reports/YYYY-MM-DD.md
       backup: Google Drive "优化报告" 文件夹
-    update_frequency: "每周三 14:00 CST"
+    update_frequency: "每周三 10:00 ET"
     consumers: [Mason (Gate 3)]
     status: active
 
@@ -298,7 +298,7 @@ datasets:
     storage:
       type: slack_message
       location: "#system-alerts"
-    update_frequency: "每日 23:00 CST"
+    update_frequency: "每日 19:00 ET"
     consumers: [Mason, EMP_0004]
     status: active
 

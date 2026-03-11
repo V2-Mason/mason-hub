@@ -23,7 +23,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 # 加载 .env
 env_file = HUB_DIR / ".env"
@@ -82,10 +82,10 @@ def cmd_heartbeat():
 
 def cmd_ask(question: str):
     """交互式提问 — agentic loop"""
-    now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+    now_et = datetime.now(ET).strftime("%Y-%m-%d %H:%M ET")
     memories = gw.load_recent_memories()
 
-    system_prompt = f"""你是 Mason Hub 的 AI 助手，通过 terminal 与 Mason 交互。当前时间: {now_cst}
+    system_prompt = f"""你是 Mason Hub 的 AI 助手，通过 terminal 与 Mason 交互。当前时间: {now_et}
 
 你有工具可以读取文件、执行命令、写入状态文件、发 Slack 通知。
 Mason 在 terminal 直接跟你对话，简洁回答。
