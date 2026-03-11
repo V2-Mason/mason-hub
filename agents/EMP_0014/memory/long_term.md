@@ -192,3 +192,21 @@
 ### Gap: 📚 纯知识
 - srx-snapshot.py 需注册 cron（每日 20:00 ET，与 data-coo-daily.sh 同步）— EMP_0004 负责
 - data-coo-daily.sh 也有同样的 `data` 键解包问题，revenue 和 orders 一直报 N/A — 不在 EMP_0014 职责但值得通知 EMP_0002
+
+## Lesson: 数据健康检查自主修复 (2026-03-11)
+
+### 做了什么
+- 运行 data_health_check.sh 发现 14/17 健康，1 黄 2 红
+- 修复 clean_xhs_notes ❌：SCP xhs-clean.py 到阿里云执行，产出 1226 条清洗数据（953KB），同步到 GCP mirror
+- 修复 report_optimization ❌：health check 脚本对 YYYY-MM-DD 模式的周报只查今天/昨天文件，周报 2 天前（3/9）自然不在。改为 fallback 查目录最近文件
+- 同一 bug 在 sqlite+json/markdown 两个 GCP 分支都存在，已同时修复
+- 修复后 16/17 健康，1 黄（raw_scout_intel 3 天未更新，EMP_0006 职责）
+
+### 发现
+- clean_xhs_notes 虽然代码就绪（xhs-analyze.sh Step 0），但还从未被实际触发过——catalog status=active 但无产出
+- data-sync.sh 的 mirror 目录未同步 clean/ 子目录，手动 scp 后补
+- health check 的 YYYY-MM-DD fallback bug 影响所有低频（>每日）数据集，之前只有 report_optimization 一个周报暴露了问题
+
+### Gap
+- 🔧 配置错误 → 已修（health check YYYY-MM-DD fallback + clean_xhs_notes 首次运行）
+- 🏗️ 系统能力缺失 → data-sync.sh 应同步 clean/ 子目录到 mirror，目前只同步 analysis/ 和 briefings/

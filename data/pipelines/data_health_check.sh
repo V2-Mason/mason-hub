@@ -166,7 +166,15 @@ while IFS=$'\t' read -r ds_id stype location table freq endpoint; do
           elif [ -f "$yesterday_path" ]; then
             filepath="$yesterday_path"
           else
-            filepath="$today_path"  # will fail check below
+            # Fallback: 查找目录中最近的匹配文件
+            parent_dir=$(dirname "$today_path")
+            ext=$(echo "$today_path" | sed 's/.*\.//')
+            if [ -d "$parent_dir" ]; then
+              filepath=$(find "$parent_dir" -maxdepth 1 -name "*.${ext}" -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
+              [ -z "$filepath" ] && filepath="$today_path"
+            else
+              filepath="$today_path"
+            fi
           fi
         else
           filepath="$expanded_path"
@@ -262,7 +270,15 @@ while IFS=$'\t' read -r ds_id stype location table freq endpoint; do
           elif [ -f "$yesterday_path" ]; then
             filepath="$yesterday_path"
           else
-            filepath="$today_path"
+            # Fallback: 查找目录中最近的匹配文件（修复周报等低频数据集误报）
+            parent_dir=$(dirname "$today_path")
+            ext=$(echo "$today_path" | sed 's/.*\.//')
+            if [ -d "$parent_dir" ]; then
+              filepath=$(find "$parent_dir" -maxdepth 1 -name "*.${ext}" -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
+              [ -z "$filepath" ] && filepath="$today_path"
+            else
+              filepath="$today_path"
+            fi
           fi
         elif echo "$expanded_path" | grep -q '\*'; then
           # Glob pattern (e.g., *.md) — find most recent file
