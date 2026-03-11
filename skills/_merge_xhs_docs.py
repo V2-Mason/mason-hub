@@ -78,7 +78,7 @@ def build_document():
     lines = []
 
     # Header
-    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M CST')
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M ET')
     lines.append('# 小红书开放平台 — 完整规则文档')
     lines.append('')
     lines.append(f'> 合并生成时间: {now}')

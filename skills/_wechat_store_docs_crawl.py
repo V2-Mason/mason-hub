@@ -27,7 +27,7 @@ BASE_DIR = Path("intel/raw/wechat-store-docs")
 INDEX_FILE = BASE_DIR / "index.json"
 HASH_FILE = BASE_DIR / ".content_hashes.json"
 URLS_FILE = BASE_DIR / "discovered_urls.json"
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 _STEALTH_ARGS = [
     "--disable-blink-features=AutomationControlled",
@@ -208,7 +208,7 @@ async def crawl_with_playwright(links: list, out_base: str, source_label: str, l
                 safe_title = sanitize_filename(title)
                 file_path = out_dir / f"{safe_title}.md"
 
-                now = datetime.now(CST).isoformat()
+                now = datetime.now(ET).isoformat()
                 md = f"""---
 title: "{title}"
 source_url: "{url}"
@@ -247,7 +247,7 @@ crawl_date: "{now}"
         await browser.close()
 
     # Save
-    now = datetime.now(CST).isoformat()
+    now = datetime.now(ET).isoformat()
     index[f"crawl_end_{source_label}"] = now
     index["stats"] = {
         "ok": len([p for p in index["pages"] if p.get("status") == "ok"]),
@@ -274,7 +274,7 @@ async def run(source: str = "all", limit: int = 0):
     if not INDEX_FILE.exists():
         save_json(INDEX_FILE, {
             "platform": "微信小店",
-            "crawl_start": datetime.now(CST).isoformat(),
+            "crawl_start": datetime.now(ET).isoformat(),
             "pages": [],
         })
 

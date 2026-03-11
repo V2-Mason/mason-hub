@@ -89,7 +89,7 @@ echo ""
 
 # --- Send to Slack ---
 if [ -n "$SLACK_CHANNEL" ] && [ -x "$SLACK_NOTIFY" ]; then
-  SLACK_MSG="💄 *营销引擎 每日客户数据* ($(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M'))
+  SLACK_MSG="💄 *营销引擎 每日客户数据* ($(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET'))
 ${SEGMENT_RESULT}"
 
   "$SLACK_NOTIFY" "$SLACK_CHANNEL" "$SLACK_MSG" "Marketing Engine" ":lipstick:" 2>/dev/null || true

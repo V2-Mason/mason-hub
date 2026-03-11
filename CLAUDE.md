@@ -14,7 +14,7 @@
 ## Token 消耗记录规范
 - 每次 Claude API 调用必须经过 api_logger.log_api_call() 记录
 - 日志路径：~/mason-hub/logs/api_usage.jsonl
-- 每日 11pm CST 自动生成消耗报告到 #system-alerts
+- 每日 01:00 ET (05:00 UTC) 自动生成消耗报告到 #system-alerts
 - 新增 API 调用点时，必须同步添加 logging
 - 子进程 agent 调用（via run-agent.sh）通过 --output-format json 获取精确 token 数据
 
@@ -233,14 +233,14 @@ backlog 路径: ~/mason-hub/tasks/backlog.md
 
 ## Cron 触发器（GCP 已部署）
 
-| 时间 (CST) | Agent | 任务 |
+| 时间 (ET) | Agent | 任务 |
 |------------|-------|------|
-| 每日 08:00 | PM (EMP_0001) | 库存巡检 |
-| 每日 09:00 | SRE (EMP_0004) | 基础设施日报 |
-| 每日 09:15 | cron 脚本 | 数据健康检查 → Slack |
-| 每日 09:30 | cron 脚本 | agent-status-report → Slack |
-| 每周二/五 14:00 | SocialMesh PM (EMP_0008) | XHS 数据采集+分析 |
-| 每周一 10:00 | PM (EMP_0001) | 记忆压缩 |
-| 每周三 14:00 | cron 脚本 | 自优化周期（读数据→Gate 1→分析→Gate 2→Slack） |
-| 每周日 11:00 | cron 脚本 | compact-memory.sh 全量 |
-| 每月 1 日 10:00 | cron 提醒 | XHS 帮助中心文档刷新提醒 → Slack（手动触发） |
+| 每日 20:00 | PM (EMP_0001) | 库存巡检 |
+| 每日 21:00 | SRE (EMP_0004) | 基础设施日报 |
+| 每日 21:15 | cron 脚本 | 数据健康检查 → Slack |
+| 每日 21:30 | cron 脚本 | agent-status-report → Slack |
+| 每周二/五 10:00 | SocialMesh PM (EMP_0008) | XHS 数据采集+分析 |
+| 每周一 22:00 | PM (EMP_0001) | 记忆压缩 |
+| 每周三 02:00 | cron 脚本 | 自优化周期（读数据→Gate 1→分析→Gate 2→Slack） |
+| 每周日 23:00 | cron 脚本 | compact-memory.sh 全量 |
+| 每月 1 日 22:00 | cron 提醒 | XHS 帮助中心文档刷新提醒 → Slack（手动触发） |

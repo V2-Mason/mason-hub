@@ -18,7 +18,7 @@ import json
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 PLATFORMS = {
     "xhs": {
@@ -94,7 +94,7 @@ def diff_platform(platform_key: str) -> dict:
     report = {
         "platform": config["name"],
         "platform_key": platform_key,
-        "timestamp": datetime.now(CST).isoformat(),
+        "timestamp": datetime.now(ET).isoformat(),
         "summary": {
             "total_docs": len(current_hashes),
             "new": len(new_files),

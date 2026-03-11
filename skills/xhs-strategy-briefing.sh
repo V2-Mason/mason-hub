@@ -14,7 +14,7 @@ ALIYUN="root@106.14.44.68"
 MC_DIR="/opt/mediacrawler"
 ANALYSIS_DIR="$MC_DIR/analysis"
 SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh
-TODAY=$(TZ=Asia/Shanghai date '+%Y-%m-%d')
+TODAY=$(TZ='America/New_York' date '+%Y-%m-%d')
 
 NO_SLACK=false
 while [[ $# -gt 0 ]]; do
@@ -25,7 +25,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "=== XHS 市场信号（单独模式） ==="
-echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+echo "Time: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 
 log_event "xhs-strategy" "market-signals" "start" "Generating market signals (standalone)"
 

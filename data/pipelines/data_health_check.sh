@@ -13,7 +13,7 @@ SSH_TIMEOUT=5
 SEND_SLACK=false
 EMIT_EVENT=true
 NOW_EPOCH=$(date +%s)
-TIMESTAMP=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')
+TIMESTAMP=$(TZ='America/New_York' date '+%Y-%m-%d %H:%M')
 
 # 加载凭证（用于 API 端点认证检查）
 if [ -f "/home/hangn/mason-hub/.env" ]; then

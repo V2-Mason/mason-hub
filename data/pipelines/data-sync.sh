@@ -28,7 +28,7 @@ REMOTE_DB="/opt/mediacrawler/database/sqlite_tables.db"
 REMOTE_ANALYSIS_DIR="/opt/mediacrawler/analysis"
 REMOTE_BRIEFINGS_DIR="/opt/mediacrawler/analysis/briefings"
 
-TIMESTAMP=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S CST')
+TIMESTAMP=$(TZ='America/New_York' date '+%Y-%m-%d %H:%M:%S ET')
 
 # Parse args
 for arg in "$@"; do

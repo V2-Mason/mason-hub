@@ -241,8 +241,8 @@ async def main():
             write_status("QR_READY")
 
             from datetime import datetime, timezone, timedelta
-            cst = timezone(timedelta(hours=8))
-            ts_str = datetime.now(cst).strftime("%H:%M:%S CST")
+            et = timezone(timedelta(hours=-4))
+            ts_str = datetime.now(et).strftime("%H:%M:%S ET")
             slack_upload(QR_FILE, f"🍪 *XHS Cookie 刷新* [{ts_str}] — 请用小红书 APP 扫描此二维码登录")
             print(f"QR sent to Slack ({time.time()-qr_time:.1f}s after screenshot)")
 
@@ -292,7 +292,7 @@ async def main():
                     print(f"Security Verification detected at {elapsed}s!")
                     await page.screenshot(path=QR_FILE, full_page=False)
                     write_status("SECURITY_QR")
-                    ts_now = datetime.now(cst).strftime("%H:%M:%S CST")
+                    ts_now = datetime.now(et).strftime("%H:%M:%S ET")
                     slack_upload(
                         QR_FILE,
                         f"🔐 *安全验证* [{ts_now}] — 请用已登录的小红书 APP 扫描此二维码完成验证"
@@ -304,7 +304,7 @@ async def main():
                     print(f"SMS Verification detected at {elapsed}s!")
                     await page.screenshot(path=QR_FILE, full_page=False)
                     write_status("NEED_CODE")
-                    ts_now = datetime.now(cst).strftime("%H:%M:%S CST")
+                    ts_now = datetime.now(et).strftime("%H:%M:%S ET")
                     slack_upload(QR_FILE, f"🔢 *SMS 验证* [{ts_now}] — 验证码已发送，等待输入。如需重发请告知。")
                     sms_detected = True
 
@@ -371,7 +371,7 @@ async def main():
                         captcha = page.locator("[class*='captcha'], [class*='slider']")
                         if await captcha.count() > 0:
                             print("CAPTCHA slider detected! Sending screenshot to Slack...")
-                            ts_now = datetime.now(cst).strftime("%H:%M:%S CST")
+                            ts_now = datetime.now(et).strftime("%H:%M:%S ET")
                             slack_upload(
                                 QR_FILE,
                                 f"⚠️ *滑动验证码* [{ts_now}] — 检测到 CAPTCHA，脚本无法自动处理。"

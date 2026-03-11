@@ -24,7 +24,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "=== XHS Cookie Refresh (QR Code) ==="
-echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+echo "Time: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 echo "Timeout: ${TIMEOUT}s"
 echo ""
 

@@ -146,7 +146,7 @@ if [ -n "$SLACK_CHANNEL" ] && [ -x "$SLACK_NOTIFY" ]; then
     EMOJI=":warning:"
   fi
 
-  SLACK_MSG="📊 *数据COO 每日巡检* ($(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M'))
+  SLACK_MSG="📊 *数据COO 每日巡检* ($(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET'))
 $(echo -e "$REPORT")"
 
   "$SLACK_NOTIFY" "$SLACK_CHANNEL" "$SLACK_MSG" "Data COO" "$EMOJI" 2>/dev/null || true

@@ -13,7 +13,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 BASE_DIR = Path("intel/raw/xhs-helper-docs")
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 
 def sanitize_filename(title):
@@ -219,7 +219,7 @@ async def main():
     for res in results:
         safe_title = sanitize_filename(res["title"])
         out_path = BASE_DIR / f"{safe_title}.md"
-        now = datetime.now(CST).isoformat()
+        now = datetime.now(ET).isoformat()
 
         md = f"""---
 title: "{res['title']}"
@@ -236,7 +236,7 @@ source: "dom"
     # Save index
     index = {
         "url": url,
-        "crawl_date": datetime.now(CST).isoformat(),
+        "crawl_date": datetime.now(ET).isoformat(),
         "articles": [
             {"title": r["title"], "url": r["url"], "size": len(r["content"])}
             for r in results

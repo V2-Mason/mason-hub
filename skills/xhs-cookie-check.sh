@@ -25,7 +25,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo "=== XHS Cookie Check ==="
-echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+echo "Time: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 
 # SCP check script to Aliyun (避免 SSH heredoc 转义问题)
 cat > /tmp/_xhs_cookie_check.py << 'PYEOF'

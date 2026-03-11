@@ -8,7 +8,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 BASE_DIR = Path("intel/raw/xhs-helper-docs")
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 NOISE = {
     "首页", "买手专区", "课程中心", "规则中心", "专题直播", "认证讲师",
@@ -205,7 +205,7 @@ async def main():
 
     parts = [
         "# 小红书电商帮助中心 — 完整文档\n",
-        f"> 爬取时间: {datetime.now(CST).isoformat()}",
+        f"> 爬取时间: {datetime.now(ET).isoformat()}",
         f"> 共 {len(results)} 篇帮助文档\n",
         "---\n",
         "## 目录\n",
@@ -233,7 +233,7 @@ async def main():
 
     # Save index
     index = {
-        "crawl_date": datetime.now(CST).isoformat(),
+        "crawl_date": datetime.now(ET).isoformat(),
         "total_articles": len(results),
         "categories": {
             group: [{"title": a["title"], "url": a["href"]}

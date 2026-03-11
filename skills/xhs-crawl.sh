@@ -101,7 +101,7 @@ fi
 KEYWORDS=$(echo "$ALL_KEYWORDS" | tr ',' '\n' | shuf | head -"$KW_PER_RUN" | paste -sd, -)
 
 echo "=== XHS Crawl: Task $TASK — $TASK_NAME ==="
-echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+echo "Time: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 echo "Account: $ACCOUNT"
 echo "Keywords (this run): $KEYWORDS"
 echo "Full pool: $ALL_KEYWORDS"
@@ -198,7 +198,7 @@ MSG="📥 *XHS 采集完成*: Task $TASK ($TASK_NAME)
 • 新增: $NEW_COUNT 条（${DETAIL_OK} 条含完整内容）
 • 数据库: $AFTER_COUNT 条
 • 模式: ${PAGES} 页/词 + Top ${TOP_N} 深挖
-• 时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+• 时间: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 
 notify_slack "$SLACK_CHANNEL" "$MSG" "XHS Crawler" ":inbox_tray:"
 echo ""

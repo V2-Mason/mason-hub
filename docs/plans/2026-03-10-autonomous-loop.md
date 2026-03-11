@@ -122,7 +122,7 @@ Agent 做完后写汇报到 /data/reports/，Manager 聚合后在 morning briefi
 Gate 1: 权限 — 任务在 MASON_AUTHORITY 当前 Layer 的"直接做"或"做完通知"层级
 Gate 2: 状态 — SYSTEM_MAP 中该任务所在能力线状态是 active（不是 blocked/waiting）
 Gate 3: 依赖 — 任务的上游依赖健康（data_health_check 对应数据集无 ❌）
-Gate 4: 时间 — 当前不在静默时段（CST 22:00-08:00 不启动新任务）
+Gate 4: 时间 — 已改为 24h 运行（任务去重+lane lock 兜底）
 ```
 
 四道门全过 → 可以自主执行

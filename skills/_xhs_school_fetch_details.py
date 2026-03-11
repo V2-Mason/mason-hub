@@ -10,7 +10,7 @@ from playwright.async_api import async_playwright
 BASE_DIR = Path("intel/raw/xhs-school-docs")
 INDEX_FILE = BASE_DIR / "index.json"
 ARTICLE_LIST = BASE_DIR / "_article_list.json"
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 CAT_NAMES = {
     134: "规则公告/意见征集", 16: "规则公告/规则汇编", 17: "规则公告/规则修订",
@@ -197,7 +197,7 @@ async def extract_from_dom(page, expected_title=""):
 
 async def main():
     BASE_DIR.mkdir(parents=True, exist_ok=True)
-    now = datetime.now(CST).isoformat()
+    now = datetime.now(ET).isoformat()
 
     articles = json.loads(ARTICLE_LIST.read_text())
     print(f"Loaded {len(articles)} articles")
@@ -302,7 +302,7 @@ article_id: {aid}
 category: "{cat_name}"
 online_time: "{res.get('online_time', '')}"
 first_online_time: "{res.get('first_online', '')}"
-crawl_date: "{datetime.now(CST).isoformat()}"
+crawl_date: "{datetime.now(ET).isoformat()}"
 source: "{res['source']}"
 ---
 
@@ -314,11 +314,11 @@ source: "{res['source']}"
             "status": "ok", "title": res["title"], "article_id": aid,
             "category": cat_name, "path": str(out_path),
             "size": len(res["content_md"]), "online_time": res.get("online_time", ""),
-            "source": res["source"], "crawl_date": datetime.now(CST).isoformat(),
+            "source": res["source"], "crawl_date": datetime.now(ET).isoformat(),
         })
         stats["ok"] += 1
 
-    index["crawl_end"] = datetime.now(CST).isoformat()
+    index["crawl_end"] = datetime.now(ET).isoformat()
     index["stats"] = stats
     INDEX_FILE.write_text(json.dumps(index, ensure_ascii=False, indent=2))
 

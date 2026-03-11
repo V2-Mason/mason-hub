@@ -56,7 +56,7 @@ try:
 except ImportError:
     _HAS_REQUESTS = False
 
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 CHROME_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -575,7 +575,7 @@ def format_output(content: str, title: str, url: str, mode: str,
                   html_chars: int, max_chars: int,
                   as_json: bool = False) -> str:
     """Format extracted content with metadata header."""
-    now = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+    now = datetime.now(ET).strftime("%Y-%m-%d %H:%M ET")
     char_count = len(content)
 
     # Smart truncation at paragraph boundary

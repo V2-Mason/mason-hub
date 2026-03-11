@@ -37,7 +37,7 @@ _STEALTH_ARGS = [
     "--no-default-browser-check",
 ]
 
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 
 # Category mapping based on sidebar navigation labels
 CATEGORY_MAP = {
@@ -151,7 +151,7 @@ async def crawl_developer_docs(max_id: int = 400, incremental: bool = False, del
     hashes = load_hashes()
     existing_file_ids = {str(p.get("file_id")) for p in index["pages"] if p.get("source") != "apifox"}
 
-    now = datetime.now(CST).isoformat()
+    now = datetime.now(ET).isoformat()
     stats = {"ok": 0, "empty": 0, "error": 0, "skipped": 0, "updated": 0}
 
     print(f"Starting crawl at {now}")
@@ -227,7 +227,7 @@ source_url: "{url}"
 file_id: "{file_id}"
 category: "{category}"
 doc_type: "{doc_type}"
-crawl_date: "{datetime.now(CST).isoformat()}"
+crawl_date: "{datetime.now(ET).isoformat()}"
 ---
 
 {body}
@@ -242,7 +242,7 @@ crawl_date: "{datetime.now(CST).isoformat()}"
                         entry["title"] = title
                         entry["path"] = str(out_path)
                         entry["size"] = len(body)
-                        entry["crawl_date"] = datetime.now(CST).isoformat()
+                        entry["crawl_date"] = datetime.now(ET).isoformat()
                         found = True
                         break
                 if not found:
@@ -254,7 +254,7 @@ crawl_date: "{datetime.now(CST).isoformat()}"
                         "doc_type": doc_type,
                         "path": str(out_path),
                         "size": len(body),
-                        "crawl_date": datetime.now(CST).isoformat(),
+                        "crawl_date": datetime.now(ET).isoformat(),
                     })
 
                 hashes[str(file_id)] = new_hash
@@ -269,7 +269,7 @@ crawl_date: "{datetime.now(CST).isoformat()}"
         await browser.close()
 
     # Save results
-    index["crawl_end"] = datetime.now(CST).isoformat()
+    index["crawl_end"] = datetime.now(ET).isoformat()
     save_index(index)
     save_hashes(hashes)
 

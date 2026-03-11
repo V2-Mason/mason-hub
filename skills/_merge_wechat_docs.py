@@ -128,7 +128,7 @@ def list_md_files(dirpath, ordered_names=None):
 
 def build_document():
     lines = []
-    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M CST')
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M ET')
 
     lines.append('# 微信小店 — 完整规则文档')
     lines.append('')

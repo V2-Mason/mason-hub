@@ -21,7 +21,7 @@ source "$HUB_DIR/shared/common.sh"
 ALIYUN="root@106.14.44.68"
 MC_DIR="/opt/mediacrawler"
 SLACK_CHANNEL="C0AHTA97EAY"  # #socialmesh (default)
-TODAY=$(TZ=Asia/Shanghai date '+%Y-%m-%d')
+TODAY=$(TZ='America/New_York' date '+%Y-%m-%d')
 
 NO_SLACK=false
 NO_ENRICH=false
@@ -92,7 +92,7 @@ print(p.get('slack_channel', ''))
 fi
 
 echo "=== XHS 市场信号管道 ==="
-echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M CST')"
+echo "Time: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 if [ -n "$PROJECT" ]; then
   echo "Project: $PROJECT ($PROJECT_NAME)"
   echo "Keywords: $KEYWORDS_CSV"

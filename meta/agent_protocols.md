@@ -141,8 +141,8 @@
 
 | 触发器 | 频率 | 负责 Agent | 动作 |
 |--------|------|-----------|------|
-| 库存巡检 | 每日 08:00 CST | PM (EMP_0001) | 扫描临期（30天内）、低库存（<5）、滞销（30天无销售）SKU，生成 alert |
-| 日报生成 | 每日 09:00 CST | SRE (EMP_0004) | 基础设施日报 → #system-alerts |
+| 库存巡检 | 每日 20:00 ET | PM (EMP_0001) | 扫描临期（30天内）、低库存（<5）、滞销（30天无销售）SKU，生成 alert |
+| 日报生成 | 每日 21:00 ET | SRE (EMP_0004) | 基础设施日报 → #system-alerts |
 | 健康检查 | 每 30 分钟 | SRE (EMP_0004) | 服务存活 + 日志异常检查 |
 | 记忆压缩 | 每周一 | PM (EMP_0001) | 从 completed_tasks 提取经验 → long_term.md |
 | 阶段提炼 | Phase 结束时 | Domain Manager (EMP_0003) | 提炼 domain 级经验 → knowledge_base.md |

@@ -12,7 +12,7 @@ export PATH="/home/hangn/.local/bin:$PATH"
 #
 # 用法：
 #   ./optimization-cycle.sh              # 手动运行
-#   cron: 0 6 * * 3  (周三 14:00 CST = 06:00 UTC)
+#   cron: 0 6 * * 3  (周三 02:00 ET = 06:00 UTC)
 # =============================================================================
 
 set -euo pipefail
@@ -440,7 +440,7 @@ $(echo -e "${DATA_ISSUES:-无}")
 $SUGGESTIONS
 
 ---
-*自动生成于 $(date '+%Y-%m-%d %H:%M CST')，等待 Mason Gate 3 确认*
+*自动生成于 $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')，等待 Mason Gate 3 确认*
 REPORT_EOF
 
 log "  报告已保存: $REPORT_FILE"

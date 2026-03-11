@@ -13,7 +13,7 @@ from pathlib import Path
 
 from playwright.async_api import async_playwright
 
-CST = timezone(timedelta(hours=8))
+ET = timezone(timedelta(hours=-4))  # Mason 标准时区：美东
 BASE_DIR = Path("intel/raw/wechat-store-docs")
 
 _STEALTH_ARGS = [
@@ -127,7 +127,7 @@ async def discover_dev_docs():
 
     # Save results
     result = {
-        "discover_date": datetime.now(CST).isoformat(),
+        "discover_date": datetime.now(ET).isoformat(),
         "dev_docs": {
             "count": len(all_links),
             "links": [{"url": url, "title": title} for url, title in sorted(all_links.items())]
