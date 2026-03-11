@@ -57,6 +57,7 @@ LOG_FILE = HUB_DIR / "logs" / "gateway.log"
 LOCK_FILE = HUB_DIR / "data" / "gateway.lock"
 QUEUE_FILE = HUB_DIR / "data" / "events" / "queue.jsonl"
 MASONHUB_FILE = HUB_DIR / "MASONHUB.md"
+KNOWN_STATES_FILE = HUB_DIR / "data" / "gateway-known-states.yaml"
 MEMORY_FILE = HUB_DIR / "data" / "gateway-memory.jsonl"
 
 HEARTBEAT_INTERVAL = 3600
@@ -590,6 +591,33 @@ def _tool_save_memory(input_data: dict) -> str:
 # P1: Agentic Loop
 # ========================================
 
+def load_known_states() -> str:
+    """加载 Mason 已确认的已知状态，过滤过期条目，返回纯文本供 prompt 注入"""
+    if not KNOWN_STATES_FILE.exists():
+        return ""
+
+    try:
+        import yaml
+        states = yaml.safe_load(KNOWN_STATES_FILE.read_text())
+        if not states:
+            return ""
+
+        today = datetime.now(CST).strftime("%Y-%m-%d")
+        active = []
+        for s in states:
+            expires = str(s.get("expires", "2099-12-31"))
+            if expires >= today:
+                active.append(f"- [{s.get('date')}] {s.get('decision')} → {s.get('impact')}")
+
+        if not active:
+            return ""
+
+        return "Mason 已确认的已知状态（遇到这些情况直接跳过，不告警）:\n" + "\n".join(active)
+    except Exception as e:
+        log(f"[KnownStates] 加载失败: {e}")
+        return ""
+
+
 def load_recent_memories(n: int = 5) -> str:
     """加载 Gateway 记忆：先未完结条目（去重），再最近 N 条已完结条目"""
     if not MEMORY_FILE.exists():
@@ -785,6 +813,7 @@ def run_heartbeat():
 
     now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
     memories = load_recent_memories()
+    known_states = load_known_states()
 
     system_prompt = f"""你是 Mason Hub 的值班工程师。当前时间: {now_cst}
 
@@ -819,18 +848,21 @@ def run_heartbeat():
    - 未修复 且 attempts<3 → 运行 python3 scripts/submit-repair.py update <id> --status pending（触发再次修复）
    - 未修复 且 attempts>=3 → 运行 python3 scripts/submit-repair.py update <id> --status pending_mason
 3. 读 MASONHUB.md 了解完整行为空间和巡逻清单
-4. 逐项执行检查，发现问题时走决策树（自主修/排队/等审批/不碰）
-5. ≤3 轮 tool use 能修好的 → 立即修，save_memory status=resolved
-6. 修不完的 → 提交修复请求: python3 scripts/submit-repair.py submit --issue "描述" --symptom "症状" --location "文件:行号" --severity medium
+4. 特别注意 MASONHUB.md 的 "### Mason 已确认" 区块 — 这些是 Mason 明确确认的已知状态，遇到时直接跳过，不升级不重复告警
+5. 逐项执行检查，发现问题时走决策树（自主修/排队/等审批/不碰）
+6. ≤3 轮 tool use 能修好的 → 立即修，save_memory status=resolved
+7. 修不完的 → 提交修复请求: python3 scripts/submit-repair.py submit --issue "描述" --symptom "症状" --location "文件:行号" --severity medium
    然后 save_memory status=emitted，继续巡逻
-7. 需要 Mason 的 → save_memory status=pending_mason + send_slack
-8. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报
-9. 如果本次 heartbeat 发现了新的可复用经验（不是一次性修复，而是"下次遇到类似情况也该这么做"的规律），用 patch_file 追加到 MASONHUB.md 的 "## Learned Skills" section。格式：`- **skill_NNN: 标题** — 规则。[来源: 日期]`。编号递增，不要重复已有 skill。"""
+8. 需要 Mason 的 → save_memory status=pending_mason + send_slack
+9. 如果一切正常，直接回复"✅ 系统正常"即可，不需要逐项汇报
+10. 如果本次 heartbeat 发现了新的可复用经验（不是一次性修复，而是"下次遇到类似情况也该这么做"的规律），用 patch_file 追加到 MASONHUB.md 的 "## Learned Skills" section。格式：`- **skill_NNN: 标题** — 规则。[来源: 日期]`。编号递增，不要重复已有 skill。"""
+
+    known_states_block = f"\n\n{known_states}" if known_states else ""
 
     user_prompt = f"""执行 heartbeat 检查。
 
 上次检查的记忆:
-{memories}
+{memories}{known_states_block}
 
 请开始：先读 MASONHUB.md 了解检查清单，然后逐项检查。"""
 

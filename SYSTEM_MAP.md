@@ -1,6 +1,6 @@
 # System Map — 受力分析
 
-> 最后更新: 2026-03-11 04:57 CST (standup)
+> 最后更新: 2026-03-11 14:13 CST (standup)
 > 更新权: Agent 自动更新可推断字段，耦合关系变更需 Mason 确认
 > 所有 Agent session 启动时读取此文件 + MASON_AUTHORITY.md
 

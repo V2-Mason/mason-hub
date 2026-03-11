@@ -62,4 +62,11 @@
 - Cookie 过期检测改为按账号检测（xhs-cookie-check.sh --account A）
 - **监控要点**：Slack 通知会指明哪个账号过期，不再是笼统的"cookie 过期"
 
+### 阿里云隧道 keepalive IP 错误 (2026-03-11)
+- **问题**：阿里云侧 `/opt/surenxuan/scripts/tunnel-keepalive.sh` 硬编码了旧 GCP IP `34.68.172.191`（正确是 `34.63.188.198`），导致每 5 分钟误判"隧道断了"并 restart reverse-tunnel，600+ 次无故重启
+- **症状**：GCP 侧 keepalive 日志显示每 ~50 分钟断连一次，但实际上 SSH 直连和反向隧道都通
+- **修复**：`sed -i 's/34.68.172.191/34.63.188.198/g'` 一行命令
+- **教训**：部署保活脚本时，IP 不要硬编码，应该用 SSH config 别名或环境变量
+- **gap 类型**：🔧 配置错误 → 已修复
+
 ## 监控与告警教训

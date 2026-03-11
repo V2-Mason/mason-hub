@@ -94,4 +94,11 @@
 - 并行升级 (2026-03-11)：dispatcher.sh 从串行改为按 lane 并行。`--batch` 模式按 lane 去重，每 lane 取优先级最高的 1 个。dispatcher 检查 lane-lock 空闲状态后同时派发。repair 任务仍独占（不和常规并行）
 - lane-lock.sh 补齐映射：EMP_0014→platform, EMP_0015→ecommerce
 
+### Gateway 决策广播机制 (2026-03-11)
+- **问题**：Gateway（mason-gateway.py）和 Mason 的 Claude Code session 是两个独立循环，Mason 做的决策（如"XHS 小号先不配"）不会自动传播到 Gateway，导致 Gateway 反复对已知状态误报告警
+- **方案**：`data/gateway-known-states.yaml` 结构化注册表 + `/commit` skill 步骤 5 强制检查 + Gateway heartbeat 自动加载（`load_known_states()`）
+- **设计原则**：零 token 成本（纯文件 I/O）、expires 字段自动失效、/commit 流程强制而非靠记忆
+- **参考**：OpenClaw Gateway 架构 — 所有通道汇聚单一 Gateway 天然无信息孤岛；mason-hub 有双入口（session + daemon），需要显式同步机制
+- **gap 类型**：🏗️ 系统能力缺失 → 已修复
+
 ## 踩坑记录

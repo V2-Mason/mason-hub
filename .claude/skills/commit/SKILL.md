@@ -46,9 +46,28 @@
 - 控制在 5-15 行
 - **禁止跳过**：即使是"纯讨论/规划"，只要产出了决策或方法论，就必须有归属
 
-## 5. 执行 Git Commit
+## 5. Gateway 决策广播检查
 
-- `git add` 所有相关文件（包括步骤 2-3 更新的记忆和 backlog）
+检查本次 session 中 Mason 是否做了影响 Gateway 行为的决策：
+
+**触发关键词**："不用管"、"暂时不做"、"先不管"、"这是预期的"、"确认了"、"是正常的"、"已知问题"
+
+如果有 → 追加条目到 `data/gateway-known-states.yaml`，格式：
+```yaml
+- id: kebab-case-unique-id
+  date: YYYY-MM-DD
+  decision: Mason 说了什么
+  impact: Gateway 遇到什么情况应该跳过
+  expires: YYYY-MM-DD  # 默认 +14 天，重要决策可以更长
+```
+
+如果没有 → 跳过
+
+**注意**：只写"影响 Gateway 告警行为"的决策。战略讨论、产品定义、架构方向等留在 MEMORY.md，不写这里。
+
+## 6. 执行 Git Commit
+
+- `git add` 所有相关文件（包括步骤 2-4 更新的记忆、backlog、gateway-known-states.yaml）
 - **不要 add** 敏感文件（.env、credentials）、大型二进制文件（.db）、日志文件（logs/）
 - 写 commit message：
   - 一句话总结主要变更
@@ -56,13 +75,14 @@
   - 结尾加 `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>`
 - 运行 `git status` 确认提交成功
 
-## 6. 汇报
+## 7. 汇报
 
 简洁输出：
 ```
 ✅ Commit: <hash> <message 前 50 字>
 📝 Backlog: 更新了 X 项 / 无需更新
 🧠 记忆: 更新了 MEMORY.md + EMP_XXXX / 无需更新
+📡 Gateway: 广播了 X 条决策 / 无需广播
 ```
 
 ## 注意事项

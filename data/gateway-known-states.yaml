@@ -1,0 +1,29 @@
+# Gateway 已知状态注册表
+#
+# Mason 确认的系统状态，Gateway heartbeat 遇到匹配项时跳过，不升级告警。
+# 由 Session Operator 在 /commit 时维护，expires 到期自动失效。
+#
+# 格式:
+#   - id: 唯一标识（kebab-case）
+#     date: 确认日期
+#     decision: Mason 说了什么
+#     impact: 对 Gateway 行为的影响（遇到什么情况跳过）
+#     expires: 过期日期（超过此日期视为失效，Gateway 恢复正常告警）
+
+- id: xhs-single-account
+  date: 2026-03-11
+  decision: XHS 采集只用主号，小号 cookie 暂不配置
+  impact: analysis_xhs_trends / comments / briefing 缺失是预期状态，不告警
+  expires: 2026-03-25
+
+- id: health-check-baseline
+  date: 2026-03-11
+  decision: data_health_check 10/15 是正常基线
+  impact: 健康检查非全绿时，只要 ≥10/15 就不升级告警
+  expires: 2026-03-25
+
+- id: xhs-analysis-standard
+  date: 2026-03-11
+  decision: XHS 分析标准已配置（四维框架+五方法论），等数据充足后启动
+  impact: 分析管道未运行是预期状态，不告警
+  expires: 2026-03-25

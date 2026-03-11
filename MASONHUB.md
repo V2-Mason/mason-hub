@@ -134,15 +134,23 @@ status: "suggestion"。Mason 会看到。
 
 ## 当前系统关键状态
 
-> 此区块由 heartbeat 自动维护，反映最近一次检查结果
+> 能力线状态由 heartbeat 自动维护。Mason 决策由 Session Operator 维护。
+> **Gateway 读到 "Mason 已确认" 的条目时，不要升级告警，视为已知预期状态。**
 
+### 能力线
 ```
 自治线: active — 验证期（3/13 检查），Gateway 已稳定运行 12h+
-数据线: blocked — 10/15 健康，剩余 4 异常全是 XHS 下游（等小号 cookie）
+数据线: active — 10/15 健康，剩余 5 项为已知预期缺失（见下方）
 内容线: waiting — 被数据线阻塞
 商业线: waiting — 全外部依赖
 审计线: waiting — 等自治线稳定
 ```
+
+### Mason 已确认（不需要告警）
+
+> 数据源: `data/gateway-known-states.yaml`（结构化 YAML，带 expires 自动失效）
+> Gateway heartbeat 启动时自动加载此文件，过期条目自动忽略。
+> Session Operator 通过 /commit 流程维护，不需要手动编辑此处。
 
 ## 环境信息
 
