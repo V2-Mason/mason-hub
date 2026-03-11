@@ -34,7 +34,7 @@ log() {
 # === 安全门 1: 时间窗口 ===
 check_time_window() {
     local cst_hour
-    cst_hour=$(TZ=Asia/Shanghai date +%H)
+    cst_hour=$(TZ=Asia/Shanghai date +%-H)
     if (( cst_hour >= 8 && cst_hour < 22 )); then
         return 0
     fi

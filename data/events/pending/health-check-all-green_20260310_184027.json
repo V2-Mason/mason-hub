@@ -1,0 +1,13 @@
+{
+  "event": "health-check-all-green",
+  "source": "manual-test",
+  "timestamp": "2026-03-10T18:40:22+00:00",
+  "status": "ok",
+  "level": 1,
+  "data": {
+    "ok": 15,
+    "total": 15
+  },
+  "_pending_reason": "\u4e0d\u5728\u6267\u884c\u65f6\u95f4\u7a97\u53e3 (CST 08:00-22:00)",
+  "_pending_since": "2026-03-10T18:40:27.477168+00:00"
+}

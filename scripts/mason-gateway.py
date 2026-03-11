@@ -50,7 +50,7 @@ from pathlib import Path
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
 MODEL = os.environ.get("HEARTBEAT_MODEL", "claude-sonnet-4-20250514")
 MAX_OUTPUT_TOKENS = 1024
-MAX_TURNS = 15  # agentic loop 最大轮次
+MAX_TURNS = 20  # agentic loop 最大轮次（完整巡逻 ~12 轮 + 记忆写入 + 余量）
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL", "")
 
 LOG_FILE = HUB_DIR / "logs" / "gateway.log"
@@ -116,15 +116,22 @@ ALLOWED_COMMANDS = [
     f"{sys.executable} scripts/",
     # 部署 + 远程
     "scp ",
-    "ssh -o ConnectTimeout",
+    "ssh ",
     # Cron（可读可写）
     "crontab",
-    # 其他
+    # 文件操作（只读/诊断）
+    "find ",
+    "grep ",
+    "chmod ",
+    # 进程 + 网络诊断
     "pgrep",
+    "ps ",
     "curl -s",
-    "ping -c",
+    "ping ",
     "cd ",
     "timeout ",
+    # 技能脚本
+    "bash skills/",
 ]
 
 # 全局状态
@@ -132,6 +139,7 @@ running = True
 last_heartbeat = 0
 task_queue = deque()
 queue_file_pos = 0
+_last_event_analysis = {}  # {event_type: timestamp} — 同类事件去重
 
 
 # ========================================
@@ -141,22 +149,22 @@ queue_file_pos = 0
 def log(message: str):
     ts = datetime.now(CST).strftime("%Y-%m-%d %H:%M:%S CST")
     entry = f"[{ts}] {message}"
-    print(entry, flush=True)
     try:
         LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
         with open(LOG_FILE, "a") as f:
             f.write(entry + "\n")
     except Exception:
-        pass
+        print(entry, flush=True)  # 文件写入失败时 fallback 到 stdout
 
 
 def in_time_window() -> bool:
     return 8 <= datetime.now(CST).hour < 22
 
 
-def send_slack(message: str, prefix: str = "🫀 Gateway"):
+def send_slack(message: str, prefix: str = "🫀 Gateway") -> bool:
     if not SLACK_WEBHOOK:
-        return
+        log("Slack webhook 未配置，跳过")
+        return False
     try:
         subprocess.run(
             ["curl", "-s", "-X", "POST", SLACK_WEBHOOK,
@@ -164,17 +172,38 @@ def send_slack(message: str, prefix: str = "🫀 Gateway"):
              "-d", json.dumps({"text": f"{prefix}\n{message}"})],
             capture_output=True, timeout=10,
         )
+        return True
     except Exception as e:
         log(f"Slack 发送失败: {e}")
+        return False
 
 
 def mason_session_active() -> bool:
+    """检测 Mason 是否活跃：claude 进程存在 + 终端最近 15 分钟有输入"""
     try:
+        # 1. claude 进程必须存在
         result = subprocess.run(
             ["pgrep", "-f", "claude"],
             capture_output=True, text=True, timeout=5,
         )
-        return result.returncode == 0
+        if result.returncode != 0:
+            return False
+
+        # 2. 检查所有终端的 idle 时间（w 命令的 IDLE 列）
+        #    如果所有终端都 idle 超过 15 分钟，认为 Mason 不在
+        import glob
+        now = time.time()
+        min_idle = float('inf')
+        for pts in glob.glob("/dev/pts/[0-9]*"):
+            try:
+                mtime = os.path.getmtime(pts)
+                idle = now - mtime
+                min_idle = min(min_idle, idle)
+            except OSError:
+                continue
+
+        # 最活跃的终端 idle < 15 分钟 → Mason 在
+        return min_idle < 900
     except Exception:
         return False
 
@@ -303,6 +332,28 @@ TOOLS = [
             "required": ["finding", "severity", "status"],
         },
     },
+    {
+        "name": "patch_file",
+        "description": "增量编辑白名单文件：查找 old_text 并替换为 new_text。比 write_file 更适合更新 SYSTEM_MAP.md 等大文件（不需要传完整内容）。",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "相对路径（必须在白名单内）"
+                },
+                "old_text": {
+                    "type": "string",
+                    "description": "要被替换的原文片段（必须精确匹配）"
+                },
+                "new_text": {
+                    "type": "string",
+                    "description": "替换后的新文本"
+                },
+            },
+            "required": ["path", "old_text", "new_text"],
+        },
+    },
 ]
 
 
@@ -325,6 +376,8 @@ def execute_tool(name: str, input_data: dict) -> str:
             return _tool_list_directory(input_data)
         elif name == "save_memory":
             return _tool_save_memory(input_data)
+        elif name == "patch_file":
+            return _tool_patch_file(input_data)
         else:
             return f"错误: 未知工具 {name}"
     except Exception as e:
@@ -383,6 +436,32 @@ def _tool_write_file(input_data: dict) -> str:
         return f"写入失败: {e}"
 
 
+def _tool_patch_file(input_data: dict) -> str:
+    rel_path = input_data["path"]
+    old_text = input_data["old_text"]
+    new_text = input_data["new_text"]
+
+    # 白名单检查
+    if rel_path not in WRITABLE_PATHS:
+        return f"错误: 不允许写入 {rel_path}。可写路径: {', '.join(WRITABLE_PATHS)}"
+
+    full_path = HUB_DIR / rel_path
+    if not full_path.exists():
+        return f"错误: 文件不存在: {rel_path}"
+
+    try:
+        content = full_path.read_text()
+        if old_text not in content:
+            return f"错误: 未找到要替换的文本片段（{len(old_text)} 字符）。请用 read_file 确认当前内容"
+        if content.count(old_text) > 1:
+            return f"错误: 找到 {content.count(old_text)} 处匹配，请提供更精确的片段以避免歧义"
+        new_content = content.replace(old_text, new_text, 1)
+        full_path.write_text(new_content)
+        return f"✅ 已更新 {rel_path}（替换了 {len(old_text)} → {len(new_text)} 字符）"
+    except Exception as e:
+        return f"编辑失败: {e}"
+
+
 def _tool_run_command(input_data: dict) -> str:
     command = input_data["command"]
 
@@ -416,7 +495,7 @@ def _tool_run_command(input_data: dict) -> str:
             capture_output=True,
             text=True,
             cwd=str(HUB_DIR),
-            timeout=60,
+            timeout=120,
         )
         output = ""
         if result.stdout:
@@ -427,7 +506,7 @@ def _tool_run_command(input_data: dict) -> str:
             output += f"\n[exit code: {result.returncode}]"
         return output.strip() if output.strip() else "(无输出)"
     except subprocess.TimeoutExpired:
-        return "错误: 命令超时 (60s)"
+        return "错误: 命令超时 (120s)"
     except Exception as e:
         return f"执行失败: {e}"
 
@@ -439,8 +518,10 @@ def _tool_send_slack(input_data: dict) -> str:
     prefix_map = {"info": "ℹ️", "warning": "⚠️", "critical": "🔴"}
     prefix = prefix_map.get(level, "🫀")
 
-    send_slack(message, prefix=f"{prefix} Gateway")
-    return f"✅ Slack 已发送 ({level})"
+    ok = send_slack(message, prefix=f"{prefix} Gateway")
+    if ok:
+        return f"✅ Slack 已发送 ({level})"
+    return "❌ Slack 发送失败（webhook 未配置或网络错误）"
 
 
 def _tool_list_directory(input_data: dict) -> str:
@@ -649,11 +730,21 @@ def run_heartbeat():
 
 你有以下工具：
 - read_file: 读取 mason-hub 内的任何文件
-- write_file: 写入白名单文件（SYSTEM_MAP.md, MASONHUB.md, gateway-memory.jsonl, queue.jsonl）
-- run_command: 执行白名单命令（系统检查、脚本执行、git、服务管理、scp 部署）
+- write_file: 写入白名单文件（整个覆盖，适合小文件）
+- patch_file: 增量编辑白名单文件（查找替换，适合 SYSTEM_MAP.md 等大文件）
+- run_command: 执行命令（系统检查、脚本执行、git、ssh、服务管理）
 - send_slack_message: 发 Slack 通知 Mason
 - list_directory: 列目录
 - save_memory: 保存发现到持久记忆（带 status 字段：resolved/pending_mason/will_retry/monitoring）
+
+关键文件路径（避免浪费轮次搜索）：
+- 记忆: data/gateway-memory.jsonl
+- 修复队列: data/repair_queue.json
+- 数据健康检查: bash data/pipelines/data_health_check.sh（注意：在 data/pipelines/ 下，不在 scripts/ 下）
+- 事件队列: data/events/queue.jsonl
+- Dispatcher 日志: logs/dispatcher.log
+- SYSTEM_MAP: SYSTEM_MAP.md（更新时用 patch_file，不要用 write_file）
+- 阿里云 SSH: ssh -o ConnectTimeout=5 root@106.14.44.68 "命令"
 
 工作节奏:
 1. 先检查记忆中 will_retry 的任务 → 有就先续接
@@ -699,7 +790,7 @@ def run_heartbeat():
 # ========================================
 
 def analyze_event(event: dict):
-    """分析事件 — L0-1 脚本处理，L2-3 agentic loop"""
+    """分析事件 — L0-1 脚本处理，L2-3 agentic loop（同类事件 1 小时去重）"""
     event_type = event.get("event", "unknown")
     level = event.get("level", 0)
 
@@ -710,25 +801,46 @@ def analyze_event(event: dict):
             _execute_script_task("event-router-process")
         return
 
+    # 同类事件去重：1 小时内不重复做完整 agentic 分析
+    now = time.time()
+    last_time = _last_event_analysis.get(event_type, 0)
+    if now - last_time < 3600:
+        elapsed = int(now - last_time)
+        log(f"[Agentic] 事件 {event_type} (L{level}): 跳过（{elapsed}s 前已分析，1h 去重）")
+        return
+    _last_event_analysis[event_type] = now
+
     # Level 2-3: agentic loop
     log(f"[Agentic] 事件 {event_type} (L{level}): 需要推理")
     now_cst = datetime.now(CST).strftime("%Y-%m-%d %H:%M CST")
+
+    memories = load_recent_memories()
 
     system_prompt = f"""你是 Mason Hub 的值班监督员。当前时间: {now_cst}
 
 你收到了一个需要分析的系统事件。你有工具可以读取文件、执行命令、发 Slack 通知。
 
+关键文件路径（不要浪费轮次搜索）：
+- 数据健康检查: bash data/pipelines/data_health_check.sh（在 data/pipelines/ 下）
+- 记忆: data/gateway-memory.jsonl
+- SYSTEM_MAP: SYSTEM_MAP.md（更新时用 patch_file，不要用 write_file）
+
 分析步骤:
-1. 理解事件含义
-2. 读取相关文件获取上下文
-3. 判断是否需要自动处理
-4. 能自动处理 → 执行脚本 + save_memory
-5. 需要 Mason → send_slack_message
-6. 更新 SYSTEM_MAP.md（如果事件改变了能力线状态）"""
+1. **先读记忆** — 如果同类事件之前已分析过，直接复用结论，不要重复诊断
+2. 理解事件含义
+3. 读取相关文件获取上下文
+4. 能自动处理（≤3 步）→ 执行 + save_memory status=resolved
+5. 需要 Mason → send_slack_message + save_memory status=pending_mason
+6. 更新 SYSTEM_MAP.md（用 patch_file，如果事件改变了能力线状态）
+
+效率原则：同一类事件连续出现时，不要每次都完整诊断。先读 data/gateway-memory.jsonl 看之前的分析结论，状态没变就只 save_memory 记录时间戳即可。"""
 
     user_prompt = f"""分析以下事件:
 
 {json.dumps(event, ensure_ascii=False, indent=2)}
+
+上次检查的记忆（先看这里，避免重复诊断）:
+{memories}
 
 请开始分析。"""
 
@@ -965,7 +1077,7 @@ def show_status():
 
     print(f"  Mason session: {'🟢 活跃' if mason_session_active() else '⚪ 不在'}")
     print(f"  时间窗口: {'✅' if in_time_window() else '❌'} CST 08-22")
-    print(f"  工具: {len(TOOLS)} 个 (read_file, write_file, run_command, send_slack, list_dir, save_memory)")
+    print(f"  工具: {len(TOOLS)} 个 (read_file, write_file, patch_file, run_command, send_slack, list_dir, save_memory)")
     print(f"  Agentic loop: 最大 {MAX_TURNS} 轮")
 
     if MEMORY_FILE.exists():

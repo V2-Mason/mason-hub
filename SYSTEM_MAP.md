@@ -1,6 +1,6 @@
 # System Map — 受力分析
 
-> 最后更新: 2026-03-10
+> 最后更新: 2026-03-11
 > 更新权: Agent 自动更新可推断字段，耦合关系变更需 Mason 确认
 > 所有 Agent session 启动时读取此文件 + MASON_AUTHORITY.md
 
@@ -19,12 +19,12 @@
 ### 1. Agent 自治线
 ```
 状态:    active
-里程碑:  自治闭环基础设施全部部署（event_router + dispatcher + event_watcher + emit_event + 6/14 agent 四层声明 + aggregate_reports）→ 3 天验证期（3/13 检查）
-阻力:    无（剩余 8 个 agent 四层声明可渐进补齐）
+里程碑:  自治闭环基础设施全部部署 + 首夜验证完成 → 持续运行验证中（3/13 检查）
+阻力:    无（首夜发现的 4 个 bug 已全部修复）
 耦合:    ↓ 效率影响 → 数据线、内容线、商业线
-上次更新: 2026-03-10 23:00
+上次更新: 2026-03-11
 ```
-**解读**: 从设计阶段进入验证阶段。Push→Pull 基础设施已全部就位（event-watcher systemd active, dispatcher cron 每小时, 3 个核心脚本已接入事件发射）。明早 CST 08:00 时间窗口打开后，dispatcher 将首次真实运行。剩余工作：8 个 agent 四层声明补齐（渐进，不阻塞）。
+**解读**: 首夜验证发现 4 个 bug（dispatcher 八进制、Gateway write_file、白名单太窄、Slack 假成功），已全部修复。新增 patch_file 工具 + 事件去重 + 终端 idle 检测。进入持续运行验证阶段。
 
 ### 2. 数据线
 ```
@@ -110,9 +110,9 @@
 | 优先级 | 行动 | 理由 | Owner |
 |--------|------|------|-------|
 | 1 | 验证 srx_sales JWT 修复是否生效 | 数据线 blocker，阻塞两条下游线 | EMP_0005 |
-| 2 | data_health_check 剩余 7 个数据集修复 | 数据线里程碑（全绿）的前置条件 | EMP_0014 |
-| 3 | Scout v2 首次端到端测试 | active 线推进，需 DASHSCOPE_API_KEY | EMP_0002 |
-| 4 | SocialMesh 基础功能（图片上传/草稿管理） | 内容线虽 waiting，但不依赖数据线的部分可先推 | EMP_0009 |
+| 2 | data_health_check 剩余数据集修复 | 数据线里程碑（全绿）的前置条件 | EMP_0014 |
+| 3 | Scout v2 首次端到端测试 | 需 DASHSCOPE_API_KEY | EMP_0002 |
+| 4 | Gateway 第二夜验证 | 确认 patch_file + 事件去重 + 终端 idle 检测正常工作 | 自动 |
 
 **不推荐现在做的**:
 - 商业运营线任何事 → 全是外部依赖

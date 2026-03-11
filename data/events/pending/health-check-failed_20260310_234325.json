@@ -1,0 +1,14 @@
+{
+  "event": "health-check-failed",
+  "source": "data_health_check.sh",
+  "timestamp": "2026-03-10T23:43:24+00:00",
+  "status": "failed",
+  "level": 2,
+  "data": {
+    "ok": 10,
+    "total": 15,
+    "errors": 4
+  },
+  "_pending_reason": "\u4e0d\u5728\u6267\u884c\u65f6\u95f4\u7a97\u53e3 (CST 08:00-22:00)",
+  "_pending_since": "2026-03-10T23:43:25.778733+00:00"
+}
