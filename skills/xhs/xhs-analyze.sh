@@ -6,7 +6,8 @@
 #            不传则全量分析 + 输出到原路径（向后兼容）
 #
 # 流程:
-# 1. SCP 脚本到阿里云 → 跑分析 → analysis_YYYY-MM-DD.json
+# 0. (新增) 数据清洗 → clean/notes_YYYY-MM-DD.json (Layer 2)
+# 1. 分析 → 读 clean JSON → analysis_YYYY-MM-DD.json (Layer 3)
 # 2. (可选) 粉丝量富化 → analysis_YYYY-MM-DD_enriched.json
 # 3. (可选) 评论采集 → xhs_note_comment 表 + comments/YYYY-MM-DD.json
 # 4. (可选) 趋势对比 → trends/YYYY-MM-DD.json
@@ -101,12 +102,12 @@ fi
 log_event "xhs-analysis" "market-signals" "start" "Starting market signals pipeline${PROJECT:+ (project: $PROJECT)}"
 
 # --- 确保目录存在 ---
-ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/briefings $ANALYSIS_DIR/trends $ANALYSIS_DIR/comments" 2>/dev/null
+ssh -o ConnectTimeout=10 "$ALIYUN" "mkdir -p $ANALYSIS_DIR/briefings $ANALYSIS_DIR/trends $ANALYSIS_DIR/comments $MC_DIR/clean" 2>/dev/null
 
-# === STEP 1: 基础分析 ===
+# === STEP 0: 数据清洗 (Layer 2: raw → clean) ===
 echo ""
-echo "--- [1/6] Syncing & running analysis ---"
-scp -o ConnectTimeout=10 "$HUB_DIR/skills/xhs/xhs-analyze-viral.py" "$ALIYUN:$MC_DIR/xhs_analyze.py"
+echo "--- [0/6] Data cleaning (raw SQLite → clean JSON) ---"
+scp -o ConnectTimeout=10 "$HUB_DIR/data/pipelines/xhs-clean.py" "$ALIYUN:$MC_DIR/xhs_clean.py"
 
 NOTE_COUNT=$(ssh -o ConnectTimeout=10 "$ALIYUN" \
   "sqlite3 $MC_DIR/database/sqlite_tables.db 'SELECT COUNT(*) FROM xhs_note'" 2>/dev/null || echo "0")
@@ -119,10 +120,38 @@ fi
 
 echo "Notes in DB: $NOTE_COUNT"
 
+CLEAN_JSON="$MC_DIR/clean/notes_${TODAY}.json"
+CLEAN_ARG=""
+
+CLEAN_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
+  "cd $MC_DIR && source venv/bin/activate && TZ='America/New_York' python xhs_clean.py --output '$CLEAN_JSON' --stats 2>&1")
+
+CLEAN_EXIT=$?
+echo "$CLEAN_OUTPUT"
+
+if [ $CLEAN_EXIT -eq 0 ]; then
+  CLEAN_EXISTS=$(ssh -o ConnectTimeout=10 "$ALIYUN" "test -f '$CLEAN_JSON' && echo yes || echo no" 2>/dev/null)
+  if [ "$CLEAN_EXISTS" = "yes" ]; then
+    CLEAN_ARG="--clean-json '$CLEAN_JSON'"
+    echo "Clean OK: $CLEAN_JSON"
+    log_event "xhs-analysis" "market-signals" "info" "Clean done: $CLEAN_JSON ($NOTE_COUNT notes)"
+  else
+    echo "WARNING: Clean ran but output not found, falling back to raw SQLite"
+  fi
+else
+  echo "WARNING: Clean failed (exit $CLEAN_EXIT), falling back to raw SQLite"
+  log_event "xhs-analysis" "market-signals" "info" "Clean failed (exit $CLEAN_EXIT), falling back to raw SQLite"
+fi
+
+# === STEP 1: 基础分析 (Layer 3: clean → analysis) ===
+echo ""
+echo "--- [1/6] Running analysis ---"
+scp -o ConnectTimeout=10 "$HUB_DIR/skills/xhs/xhs-analyze-viral.py" "$ALIYUN:$MC_DIR/xhs_analyze.py"
+
 JSON_OUT="$ANALYSIS_DIR/analysis_${TODAY}.json"
 
 ANALYSIS_OUTPUT=$(ssh -o ConnectTimeout=10 -o ServerAliveInterval=60 "$ALIYUN" \
-  "cd $MC_DIR && source venv/bin/activate && python xhs_analyze.py --json-out '$JSON_OUT' $KEYWORDS_ARG 2>&1")
+  "cd $MC_DIR && source venv/bin/activate && python xhs_analyze.py --json-out '$JSON_OUT' $CLEAN_ARG $KEYWORDS_ARG 2>&1")
 
 ANALYSIS_EXIT=$?
 echo "$ANALYSIS_OUTPUT"

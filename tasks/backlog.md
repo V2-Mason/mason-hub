@@ -534,7 +534,7 @@ Phase 2 — 主干管道统一:
 Phase 3 — 数据 SDK + 扩展:
 - [x] 数据读取 SDK — 2026-03-11 完成，data/tools/（5 模块：metrics/catalog/readers/sdk/__init__），`get_xhs_notes()`/`get_xhs_analysis()`/`get_scout_intel()` 等一行代码接口，标准指标唯一口径（EMP_0014）
 - [x] 加工层标准化 — 2026-03-11 完成：data_catalog.yaml 四层结构（raw/clean/analysis/report）+ 8 指标唯一口径注册 + 3 个 schema 文件（xhs_metrics/xhs_clean_notes/xhs_analysis_viral）+ xhs-clean.py 清洗管道（1168 条验证通过）+ catalog.py 新增 layer 查询/指标查询/血缘追踪（EMP_0014）
-- [ ] clean_xhs_notes 集成到 xhs-analyze.sh — 在阿里云注册 xhs-clean.py 为分析前置步骤，analysis 层改读 clean JSON（EMP_0014）
+- [x] clean_xhs_notes 集成到 xhs-analyze.sh — 2026-03-11 完成，Step 0 清洗前置 + --clean-json 参数 + 降级回退（EMP_0014）
 - [ ] 素仁轩历史销售快照 — 定期快照 API 到时序表，支持趋势分析（EMP_0014）
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）

@@ -148,7 +148,26 @@
 - `_xhs_analyze_compare.py` 的 `engage_rate`/`save_rate` 是内联计算（未用函数），精度与 metrics.py 一致但风格不同
 
 ### Gap: 📄 文档更新 → 已更新 data_catalog.yaml + 3 个 schema 文件
-### Gap: 🏗️ 系统能力缺失
-- clean_xhs_notes 目前 status: planned，需要在 xhs-analyze.sh 流程中注册 xhs-clean.py 作为前置步骤
-- 阿里云 /opt/mediacrawler/clean/ 目录尚未创建，首次实际运行时需 mkdir
-- 下游 xhs-analyze-viral.py 还未改为读 clean JSON，需逐步迁移
+### Gap: 🏗️ 系统能力缺失 → 已修复 (2026-03-11)
+- ~~clean_xhs_notes 目前 status: planned~~ → active，已集成到 xhs-analyze.sh Step 0
+- ~~阿里云 /opt/mediacrawler/clean/ 目录尚未创建~~ → mkdir 已加入 xhs-analyze.sh
+- ~~下游 xhs-analyze-viral.py 还未改为读 clean JSON~~ → 已加 --clean-json 参数
+
+## Lesson: clean_xhs_notes 集成到 xhs-analyze.sh (2026-03-11)
+
+### 做了什么
+- xhs-analyze.sh 新增 Step 0：SCP xhs-clean.py 到阿里云 → 运行清洗 → 产出 clean/notes_YYYY-MM-DD.json
+- xhs-analyze-viral.py 新增 `--clean-json` 参数 + `analyze_from_clean()` 函数，读 clean JSON 跳过 SQLite + parse_count
+- Step 0 成功 → Step 1 用 `--clean-json` 读清洗数据；Step 0 失败 → 降级回原 SQLite 直读（向后兼容）
+- data_catalog.yaml 更新：clean_xhs_notes status: planned → active, analysis_xhs_viral input: [clean_xhs_notes]
+- mkdir -p clean/ 加入 ssh 初始化命令，首次运行自动创建目录
+- TZ='America/New_York' 加到 clean 步骤，避免已知的时区不匹配 bug
+
+### 发现
+- clean JSON 缺 content_tier 字段（clean 层不做这个），analyze_from_clean 用 setdefault 补全
+- 55 个已有测试全部通过，端到端测试（mock clean JSON → build_report）验证通过
+- 向后兼容设计正确：CLEAN_ARG 为空时 xhs_analyze.py 走原 SQLite 路径
+
+### Gap: 📚 纯知识
+- 下次实际 cron 触发时需确认阿里云端到端跑通（本次为代码级验证，未实际 SSH 执行）
+- content_tier 字段长期应由 clean 层产出（需要 _two_tier_crawl.py 写入 raw 数据）

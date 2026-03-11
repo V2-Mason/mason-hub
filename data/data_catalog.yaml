@@ -309,11 +309,11 @@ datasets:
     metrics_applied: [parse_count, interaction_score, engage_rate, save_rate, share_rate, fake_traffic_flag]
     update_frequency: "随采集完成触发"
     consumers: [analysis_xhs_viral, analysis_xhs_trends]
-    status: planned
+    status: active
     notes: |
-      当前 xhs-analyze-viral.py 内联做了清洗+分析两步。
-      拆分 clean 层后，analysis 层只读 clean 数据，不再直接读 raw SQLite。
-      迁移策略：先并行产出 clean JSON，验证一致性后再切换 analysis 输入源。
+      已集成到 xhs-analyze.sh Step 0（clean 前置步骤）。
+      analysis 层通过 --clean-json 参数读 clean 数据。
+      如果 clean 步骤失败，自动降级回 raw SQLite（向后兼容）。
 
   - id: clean_scout_intel
     layer: clean
@@ -341,7 +341,7 @@ datasets:
     name: XHS 互动分析（爆帖排行 + 关键词洞察）
     owner: EMP_0014
     producer: skills/xhs/xhs-analyze-viral.py
-    input: [raw_xhs_notes]  # → 目标: 改为 [clean_xhs_notes]
+    input: [clean_xhs_notes]  # 已改为读 clean 层（--clean-json），降级回 raw_xhs_notes
     storage:
       type: json
       location: aliyun:/opt/mediacrawler/analysis/analysis_YYYY-MM-DD.json

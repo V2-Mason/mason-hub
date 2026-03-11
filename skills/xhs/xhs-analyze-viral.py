@@ -17,6 +17,7 @@ import argparse
 import sqlite3
 import json
 import re
+import sys
 import time
 from datetime import datetime
 
@@ -34,6 +35,37 @@ def parse_count(s):
 
 def interaction_score(liked, collected, comment, shared):
     return liked + collected * 3 + comment * 5 + shared * 8
+
+
+def analyze_from_clean(clean_json_path, keywords=None):
+    """从 clean 层 JSON 读取已清洗的笔记数据（Layer 2 → Layer 3）。
+
+    clean JSON 已完成: parse_count 归一化、指标计算、假流量标记、去重。
+    此函数只做关键词过滤和排序。
+    """
+    import os
+    if not os.path.exists(clean_json_path):
+        print(f'ERROR: clean JSON 不存在: {clean_json_path}', file=sys.stderr)
+        return []
+
+    with open(clean_json_path, 'r', encoding='utf-8') as f:
+        notes = json.load(f)
+
+    print(f'[INFO] 从 clean JSON 读取: {len(notes)} 条笔记')
+
+    # 关键词过滤
+    if keywords:
+        kw_set = set(keywords)
+        notes = [n for n in notes if n.get('keyword', '') in kw_set]
+        print(f'[INFO] 关键词过滤后: {len(notes)} 条')
+
+    # 补全 clean JSON 中可能缺少的字段（向后兼容）
+    for n in notes:
+        n.setdefault('content_tier', 'unknown')
+        n.setdefault('crawl_timestamp', 0)
+
+    notes.sort(key=lambda x: x.get('score', 0), reverse=True)
+    return notes
 
 
 def analyze(keywords=None):
@@ -327,15 +359,19 @@ def main():
     parser = argparse.ArgumentParser(description='XHS 爆款帖子分析')
     parser.add_argument('--json-out', help='输出 JSON 分析结果到指定路径')
     parser.add_argument('--keywords', help='逗号分隔的关键词过滤（仅分析这些 source_keyword）')
+    parser.add_argument('--clean-json', help='从 clean 层 JSON 读取（跳过 SQLite + 归一化）')
     args = parser.parse_args()
 
     keywords = None
     if args.keywords:
         keywords = [k.strip() for k in args.keywords.split(',') if k.strip()]
 
-    notes = analyze(keywords=keywords)
+    if args.clean_json:
+        notes = analyze_from_clean(args.clean_json, keywords=keywords)
+    else:
+        notes = analyze(keywords=keywords)
     if not notes:
-        print('ERROR: 数据库无数据')
+        print('ERROR: 无数据（数据库为空或 clean JSON 无匹配）')
         return 1
 
     report = build_report(notes)
