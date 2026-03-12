@@ -1265,6 +1265,8 @@ def process_queue():
                 # 异常或每 4 小时强制 → agentic heartbeat
                 _last_heavy_heartbeat = now
                 run_heartbeat(force_heavy=is_heavy)  # 4h 强制用 Sonnet，轻巡异常用 Haiku
+                if is_heavy:
+                    schedule_daily_plan()  # 每日首次重巡触发 Meta Manager 规划
             # 轻巡正常 → 什么都不做，省 token
         elif task_type == "event":
             analyze_event(task["event"])
@@ -1274,6 +1276,40 @@ def process_queue():
             log(f"未知任务: {task_type}")
     except Exception as e:
         log(f"任务异常: {e}")
+
+
+def schedule_daily_plan():
+    """每天第一次重巡时，发射 daily-plan 事件触发 Meta Manager 规划。
+
+    检查 data/daily_plan.yaml 是否已存在且是今天的，避免重复触发。
+    """
+    today = datetime.now(ET).strftime("%Y-%m-%d")
+    plan_file = HUB_DIR / "data" / "daily_plan.yaml"
+
+    # 已有今天的 plan → 跳过
+    if plan_file.exists():
+        try:
+            content = plan_file.read_text()
+            if f"date: {today}" in content or f"date: '{today}'" in content:
+                return
+        except Exception:
+            pass
+
+    # 发射 daily-plan 事件
+    event = {
+        "event": "daily-plan-request",
+        "source": "mason-gateway",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "status": "ok",
+        "level": 1,
+        "data": {"date": today, "reason": "每日首次重巡触发 Meta Manager 规划"},
+    }
+    try:
+        with open(QUEUE_FILE, "a") as f:
+            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+        log(f"📋 已发射 daily-plan-request 事件 (date={today})")
+    except Exception as e:
+        log(f"⚠️ daily-plan-request 发射失败: {e}")
 
 
 def schedule_heartbeat():

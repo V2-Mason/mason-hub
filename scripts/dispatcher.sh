@@ -242,7 +242,79 @@ main() {
         return 0
     fi
 
-    # --- 批量派发: 按 lane 并行 ---
+    # --- 每日规划优先（Meta Manager 生成的 daily_plan.yaml）---
+    local daily_plan="$HUB_DIR/data/daily_plan.yaml"
+    local today
+    today=$(date +%Y-%m-%d)
+
+    if [[ -f "$daily_plan" ]] && grep -q "date:.*${today}" "$daily_plan" 2>/dev/null; then
+        log "  📋 发现今日 daily_plan.yaml，按规划派发"
+        local plan_tasks
+        plan_tasks=$(python3 -c "
+import yaml, json, sys
+with open('$daily_plan') as f:
+    plan = yaml.safe_load(f)
+tasks = plan.get('priorities', [])
+# 过滤已完成的（检查 reports 目录是否有对应 log）
+import os, glob
+report_dir = '$REPORTS_DIR/$today'
+done = set()
+if os.path.isdir(report_dir):
+    for f in os.listdir(report_dir):
+        done.add(f.split('_')[0] + '_' + '_'.join(f.split('_')[1:]).split('.')[0])
+remaining = [t for t in tasks if t.get('task_id', '') not in done]
+print(json.dumps(remaining))
+" 2>/dev/null) || plan_tasks="[]"
+
+        local plan_count
+        plan_count=$(echo "$plan_tasks" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
+
+        if [[ "$plan_count" -gt 0 ]]; then
+            log "  daily_plan: $plan_count 个任务待派发"
+            local free_lanes
+            free_lanes=$(get_free_lanes)
+
+            for idx in $(seq 0 $((plan_count - 1))); do
+                local plan_task
+                plan_task=$(echo "$plan_tasks" | python3 -c "
+import sys, json, shlex
+tasks = json.load(sys.stdin)
+t = tasks[$idx]
+print(f'PLAN_TASK_ID={shlex.quote(t.get(\"task_id\", \"plan-task-$idx\"))}')
+print(f'PLAN_AGENT={shlex.quote(t.get(\"agent\", \"\"))}')
+print(f'PLAN_DESC={shlex.quote(t.get(\"description\", \"\")[:200])}')
+print(f'PLAN_PRIORITY={shlex.quote(t.get(\"priority\", \"P1\"))}')
+print(f'PLAN_MODE={shlex.quote(t.get(\"mode\", \"serial\"))}')
+" 2>/dev/null) || continue
+                eval "$plan_task"
+
+                if [[ -z "${PLAN_AGENT:-}" ]] || [[ -z "${PLAN_DESC:-}" ]]; then
+                    continue
+                fi
+
+                log "  📋 daily_plan 派发: $PLAN_TASK_ID → $(basename "$(dirname "$PLAN_AGENT")")"
+                if ! $DRY_RUN; then
+                    execute_task "$PLAN_TASK_ID" "$PLAN_AGENT" "daily-plan" "$PLAN_DESC" \
+                        "" "" "" "0" "" "execute"
+                else
+                    log "  [DRY-RUN] 会启动 $PLAN_AGENT 执行: $PLAN_DESC"
+                fi
+
+                # serial 模式下只派发第一个，等下次 cron 再派下一个
+                if [[ "${PLAN_MODE:-serial}" == "serial" ]]; then
+                    log "  serial 模式，本轮只派发 1 个 daily_plan 任务"
+                    break
+                fi
+            done
+
+            log "=== Dispatcher 扫描完成（daily_plan 模式）==="
+            return 0
+        else
+            log "  daily_plan 所有任务已完成，fallback 到静态扫描"
+        fi
+    fi
+
+    # --- 批量派发: 按 lane 并行（fallback 到 autonomous_tasks.yaml）---
     local free_lanes
     free_lanes=$(get_free_lanes)
     log "  空闲 lanes: $free_lanes"
