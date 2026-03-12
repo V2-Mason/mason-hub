@@ -225,3 +225,25 @@
 
 ### Gap: 📚 纯知识
 - raw_scout_intel 非 EMP_0014 职责，但按协议"连续 2 次采集失败 → 通知 SRE"，已标记升级
+→ 已更新 (2026-03-12): 根因定位并修复，见下方 Lesson
+
+## Lesson: Scout v2 LLM 模型名修复 + data_catalog 路径对齐 (2026-03-12)
+
+### 做了什么
+- 运行 data_health_check.sh 发现 1 黄：raw_scout_intel 3 天未更新
+- 根因定位：Scout v2 pipeline 的 DashScope LLM 调用失败（404: model `deepseek-chat` does not exist）
+- 通过 `client.models.list()` 查到 DashScope 正确模型名是 `deepseek-v3`（不是 `deepseek-chat`）
+- 修复 intel/engines/config.yaml：`model: deepseek-chat` → `model: deepseek-v3`
+- 手动跑通完整 pipeline（--no-resume），73 条 intel items，报告产出 intel/reports/2026-03-12.md
+- 发现 data_catalog.yaml 路径错误：raw_scout_intel 指向 `intel/digests/` 但 v2 产出在 `intel/reports/`，已更新
+- 修复后健康检查全绿 17/17
+
+### 发现
+- DashScope 模型名与 DeepSeek 官方不同：官方 `deepseek-chat`，DashScope 是 `deepseek-v3`
+- Scout v2 cron 周二/五 23:00 UTC 已注册，但因 LLM 404 一直静默失败（无 log 文件 = 无人察觉）
+- 自愈系统 remediation_registry 未覆盖此故障类型（LLM 配置错误），只有 gateway heartbeat
+
+### Gap
+- 🔧 配置错误 → 已修（model name + catalog path）
+- 📚 纯知识 → DashScope 模型名映射：deepseek-v3, deepseek-r1, qwen-plus 等（非 deepseek-chat）
+- 🏗️ 系统能力缺失 → Scout v2 cron 应写 log 到 logs/scout-v2.log，当前 cron 输出到 stdout 但 log 文件未创建（可能 cron 环境问题）

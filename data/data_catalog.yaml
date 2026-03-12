@@ -255,7 +255,7 @@ datasets:
     producer: skills/scout/scout-*.sh（9 个脚本）+ intel/engines/pipeline.py (v2)
     storage:
       type: markdown_files
-      location: gcp:~/mason-hub/intel/digests/*.md
+      location: gcp:~/mason-hub/intel/reports/*.md
     dedup: scripts/scout-dedup.py → intel/seen.jsonl
     update_frequency: "每日 19:00 ET cron"
     consumers: [clean_scout_intel]
