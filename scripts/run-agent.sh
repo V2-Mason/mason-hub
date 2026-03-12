@@ -128,6 +128,31 @@ else
   RUN_DIR="$HUB_DIR"
 fi
 
+# --- Worktree 模式（USE_WORKTREE=1 时在独立分支上工作）---
+WORKTREE_BRANCH=""
+WORKTREE_DIR=""
+USE_WORKTREE="${USE_WORKTREE:-0}"
+if [ "$USE_WORKTREE" = "1" ] && [ "$RUN_DIR" = "$HUB_DIR" ]; then
+  WORKTREE_SCRIPT="$HUB_DIR/scripts/worktree.sh"
+  if [ -x "$WORKTREE_SCRIPT" ]; then
+    WT_OUTPUT=$("$WORKTREE_SCRIPT" create "$AGENT_NAME" "$TASK_ID" "$(echo "$TASK" | head -c 80)" 2>&1) || true
+    # 最后一行是目录路径
+    WORKTREE_DIR=$(echo "$WT_OUTPUT" | tail -1)
+    if [ -d "$WORKTREE_DIR" ]; then
+      RUN_DIR="$WORKTREE_DIR"
+      WORKTREE_BRANCH="agent/${AGENT_NAME}/${TASK_ID}"
+      echo "[worktree] Agent 将在分支上工作: $WORKTREE_BRANCH → $WORKTREE_DIR" >&2
+      log_structured "info" "Worktree mode: branch=$WORKTREE_BRANCH dir=$WORKTREE_DIR"
+    else
+      echo "[worktree] ⚠️ 创建失败，回退到 main 直接工作" >&2
+      USE_WORKTREE=0
+    fi
+  else
+    echo "[worktree] ⚠️ worktree.sh 不存在，回退到 main 直接工作" >&2
+    USE_WORKTREE=0
+  fi
+fi
+
 # --- 提取 skills 数组（从 YAML frontmatter）---
 HAS_VERIFY_LOOP=false
 SKILLS_RAW=$(awk 'BEGIN{c=0; in_skills=0} /^---$/{c++; next} c>=2{exit} c==1{
@@ -347,6 +372,53 @@ log_api_usage() {
     --json-result "$json_out" 2>/dev/null || true
 }
 
+# --- 辅助函数：从 claude JSON 输出提取 token/cost 数据（供审计记录使用）---
+extract_token_data() {
+  local json_out="$1"
+  python3 -c "
+import sys, json
+try:
+    data = json.loads(sys.stdin.read())
+    u = data.get('usage', {})
+    inp = u.get('input_tokens', 0) + u.get('cache_creation_input_tokens', 0) + u.get('cache_read_input_tokens', 0)
+    out = u.get('output_tokens', 0)
+    cost = data.get('total_cost_usd', 0)
+    turns = data.get('num_turns', 1)
+    model = ''
+    mu = data.get('modelUsage', {})
+    if mu:
+        model = list(mu.keys())[0] if mu else ''
+    print(json.dumps({'input_tokens': inp, 'output_tokens': out, 'cost_usd': round(cost, 6), 'num_turns': turns, 'model': model}))
+except:
+    print('{}')
+" <<< "$json_out" 2>/dev/null || echo "{}"
+}
+
+# --- 辅助函数：写统一审计记录 ---
+write_audit() {
+  local status="$1"
+  local extra_fields="$2"  # 额外 JSON 字段（逗号开头）
+  local token_json="$3"    # extract_token_data 的输出
+  local ts
+  ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  local end_epoch
+  end_epoch=$(date +%s)
+  local dur=$((end_epoch - START_EPOCH))
+  local task_brief
+  task_brief=$(printf '%s' "$TASK" | head -c 80 | tr '\n' ' ' | tr '"' "'")
+
+  # 解析 token 数据
+  local inp out cost turns model
+  inp=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('input_tokens',0))" 2>/dev/null || echo 0)
+  out=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('output_tokens',0))" 2>/dev/null || echo 0)
+  cost=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('cost_usd',0))" 2>/dev/null || echo 0)
+  turns=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('num_turns',1))" 2>/dev/null || echo 1)
+  model=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('model',''))" 2>/dev/null || echo "")
+
+  printf '{"timestamp":"%s","task_id":"%s","agent":"%s","task":"%s","status":"%s","duration":%d,"input_tokens":%s,"output_tokens":%s,"cost_usd":%s,"num_turns":%s,"model":"%s"%s}\n' \
+    "$ts" "$TASK_ID" "$AGENT_NAME" "$task_brief" "$status" "$dur" "$inp" "$out" "$cost" "$turns" "$model" "$extra_fields" >> "$AUDIT_LOG"
+}
+
 # --- 辅助函数：从 agent 输出中提取修改的文件 ---
 # 使用 GIT_BASELINE（调用前快照）来只检测 agent 实际造成的改动
 extract_modified_files() {
@@ -470,7 +542,8 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
   # 检查 claude -p 是否返回有效输出
   if [ -z "$OUTPUT" ] || [ ${#OUTPUT} -lt 10 ]; then
     echo "❌ claude -p 返回空或无效输出 (len=${#OUTPUT})" >&2
-    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"failed\",\"error\":\"empty_output\",\"duration\":$DURATION}" >> "$AUDIT_LOG"
+    TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
+    write_audit "failed" ',"error":"empty_output"' "$TOKEN_DATA"
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
     if [ -x "$EMIT_EVENT" ]; then
       "$EMIT_EVENT" "agent-task-failed" "$AGENT_NAME" "error" 2 \
@@ -487,8 +560,8 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
 {"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":1,"final_status":"completed","task_log_dir":"$TASK_LOG_DIR"}
 EOSUMMARY
 
-  echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
-  echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"duration\":$DURATION,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_LOG"
+  TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
+  write_audit "completed" "" "$TOKEN_DATA"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
 
   # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
@@ -565,10 +638,8 @@ else
     # 检查 claude -p 是否返回有效输出
     if [ -z "$OUTPUT" ] || [ ${#OUTPUT} -lt 10 ]; then
       echo "❌ claude -p 返回空或无效输出 (round $ROUND, len=${#OUTPUT})" >&2
-      TASK_SUMMARY=$(printf %s "$TASK" | head -c 50)
-      TASK_SUMMARY=${TASK_SUMMARY//$'\n'/ }
-      END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-      echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"failed\",\"error\":\"empty_output_round${ROUND}\",\"duration\":$ROUND_DURATION}" >> "$AUDIT_LOG"
+      TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
+      write_audit "failed" ",\"error\":\"empty_output_round${ROUND}\",\"verify_round\":$ROUND" "$TOKEN_DATA"
       exit 1
     fi
 
@@ -640,8 +711,8 @@ $TASK"
 {"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":$ROUND,"final_status":"completed","task_log_dir":"$TASK_LOG_DIR"}
 EOSUMMARY
 
-    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
-    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"completed\",\"verify_rounds\":$ROUND,\"duration\":$DURATION,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_LOG"
+    TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
+    write_audit "completed" ",\"verify_rounds\":$ROUND" "$TOKEN_DATA"
 
     # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
@@ -710,9 +781,9 @@ print(count)
 {"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":$ROUND,"final_status":"repair_failed","pm_retry_count":$PM_RETRY_COUNT,"task_log_dir":"$TASK_LOG_DIR"}
 EOSUMMARY
 
-    # 3.3 写入审计日志
-    echo "$FAIL_SUMMARY" >> "$AUDIT_LOG"
-    echo "{\"timestamp\":\"$END_TIME\",\"agent\":\"$AGENT_NAME\",\"task\":\"$TASK_SUMMARY\",\"status\":\"repair_failed\",\"verify_rounds\":$ROUND,\"task_log_dir\":\"$TASK_LOG_DIR/${TASK_ID}_*\"}" >> "$AUDIT_FILE"
+    # 3.3 写入审计日志（统一格式 + token 数据）
+    TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
+    write_audit "repair_failed" ",\"verify_rounds\":$ROUND,\"pm_retry_count\":$PM_RETRY_COUNT,\"root_cause_guess\":\"$ROOT_CAUSE\"" "$TOKEN_DATA"
 
     # 发射任务失败事件（供 Dispatcher/Gateway 追踪）
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
@@ -781,6 +852,23 @@ EOSUMMARY
       fi
       [ -x "$NOTIFY_MASON" ] && "$NOTIFY_MASON" "所有自动修复失败: $TASK_ID_EXTRACTED" "Dev + PM + Platform Dev 均失败，需要手动介入" "alert" 2>/dev/null || true
     fi
+  fi
+fi
+
+# --- Worktree 收尾：提示 merge 信息 ---
+if [ -n "${WORKTREE_BRANCH:-}" ] && [ -n "${WORKTREE_DIR:-}" ]; then
+  # 检查 worktree 中是否有新 commit（相对于 main）
+  WT_COMMITS=$(cd "$WORKTREE_DIR" && git log --oneline main.."$WORKTREE_BRANCH" 2>/dev/null | wc -l || echo 0)
+  if [ "$WT_COMMITS" -gt 0 ]; then
+    echo ""
+    echo "📌 Worktree 工作完成，分支 $WORKTREE_BRANCH 有 $WT_COMMITS 个新 commit"
+    echo "   合并: scripts/worktree.sh merge $WORKTREE_BRANCH"
+    echo "   清理: scripts/worktree.sh cleanup $WORKTREE_BRANCH"
+    log_structured "info" "Worktree branch $WORKTREE_BRANCH has $WT_COMMITS new commits pending merge"
+  else
+    # 无改动，直接清理
+    "$HUB_DIR/scripts/worktree.sh" cleanup "$WORKTREE_BRANCH" 2>/dev/null || true
+    echo "[worktree] 无改动，已自动清理 worktree" >&2
   fi
 fi
 
