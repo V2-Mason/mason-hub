@@ -210,3 +210,18 @@
 ### Gap
 - 🔧 配置错误 → 已修（health check YYYY-MM-DD fallback + clean_xhs_notes 首次运行）
 - 🏗️ 系统能力缺失 → data-sync.sh 应同步 clean/ 子目录到 mirror，目前只同步 analysis/ 和 briefings/
+
+## Lesson: 例行健康检查 (2026-03-12)
+
+### 做了什么
+- 运行 data_health_check.sh：16/17 健康，1 黄，2 跳过（与昨日持平）
+- raw_scout_intel 持续 4 天未更新（上次 2026-03-08），符合升级规则（连续 2 次检查未恢复）
+- 更新 short_term.json 标记升级：需通知 SRE (EMP_0004) 关于 Scout cron 失效
+
+### 发现
+- 自愈机制正常工作：remediation_registry 无需动作
+- 所有 XHS 数据管道运行正常（raw/clean/analysis/report 全绿）
+- TrendRadar 数据新鲜（1h 内更新），素仁轩 API 可达
+
+### Gap: 📚 纯知识
+- raw_scout_intel 非 EMP_0014 职责，但按协议"连续 2 次采集失败 → 通知 SRE"，已标记升级
