@@ -90,3 +90,10 @@
 - 三档 Scout cron 调度：每日 23:00 UTC（快扫）/ 一三五 23:30 UTC（中频）/ 周一 00:00 UTC（深度）
 - triggers.log 作为 cron 执行审计日志运转正常，包含完整 agent 输出
 - **gap 类型**：📚 纯知识 → 留存（scout 三档产物路径差异）
+
+### 日报巡检 audit.jsonl 路径 (2026-03-12)
+- audit.jsonl 实际路径是 `logs/audit.jsonl`，不在 `data/audit.jsonl`
+- 24h 内 18 次任务全部 completed，无 repair_failed
+- EMP_0014 单次任务成本 $1.80（42 turns, 1.6M input tokens），需持续监控是否常态
+- slack-bot `/resume` 命令未注册 handler，多次 404 — P2，功能缺失非故障
+- **gap 类型**：📚 纯知识 → 留存
