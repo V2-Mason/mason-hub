@@ -13,7 +13,7 @@
 
 ## 2026-03-02: google-genai SDK — 中文文件名导致 httpx header 编码失败
 
-`client.files.upload(file=path)` 的 HTTP multipart header 只接受 ASCII。中文文件名报 `UnicodeEncodeError`。修复：上传前用 ASCII 名临时 symlink，上传后清理。模式见 `skills/video-download/gemini_analyze.py` 的 ASCII-safe upload 段。
+`client.files.upload(file=path)` 的 HTTP multipart header 只接受 ASCII。中文文件名报 `UnicodeEncodeError`。修复：上传前用 ASCII 名临时 symlink，上传后清理。模式见 `skills/video/video-download/gemini_analyze.py` 的 ASCII-safe upload 段。
 
 ## 2026-03-02: LLM JSON 输出健壮解析模式
 

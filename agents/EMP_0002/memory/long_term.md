@@ -172,4 +172,12 @@
 - 从 每天+周一三五+周一 共 ~10 次/周 减少到 周二+周五 = 2 次/周，与 Mason 建议一致
 - Gap 分类：📄 文档更新 → 已更新 backlog
 
+### Git Worktree 工作流 (2026-03-11)
+- 新建 `scripts/worktree.sh`：统一管理 create/list/merge/cleanup/cleanup-all
+- 分支命名：`agent/<EMP_ID>/<task_id>`，worktree 目录：`.worktrees/`（已 gitignore）
+- `run-agent.sh` 集成：`USE_WORKTREE=1` 环境变量触发，默认关闭不影响现有流程
+- 任务完成后自动检测 worktree 有无新 commit，无改动自动清理，有改动提示 merge 命令
+- `git worktree list --porcelain` 的 awk 解析比较 tricky，branch 行格式是 `branch refs/heads/xxx`
+- Gap 分类：🏗️ 系统能力缺失 → 已修复
+
 ## 踩坑记录

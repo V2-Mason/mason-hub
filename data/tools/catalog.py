@@ -104,23 +104,27 @@ def get_layer_datasets(layer):
     return list_datasets(layer=layer)
 
 
-def get_lineage(dataset_id):
-    """获取数据集的数据血缘（上游 input 链路）。
+def get_lineage(dataset_id, _visited=None):
+    """获取数据集的数据血缘（上游 input 链路，去重）。
 
     Args:
         dataset_id: 数据集 ID
 
     Returns:
-        list[str]: 从当前数据集回溯到 raw 层的 ID 链
+        list[str]: 从当前数据集回溯到 raw 层的 ID 链（拓扑序，无重复）
     """
+    if _visited is None:
+        _visited = set()
+
     ds = get(dataset_id)
-    if not ds:
+    if not ds or dataset_id in _visited:
         return []
 
+    _visited.add(dataset_id)
     lineage = [dataset_id]
     inputs = ds.get('input', [])
     for inp in inputs:
-        lineage.extend(get_lineage(inp))
+        lineage.extend(get_lineage(inp, _visited))
     return lineage
 
 

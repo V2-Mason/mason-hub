@@ -345,14 +345,27 @@ LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
 }' "$AGENT_FILE")
 
 # --- 辅助函数：调用 claude -p 并记录 token ---
+# 走 Max 订阅（OAuth）而非 API key 计费：unset ANTHROPIC_API_KEY
+# Gateway (mason-gateway.py) 仍走 API key，这里只影响 claude -p
 call_claude() {
   local prompt="$1"
   local json_out
-  json_out=$(cd "$RUN_DIR" && claude -p \
+  json_out=$(cd "$RUN_DIR" && unset ANTHROPIC_API_KEY && claude -p \
     --output-format json \
     $LAUNCHER_ARGS \
     --system-prompt "$SYSPROMPT" \
     "$prompt" 2>&1)
+
+  # 检测 Max 限额错误，记录并通知
+  if echo "$json_out" | grep -qiE 'rate.limit|quota|exceeded|capacity'; then
+    echo "⚠️ Max 订阅限额触发，任务延迟" >&2
+    local EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+    if [ -x "$EMIT_EVENT" ]; then
+      "$EMIT_EVENT" "max-rate-limit" "$AGENT_NAME" "warning" 2 \
+        "{\"agent\":\"$AGENT_NAME\",\"error\":\"max_subscription_rate_limit\"}" 2>/dev/null || true
+    fi
+  fi
+
   echo "$json_out"
 }
 
@@ -729,7 +742,7 @@ EOSUMMARY
     LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
     if [ -f "$LESSONS_FILE" ] && [ "$LESSONS_SIZE" -lt 51200 ]; then
       LESSON_PROMPT="任务完成。请用 1-3 句话总结这次任务中值得记住的经验教训（遇到了什么坑、怎么解决的、下次该注意什么）。只输出经验内容，格式：## $(date +%Y-%m-%d): <模块名>\n- <经验1>\n- <经验2>"
-      LESSON_JSON=$(cd "$RUN_DIR" && claude -p \
+      LESSON_JSON=$(cd "$RUN_DIR" && unset ANTHROPIC_API_KEY && claude -p \
         --output-format json \
         --system-prompt "你是一个代码开发助手。简洁地总结经验教训。" \
         "$LESSON_PROMPT" 2>/dev/null) || true

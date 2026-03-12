@@ -14,7 +14,7 @@
 
 两个通用模式，不只适用于视频管道：
 1. **API 字段值校验**：字段名不等于字段内容。greenvideo.cc 的 `baseUrl` 字段装的是视频标题文字而非 URL。任何外部 API 返回的值都要校验格式（如 URL 检查 `startswith('http')`）。
-2. **LLM JSON 解析**：LLM 输出的 JSON 常有 trailing comma、markdown 包裹、前后多余文字。标准链：去 markdown fences → 提取 `{}` → regex 去 trailing commas → json.loads。参考 `skills/video-download/gemini_analyze.py::_parse_gemini_json()`。
+2. **LLM JSON 解析**：LLM 输出的 JSON 常有 trailing comma、markdown 包裹、前后多余文字。标准链：去 markdown fences → 提取 `{}` → regex 去 trailing commas → json.loads。参考 `skills/video/video-download/gemini_analyze.py::_parse_gemini_json()`。
 
 ## 2026-03-02: Google Sheets API 双向同步模式
 

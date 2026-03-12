@@ -31,7 +31,7 @@ if not os.path.basename(video_path).isascii():
 1. 去除 markdown fences（\`\`\`json ... \`\`\`）
 2. 提取最外层 `{}` 块（跳过前后文字）
 3. 用 regex `re.sub(r',\s*([}\]])', r'\1', block)` 去掉 trailing commas
-三步都失败才抛异常。见 `skills/video-download/gemini_analyze.py::_parse_gemini_json()`。
+三步都失败才抛异常。见 `skills/video/video-download/gemini_analyze.py::_parse_gemini_json()`。
 
 ## 2026-03-02: 第三方 API 字段值必须校验
 
@@ -80,3 +80,11 @@ VEO 是异步 API：`client.models.generate_videos()` 返回 operation → 轮�
 - `/insights` — 趋势分析（分层 + 7天热度）
 - `/intel` — Scout 情报简报（Markdown 渲染）
 - `/api/dismiss` / `/api/mark-read` / `/api/stats` / `/api/weekly-report` — API
+
+## 2026-03-12: claude -p 认证机制 + Gateway 成本优化
+
+- `claude -p` 有 `ANTHROPIC_API_KEY` 环境变量时走 API 计费，没有时 fall back 到 OAuth（Max 订阅）
+- `.env` 里配了 API key + `run-agent.sh` 调 `claude -p` = 每个 agent 任务都走 API 计费，3/11 花了 $17
+- 修复：`call_claude()` 里 `unset ANTHROPIC_API_KEY`，让 Dispatcher 任务走 Max 订阅
+- Gateway LLM 心跳 ROI 极低：11 次重巡全部结论"系统正常"，花 $12+ 确认没问题。用纯 bash `health-check-lite.sh` 替代，mason-gateway.py 保留作按需诊断工具
+- `anthropic.Anthropic()` Python SDK 只能走 API key，不能走 Max — slack-ask.py 仍需 API key

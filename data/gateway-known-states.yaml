@@ -27,3 +27,9 @@
   decision: XHS 分析标准已配置（四维框架+五方法论），等数据充足后启动
   impact: 分析管道未运行是预期状态，不告警
   expires: 2026-03-25
+
+- id: gateway-llm-disabled
+  date: 2026-03-12
+  decision: Gateway LLM 心跳已停用，改用 health-check-lite.sh 纯 bash 替代。mason-gateway.py 保留作按需诊断
+  impact: mason-gateway.service inactive 是预期状态，不告警
+  expires: 2026-06-12

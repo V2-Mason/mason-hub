@@ -26,11 +26,11 @@ Mason 定义的竞品视频拆解标准为 9 大模块（basic_info / hook_analy
 - **timeline**：必须覆盖视频中每一个产品/片段，不允许省略
 - **产品记录**：品牌名可不记，品类+功效必须记（如"定妆喷雾，主打保湿不卡粉"）
 
-prompt 文件：`skills/video-download/gemini_analyze.py` ANALYSIS_PROMPT 变量。在策划内容时可直接参考这个结构作为拆解框架。
+prompt 文件：`skills/video/video-download/gemini_analyze.py` ANALYSIS_PROMPT 变量。在策划内容时可直接参考这个结构作为拆解框架。
 
 ## 2026-03-02: 内容制作管线全链路
 
-端到端管线已就位（`skills/video-download/content_pipeline.py`）：
+端到端管线已就位（`skills/video/video-download/content_pipeline.py`）：
 1. Gemini 拆解参照视频 → 9 模块 JSON（timeline = 脚本）
 2. 品牌本地化（`localize.py`）→ 同格式 JSON，只改调性/话术
 3. Nano Banana 2 分镜（`storyboard.py`）→ 每个 segment 一张 9:16 图
@@ -52,6 +52,6 @@ Sheet: `2026-03_内容排期表`（02-排期看板/）。素材明细 tab K 列�
 - **特殊组合处理**：抖音×教育型压缩到 20-30s 只讲一个知识点；抖音×信任型快切幕后片段配大号文字标注
 - **成本**：多剪只加 1 次 Gemini Flash（~$0.01），不增加 VEO 消耗
 - **拆解 prompt 现在输出** `editing_style`（14 维剪辑指纹）+ `marketing_goal`（营销目标标签），积累后供策略分析
-- **管线代码已迁移**：从 `skills/video-download/` 迁到 `~/socialmesh/backend/content/video_pipeline/`
+- **管线代码已迁移**：从 `skills/video/video-download/` 迁到 `~/socialmesh/backend/content/video_pipeline/`
 - **Pipeline CLI**：`--cuts "抖音×认知型,小红书×种草型"` 启用多剪
 - **架构文档**：`~/socialmesh/docs/plans/2026-03-04-multicut-architecture.md`
