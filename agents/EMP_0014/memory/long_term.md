@@ -247,3 +247,32 @@
 - 🔧 配置错误 → 已修（model name + catalog path）
 - 📚 纯知识 → DashScope 模型名映射：deepseek-v3, deepseek-r1, qwen-plus 等（非 deepseek-chat）
 - 🏗️ 系统能力缺失 → Scout v2 cron 应写 log 到 logs/scout-v2.log，当前 cron 输出到 stdout 但 log 文件未创建（可能 cron 环境问题）
+
+## Lesson: 例行健康检查 — 全绿 (2026-03-12 #2)
+
+### 做了什么
+- 运行 data_health_check.sh：17/17 健康，2 跳过（analysis_radar_weekly stdout + report_api_usage Slack）
+- 与上次检查（同日 #1：16/17，1 黄）对比，raw_scout_intel 已从黄转绿（Scout v2 LLM 模型名修复生效）
+- 无异常数据集，无需修复
+
+### 发现
+- 所有四层数据管道（raw/clean/analysis/report）运行正常
+- 总数据量 18MB，仍远低于 50MB 方案 C 升级阈值
+- Scout v2 修复后首次全绿确认
+
+### Gap: 📚 纯知识
+- 当前数据管道稳定，下次检查预计在下一轮 cron 触发（或手动）
+
+## Lesson: 例行健康检查 — 全绿 (2026-03-12 #3)
+
+### 做了什么
+- 运行 data_health_check.sh：17/17 健康，2 跳过（stdout + Slack 类型）
+- 与同日 #2 对比无变化，数据管道持续稳定
+
+### 发现
+- 总数据量 18MB，远低于 50MB 方案 C 升级阈值
+- 所有四层管道（raw/clean/analysis/report）正常运行
+- 无异常数据集需要修复
+
+### Gap: 📚 纯知识
+- 连续 3 次健康检查全绿，管道进入稳定运行期
