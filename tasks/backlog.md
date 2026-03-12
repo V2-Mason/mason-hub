@@ -64,7 +64,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 
 ### P2 — 排入本周
 
-- [ ] agent.log 结构化 — 当前日志只有纯文本对话输出，不利于审计
+- [ ] agent.log 结构化 — 当前日志只有纯文本对话输出，不利于审计（EMP_0002）
 - [x] swap 配置评估 — 2026-02-28 完成，阿里云已添加 1GB swap（/swapfile, fstab 持久化）；GCP 暂不需要
 - [x] FIX: /standup cron 检测逻辑修复 — 2026-02-27 完成，改为 grep -cE 'mason-hub|surenxuan'，现在正确显示 10 条
 
@@ -159,7 +159,7 @@ P1 — Agent 上线:
 
 P1 — 通知 + 稳定性:
 - [ ] 通知系统: 推送通道待定（Server酱已排除，企业微信/飞书待 Mason 选择）。脚本框架 notify-mason.sh 已就绪，配 key 即可用
-- [ ] 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计
+- [ ] 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计（EMP_0000）
 - [ ] 连续运行 7 天无崩溃 — 观察中
 
 P1 — 开发流程强化 (2026-03-02 superpowers 参考):
@@ -206,7 +206,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] run-agent.sh 静默崩溃修复 — 2026-03-11 完成：`set -euo pipefail` + `grep -oP` 无匹配返回 1 → 脚本在 Task ID 提取阶段静默退出。修复：4 处 grep 加 `|| true`，EXIT trap 增加异常退出日志
 - [x] Gateway 重巡成本失控修复 — 2026-03-11 完成：轻巡变化检测用了含时间戳的字符串 → 每次都"变化" → 每小时都升级重巡（设计是每 4h）。实际日成本 $10+ vs 预期 $1。修复：只比较 emoji+数据集名、has_error 抑制覆盖 returncode
 - [x] /standup 新增 Gateway token 追踪 — 2026-03-11 完成：§7a 每次晨会从 gateway.log 提取重巡/轻巡 token 数据，估算日成本，对比趋势
-- [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（EMP_0002，渐进）
+- [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（EMP_0002）
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）
@@ -217,10 +217,10 @@ P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 - [x] Scout 去重机制 — 2026-03-05 确认已实现（scripts/scout-dedup.py + intel/seen.jsonl），9 个 scout 脚本全部已集成 dedup 调用（EMP_0002）
 - [x] Scout 简报格式改进 — 2026-03-05 完成，6 个 scout 脚本修改（模糊时间→具体日期，补 markdown 链接），9 个脚本 bash -n 验证通过（EMP_0002）
 - [x] Scout 多数据源 — 2026-03-10 完成，Scout v2 search.py 实现 GitHub API + SearXNG(Google/Twitter/DuckDuckGo) + DuckDuckGo fallback 三源统一接口（旧 9 脚本保留但被 Engine 架构取代）
-- [ ] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用，Mason 手动触发必须有 /skill 替代方案（EMP_0002）
+- [-] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用 → 已更新 (2026-03-12) Skill 框架已支持，需求已过时
 
 P2 — UX 持续优化:
-- [ ] 根据 system_feedback 表持续迭代
+- [ ] 根据 system_feedback 表持续迭代（EMP_0001）
 - [x] agent.log 结构化 — 2026-02-28 完成，run-agent.sh 新增 log_structured() JSONL 格式
 - [x] swap 配置评估 — 2026-02-28（同上）
 - [x] 产品去重/合并功能 — 2026-02-28 完成，find-similar API（SequenceMatcher 0.6）+ merge API（9 张关联表）+ 前端 InventoryPage 查找相似 Tab + BatchDetailPage 自动检测警告 badge
@@ -271,7 +271,7 @@ P1 — 模块化代码迁移（Phase A）:
 - [ ] 模块1 代码迁移：mason-hub/skills/video/video-download/ → socialmesh/backend/content/video_pipeline/（EMP_0009）
 - [ ] 模块3 代码迁移：mason-hub/skills/ 下 xhs-*.sh + 分析脚本 → socialmesh/scripts/ 或 socialmesh/backend/analytics/（EMP_0009）
 - [ ] 依赖项处理：Google OAuth credentials 共享方案、环境变量统一（EMP_0009 + EMP_0004）
-- [ ] Agent 角色定义更新：EMP_0008 + EMP_0009 + EMP_0010 加入视频/分析职责（EMP_0012 产出定义，Mason 批准）
+- [x] Agent 角色定义更新：EMP_0008 + EMP_0009 + EMP_0010 加入视频/分析职责（EMP_0012 产出定义，Mason 批准）(2026-03-12)
 
 P1 — 体验补全:
 - [ ] 增加"立即发布"按钮 — 后端已支持，前端补上（EMP_0009）
