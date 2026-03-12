@@ -55,13 +55,21 @@ from .metrics import (
     keyword_competition,
 )
 
-__version__ = '0.1.0'
+# 管道级接口 — 数据装配 + 状态查询
+from .pipeline import (
+    get_pipeline_status,
+    assemble_optimization_data,
+)
+
+__version__ = '0.2.0'
 __all__ = [
     # SDK
     'get_dataset', 'get_xhs_analysis', 'get_xhs_notes', 'get_xhs_trends',
     'get_xhs_comments', 'get_xhs_briefing', 'get_scout_intel',
     'get_srx_history', 'get_srx_snapshot',
     'get_trendradar_news', 'list_datasets', 'dataset_info', 'check_freshness',
+    # Pipeline
+    'get_pipeline_status', 'assemble_optimization_data',
     # Errors
     'DataError', 'DatasetNotFoundError', 'DataStaleError',
     # Metrics

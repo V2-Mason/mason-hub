@@ -298,3 +298,22 @@
 
 ### Gap: 📚 纯知识
 - 连续 8 次全绿，管道稳定运行期
+
+## Lesson: XHS 主干管道标准接口改造 (2026-03-12)
+
+### 做了什么
+- 新增 `data/tools/pipeline.py`：管道状态查询 `get_pipeline_status()` + 数据装配 `assemble_optimization_data()`
+- 新增 `data/pipelines/assemble-data.py`：CLI 工具（--json / --status / --field），替代 bash 中的手工文件读取
+- 改造 `optimization-cycle.sh`：Step 1 + Gate 1 从 120 行手工 SSH/ls/cat 精简为 1 行 `assemble-data.py --json` 调用
+- SDK __init__.py 版本升级 0.1.0 → 0.2.0，导出 `get_pipeline_status` 和 `assemble_optimization_data`
+- 所有 4 个数据源通过 SDK 验证：Radar 关注率 / Scout 情报 (JSONL 10 条 red) / XHS 策略简报 / TrendRadar 热榜
+
+### 发现
+- optimization-cycle.sh 原 Step 1 有 120 行 bash 代码做 4 种数据源读取，每种都有各自的 fallback 和错误处理
+- 改造后 SDK 统一处理 fallback 逻辑（JSONL → markdown / 新鲜度检查 / 文件查找），bash 只消费 JSON
+- 变量名保持向后兼容（RADAR_REPORT/LATEST_DIGEST/XHS_BRIEFING/GATE1_RESULT），Step 3+ 不需要改
+- `xhs-analyze.sh` 的 SSH 执行模式保留（阿里云运行不可避免），改造范围限于"消费端"
+
+### Gap: 📚 纯知识
+- 下次消费者改造目标：EMP_0008/EMP_0015 的 agent 脚本也应调 SDK 而非直读文件
+- data-sync.sh 仍是 SSH/scp 模式（同步机制），但消费者不再关心同步细节

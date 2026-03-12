@@ -64,7 +64,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 
 ### P2 — 排入本周
 
-- [x] agent.log 结构化 — 2026-03-12 完成，run-agent.sh 全部写入改为 JSONL（cleanup/output/verify），与 audit.jsonl 格式兼容（EMP_0002）
+- [x] agent.log 结构化 — 2026-03-12 完成（v2），log_structured() 增强扩展字段 + 日志轮转 + 历史清理 + log-query.sh 查询工具 + schema 文档（EMP_0002）
 - [x] swap 配置评估 — 2026-02-28 完成，阿里云已添加 1GB swap（/swapfile, fstab 持久化）；GCP 暂不需要
 - [x] FIX: /standup cron 检测逻辑修复 — 2026-02-27 完成，改为 grep -cE 'mason-hub|surenxuan'，现在正确显示 10 条
 
@@ -539,6 +539,7 @@ Phase 3 — 数据 SDK + 扩展:
 - [x] 加工层标准化 — 2026-03-11 完成：data_catalog.yaml 四层结构（raw/clean/analysis/report）+ 8 指标唯一口径注册 + 3 个 schema 文件（xhs_metrics/xhs_clean_notes/xhs_analysis_viral）+ xhs-clean.py 清洗管道（1168 条验证通过）+ catalog.py 新增 layer 查询/指标查询/血缘追踪（EMP_0014）
 - [x] clean_xhs_notes 集成到 xhs-analyze.sh — 2026-03-11 完成，Step 0 清洗前置 + --clean-json 参数 + 降级回退（EMP_0014）
 - [x] 素仁轩历史销售快照 — 2026-03-11 完成，srx-snapshot.py 快照 3 API 端点到 SQLite 时序表（sales/dashboard/risk），SDK get_srx_history()/get_srx_snapshot()，幂等设计，data_catalog.yaml raw_srx_history active（EMP_0014）
+- [x] 管道标准接口串联 — 2026-03-12 完成，pipeline.py（管道状态+数据装配）+ assemble-data.py CLI + optimization-cycle.sh 改造（120行手工文件读→1行SDK调用），SDK v0.2.0 导出 get_pipeline_status/assemble_optimization_data（EMP_0014）
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 

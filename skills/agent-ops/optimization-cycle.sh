@@ -4,8 +4,8 @@ export PATH="/home/hangn/.local/bin:$PATH"
 # 自优化周期 — 每周自动运行
 #
 # 流程（Mason 修正版顺序）：
-#   1. 读数据（Radar 关注率 + Scout 情报 + XHS 互动数据）
-#   2. Gate 1：数据完整性检查（缺失/异常 → 告知 Mason，本周跳过）
+#   1. 通过数据中台 SDK 装配数据（Radar + Scout + XHS + TrendRadar）
+#   2. Gate 1：数据完整性检查（SDK 内置判定）
 #   3. 分析数据 → 生成优化建议
 #   4. Gate 2：建议合理性检查（违反规则/超出边界 → 打回重生成，最多 2 次）
 #   5. 发 Slack 给 Mason，附：建议 + 数据来源 + Gate 检查结果
@@ -13,6 +13,9 @@ export PATH="/home/hangn/.local/bin:$PATH"
 # 用法：
 #   ./optimization-cycle.sh              # 手动运行
 #   cron: 0 6 * * 3  (周三 02:00 ET = 06:00 UTC)
+#
+# 2026-03-12 改造：Step 1 + Gate 1 统一走 data/tools/pipeline.py SDK 接口
+#   不再手工 ls -t / cat / SSH 读文件
 # =============================================================================
 
 set -euo pipefail
@@ -25,6 +28,7 @@ SLACK_CHANNEL="C0AKN4T1JBW"  # #optimization
 DATE=$(date +%Y-%m-%d)
 REPORT_DIR="$HUB_DIR/intel/optimization-reports"
 REPORT_FILE="$REPORT_DIR/$DATE.md"
+PYTHON="$HUB_DIR/.venv/bin/python3"
 
 mkdir -p "$REPORT_DIR"
 
@@ -33,169 +37,57 @@ log() {
 }
 
 # =============================================================================
-# Step 1: 读数据
+# Step 1 + Gate 1: 通过数据中台 SDK 装配数据并检查完整性
 # =============================================================================
 log "=== 自优化周期开始 ==="
+log "Step 1: 通过 SDK 装配数据..."
 
-DATA_ISSUES=""
-DATA_SOURCES=""
+# 调用 assemble-data.py --json 一次性获取所有数据 + Gate 1 判定
+ASSEMBLED=$("$PYTHON" "$HUB_DIR/data/pipelines/assemble-data.py" --json 2>/dev/null) || true
 
-# 1a. Radar 关注率
-log "Step 1a: 读取 Radar 关注率..."
-RADAR_REPORT=""
-if [ -f "$HUB_DIR/tools/radar-tracker/tracker.db" ]; then
-    RADAR_REPORT=$("$HUB_DIR/.venv/bin/python3" "$HUB_DIR/tools/radar-tracker/weekly_report.py" --weeks 2 2>&1) || true
-    if [ -n "$RADAR_REPORT" ]; then
-        DATA_SOURCES="$DATA_SOURCES\n- Radar 关注率周报 ✅"
-        log "  Radar 数据获取成功"
-    else
-        DATA_ISSUES="$DATA_ISSUES\n- Radar 周报为空（可能 dismiss 数据不足）"
-        log "  Radar 数据为空"
-    fi
-else
-    DATA_ISSUES="$DATA_ISSUES\n- tracker.db 不存在，无 Radar 数据"
-    log "  tracker.db 不存在"
+if [ -z "$ASSEMBLED" ]; then
+    log "ERROR: assemble-data.py 调用失败，fallback 到空数据"
+    ASSEMBLED='{"sources":[],"issues":["assemble-data.py 调用失败"],"source_count":0,"issue_count":1,"radar_report":"","scout_digest":"","xhs_briefing":"","trendradar_ok":false,"gate1_pass":false,"gate1_result":"FAIL — assemble-data.py 调用失败"}'
 fi
 
-# 1b. Scout 最新情报（优先读标准化 JSONL，fallback 到 markdown）
-log "Step 1b: 读取 Scout 最新情报..."
-LATEST_DIGEST=""
-SCOUT_JSONL="$HUB_DIR/intel/processed/scout_normalized.jsonl"
-if [ -f "$SCOUT_JSONL" ] && [ -s "$SCOUT_JSONL" ]; then
-    # 从 JSONL 提取 priority=red 条目，格式化为结构化文本
-    JSONL_RESULT=$("$HUB_DIR/.venv/bin/python3" -c "
-import json, sys
-red_items = []
-with open('$SCOUT_JSONL', 'r') as f:
-    for line in f:
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            item = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        if item.get('priority') == 'red':
-            red_items.append(item)
-if not red_items:
-    sys.exit(1)
-for i, item in enumerate(red_items, 1):
-    title = item.get('title', '无标题')
-    summary = item.get('summary', '无摘要')
-    action = item.get('suggested_action', '无建议行动')
-    print(f'[{i}] {title}')
-    print(f'    摘要: {summary}')
-    print(f'    建议行动: {action}')
-    print()
-print(f'共 {len(red_items)} 条 red 优先级情报')
-" 2>/dev/null)
-    JSONL_EXIT=$?
-    if [ "$JSONL_EXIT" -eq 0 ] && [ -n "$JSONL_RESULT" ]; then
-        LATEST_DIGEST="$JSONL_RESULT"
-        RED_COUNT=$(echo "$JSONL_RESULT" | tail -1 | grep -oP '\d+' | head -1)
-        DATA_SOURCES="$DATA_SOURCES\n- Scout 情报简报 ✅ (JSONL, ${RED_COUNT:-0} 条 red)"
-        log "  Scout 情报获取成功: JSONL, ${RED_COUNT:-0} 条 red 优先级"
-    else
-        log "  JSONL 无 red 条目，fallback 到 markdown..."
-    fi
-fi
+# 从 JSON 提取各字段
+_field() {
+    echo "$ASSEMBLED" | "$PYTHON" -c "import json,sys; d=json.load(sys.stdin); v=d.get('$1',''); print(v if isinstance(v,str) else json.dumps(v,ensure_ascii=False))" 2>/dev/null || echo ""
+}
 
-# Fallback: 如果 JSONL 不存在/为空/无 red 条目，读 markdown
-if [ -z "$LATEST_DIGEST" ]; then
-    DIGEST_DIR="$HUB_DIR/intel/digests"
-    if [ -d "$DIGEST_DIR" ]; then
-        LATEST_DIGEST_FILE=$(ls -t "$DIGEST_DIR"/*.md 2>/dev/null | head -1)
-        if [ -n "$LATEST_DIGEST_FILE" ]; then
-            DIGEST_AGE_DAYS=$(( ($(date +%s) - $(stat -c %Y "$LATEST_DIGEST_FILE")) / 86400 ))
-            if [ "$DIGEST_AGE_DAYS" -le 14 ]; then
-                LATEST_DIGEST=$(head -100 "$LATEST_DIGEST_FILE")
-                DATA_SOURCES="$DATA_SOURCES\n- Scout 情报简报 ✅ ($(basename "$LATEST_DIGEST_FILE"), ${DIGEST_AGE_DAYS}天前, markdown fallback)"
-                log "  Scout 情报获取成功 (markdown fallback): $(basename "$LATEST_DIGEST_FILE")"
-            else
-                DATA_ISSUES="$DATA_ISSUES\n- Scout 最新情报已过期（${DIGEST_AGE_DAYS}天前），数据时效性低"
-                log "  Scout 情报过期: ${DIGEST_AGE_DAYS}天"
-            fi
-        else
-            DATA_ISSUES="$DATA_ISSUES\n- 无 Scout 情报简报文件"
-        fi
-    else
-        DATA_ISSUES="$DATA_ISSUES\n- intel/digests/ 目录不存在，且 JSONL 不可用"
-    fi
-fi
+GATE1_RESULT=$(_field gate1_result)
+GATE1_PASS=$(_field gate1_pass)
+RADAR_REPORT=$(_field radar_report)
+LATEST_DIGEST=$(_field scout_digest)
+XHS_BRIEFING=$(_field xhs_briefing)
+DATA_SOURCE_COUNT=$(_field source_count)
+DATA_ISSUE_COUNT=$(_field issue_count)
 
-# 1c. XHS 最新分析/策略简报
-log "Step 1c: 读取 XHS 互动数据..."
-XHS_BRIEFING=""
-# 从本地 mirror 读取（由 data-sync.sh 定期同步自阿里云）
-MIRROR_BRIEFINGS="$HUB_DIR/data/mirror/briefings"
-XHS_BRIEFING_FILE=$(ls -t "$MIRROR_BRIEFINGS"/*.json 2>/dev/null | head -1) || true
-if [ -n "$XHS_BRIEFING_FILE" ]; then
-    # 检查文件新鲜度（>7 天视为过期）
-    BRIEFING_AGE_DAYS=$(( ($(date +%s) - $(stat -c %Y "$XHS_BRIEFING_FILE")) / 86400 ))
-    if [ "$BRIEFING_AGE_DAYS" -le 7 ]; then
-        XHS_BRIEFING=$(cat "$XHS_BRIEFING_FILE" 2>/dev/null) || true
-        if [ -n "$XHS_BRIEFING" ]; then
-            DATA_SOURCES="$DATA_SOURCES\n- XHS 策略简报 ✅ ($(basename "$XHS_BRIEFING_FILE"), mirror ${BRIEFING_AGE_DAYS}天前)"
-            log "  XHS 简报获取成功: $(basename "$XHS_BRIEFING_FILE") (mirror)"
-        else
-            DATA_ISSUES="$DATA_ISSUES\n- XHS 简报文件存在但内容为空"
-        fi
-    else
-        DATA_ISSUES="$DATA_ISSUES\n- XHS 简报已过期（${BRIEFING_AGE_DAYS}天前），data-sync 可能未运行"
-        log "  XHS 简报过期: ${BRIEFING_AGE_DAYS}天 (mirror)"
-    fi
-else
-    DATA_ISSUES="$DATA_ISSUES\n- 无 XHS 策略简报（mirror 目录为空，请先运行 data-sync.sh）"
-    log "  XHS 简报获取失败（mirror 目录无文件）"
-fi
+# 格式化数据源和问题列表
+DATA_SOURCES=$(echo "$ASSEMBLED" | "$PYTHON" -c "
+import json,sys
+d=json.load(sys.stdin)
+for s in d.get('sources',[]): print(f'- {s}')
+" 2>/dev/null) || true
 
-# 1d. TrendRadar 最新数据
-log "Step 1d: 读取 TrendRadar 数据..."
-TR_REPORT="$HUB_DIR/tools/trendradar/output/index.html"
-if [ -f "$TR_REPORT" ]; then
-    TR_AGE_HOURS=$(( ($(date +%s) - $(stat -c %Y "$TR_REPORT")) / 3600 ))
-    if [ "$TR_AGE_HOURS" -le 24 ]; then
-        DATA_SOURCES="$DATA_SOURCES\n- TrendRadar 热榜 ✅ (${TR_AGE_HOURS}h 前更新)"
-        log "  TrendRadar 数据正常: ${TR_AGE_HOURS}h 前"
-    else
-        DATA_ISSUES="$DATA_ISSUES\n- TrendRadar 数据陈旧（${TR_AGE_HOURS}h 未更新，cron 可能停了）"
-        log "  TrendRadar 数据陈旧: ${TR_AGE_HOURS}h"
-    fi
-else
-    DATA_ISSUES="$DATA_ISSUES\n- TrendRadar 输出文件不存在"
-fi
+DATA_ISSUES=$(echo "$ASSEMBLED" | "$PYTHON" -c "
+import json,sys
+d=json.load(sys.stdin)
+for i in d.get('issues',[]): print(f'- {i}')
+" 2>/dev/null) || true
 
-# =============================================================================
-# Step 2: Gate 1 — 数据完整性检查
-# =============================================================================
-log "Step 2: Gate 1 数据完整性检查..."
-
-GATE1_PASS=true
-GATE1_RESULT=""
-DATA_SOURCE_COUNT=$(echo -e "$DATA_SOURCES" | grep -c "✅" || true)
-DATA_ISSUE_COUNT=$(echo -e "$DATA_ISSUES" | grep -c "^-" || true)
-
-if [ "$DATA_SOURCE_COUNT" -eq 0 ]; then
-    GATE1_PASS=false
-    GATE1_RESULT="FAIL — 没有任何数据源可用，无法生成优化建议"
-    log "  Gate 1 FAIL: 无可用数据源"
-elif [ "$DATA_SOURCE_COUNT" -lt 2 ]; then
-    GATE1_RESULT="WARN — 仅 ${DATA_SOURCE_COUNT}/4 个数据源可用，建议质量有限"
-    log "  Gate 1 WARN: 仅 ${DATA_SOURCE_COUNT} 个数据源"
-else
-    GATE1_RESULT="PASS — ${DATA_SOURCE_COUNT}/4 个数据源可用"
-    log "  Gate 1 PASS: ${DATA_SOURCE_COUNT} 个数据源"
-fi
+log "  数据源: $DATA_SOURCE_COUNT/4, Gate 1: $GATE1_RESULT"
 
 # Gate 1 失败 → 通知 Mason 并退出
-if [ "$GATE1_PASS" = false ]; then
+if [ "$GATE1_PASS" = "False" ] || [ "$GATE1_PASS" = "false" ]; then
     log "Gate 1 FAIL — 通知 Mason 并跳过本周"
     FAIL_MSG="⚠️ 自优化周期 — Gate 1 数据检查失败
 
 本周跳过优化建议生成。
 原因：$GATE1_RESULT
 
-数据问题：$(echo -e "$DATA_ISSUES")
+数据问题：
+$DATA_ISSUES
 
 需要检查：cron 任务是否正常运行、阿里云是否可连接"
 
