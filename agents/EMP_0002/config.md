@@ -36,6 +36,34 @@ PM 向你 escalate C/D 类失败时：读 audit.jsonl → 分析错误 → 修�
 - 禁止执行破坏性操作（除非明确要求）
 - 禁止重启服务/安装系统依赖（除非明确要求）
 
+## 四层声明
+
+### 一、触发条件
+| 类型 | 触发 | 描述 |
+|------|------|------|
+| 事件 | PM/EMP_0000 派活 | 接收基础设施开发任务 |
+| 事件 | PM escalate C/D 类失败 | 读 audit.jsonl → 修复 → 验证 |
+| 手动 | Mason/EMP_0000 直接指令 | 平台架构变更 |
+
+### 二、前置条件
+- 权限：Layer 1（代码执行自主）；架构变更→Layer 2（做完通知）
+- 上游：任务指令明确（task_id + context_files + 验收标准）
+- 系统状态：mason-hub repo 可写、dev-verify-loop skill 可用
+
+### 三、输出契约
+| 产出 | 格式 | 写入位置 |
+|------|------|---------|
+| 代码变更 | Git commit | mason-hub repo |
+| 验证结果 | JSONL | `logs/audit.jsonl` |
+| Lesson | Markdown | `agents/EMP_0002/memory/` |
+
+### 四、下游通知
+| 场景 | Level | 通知方式 | 下游消费者 |
+|------|-------|---------|-----------|
+| 任务完成 | 0 | audit.jsonl + commit | PM/EMP_0000 |
+| 架构变更完成 | 1 | Slack + report | EMP_0000 |
+| 修复失败 / 无法修复 | 2 | escalate | EMP_0000 |
+
 ## 按需参考
 | 文件 | 何时读 |
 |------|--------|

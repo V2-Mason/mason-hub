@@ -44,11 +44,24 @@ SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL", "")
 # --- 路由表 ---
 # 从 routing_table.yaml 简化为 Python dict，避免额外依赖
 ROUTING_TABLE = {
+    "xhs-crawl-complete": {
+        "preconditions": [],
+        "actions": [
+            {"type": "script", "target": "data/pipelines/data-sync.sh"},
+            {"type": "emit", "event": "data-sync-triggered"},
+        ],
+    },
     "data-sync-complete": {
         "preconditions": ["health_check_green"],
         "actions": [
             {"type": "script", "target": "skills/xhs/xhs-analyze.sh"},
             {"type": "emit", "event": "data-fresh"},
+        ],
+    },
+    "xhs-analysis-complete": {
+        "preconditions": [],
+        "actions": [
+            {"type": "emit", "event": "intel-fresh"},
         ],
     },
     "health-check-all-green": {
@@ -76,7 +89,7 @@ ROUTING_TABLE = {
     "intel-fresh": {
         "preconditions": [],
         "actions": [
-            {"type": "script", "target": "scripts/optimization-cycle.sh"},
+            {"type": "script", "target": "skills/agent-ops/optimization-cycle.sh"},
         ],
     },
     "agent-task-complete": {

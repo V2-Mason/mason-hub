@@ -313,5 +313,26 @@ $SUMMARY"
   fi
 fi
 
+# --- Sync results back to GCP mirror ---
+echo ""
+echo "--- [6/6] Syncing results to GCP mirror ---"
+if [ -f "$HUB_DIR/data/pipelines/data-sync.sh" ]; then
+  bash "$HUB_DIR/data/pipelines/data-sync.sh" --no-emit 2>&1 | tail -5
+  echo "Data sync complete"
+else
+  echo "WARNING: data-sync.sh not found, skipping mirror sync"
+fi
+
+# --- Pipeline marker + event ---
+MARKER_DIR="$HUB_DIR/data/pipelines/markers"
+mkdir -p "$MARKER_DIR"
+MARKER_DATE=$(TZ='America/New_York' date '+%Y-%m-%d')
+echo "{\"notes\":$NOTE_COUNT,\"project\":\"${PROJECT:-default}\",\"timestamp\":\"$(date -Iseconds)\"}" \
+  > "$MARKER_DIR/.done_analyze_${MARKER_DATE}"
+log_event "xhs-analysis" "market-signals" "info" "Marker written: .done_analyze_${MARKER_DATE}"
+
+"$HUB_DIR/scripts/emit_event.sh" "xhs-analysis-complete" "xhs-analyze.sh" "ok" 1 \
+  "{\"notes\":$NOTE_COUNT,\"project\":\"${PROJECT:-default}\"}" 2>/dev/null || true
+
 echo ""
 echo "=== Pipeline Complete ==="

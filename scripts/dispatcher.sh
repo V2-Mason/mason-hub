@@ -32,6 +32,22 @@ log() {
     echo "[$ts] $*" >> "$LOG_FILE"
 }
 
+# === 安全门 0: Mason 活跃 session 检测 ===
+check_mason_session() {
+    # Mason 在用 Claude Code 时，dispatcher 不派活（避免撞车）
+    # 检测方式：是否有交互式 claude 进程（排除 run-agent.sh 派生的 claude -p）
+    if pgrep -f 'claude' | while read pid; do
+        # claude -p 是 agent 进程（非交互），不算 Mason session
+        if ! grep -q '\-p' /proc/"$pid"/cmdline 2>/dev/null; then
+            exit 0  # 找到交互式 claude = Mason 在线
+        fi
+    done; then
+        log "⏸️  Mason 有活跃 session，本轮跳过"
+        return 1
+    fi
+    return 0
+}
+
 # === 安全门 1: 时间窗口 ===
 check_time_window() {
     # 24h 运行：任务去重 + lane lock + 每日上限 + 失败自动回滚已兜底
@@ -217,11 +233,14 @@ main() {
 
     log "=== Dispatcher 开始扫描 ==="
 
-    # 安全门 0: Mason /pause
+    # 安全门 0a: Mason /pause
     if [[ -f "/tmp/mason-pause" ]]; then
         log "⏸️ Mason /pause 生效中，跳过派发"
         return 0
     fi
+
+    # 安全门 0b: Mason 活跃 session
+    check_mason_session || return 0
 
     # 安全门 1: 时间
     check_time_window || return 0

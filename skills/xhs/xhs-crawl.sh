@@ -201,5 +201,17 @@ MSG="📥 *XHS 采集完成*: Task $TASK ($TASK_NAME)
 • 时间: $(TZ='America/New_York' date '+%Y-%m-%d %H:%M ET')"
 
 notify_slack "$SLACK_CHANNEL" "$MSG" "XHS Crawler" ":inbox_tray:"
+
+# --- Pipeline marker + event ---
+MARKER_DIR="$HUB_DIR/data/pipelines/markers"
+mkdir -p "$MARKER_DIR"
+MARKER_DATE=$(TZ='America/New_York' date '+%Y-%m-%d')
+echo "{\"task\":$TASK,\"account\":\"$ACCOUNT\",\"new\":$NEW_COUNT,\"total\":$AFTER_COUNT,\"timestamp\":\"$(date -Iseconds)\"}" \
+  > "$MARKER_DIR/.done_crawl_${MARKER_DATE}"
+log_event "xhs-crawler" "crawl-task-$TASK" "info" "Marker written: .done_crawl_${MARKER_DATE}"
+
+"$HUB_DIR/scripts/emit_event.sh" "xhs-crawl-complete" "xhs-crawl.sh" "ok" 1 \
+  "{\"task\":$TASK,\"account\":\"$ACCOUNT\",\"new\":$NEW_COUNT,\"total\":$AFTER_COUNT}" 2>/dev/null || true
+
 echo ""
 echo "=== XHS Crawl Complete ==="

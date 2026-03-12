@@ -111,9 +111,10 @@ cleanup() {
   # 记录异常退出（非正常结束 + 非参数错误）
   if [ $exit_code -ne 0 ] && [ $exit_code -ne 1 ]; then
     local ts
-    ts=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$ts] ❌ run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown}, line=${BASH_LINENO[0]:-?})" >> "$LOG_FILE" 2>/dev/null || true
-    echo "[$ts] ❌ run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown})" >&2
+    ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    printf '{"timestamp":"%s","agent_id":"%s","task_id":"%s","event_type":"crash","message":"run-agent.sh 异常退出 (code=%d, line=%s)"}\n' \
+      "$ts" "${AGENT_NAME:-unknown}" "${TASK_ID:-unknown}" "$exit_code" "${BASH_LINENO[0]:-?}" >> "$LOG_FILE" 2>/dev/null || true
+    echo "[$ts] run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown})" >&2
     # 异常退出也写每日日志（记忆保护）
     write_daily_log "❌ 异常退出(${exit_code})" "line=${BASH_LINENO[0]:-?}" 2>/dev/null || true
   fi
@@ -547,22 +548,63 @@ ${details}"
 }
 
 # --- 结构化日志函数 ---
+# 用法: log_structured <event_type> <message> [key=value ...]
+# 例: log_structured "verify" "Round 1 passed" round=1 exit_code=0 duration=45
 log_structured() {
   local event_type="$1"
   local message="$2"
+  shift 2
   local ts
   ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  local elapsed=$(( $(date +%s) - ${START_EPOCH:-$(date +%s)} ))
   local safe_msg
   safe_msg=$(printf '%s' "$message" | tr '"' "'" | tr '\n' ' ' | head -c 500)
-  printf '{"timestamp":"%s","agent_id":"%s","task_id":"%s","event_type":"%s","message":"%s"}\n' \
-    "$ts" "$AGENT_NAME" "$TASK_ID" "$event_type" "$safe_msg" >> "$LOG_FILE"
+
+  # 基础字段
+  local json
+  json=$(printf '{"timestamp":"%s","agent_id":"%s","task_id":"%s","event_type":"%s","elapsed_s":%d,"message":"%s"' \
+    "$ts" "$AGENT_NAME" "$TASK_ID" "$event_type" "$elapsed" "$safe_msg")
+
+  # 追加可选 key=value 扩展字段
+  for kv in "$@"; do
+    local key="${kv%%=*}"
+    local val="${kv#*=}"
+    # 数字直接输出，否则加引号
+    if [[ "$val" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
+      json="${json},\"${key}\":${val}"
+    else
+      local safe_val
+      safe_val=$(printf '%s' "$val" | tr '"' "'" | tr '\n' ' ' | head -c 200)
+      json="${json},\"${key}\":\"${safe_val}\""
+    fi
+  done
+
+  echo "${json}}" >> "$LOG_FILE"
 }
+
+# --- 日志轮转（每次启动时检查）---
+rotate_agent_log() {
+  local max_size=1048576  # 1MB
+  if [ -f "$LOG_FILE" ]; then
+    local size
+    size=$(stat -c%s "$LOG_FILE" 2>/dev/null || echo 0)
+    if [ "$size" -gt "$max_size" ]; then
+      local rotated="${LOG_FILE}.$(date +%Y%m%d_%H%M%S)"
+      mv "$LOG_FILE" "$rotated"
+      gzip "$rotated" 2>/dev/null &
+      # 保留最近 5 个归档
+      ls -t "${LOG_FILE}".*.gz 2>/dev/null | tail -n +6 | xargs rm -f 2>/dev/null || true
+    fi
+  fi
+}
+rotate_agent_log
 
 # --- 记录开始 ---
 START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 START_EPOCH=$(date +%s)
 TASK_BRIEF=$(printf '%s' "$TASK" | head -c 200 | tr '\n' ' ')
-log_structured "start" "Task started. Work dir: $RUN_DIR. Verify: $HAS_VERIFY_LOOP. Task: $TASK_BRIEF"
+log_structured "start" "Task started. Work dir: $RUN_DIR. Verify: $HAS_VERIFY_LOOP. Task: $TASK_BRIEF" \
+  work_dir="$RUN_DIR" has_verify="$HAS_VERIFY_LOOP" task_type="$TASK_TYPE" chain_depth="$CHAIN_DEPTH"
 echo "<<<AGENT_START $AGENT_NAME>>>"
 
 # === 主执行逻辑 ===
@@ -602,7 +644,9 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
   fi
 
   echo "$OUTPUT"
-  echo "$OUTPUT" >> "$LOG_FILE"
+  local output_len=${#OUTPUT}
+  log_structured "output" "$(printf '%s' "$OUTPUT" | head -c 2000 | tr '\n' ' ')" \
+    output_bytes="$output_len" duration="$DURATION"
 
   # Phase 1: 生成 summary
   cat > "${TASK_LOG_DIR}/${TASK_ID}_summary.json" <<EOSUMMARY
@@ -668,7 +712,7 @@ else
 
   while [ $ROUND -lt $MAX_VERIFY_ROUNDS ]; do
     ROUND=$((ROUND + 1))
-    log_structured "info" "Round $ROUND / $MAX_VERIFY_ROUNDS started"
+    log_structured "info" "Round $ROUND / $MAX_VERIFY_ROUNDS started" round="$ROUND" max_rounds="$MAX_VERIFY_ROUNDS"
     echo "--- Round $ROUND / $MAX_VERIFY_ROUNDS ---"
 
     # Phase 1: 保存本轮输入
@@ -694,7 +738,8 @@ else
       exit 1
     fi
 
-    echo "$OUTPUT" >> "$LOG_FILE"
+    log_structured "output" "Round $ROUND output: $(printf '%s' "$OUTPUT" | head -c 1500 | tr '\n' ' ')" \
+      round="$ROUND" output_bytes="${#OUTPUT}"
 
     # Step 2: Extract modified files
     MODIFIED=$(extract_modified_files "$OUTPUT")
@@ -715,7 +760,8 @@ else
     VERIFY_EXIT=0
     VERIFY_OUTPUT=$("$SKILLS_DIR/dev-tools/dev-verify-loop.sh" "$MODIFIED" "$TEST_MODULE" 2>&1) || VERIFY_EXIT=$?
 
-    echo "$VERIFY_OUTPUT" >> "$LOG_FILE"
+    log_structured "verify" "Round $ROUND verify (exit=$VERIFY_EXIT): $(printf '%s' "$VERIFY_OUTPUT" | head -c 1500 | tr '\n' ' ')" \
+      round="$ROUND" exit_code="$VERIFY_EXIT"
 
     # Build attempt record
     CHANGES_BRIEF=$(echo "$MODIFIED" | head -c 200)

@@ -189,4 +189,28 @@
 - 第一批 6 个（EMP_0002/0005/0009/0010/0011/0014）标记已完成但实际 config 中未见四层声明 → 可能是 frontmatter 中的 schedules/heartbeat/skills 被视为隐式覆盖
 - Gap 分类：📄 文档更新 → 已更新 8 个 config.md
 
+### agent.log 结构化改造 (2026-03-12)
+- **问题**：agent.log 混杂纯文本对话输出 + JSON 事件，2007 行中 546 行是非 JSON 纯文本，无法用 jq/python 批量查询
+- **根因**：早期 run-agent.sh 把 `echo "$OUTPUT"` 直接写入 agent.log，后来 `log_structured()` 改为 JSON 但历史数据未清理
+- **改造内容**：
+  1. `log_structured()` 增强：支持 `key=value` 扩展字段（round/exit_code/duration/output_bytes 等）+ `elapsed_s` 自动计算
+  2. 日志轮转：启动时检查 >1MB 自动归档 gzip，保留最近 5 个
+  3. 历史清理：1144 行旧格式归档为 `agent.log.pre-structured.archive.gz`，agent.log 只保留有效 JSON
+  4. 查询工具：`scripts/log-query.sh` 支持 --agent/--type/--since/--task-id/--stats 组合过滤
+  5. Schema 文档：`shared/protocols/agent-log-schema.md` 定义字段规范
+- **注意**：`START_EPOCH` 在 `log_structured` 中用 `${START_EPOCH:-$(date +%s)}` fallback，防止函数定义早于变量赋值
+- Gap 分类：🏗️ 系统能力缺失 → 已修复
+
 ## 踩坑记录
+
+### backlog-scanner section_context 泄漏 (2026-03-12)
+- `infer_line()` 用的是 `current_section` 而非 `section_context`，导致子标题（P0/P1/P2）切换时丢失父级关键词
+- `is_section_blocked()` 用 `section_context` 检查，但 context 会从上一个 `**...**:` 父级泄漏到不相关的 section
+- 修复：引入 `parent_section` 变量，子标题继承父级；阻塞检查改用 `current_section`（只看直接标题）
+- Gap 类型：设计缺口 — 数据流向没画清楚就写代码
+
+### Dispatcher Mason 让路机制 (2026-03-12)
+- Mason 在用 Claude Code 时 dispatcher 会撞车（同一任务被手动和自动各派一次）
+- 修复：检测交互式 claude 进程（排除 `claude -p` agent 进程），有就跳过本轮
+- 配合已有的 `/tmp/mason-pause` 手动开关形成两层让路
+- Gap 类型：设计缺口 — 多入口调度没考虑互斥

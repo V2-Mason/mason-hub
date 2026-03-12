@@ -23,6 +23,7 @@ MIRROR_DIR="/home/hangn/mason-hub/data/mirror"
 SLACK_NOTIFY="/home/hangn/slack-bot/slack_notify.sh"
 SLACK_CHANNEL="#system-alerts"
 SEND_SLACK=false
+EMIT_EVENT=true
 
 REMOTE_DB="/opt/mediacrawler/database/sqlite_tables.db"
 REMOTE_ANALYSIS_DIR="/opt/mediacrawler/analysis"
@@ -34,6 +35,7 @@ TIMESTAMP=$(TZ='America/New_York' date '+%Y-%m-%d %H:%M:%S ET')
 for arg in "$@"; do
   case "$arg" in
     --slack) SEND_SLACK=true ;;
+    --no-emit) EMIT_EVENT=false ;;
   esac
 done
 
@@ -156,10 +158,14 @@ fi
 
 # 只在全部失败时返回非零退出码
 if [ "$SYNC_OK" -eq 0 ] && [ "$TOTAL" -gt 0 ]; then
-  "$HUB_DIR/scripts/emit_event.sh" "data-sync-failed" "data-sync.sh" "failed" 2 "{\"synced\":$SYNC_OK,\"total\":$TOTAL}" 2>/dev/null || true
+  if [ "$EMIT_EVENT" = true ]; then
+    "$HUB_DIR/scripts/emit_event.sh" "data-sync-failed" "data-sync.sh" "failed" 2 "{\"synced\":$SYNC_OK,\"total\":$TOTAL}" 2>/dev/null || true
+  fi
   exit 1
 fi
 
 # 发射事件: 数据同步完成
-"$HUB_DIR/scripts/emit_event.sh" "data-sync-complete" "data-sync.sh" "ok" 1 "{\"synced\":$SYNC_OK,\"total\":$TOTAL}" 2>/dev/null || true
+if [ "$EMIT_EVENT" = true ]; then
+  "$HUB_DIR/scripts/emit_event.sh" "data-sync-complete" "data-sync.sh" "ok" 1 "{\"synced\":$SYNC_OK,\"total\":$TOTAL}" 2>/dev/null || true
+fi
 exit 0

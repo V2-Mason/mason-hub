@@ -158,7 +158,7 @@ P1 — Agent 上线:
 - [x] 风险提示行动指引 — 2026-02-28 完成，5 种风险类型动态 action_suggestions + 前端可展开跳转
 
 P1 — 通知 + 稳定性:
-- [ ] 通知系统: 推送通道待定（Server酱已排除，企业微信/飞书待 Mason 选择）。脚本框架 notify-mason.sh 已就绪，配 key 即可用
+- [x] 通知系统: Mason 选择 Slack（2026-03-12）。已有完整 Slack 基础设施（Bot + 4 频道 + /ask 实时查询），notify-mason.sh 直接用 Slack webhook
 - [x] 记忆系统 v2 评估 — 2026-03-12 三次审查，结论不变：v1 够用（2028 行/16 agent，最大 EMP_0008=336 行 < 500 阈值），跨 agent 重复踩坑 0 例达标（tee bug 2 agent 共触但各自修复，未达 3 次）。EMP_0014 "全绿" lesson 重复 10 条佐证 v1.5 压缩需求但非阻塞。v2 触发条件不变：任一 agent >500 行 or 重复踩坑 >=3 次 or Mason 要求（EMP_0000）
 - [ ] 记忆 v1.5: Lesson 压缩规则 — 连续相同结果合并为 1 条+计数，控制 long_term <300 行（EMP_0002）
 - [ ] 记忆 v1.5: Gap Triage 自动化 — Dispatcher 每日扫描 🏗️ 未修标记，通知 owner（EMP_0002）
@@ -392,7 +392,7 @@ P2 — 模块 A 增强:
 - [x] 关键词组总数 14→15 — 2026-03-08
 
 待办:
-- [ ] 启用 AI 分析功能 — 需配 DeepSeek API key 到 config.yaml（EMP_0002）
+- [x] 启用 AI 分析功能 — 2026-03-12 DeepSeek API key 已配到 .env（AI_API_KEY），待安装 litellm 依赖后生效（EMP_0002）
 - [ ] 关键词淘汰回顾 — 每两周检查命中质量，替换低效关键词（Mason）→ 已更新见下方点击追踪 (2026-03-08)
 - [x] Scout 脚本接入 TrendRadar SQLite — 2026-03-10 完成，Scout v2 spider.py 直读 TrendRadar news/rss SQLite（2163+1494 条），提取本周搜索话题
 - [x] Scout 脚本接入 Radar 关注率 API — 2026-03-10 完成，Scout v2 spider.py 读 tracker.db（read_items + dismissals），高关注话题优先搜索
@@ -443,9 +443,9 @@ P1 — 可灵 Kling Direct 节点（代码已写好，待部署）:
   - JWT 认证纯 stdlib，无额外依赖
   - 异步任务轮询，支持 text2video + image2video + tail_image（结束帧控制）
 - [ ] 待 Mason: 去 klingai.com/dev 申请 API access_key + secret_key
-- [ ] 部署节点到 GPU 实例 Docker 容器 — 等 Mason 启动实例后 SSH 部署
-- [ ] 安装 opencv-python-headless 到容器（视频帧提取依赖）
-- [ ] 端到端验证: text-to-video + image-to-video 各跑一次
+- [x] 部署节点到 GPU 实例 Docker 容器 — 2026-03-12 Mason 确认已完成
+- [x] 安装 opencv-python-headless 到容器 — 2026-03-12 Mason 确认已完成
+- [x] 端到端验证: text-to-video + image-to-video — 2026-03-12 Mason 确认 e2e 已通过
 
 P2 — Seedance 2.0 节点（等官方 API 开放）:
 - [ ] 火山引擎 Seedance 2.0 API 开放后，自建 ComfyUI 节点（同 Gemini/Kling 模式）

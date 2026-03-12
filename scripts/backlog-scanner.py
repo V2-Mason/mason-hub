@@ -66,7 +66,7 @@ BLOCKED_SECTION_KEYWORDS = [
 REDLINE_KEYWORDS = [
     "品牌定位", "定价策略", "推广预算",
     "账号操作", "删帖", "小红书.*发布",
-    "密钥创建", "密码修改", "credentials.*共享",
+    "密钥创建", "密码修改", "credentials.*明文",
     "MASON_AUTHORITY",
     "新建.*Agent", "删除.*Agent",
 ]
@@ -78,6 +78,7 @@ AGENT_INLINE_PATTERN = re.compile(r'EMP_(\d{4})')
 
 # Agent ID → 配置文件路径
 AGENT_CONFIG = {
+    "0000": "agents/EMP_0000/config.md",
     "0001": "agents/EMP_0001/config.md",
     "0002": "agents/EMP_0002/config.md",
     "0003": "agents/EMP_0003/config.md",
@@ -110,6 +111,14 @@ LINE_MAPPING = {
     "EMP_0013": "商业运营线",
     "ComfyUI": "内容生产线",
     "Radar": "数据线",
+    "china-hub": "数据线",
+    "看板": "数据线",
+    "Webhook": "商业运营线",
+    "Agent 角色": "自治线",
+    "agent.log": "审计",
+    "system_feedback": "数据线",
+    "记忆系统": "自治线",
+    "四层声明": "自治线",
 }
 
 
@@ -192,6 +201,8 @@ def parse_backlog(backlog_text: str) -> list[dict]:
     """解析 backlog 中所有未完成的 [ ] 任务"""
     tasks = []
     current_section = ""
+    # 父级 section（**...**:），子标题切换时保留
+    parent_section = ""
     # 累积 section 上下文（包括 > 引用块中的条件信息）
     section_context = ""
     lines = backlog_text.splitlines()
@@ -202,10 +213,16 @@ def parse_backlog(backlog_text: str) -> list[dict]:
         # 跟踪当前 section（用于推断能力线）
         if stripped.startswith("**") and stripped.endswith("**:"):
             current_section = stripped
+            parent_section = stripped
             section_context = stripped
         elif stripped.startswith("P") and " — " in stripped[:6] and stripped[:2] in ("P0", "P1", "P2"):
             current_section = stripped
-            section_context = stripped
+            # 保留父级上下文，子标题追加而非替换
+            section_context = parent_section + " " + stripped
+        elif re.match(r'^Phase \d', stripped):
+            # "Phase N — ..." 也是 section 切换，保留父级上下文
+            current_section = stripped
+            section_context = parent_section + " " + stripped
         elif stripped.startswith(">"):
             section_context += " " + stripped
 
@@ -232,8 +249,8 @@ def parse_backlog(backlog_text: str) -> list[dict]:
         agent_id = extract_agent(stripped)
         agent_path = AGENT_CONFIG.get(agent_id, "") if agent_id else ""
 
-        # 推断能力线
-        cap_line = infer_line(stripped, current_section)
+        # 推断能力线（用 section_context 包含父级关键词）
+        cap_line = infer_line(stripped, section_context)
 
         # 生成任务 ID（从描述中取关键词）
         task_id = f"backlog-{i}"
@@ -266,8 +283,8 @@ def filter_actionable(tasks: list[dict], system_map_text: str) -> tuple[list[dic
         if hits_redline(task["raw"]):
             skip_reason = "🔴 触碰红线"
 
-        # 过滤 2: Section 级别阻塞
-        elif is_section_blocked(task.get("section_context", "")):
+        # 过滤 2: Section 级别阻塞（只检查当前 section 标题，不含父级）
+        elif is_section_blocked(task.get("section", "")):
             skip_reason = "⏳ Section 阻塞"
 
         # 过滤 3: 外部依赖
