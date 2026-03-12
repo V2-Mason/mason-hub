@@ -16,7 +16,7 @@ import os
 import re
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
@@ -134,6 +134,69 @@ def get_today_task_status() -> dict[str, str]:
     return result
 
 
+def get_yesterday_failed_max() -> set[str]:
+    """从 audit.jsonl 读取昨天 failed_max 的任务描述前缀。
+
+    这些任务今天应该降优先级（排到最后），让其他任务先跑。
+    同时记录到 data/failed_tasks_for_review.jsonl 供 Mason + Meta Manager 决策。
+    """
+    yesterday_str = str(date.today() - timedelta(days=1))
+    failed_descs: set[str] = set()
+    task_status: dict[str, list[str]] = {}
+
+    if not AUDIT_LOG.exists():
+        return failed_descs
+
+    try:
+        for line in AUDIT_LOG.read_text().strip().split("\n"):
+            if not line.strip():
+                continue
+            try:
+                entry = json.loads(line)
+                ts = entry.get("timestamp", "")
+                if yesterday_str in ts:
+                    task_desc = entry.get("task", "")
+                    status = entry.get("status", "")
+                    if task_desc and status:
+                        task_status.setdefault(task_desc, []).append(status)
+            except json.JSONDecodeError:
+                pass
+    except Exception:
+        pass
+
+    for desc, statuses in task_status.items():
+        if "completed" not in statuses and statuses.count("failed") >= 2:
+            failed_descs.add(desc)
+
+    # 记录到待决策文件
+    if failed_descs:
+        review_file = HUB_DIR / "data" / "failed_tasks_for_review.jsonl"
+        today_str = str(date.today())
+        # 检查今天是否已记录过，避免重复
+        existing = set()
+        if review_file.exists():
+            for line in review_file.read_text().strip().split("\n"):
+                if line.strip():
+                    try:
+                        entry = json.loads(line)
+                        if entry.get("date") == today_str:
+                            existing.add(entry.get("task_desc", ""))
+                    except json.JSONDecodeError:
+                        pass
+        with open(review_file, "a") as f:
+            for desc in failed_descs:
+                if desc not in existing:
+                    f.write(json.dumps({
+                        "date": today_str,
+                        "failed_date": yesterday_str,
+                        "task_desc": desc,
+                        "status": "pending_review",
+                        "note": "昨日2轮失败，已降优先级，待 Mason + Meta Manager 决策"
+                    }, ensure_ascii=False) + "\n")
+
+    return failed_descs
+
+
 def is_task_running(task_id: str) -> bool:
     """检查任务是否正在运行（通过 summary.json 状态判断）"""
     # 检查今天的 report 日志是否有对应进程还活着
@@ -172,6 +235,7 @@ def main():
     backlog_text = BACKLOG_FILE.read_text() if BACKLOG_FILE.exists() else ""
     system_map_text = SYSTEM_MAP_FILE.read_text() if SYSTEM_MAP_FILE.exists() else ""
     today_task_status = get_today_task_status()
+    yesterday_failed = get_yesterday_failed_max()
 
     # --- 静态任务过滤 ---
     static_actionable = []
@@ -231,8 +295,10 @@ def main():
                 print(f"  ⏸️  [{priority}] {tid}: 能力线 {line} = {line_status}")
             continue
 
+        is_demoted = any(desc[:30] in fd for fd in yesterday_failed)
         if mode == "--list":
-            print(f"  🟢 [{priority}] {tid} → {agent}: {desc[:60]}")
+            demote_tag = " ⬇️昨日失败降级" if is_demoted else ""
+            print(f"  🟢 [{priority}] {tid} → {agent}: {desc[:60]}{demote_tag}")
 
         static_actionable.append(task)
 
@@ -243,16 +309,21 @@ def main():
         for t in dynamic_tasks:
             print(f"  📋 [{t.get('priority', 'P2')}] {t['id']} → {t.get('agent', '?')}: {t.get('description', '')[:60]}")
 
-    # --- 合并 + 排序（静态优先，同优先级静态在前）---
+    # --- 合并 + 排序（昨日失败降级，优先做别的任务）---
     all_actionable = []
     for t in static_actionable:
         t["_source"] = "static"
+        # 标记昨天失败的任务
+        desc = t.get("description", "")
+        t["_yesterday_failed"] = any(desc[:30] in fd for fd in yesterday_failed)
         all_actionable.append(t)
     for t in dynamic_tasks:
         t["_source"] = "dynamic"
+        t["_yesterday_failed"] = False
         all_actionable.append(t)
 
     all_actionable.sort(key=lambda t: (
+        1 if t.get("_yesterday_failed") else 0,  # 昨日失败的排最后
         PRIORITY_ORDER.get(t.get("priority", "P2"), 2),
         0 if t["_source"] == "static" else 1,
     ))

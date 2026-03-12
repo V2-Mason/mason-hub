@@ -77,3 +77,16 @@
 - 目录重组: skills/ 68 文件 → 10 子目录，agents/ 每 agent 独立目录
 
 ### Gap 类型: 🔧 配置错误（PATH）+ 🏗️ 系统能力缺失（Task 结构化/实时触发）
+
+## Dispatcher 失败降级策略 (2026-03-12)
+
+### 背景
+Mason 决策：反复失败的任务不应无限重试占用额度，第二天应优先做别的。
+
+### 实现
+- `find-actionable-task.py` 新增 `get_yesterday_failed_max()`，查昨天 audit 中 ≥2 次 failed 的任务
+- 排序三元组变为 `(yesterday_failed, priority, source)`，失败任务排最后
+- 持续失败写 `data/failed_tasks_for_review.jsonl`，Mason + Meta Manager 手动裁决
+- `--list` 输出中标注 `⬇️昨日失败降级`
+
+### Gap 类型: 🏗️ 调度策略缺失（失败任务无降级机制，反复浪费 agent 额度）
