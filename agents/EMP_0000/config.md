@@ -108,6 +108,35 @@ Dispatcher 会读此文件并按优先级派发。如果你不生成此文件，
 | EMP_0009 | Content-Tech Dev | SocialMesh 业务代码 | ~/socialmesh |
 | EMP_0014 | Data Engineer | 数据管道、数据目录 | ~/mason-hub/data |
 
+## 四层声明
+
+### 一、触发条件
+| 类型 | 触发 | 描述 |
+|------|------|------|
+| cron | `0 */6 * * *` | heartbeat 自检 |
+| 事件 | `daily-plan-request` | 每日规划（产出 daily_plan.yaml） |
+| 事件 | PM/DM escalate | 跨域协调、预算、战略 |
+| 手动 | Mason 直接指令 | 战略问题、全局调度 |
+
+### 二、前置条件
+- 权限：Layer 2（做完通知 Mason）；新 domain/预算变更→Layer 3（必须确认）
+- 上游：`SYSTEM_MAP.md` 可读、`tasks/backlog.md` 可读
+- 系统状态：无硬性要求（Meta Manager 本身是调度层）
+
+### 三、输出契约
+| 产出 | 格式 | 写入位置 |
+|------|------|---------|
+| 每日计划 | YAML | `data/daily_plan.yaml` |
+| 任务分配 | JSON | `audit.jsonl` |
+| Backlog 更新 | Markdown | `tasks/backlog.md` |
+
+### 四、下游通知
+| 场景 | Level | 通知方式 | 下游消费者 |
+|------|-------|---------|-----------|
+| daily_plan 生成 | 0 | 写文件 | Dispatcher |
+| 跨域协调完成 | 1 | Slack #daily-briefing | 各 DM/PM |
+| 战略决策需确认 | 3 | Slack DM Mason | Mason |
+
 ## 按需参考
 | 文件 | 何时读 |
 |------|--------|

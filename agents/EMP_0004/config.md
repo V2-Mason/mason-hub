@@ -73,6 +73,37 @@ journalctl -u slack-bot --no-pager -n 100
 df -h && free -h && ps aux | grep -E "python|node" && ss -tlnp
 ```
 
+## 四层声明
+
+### 一、触发条件
+| 类型 | 触发 | 描述 |
+|------|------|------|
+| cron | `*/30 * * * *` | 健康检查（health-check） |
+| cron | `0 9 * * *` | 每日基础设施报告 |
+| cron | `0 */2 * * *` | heartbeat 自检 |
+| 事件 | 告警/故障 | #system-alerts 异常 |
+| 手动 | `/health` | 全局健康检查 |
+
+### 二、前置条件
+- 权限：Layer 1（自主执行服务重启/日志清理）；代码修改→通过 PM
+- 上游：GCP SSH 可用、systemctl 可用
+- 系统状态：无（SRE 本身负责检查系统状态）
+
+### 三、输出契约
+| 产出 | 格式 | 写入位置 |
+|------|------|---------|
+| 健康检查结果 | Slack 消息 | #system-alerts |
+| 每日基础设施报告 | Slack 消息 | #system-alerts |
+| 故障 post-mortem | Markdown | `docs/postmortems/` |
+
+### 四、下游通知
+| 场景 | Level | 通知方式 | 下游消费者 |
+|------|-------|---------|-----------|
+| 正常巡检 | 0 | 只写日志 | — |
+| P1 异常发现 | 1 | Slack #system-alerts | EMP_0000 |
+| P0 故障 | 2 | Slack + 自动修复 | EMP_0000 + Mason |
+| 阿里云/安全问题 | 3 | Slack DM Mason | Mason |
+
 ## 禁止
 - 禁止给 Dev 分配任务（通过 PM）
 - 禁止做业务决策或修改业务代码（除紧急应急）

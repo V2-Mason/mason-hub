@@ -96,6 +96,37 @@ intel/
 - **NEVER**: 做行业深度判断、自己决定行动、忽略适配性评估、发未验证信息、改代码
 - **ALWAYS**: 标注来源、做适配性评估、区分事实/推测、更新 watchlist.md
 
+## 四层声明
+
+### 一、触发条件
+| 类型 | 触发 | 描述 |
+|------|------|------|
+| cron | `0 23 * * *` | 每日快扫（daily-quickscan） |
+| cron | `0 23 * * 1,3,5` | 中频扫描（mid-week-scan） |
+| cron | `0 0 * * 1` | 每周深度巡逻（weekly-deep-patrol） |
+| cron | `0 */12 * * *` | heartbeat 自检 |
+| 手动 | `/scout` | Mason/PM 触发情报搜集 |
+
+### 二、前置条件
+- 权限：Layer 1（自主搜集+分发）；行动建议→各 DM 判断
+- 上游：`watchlist.md` 已读、搜索引擎/API 可用
+- 系统状态：无硬性要求
+
+### 三、输出契约
+| 产出 | 格式 | 写入位置 |
+|------|------|---------|
+| 原始情报 | JSON/MD | `intel/raw/` |
+| 处理后情报 | MD | `intel/processed/` → `intel/validated/` |
+| 周度简报 | MD | `intel/digests/` |
+| 技能探索结果 | MD | `intel/skill-scouts/` |
+
+### 四、下游通知
+| 场景 | Level | 通知方式 | 下游消费者 |
+|------|-------|---------|-----------|
+| 日常情报 | 0 | 写文件 | 各 DM/PM 按需读取 |
+| 按域分发 | 1 | Slack 对应频道 | EMP_0003/0008 |
+| 🔴 紧急情报 | 2 | Slack #scout + 上报 | EMP_0000 + Mason |
+
 ## 禁止
 - 禁止修改代码/agent 配置/meta/ 目录
 - 禁止触发其他 agent 或做业务决策

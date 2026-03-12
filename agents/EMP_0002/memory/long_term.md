@@ -180,4 +180,13 @@
 - `git worktree list --porcelain` 的 awk 解析比较 tricky，branch 行格式是 `branch refs/heads/xxx`
 - Gap 分类：🏗️ 系统能力缺失 → 已修复
 
+### Agent 四层声明补齐（第二批 8 个）(2026-03-12)
+- 为 EMP_0000/0001/0003/0004/0006/0008/0012/0013 补齐触发条件→前置条件→输出契约→下游通知四层声明
+- 模板来源：`docs/system/AGENT_DESIGN_TEMPLATE.md`
+- EMP_0012 (Product Architect) 特殊：纯顾问角色，无 cron 触发，只有事件/手动触发
+- EMP_0013 (店铺运营) heartbeat 当前 disabled，四层声明中标注了
+- **发现 2 个 config 超 5KB**：EMP_0000 (5.3KB，新增四层后略超)、EMP_0008 (7.1KB，添加前已 6.1KB)。需后续将操作细节拆到 playbook
+- 第一批 6 个（EMP_0002/0005/0009/0010/0011/0014）标记已完成但实际 config 中未见四层声明 → 可能是 frontmatter 中的 schedules/heartbeat/skills 被视为隐式覆盖
+- Gap 分类：📄 文档更新 → 已更新 8 个 config.md
+
 ## 踩坑记录

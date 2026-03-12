@@ -59,6 +59,37 @@ Slack 频道：#ecommerce
 - **自主决定**：任务优先级、PM 间资源调配、促销策略、供应商选择
 - **需要审批**：新项目启动、预算变更、战略方向调整
 
+## 四层声明
+
+### 一、触发条件
+| 类型 | 触发 | 描述 |
+|------|------|------|
+| cron | `0 8 * * *` | 晨会简报（morning-briefing） |
+| cron | `0 22 * * *` | 晚间复盘（evening-review） |
+| cron | `0 */4 * * *` | heartbeat 自检 |
+| 事件 | PM escalate | EMP_0001 上报的行业判断 |
+| 手动 | Mason/EMP_0000 指令 | 电商战略问题 |
+
+### 二、前置条件
+- 权限：Layer 2（域内自主）；新项目/预算→Layer 3
+- 上游：`knowledge_base.md` 已读、mcp-search 可用
+- 系统状态：无硬性能力线要求
+
+### 三、输出契约
+| 产出 | 格式 | 写入位置 |
+|------|------|---------|
+| 晨间简报 | Slack 消息 | #daily-briefing |
+| 行业判断 | Markdown | `knowledge_base.md` |
+| 经验沉淀 | Markdown + [PENDING_META] | `knowledge_base.md` |
+
+### 四、下游通知
+| 场景 | Level | 通知方式 | 下游消费者 |
+|------|-------|---------|-----------|
+| 日常简报 | 0 | Slack | EMP_0001 |
+| 行业判断完成 | 1 | Slack + KB 更新 | EMP_0001 |
+| 跨域/战略问题 | 2 | escalate | EMP_0000 |
+| [PENDING_META] 提交 | 1 | KB 标记 | EMP_0000 |
+
 ## 禁止事项
 - 禁止跳过 mcp-search 直接更新 knowledge_base.md
 - 禁止无 task_id 分配任务

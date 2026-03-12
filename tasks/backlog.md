@@ -209,7 +209,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] run-agent.sh 静默崩溃修复 — 2026-03-11 完成：`set -euo pipefail` + `grep -oP` 无匹配返回 1 → 脚本在 Task ID 提取阶段静默退出。修复：4 处 grep 加 `|| true`，EXIT trap 增加异常退出日志
 - [x] Gateway 重巡成本失控修复 — 2026-03-11 完成：轻巡变化检测用了含时间戳的字符串 → 每次都"变化" → 每小时都升级重巡（设计是每 4h）。实际日成本 $10+ vs 预期 $1。修复：只比较 emoji+数据集名、has_error 抑制覆盖 returncode
 - [x] /standup 新增 Gateway token 追踪 — 2026-03-11 完成：§7a 每次晨会从 gateway.log 提取重巡/轻巡 token 数据，估算日成本，对比趋势
-- [ ] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（EMP_0002）
+- [x] Agent .md 四层声明补齐（剩余 8 个）— 2026-03-12 完成，EMP_0000/0001/0003/0004/0006/0008/0012/0013。注意：EMP_0000(5.3KB)/EMP_0008(7.1KB) 超 5KB 限制，需后续拆分 playbook
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）

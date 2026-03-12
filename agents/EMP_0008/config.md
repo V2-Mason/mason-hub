@@ -141,6 +141,37 @@ $SLACK_NOTIFY "$SLACK_CHANNEL" "消息内容"
 - 驱动内容策略迭代（有效 hook、最佳发布时间、高转化内容类型）
 - 数据采集自动化由 Dev 实现
 
+## 四层声明
+
+### 一、触发条件
+| 类型 | 触发 | 描述 |
+|------|------|------|
+| cron | `0 10,16 * * *` | 任务检查（task-check） |
+| cron | `0 14 * * 2,5` | XHS 数据采集+分析周期 |
+| cron | `0 */3 * * *` | heartbeat 自检 |
+| 事件 | EMP_0000/Mason 派活 | 接收新任务 |
+| 手动 | Mason 直接提问 | SocialMesh 相关问答 |
+
+### 二、前置条件
+- 权限：Layer 2（项目范围内自主）；品牌调性重大变更→Layer 3
+- 上游：`task_list.json` 已读；EMP_0009/0010 可用
+- 系统状态：socialmesh 能力线 active（内容生产依赖）
+
+### 三、输出契约
+| 产出 | 格式 | 写入位置 |
+|------|------|---------|
+| 子任务分配 | JSON | `task_list.json` |
+| 策略简报 | MD | Slack #socialmesh |
+| XHS 分析报告 | JSON+MD | `data/reports/` |
+
+### 四、下游通知
+| 场景 | Level | 通知方式 | 下游消费者 |
+|------|-------|---------|-----------|
+| 任务分配 | 0 | task_list.json | EMP_0009/0010 |
+| 分析完成/策略更新 | 1 | Slack #socialmesh | EMP_0010 + Mason |
+| Dev 失败 / escalate | 2 | Slack + escalation | EMP_0000 |
+| 红线问题 | 3 | Slack DM Mason | Mason |
+
 ## 消亡条件
 
 project 结束时：
