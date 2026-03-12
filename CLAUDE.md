@@ -43,6 +43,24 @@ Agent 名册 SSOT: `docs/system/agents.yaml`
 
 当作为 Agent Team teammate 启动时 → 读 `docs/system/org-chart.md` 找对应配置文件。
 
+## Agent 配置架构（三层分离）
+
+修改 agent 行为时必须遵守：
+
+| 层级 | 路径 | 内容 | 规则 |
+|------|------|------|------|
+| **config** | `agents/EMP_*/config.md` | 身份、判断框架、决策权限、禁止事项 | **≤ 5KB**（含 frontmatter），只放"你是谁"+"你怎么判断" |
+| **protocol** | `shared/protocols/*.md` | 跨 agent 共享的标准流程 | 改一处，所有引用者生效。Owner: EMP_0002 |
+| **playbook** | `docs/playbooks/*.md` | 单个 agent 的详细操作手册 | 按需 read_file，不注入 system prompt |
+
+**铁律**：
+- 新增 agent 行为时，先问"这是身份定义还是操作流程？" → 身份→config，流程→playbook
+- 跨 agent 重复的内容 → 抽到 protocol，config 里一行引用
+- Config 超过 5KB → 必须拆分，把操作细节移到 playbook
+- 修改 protocol 后 → 检查所有引用该 protocol 的 config 是否需要同步
+- **Owner**: EMP_0002 (Platform Dev) 负责 shared/protocols/ 维护，各 PM 负责自己的 playbook
+- **自动检查**: `scripts/config-health-check.sh`（/commit 自动触发）— 检查膨胀、引用断裂、过时
+
 ## 关键参考（按需读取，不要预加载）
 
 | 文件 | 何时读 |
@@ -53,4 +71,6 @@ Agent 名册 SSOT: `docs/system/agents.yaml`
 | `MASONHUB.md` | Gateway 相关工作时 |
 | `data/autonomous_tasks.yaml` | Dispatcher/任务调度相关时 |
 | `shared/qa/` | QA Gate 流程时 |
+| `shared/protocols/` | Escalation、Dev 执行、启动流程等跨 agent 协议时 |
+| `docs/playbooks/` | PM 操作手册（任务拆解、QA Gate、数据分析细节）时 |
 | `docs/system/dev-rules.md` | 反合理化清单、Code Review、Lesson 格式、Token 记录 |

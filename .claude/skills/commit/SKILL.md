@@ -65,6 +65,19 @@
 
 **注意**：只写"影响 Gateway 告警行为"的决策。战略讨论、产品定义、架构方向等留在 MEMORY.md，不写这里。
 
+## 5b. 配置架构一致性检查（自动）
+
+如果本次变更涉及 `agents/EMP_*/config.md`、`shared/protocols/`、`docs/playbooks/`，运行：
+
+```bash
+bash ~/mason-hub/scripts/config-health-check.sh --brief
+```
+
+有警告时：
+- **Config 膨胀** → 必须拆分到 playbook 后再 commit
+- **引用断裂** → 修复引用或创建缺失文件后再 commit
+- **Protocol/Playbook 过时** → 记录到 commit message 中，不阻塞提交
+
 ## 6. 执行 Git Commit
 
 - `git add` 所有相关文件（包括步骤 2-4 更新的记忆、backlog、gateway-known-states.yaml）
