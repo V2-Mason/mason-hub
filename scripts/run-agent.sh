@@ -83,6 +83,29 @@ if [ -x "$LANE_LOCK" ]; then
   fi
 fi
 
+# --- 每日日志写入函数 ---
+write_daily_log() {
+  local status="$1"
+  local note="${2:-}"
+  local daily_dir="$HUB_DIR/memory/daily"
+  local daily_file="$daily_dir/$(date +%Y-%m-%d).md"
+  mkdir -p "$daily_dir"
+
+  # 首次创建当天日志时加表头
+  if [ ! -f "$daily_file" ]; then
+    cat > "$daily_file" <<DAILYHDR
+# $(date +%Y-%m-%d) 每日日志
+
+| 时间 | Agent | 任务 | 结果 | 备注 |
+|------|-------|------|------|------|
+DAILYHDR
+  fi
+
+  local task_short
+  task_short=$(printf '%s' "$TASK" | head -c 40 | tr '\n' ' ')
+  echo "| $(date +%H:%M) | ${AGENT_NAME:-?} | ${task_short} | ${status} | ${note} |" >> "$daily_file"
+}
+
 cleanup() {
   local exit_code=$?
   # 记录异常退出（非正常结束 + 非参数错误）
@@ -91,6 +114,8 @@ cleanup() {
     ts=$(date '+%Y-%m-%d %H:%M:%S')
     echo "[$ts] ❌ run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown}, line=${BASH_LINENO[0]:-?})" >> "$LOG_FILE" 2>/dev/null || true
     echo "[$ts] ❌ run-agent.sh 异常退出 (code=$exit_code, agent=${AGENT_NAME:-unknown})" >&2
+    # 异常退出也写每日日志（记忆保护）
+    write_daily_log "❌ 异常退出(${exit_code})" "line=${BASH_LINENO[0]:-?}" 2>/dev/null || true
   fi
   # 释放 lane lock
   if [ -n "${AGENT_LANE:-}" ] && [ -x "${LANE_LOCK:-}" ]; then
@@ -174,6 +199,12 @@ if [ -z "$TASK_ID" ]; then
 fi
 mkdir -p "$TASK_LOG_DIR"
 
+# --- Phase 1.5: 每日日志注入（今天+昨天，保证连续性）---
+# 借鉴 OpenClaw：agent 启动时自动知道"最近发生了什么"
+DAILY_DIR="$HUB_DIR/memory/daily"
+DAILY_TODAY="$DAILY_DIR/$(date +%Y-%m-%d).md"
+DAILY_YESTERDAY="$DAILY_DIR/$(date -d yesterday +%Y-%m-%d).md"
+
 # --- Phase 2: 经验记忆注入（语义搜索优先，全量回退）---
 # 预算：注入内容不超过 MAX_INJECT_CHARS 字符（约 MAX_INJECT_CHARS/4 tokens）
 MAX_INJECT_CHARS=16000  # ~4000 tokens
@@ -233,6 +264,10 @@ except:
   fi
   return 1
 }
+
+# --- 每日日志注入（今天+昨天）---
+inject_if_exists "$DAILY_YESTERDAY" "📅 昨日日志"
+inject_if_exists "$DAILY_TODAY" "📅 今日日志"
 
 # 策略：语义搜索优先（跨 agent 精准召回），失败才回退全量 lessons
 # 之前两个都注入，浪费 ~1000-2000 tokens
@@ -557,6 +592,7 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
     echo "❌ claude -p 返回空或无效输出 (len=${#OUTPUT})" >&2
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
     write_audit "failed" ',"error":"empty_output"' "$TOKEN_DATA"
+    write_daily_log "❌ 空输出" "${DURATION}s"
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
     if [ -x "$EMIT_EVENT" ]; then
       "$EMIT_EVENT" "agent-task-failed" "$AGENT_NAME" "error" 2 \
@@ -575,6 +611,7 @@ EOSUMMARY
 
   TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
   write_audit "completed" "" "$TOKEN_DATA"
+  write_daily_log "✅" "${DURATION}s"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
 
   # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
@@ -653,6 +690,7 @@ else
       echo "❌ claude -p 返回空或无效输出 (round $ROUND, len=${#OUTPUT})" >&2
       TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
       write_audit "failed" ",\"error\":\"empty_output_round${ROUND}\",\"verify_round\":$ROUND" "$TOKEN_DATA"
+      write_daily_log "❌ 空输出(R${ROUND})" ""
       exit 1
     fi
 
@@ -726,6 +764,7 @@ EOSUMMARY
 
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
     write_audit "completed" ",\"verify_rounds\":$ROUND" "$TOKEN_DATA"
+    write_daily_log "✅" "R${ROUND} ${DURATION}s"
 
     # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
@@ -797,6 +836,7 @@ EOSUMMARY
     # 3.3 写入审计日志（统一格式 + token 数据）
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
     write_audit "repair_failed" ",\"verify_rounds\":$ROUND,\"pm_retry_count\":$PM_RETRY_COUNT,\"root_cause_guess\":\"$ROOT_CAUSE\"" "$TOKEN_DATA"
+    write_daily_log "❌ 修复失败(R${ROUND})" "PM重试${PM_RETRY_COUNT}"
 
     # 发射任务失败事件（供 Dispatcher/Gateway 追踪）
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"

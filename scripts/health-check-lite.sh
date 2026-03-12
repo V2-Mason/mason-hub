@@ -73,6 +73,14 @@ if [ "$mem_pct" -gt 90 ]; then
   details+=("mem_pct:${mem_pct}")
 fi
 
+# --- 7. 每日日志清理（>7 天归档）---
+DAILY_DIR="$HUB_DIR/memory/daily"
+DAILY_ARCHIVE="$DAILY_DIR/archive"
+if [ -d "$DAILY_DIR" ]; then
+  mkdir -p "$DAILY_ARCHIVE"
+  find "$DAILY_DIR" -maxdepth 1 -name "*.md" -mtime +7 -exec mv {} "$DAILY_ARCHIVE/" \; 2>/dev/null || true
+fi
+
 # --- 输出结果 ---
 if [ ${#alerts[@]} -eq 0 ]; then
   log "[轻巡] ✅ 正常 (磁盘 ${disk_pct}%, 内存 ${mem_pct}%, cron ${cron_count} 条)"
