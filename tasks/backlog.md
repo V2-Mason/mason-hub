@@ -1,8 +1,8 @@
 # 素仁轩 Backlog — Agent 工作任务清单
 
 > **Meta Manager 每日晨会必读此文件**
-> 最后更新: 2026-03-11
-> 更新人: Session Operator（Slack /ask 实时查询 + Dispatcher bug 分析）
+> 最后更新: 2026-03-12
+> 更新人: EMP_0001 PM（system_feedback 巡检）
 
 ---
 
@@ -64,7 +64,7 @@ Phase 3 目标：Agent #0 和 #2 上线，选品建立销量反馈闭环，通�
 
 ### P2 — 排入本周
 
-- [ ] agent.log 结构化 — 当前日志只有纯文本对话输出，不利于审计（EMP_0002）
+- [x] agent.log 结构化 — 2026-03-12 完成，run-agent.sh 全部写入改为 JSONL（cleanup/output/verify），与 audit.jsonl 格式兼容（EMP_0002）
 - [x] swap 配置评估 — 2026-02-28 完成，阿里云已添加 1GB swap（/swapfile, fstab 持久化）；GCP 暂不需要
 - [x] FIX: /standup cron 检测逻辑修复 — 2026-02-27 完成，改为 grep -cE 'mason-hub|surenxuan'，现在正确显示 10 条
 
@@ -159,7 +159,7 @@ P1 — Agent 上线:
 
 P1 — 通知 + 稳定性:
 - [ ] 通知系统: 推送通道待定（Server酱已排除，企业微信/飞书待 Mason 选择）。脚本框架 notify-mason.sh 已就绪，配 key 即可用
-- [x] 记忆系统 v2 评估 — 2026-03-12 二次审查，结论不变：v1 够用（1862 行/16 agent），v2 等触发条件再启动。新增 3 个 v1.5 改进项见下方（EMP_0000）
+- [x] 记忆系统 v2 评估 — 2026-03-12 三次审查，结论不变：v1 够用（2028 行/16 agent，最大 EMP_0008=336 行 < 500 阈值），跨 agent 重复踩坑 0 例达标（tee bug 2 agent 共触但各自修复，未达 3 次）。EMP_0014 "全绿" lesson 重复 10 条佐证 v1.5 压缩需求但非阻塞。v2 触发条件不变：任一 agent >500 行 or 重复踩坑 >=3 次 or Mason 要求（EMP_0000）
 - [ ] 记忆 v1.5: Lesson 压缩规则 — 连续相同结果合并为 1 条+计数，控制 long_term <300 行（EMP_0002）
 - [ ] 记忆 v1.5: Gap Triage 自动化 — Dispatcher 每日扫描 🏗️ 未修标记，通知 owner（EMP_0002）
 - [ ] 记忆 v1.5: 跨 Agent 经验广播 — /commit 检测跨 agent 影响，append 到对方 short_term（EMP_0002）
@@ -191,7 +191,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] 事件 schema — 2026-03-10 完成，data/schemas/（event.yaml + report.yaml + routing_table.yaml）
 - [x] event_watcher systemd 注册 — 2026-03-10 完成，event-watcher.service active，inotify 实时监听 queue.jsonl
 - [x] dispatcher cron 注册 — 2026-03-10 完成，每小时整点（CST 08-22 窗口内执行）
-- [x] Agent .md 四层声明补齐（第一批 6 个）— 2026-03-10 完成，EMP_0002/0005/0009/0010/0011/0014
+- [x] Agent .md 四层声明补齐（第一批 6 个）— 2026-03-10 标记完成但实际缺失，2026-03-12 补齐 EMP_0002/0005/0009/0010/0011/0014 + EMP_0015
 - [x] 汇报链 Manager 聚合 — 2026-03-10 完成，scripts/aggregate_reports.py（L0-L3 分级 + Slack）
 - [x] Mason Gateway 永驻 daemon — 2026-03-10 完成，mason-gateway.py（对标 OpenClaw Gateway：串行队列 + heartbeat + Mason session 让路 + Tier 1 脚本 / Tier 2 API 双层执行）+ MASONHUB.md 灵魂文件 + systemd 部署
 - [x] Anthropic API 配置 — 2026-03-10 完成，API key 配到 .env，heartbeat 端到端验证通过（661 token/次 ≈ $0.002）
@@ -209,7 +209,7 @@ P1 — 自治闭环 Push→Pull 转型 (2026-03-10 Mason 设计):
 - [x] run-agent.sh 静默崩溃修复 — 2026-03-11 完成：`set -euo pipefail` + `grep -oP` 无匹配返回 1 → 脚本在 Task ID 提取阶段静默退出。修复：4 处 grep 加 `|| true`，EXIT trap 增加异常退出日志
 - [x] Gateway 重巡成本失控修复 — 2026-03-11 完成：轻巡变化检测用了含时间戳的字符串 → 每次都"变化" → 每小时都升级重巡（设计是每 4h）。实际日成本 $10+ vs 预期 $1。修复：只比较 emoji+数据集名、has_error 抑制覆盖 returncode
 - [x] /standup 新增 Gateway token 追踪 — 2026-03-11 完成：§7a 每次晨会从 gateway.log 提取重巡/轻巡 token 数据，估算日成本，对比趋势
-- [x] Agent .md 四层声明补齐（剩余 8 个）— 2026-03-12 完成，EMP_0000/0001/0003/0004/0006/0008/0012/0013。注意：EMP_0000(5.3KB)/EMP_0008(7.1KB) 超 5KB 限制，需后续拆分 playbook
+- [x] Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013 已有四层声明（此前已完成）。2026-03-12 验证确认全部 15 个活跃 agent 四层齐全（EMP_0007 归档跳过）。注意：EMP_0007(8.6KB)/EMP_0008(7.3KB)/EMP_0000(5.4KB) 超 5KB 限制，需后续拆分 playbook
 
 P1 — Agent 基础设施修复 (2026-02-28 讨论产出):
 - [x] run-agent.sh 嵌套检测 — 2026-03-05 确认已实现（scripts/run-agent.sh:55-62），检测 CLAUDECODE=1 报错退出（EMP_0002）
@@ -223,7 +223,7 @@ P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 - [-] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用 → 已更新 (2026-03-12) Skill 框架已支持，需求已过时
 
 P2 — UX 持续优化:
-- [ ] 根据 system_feedback 表持续迭代（EMP_0001）
+- [ ] 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新反馈入库，下次巡检等新反馈产生
 - [x] agent.log 结构化 — 2026-02-28 完成，run-agent.sh 新增 log_structured() JSONL 格式
 - [x] swap 配置评估 — 2026-02-28（同上）
 - [x] 产品去重/合并功能 — 2026-02-28 完成，find-similar API（SequenceMatcher 0.6）+ merge API（9 张关联表）+ 前端 InventoryPage 查找相似 Tab + BatchDetailPage 自动检测警告 badge
@@ -503,8 +503,8 @@ Phase 3 — 闭环打通（诊断稳定后）:
 - [ ] 决策→内容管线联动 — 策略调整自动通知 EMP_0008 调整内容排期（EMP_0015 → EMP_0008）
 
 Phase 2 — 主干管道统一:
-- [ ] XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014）
-- [ ] 管道编排机制 — 上游完成写标记，下游检查后再跑，防止"趋势数据静止"类问题（EMP_0014）
+- [x] XHS 主干管道改造 — 2026-03-12 完成，采集→同步→清洗+分析+策略→同步结果→优化周期，标准接口串联（marker 文件 + 事件驱动双编排），xhs-pipeline.sh 同步编排器 + event_router 异步编排器（EMP_0014）
+- [x] 管道编排机制 — 2026-03-12 完成，marker 文件 `.done_<stage>_YYYY-MM-DD` + emit_event 事件链。crawl-complete→data-sync→analyze→intel-fresh→optimization-cycle。data-sync.sh 新增 --no-emit 防止循环触发（EMP_0014）
 - [x] Scout 产出标准化 — 2026-03-10 完成，data/schemas/scout_intel.yaml（11 字段 schema）+ data/pipelines/scout-normalize.py（digest md → JSONL），23 条情报已提取，data_catalog.yaml 注册 clean_scout_intel
 
 **Scout v2 Engine 架构（2026-03-10 实现，参考 BettaFish）**:
