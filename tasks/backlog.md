@@ -267,8 +267,8 @@ P0 — 基础功能（模块2 内容管理）:
 - [ ] 内容编辑器增加图片上传 — 需前端上传组件 + 后端存储 API + adapter 传递 image_paths（EMP_0009）
 - [ ] 内容列表/草稿管理 — 后端 API 已有但前端未接，增加内容列表页或编辑器左侧列表（EMP_0009）
 - [ ] 界面中文化 — 先硬编码中文（EMP_0009）
-- [ ] Content.status 发布后更新 — publish_post 成功后更新状态为 published（EMP_0009）
-- [ ] 内容列表显示发布状态 badge — 已发布/已排程/失败（EMP_0009）
+- [x] Content.status 发布后更新 — publish_post 成功后更新状态为 published（EMP_0009）(2026-03-13)
+- [x] 内容列表显示发布状态 badge — 已发布/已排程/失败（EMP_0009）(2026-03-13)
 
 P1 — 模块化代码迁移（Phase A）:
 - [ ] 模块1 代码迁移：mason-hub/skills/video/video-download/ → socialmesh/backend/content/video_pipeline/（EMP_0009）
@@ -540,6 +540,16 @@ Phase 3 — 数据 SDK + 扩展:
 - [x] clean_xhs_notes 集成到 xhs-analyze.sh — 2026-03-11 完成，Step 0 清洗前置 + --clean-json 参数 + 降级回退（EMP_0014）
 - [x] 素仁轩历史销售快照 — 2026-03-11 完成，srx-snapshot.py 快照 3 API 端点到 SQLite 时序表（sales/dashboard/risk），SDK get_srx_history()/get_srx_snapshot()，幂等设计，data_catalog.yaml raw_srx_history active（EMP_0014）
 - [x] 管道标准接口串联 — 2026-03-12 完成，pipeline.py（管道状态+数据装配）+ assemble-data.py CLI + optimization-cycle.sh 改造（120行手工文件读→1行SDK调用），SDK v0.2.0 导出 get_pipeline_status/assemble_optimization_data（EMP_0014）
+
+**Token 成本优化三件套（2026-03-13 Mason 确认，基于审计数据分析）**:
+
+> 背景：22 个 session 总成本 $17.51，其中 50% 可优化。三个模式：重复 T1 任务包 Agent、上下文累积失控、记忆注入过大。
+> Agent OS Design v1.1 Section 3/5 落地的第一步。
+
+- [x] T1 任务直接执行 — 2026-03-13 完成，dispatcher.sh 识别 tier=T1 直接 bash 执行，失败才升级 Agent（EMP_0002）
+- [x] Session 成本上限 — 2026-03-13 完成，run-agent.sh 加 --max-budget-usd $0.50 默认上限（EMP_0002）
+- [x] warm.md 记忆层 — 2026-03-13 完成，compact-memory.sh 生成 warm.md 滚动摘要，run-agent.sh 优先注入 warm.md（EMP_0002）
+- [ ] 效率审计自动化 — post-task hook 检测异常消耗模式，/standup 呈现 efficiency digest
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 

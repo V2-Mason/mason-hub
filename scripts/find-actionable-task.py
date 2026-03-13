@@ -60,7 +60,8 @@ def parse_yaml_tasks(filepath: Path) -> list[dict]:
             val = val.strip().strip('"').strip("'")
             if key in ("agent", "line", "backlog_match", "description", "priority",
                        "expected_output", "verify_command", "output_path",
-                       "max_duration", "depends_on", "context_files", "task_type"):
+                       "max_duration", "depends_on", "context_files", "task_type",
+                       "tier", "tier_script", "tier_escalate_on_fail"):
                 current[key] = val
 
     if current:
@@ -415,6 +416,9 @@ def get_batch_by_lane(actionable: list[dict]) -> list[dict]:
             "max_duration": t.get("max_duration", "0"),
             "context_files": t.get("context_files", ""),
             "task_type": t.get("task_type", "execute"),
+            "tier": t.get("tier", ""),
+            "tier_script": t.get("tier_script", ""),
+            "tier_escalate_on_fail": t.get("tier_escalate_on_fail", ""),
         })
 
     return batch

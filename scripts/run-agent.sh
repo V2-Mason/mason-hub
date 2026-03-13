@@ -23,6 +23,10 @@ TASK_MAX_DURATION="${TASK_MAX_DURATION:-0}"
 TASK_CONTEXT_FILES="${TASK_CONTEXT_FILES:-}"
 TASK_TYPE="${TASK_TYPE:-execute}"
 
+# --- Token 成本上限（防止上下文累积失控）---
+# 默认 $0.50/session，可通过环境变量覆盖
+MAX_BUDGET_USD="${MAX_BUDGET_USD:-0.50}"
+
 # --- Chain depth 限制（防止无限递归）---
 CHAIN_DEPTH=${CHAIN_DEPTH:-0}
 MAX_CHAIN_DEPTH=10
@@ -270,29 +274,49 @@ except:
 inject_if_exists "$DAILY_YESTERDAY" "📅 昨日日志"
 inject_if_exists "$DAILY_TODAY" "📅 今日日志"
 
-# 策略：语义搜索优先（跨 agent 精准召回），失败才回退全量 lessons
-# 之前两个都注入，浪费 ~1000-2000 tokens
-SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
-if [ -n "$SEMANTIC_RESULT" ]; then
-  SYSPROMPT="${SYSPROMPT}
+# 三温度记忆注入策略（v1.1）：
+#   1. warm.md 优先（最近 7 天滚动摘要，~3K tokens）
+#   2. warm 不存在时 → 语义搜索（精准召回）
+#   3. 语义搜索也失败 → 全量 lessons 回退
+WARM_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/warm.md"
+LESSONS_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/lessons.md"
+
+if [ -f "$WARM_FILE" ] && [ -s "$WARM_FILE" ]; then
+  inject_if_exists "$WARM_FILE" "🧠 最近活动摘要（warm memory）"
+  echo "[context] Layer 2 warm.md for $AGENT_NAME" >&2
+  # warm.md 之外，补充语义搜索的精准结果（如果有）
+  SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
+  if [ -n "$SEMANTIC_RESULT" ]; then
+    SYSPROMPT="${SYSPROMPT}
 
 ---
 ${SEMANTIC_RESULT}"
-  INJECT_USED=${#SYSPROMPT}
-  echo "[context] Layer 3 semantic search for $AGENT_NAME (skipping full lessons)" >&2
+    INJECT_USED=${#SYSPROMPT}
+    echo "[context] + Layer 3 semantic search supplement" >&2
+  fi
 else
-  # 回退：全量注入 lessons 文件
-  LESSONS_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/lessons.md"
-  if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
+  # 无 warm.md → 走旧路径
+  SEMANTIC_RESULT=$(inject_semantic_search "$TASK" 2>/dev/null) || SEMANTIC_RESULT=""
+  if [ -n "$SEMANTIC_RESULT" ]; then
     SYSPROMPT="${SYSPROMPT}
+
+---
+${SEMANTIC_RESULT}"
+    INJECT_USED=${#SYSPROMPT}
+    echo "[context] Layer 3 semantic search for $AGENT_NAME (no warm.md)" >&2
+  else
+    # 最终回退：全量 lessons
+    if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
+      SYSPROMPT="${SYSPROMPT}
 
 ---
 ## 历史经验（来自过去任务的教训，请参考但不必完全遵循）
 
 $(cat "$LESSONS_FILE")"
-    INJECT_USED=${#SYSPROMPT}
+      INJECT_USED=${#SYSPROMPT}
+    fi
+    echo "[context] Layer 2 full lessons fallback for $AGENT_NAME (no warm.md, no semantic)" >&2
   fi
-  echo "[context] Layer 2 full lessons fallback for $AGENT_NAME" >&2
 fi
 
 # --- Phase 2.5: 知识注入（context_files 优先，否则按角色默认）---
@@ -388,6 +412,7 @@ call_claude() {
   local json_out
   json_out=$(cd "$RUN_DIR" && unset ANTHROPIC_API_KEY && claude -p \
     --output-format json \
+    --max-budget-usd "$MAX_BUDGET_USD" \
     $LAUNCHER_ARGS \
     --system-prompt "$SYSPROMPT" \
     "$prompt" 2>&1)

@@ -289,6 +289,124 @@ print(f'Kept {len(recent)} recent, archived {len(old)} old entries')
 " 2>/dev/null || echo "Audit compaction failed (non-critical)"
 }
 
+# --- Part 4: 生成 warm.md（最近任务的滚动摘要，~3K tokens）---
+generate_warm_memory() {
+  local agent_id="$1"
+  local agent_mem_dir="$MEMORY_DIR/${agent_id}/memory"
+  local warm_file="$agent_mem_dir/warm.md"
+  local long_term_file="$agent_mem_dir/long_term.md"
+  local lessons_file="$agent_mem_dir/lessons.md"
+
+  # 收集最近素材：task logs + lessons + long_term 最新部分
+  local recent_content=""
+  local task_count=0
+
+  # 从 task logs 提取该 agent 最近 10 个 session 的 summary
+  if [ -d "$TASK_LOG_DIR" ]; then
+    local summaries
+    summaries=$(ls -t "$TASK_LOG_DIR"/task_${agent_id}_*_summary.json 2>/dev/null | head -10)
+    for sf in $summaries; do
+      [ -f "$sf" ] && recent_content="${recent_content}
+$(cat "$sf")"
+      task_count=$((task_count + 1))
+    done
+  fi
+
+  # 从 audit.jsonl 提取该 agent 最近 7 天的记录
+  local audit_entries=""
+  if [ -f "$HUB_DIR/logs/audit.jsonl" ]; then
+    local cutoff_date
+    cutoff_date=$(date -d '7 days ago' +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)
+    audit_entries=$(python3 -c "
+import json, sys
+with open('$HUB_DIR/logs/audit.jsonl', encoding='utf-8', errors='replace') as f:
+    for line in f:
+        try:
+            r = json.loads(line.strip())
+            if r.get('agent') == '$agent_id' and r.get('timestamp','') >= '$cutoff_date':
+                status = r.get('status','')
+                task = r.get('task','')[:60]
+                cost = r.get('cost_usd', 0)
+                print(f'- {status}: {task} (\${cost:.2f})')
+        except: pass
+" 2>/dev/null) || audit_entries=""
+  fi
+
+  # 从 lessons.md 取最近 7 天的 section
+  local recent_lessons=""
+  if [ -f "$lessons_file" ]; then
+    recent_lessons=$(python3 -c "
+import re, sys
+from datetime import datetime, timedelta
+cutoff = datetime.now() - timedelta(days=7)
+content = open('$lessons_file').read()
+sections = re.split(r'(?=^## \d{4}-\d{2}-\d{2})', content, flags=re.MULTILINE)
+for s in sections:
+    m = re.match(r'## (\d{4}-\d{2}-\d{2})', s)
+    if m:
+        try:
+            d = datetime.strptime(m.group(1), '%Y-%m-%d')
+            if d >= cutoff:
+                print(s.strip())
+        except: pass
+" 2>/dev/null) || recent_lessons=""
+  fi
+
+  # 从 long_term.md 取最后 30 行作为参考
+  local lt_tail=""
+  if [ -f "$long_term_file" ]; then
+    lt_tail=$(tail -30 "$long_term_file")
+  fi
+
+  # 如果没有任何素材，跳过
+  if [ -z "$recent_content" ] && [ -z "$audit_entries" ] && [ -z "$recent_lessons" ]; then
+    echo "[$agent_id] no recent data for warm.md, skip"
+    return
+  fi
+
+  if [ "$DRY_RUN" = true ]; then
+    echo "[$agent_id] DRY RUN: would generate warm.md from $task_count tasks + audit + lessons"
+    return
+  fi
+
+  echo "[$agent_id] generating warm.md from $task_count tasks..."
+
+  # 用 LLM 生成摘要（限制 3K tokens ≈ 12K chars）
+  local warm_content
+  warm_content=$(unset CLAUDECODE 2>/dev/null; claude -p \
+    --output-format text \
+    --max-budget-usd 0.05 \
+    --system-prompt "你是记忆摘要助手。将以下 Agent 最近 7 天的活动数据压缩为一份滚动摘要。
+
+要求：
+- 输出不超过 80 行
+- 保留：关键决策、发现的问题、解决方案、待跟进事项
+- 删除：重复信息、调试过程细节
+- 格式：## 最近活动摘要 (生成日期)，然后分类列出
+- 用中文" \
+    "Agent: $agent_id
+
+最近任务执行记录：
+$audit_entries
+
+最近经验教训：
+$recent_lessons
+
+长期记忆末尾（上下文参考）：
+$lt_tail" 2>/dev/null) || warm_content=""
+
+  if [ -n "$warm_content" ] && [ ${#warm_content} -gt 50 ]; then
+    # 备份旧版本
+    [ -f "$warm_file" ] && cp "$warm_file" "${warm_file}.bak.$(date +%Y%m%d)" 2>/dev/null || true
+    echo "$warm_content" > "$warm_file"
+    local warm_size
+    warm_size=$(stat -c %s "$warm_file")
+    echo "[$agent_id] warm.md generated: $(( warm_size / 1024 ))KB"
+  else
+    echo "[$agent_id] warm.md generation failed or empty output"
+  fi
+}
+
 # --- 执行 ---
 if [ "$AGENT_ID" = "all" ]; then
   for f in "$MEMORY_DIR"/EMP_*/memory/lessons.md; do
@@ -296,8 +414,17 @@ if [ "$AGENT_ID" = "all" ]; then
     agent=$(basename "$(dirname "$(dirname "$f")")")
     compact_lessons "$f" "$agent"
   done
+  # 为所有 active agent 生成 warm.md
+  for d in "$MEMORY_DIR"/EMP_*/memory/; do
+    [ -d "$d" ] || continue
+    agent=$(basename "$(dirname "$d")")
+    # 跳过 deprecated agent
+    [ "$agent" = "EMP_0007" ] && continue
+    generate_warm_memory "$agent"
+  done
 else
   compact_lessons "$MEMORY_DIR/${AGENT_ID}/memory/lessons.md" "$AGENT_ID"
+  generate_warm_memory "$AGENT_ID"
 fi
 
 archive_task_logs

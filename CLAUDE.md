@@ -19,6 +19,18 @@
 
 `/standup` 晨会 | `/commit` 智能提交 | `/deploy` 部署 | `/health` 健康检查 | `/dev-task` 派活 | `/scout` 情报
 
+## Role 调用规则（防止 token 浪费）
+
+Role 有三种使用模式，**必须先判断模式再行动**：
+
+| 模式 | 触发词 | 做法 | 成本 |
+|------|--------|------|------|
+| **Lens（视角）** | "用 XX 视角分析"、"让 XX 评估"、"XX 来看看" | 读 config.md，在当前对话中切换思维模式，直接输出 | ≈0（只读一个文件） |
+| **Instance（实例）** | `/dev-task`、"派活给 XX"、dispatcher 自动派发 | 启动新 session，注入 config + memory + 品牌上下文 | 完整 session 开销 |
+| **Dialogue（对话）** | workflow 中的 agent-to-agent step | 当前 session 内加载多个 role config，按协议交替 | 共享 session |
+
+**判断口诀**：只需要"换个角度想" → Lens。需要"独立去做一件事" → Instance。
+
 ## 开发铁律
 
 1. **完成前必须验证** — 改完代码必须跑验证，禁止"应该没问题"。commit 前至少 `python3 -c "import ast; ast.parse(...)"`

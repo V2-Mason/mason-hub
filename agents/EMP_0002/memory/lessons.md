@@ -1,3 +1,10 @@
+## 2026-03-13: Token 成本优化三件套 + Agent OS v1.1 落地
+- T1 任务直接执行：dispatcher.sh 新增 `tier: T1` 判断，T1 任务直接 bash 执行不启动 Agent session。`tier_escalate_on_fail: true` 失败时才升级为 T3
+- Session 成本上限：run-agent.sh 新增 `--max-budget-usd $0.50` 默认上限。防止上下文累积失控（之前有 $3.07 的单 session）
+- warm.md 记忆层：compact-memory.sh 新增 `generate_warm_memory()` 从 task logs + audit + lessons 生成滚动摘要。run-agent.sh 注入优先级改为 warm.md → 语义搜索 → 全量 lessons 回退
+- CLAUDE.md 新增 Role 调用规则（Lens/Instance/Dialogue），防止"让 XX 评估"被误判为启动子进程
+- 关键发现：audit.jsonl 中 health-fix 任务跑了 10 次花 $4.36，本质是 T1 脚本不需要 LLM。找新字段时必须同步更新 find-actionable-task.py 的解析白名单
+
 ## TrendRadar + RSSHub 趋势监控系统 (2026-03-08)
 
 ### 部署概况

@@ -363,7 +363,8 @@ tasks = json.load(sys.stdin)
 t = tasks[$idx]
 for k in ('id','agent','lane','line','description',
           'expected_output','verify_command','output_path',
-          'max_duration','context_files','task_type'):
+          'max_duration','context_files','task_type',
+          'tier','tier_script','tier_escalate_on_fail'):
     v = str(t.get(k, ''))[:200]
     print(f'TASK_{k.upper()}={shlex.quote(v)}')
 " 2>/dev/null) || continue
@@ -376,6 +377,49 @@ for k in ('id','agent','lane','line','description',
         # 检查该 lane 是否空闲
         if [[ "$TASK_LANE" != "independent" ]] && ! echo "$free_lanes" | grep -qw "$TASK_LANE"; then
             log "  ⏸️  $TASK_ID: lane $TASK_LANE 正忙，跳过"
+            continue
+        fi
+
+        # === T1 直接执行：纯脚本任务不启动 Agent session ===
+        if [[ "${TASK_TIER:-}" == "T1" ]] && [[ -n "${TASK_TIER_SCRIPT:-}" ]]; then
+            log "  ⚡ T1 直接执行: $TASK_ID → $TASK_TIER_SCRIPT"
+            if $DRY_RUN; then
+                log "  [DRY-RUN] T1 会直接执行: $TASK_TIER_SCRIPT"
+                dispatched=$((dispatched + 1))
+                continue
+            fi
+
+            local t1_report_dir="$REPORTS_DIR/$(date +%Y-%m-%d)"
+            mkdir -p "$t1_report_dir"
+            local t1_log="$t1_report_dir/${TASK_ID}_t1.log"
+            local t1_exit=0
+
+            # 写事件: T1 任务开始
+            echo "{\"event\":\"dispatcher-t1-start\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":0,\"data\":{\"task_id\":\"$TASK_ID\",\"script\":\"$TASK_TIER_SCRIPT\"}}" \
+                >> "$EVENTS_QUEUE"
+
+            (cd "$HUB_DIR" && bash -c "$TASK_TIER_SCRIPT") > "$t1_log" 2>&1 || t1_exit=$?
+
+            if [[ $t1_exit -eq 0 ]]; then
+                log "  ✅ T1 完成: $TASK_ID (exit 0)"
+                echo "{\"event\":\"dispatcher-t1-complete\",\"source\":\"dispatcher.sh\",\"timestamp\":\"$(date -Iseconds)\",\"status\":\"ok\",\"level\":0,\"data\":{\"task_id\":\"$TASK_ID\",\"exit_code\":0}}" \
+                    >> "$EVENTS_QUEUE"
+                # 写审计记录（零 token 成本）
+                printf '{"timestamp":"%s","task_id":"%s","agent":"T1-script","task":"%s","status":"completed","duration":0,"input_tokens":0,"output_tokens":0,"cost_usd":0,"num_turns":0,"model":"bash"}\n' \
+                    "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$TASK_ID" "$(printf '%s' "$TASK_DESCRIPTION" | head -c 80 | tr '\n' ' ' | tr '"' "'")" >> "$HUB_DIR/logs/audit.jsonl"
+            else
+                log "  ❌ T1 失败: $TASK_ID (exit $t1_exit)"
+                if [[ "${TASK_TIER_ESCALATE_ON_FAIL:-}" == "true" ]]; then
+                    local t1_errors
+                    t1_errors=$(tail -20 "$t1_log" | tr '\n' ' ' | head -c 200)
+                    log "  ⬆️ T1 升级为 T3: 启动 Agent 修复"
+                    execute_task "$TASK_ID" "$TASK_AGENT" "$TASK_LINE" \
+                        "T1 脚本执行失败 (exit $t1_exit)。脚本: $TASK_TIER_SCRIPT。错误: $t1_errors。请诊断并修复。" \
+                        "$TASK_EXPECTED_OUTPUT" "$TASK_VERIFY_COMMAND" "$TASK_OUTPUT_PATH" \
+                        "$TASK_MAX_DURATION" "$TASK_CONTEXT_FILES" "$TASK_TASK_TYPE"
+                fi
+            fi
+            dispatched=$((dispatched + 1))
             continue
         fi
 

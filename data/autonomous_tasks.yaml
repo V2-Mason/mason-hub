@@ -77,6 +77,9 @@ tasks:
     backlog_match: "data_health_check 数据集修复"
     description: "运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项）"
     priority: P1
+    tier: T1
+    tier_script: "bash data/pipelines/data_health_check.sh"
+    tier_escalate_on_fail: true
     task_type: repair
     verify_command: "bash data/pipelines/data_health_check.sh 2>&1 | grep -c FAIL | grep -q '^0$'"
     context_files: "data/data_catalog.yaml,data/pipelines/data_health_check.sh"
