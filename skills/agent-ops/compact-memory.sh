@@ -296,15 +296,36 @@ generate_warm_memory() {
   local warm_file="$agent_mem_dir/warm.md"
   local long_term_file="$agent_mem_dir/long_term.md"
   local lessons_file="$agent_mem_dir/lessons.md"
+  local sessions_dir="$agent_mem_dir/sessions"
 
-  # 收集最近素材：task logs + lessons + long_term 最新部分
+  # v1.1 Merge 锁：防止并发 merge 冲突
+  local lock_file="/tmp/merge-${agent_id}.lock"
+  exec 9>"$lock_file"
+  if ! flock -n 9; then
+    echo "[$agent_id] merge lock held by another process, skip"
+    return
+  fi
+
+  # 收集最近素材：sessions/ + task logs + lessons + long_term 最新部分
   local recent_content=""
   local task_count=0
 
-  # 从 task logs 提取该 agent 最近 10 个 session 的 summary
-  if [ -d "$TASK_LOG_DIR" ]; then
+  # v1.1: 优先从 sessions/ 读取（隔离写入的产出）
+  local session_content=""
+  if [ -d "$sessions_dir" ]; then
+    local session_files
+    session_files=$(ls -t "$sessions_dir"/*.md 2>/dev/null | grep -v .gitkeep | head -10)
+    for sf in $session_files; do
+      [ -f "$sf" ] && session_content="${session_content}
+$(cat "$sf")"
+      task_count=$((task_count + 1))
+    done
+  fi
+
+  # 回退：从 task logs 提取 summary（sessions/ 不足时补充）
+  if [ "$task_count" -lt 5 ] && [ -d "$TASK_LOG_DIR" ]; then
     local summaries
-    summaries=$(ls -t "$TASK_LOG_DIR"/task_${agent_id}_*_summary.json 2>/dev/null | head -10)
+    summaries=$(ls -t "$TASK_LOG_DIR"/task_${agent_id}_*_summary.json 2>/dev/null | head -$((10 - task_count)))
     for sf in $summaries; do
       [ -f "$sf" ] && recent_content="${recent_content}
 $(cat "$sf")"
@@ -385,6 +406,9 @@ for s in sections:
 - 格式：## 最近活动摘要 (生成日期)，然后分类列出
 - 用中文" \
     "Agent: $agent_id
+
+最近 session 记录（v1.1 隔离写入）：
+$session_content
 
 最近任务执行记录：
 $audit_entries

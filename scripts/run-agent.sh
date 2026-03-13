@@ -204,6 +204,12 @@ if [ -z "$TASK_ID" ]; then
 fi
 mkdir -p "$TASK_LOG_DIR"
 
+# --- v1.1 Instance ID 生成（唯一 session 标识）---
+INSTANCE_ID="session-$(date +%Y%m%d)-${AGENT_NAME}-$(head -c 4 /dev/urandom | xxd -p)"
+SESSION_DIR="$HUB_DIR/agents/${AGENT_NAME}/memory/sessions"
+SESSION_FILE="${SESSION_DIR}/${INSTANCE_ID}.md"
+mkdir -p "$SESSION_DIR"
+
 # --- Phase 1.5: 每日日志注入（今天+昨天，保证连续性）---
 # 借鉴 OpenClaw：agent 启动时自动知道"最近发生了什么"
 DAILY_DIR="$HUB_DIR/memory/daily"
@@ -683,6 +689,25 @@ EOSUMMARY
   write_daily_log "✅" "${DURATION}s"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
 
+  # v1.1: 写 session 记录（非开发类 agent）
+  {
+    echo "---"
+    echo "instance_id: $INSTANCE_ID"
+    echo "role_id: $AGENT_NAME"
+    echo "task_id: $TASK_ID"
+    echo "status: completed"
+    echo "started_at: $START_TIME"
+    echo "ended_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+    echo "duration: $DURATION"
+    echo "schema_version: 1"
+    echo "---"
+    echo ""
+    echo "## $(date +%Y-%m-%d): $TASK_ID"
+    echo "- 任务：$(printf '%s' "$TASK" | head -c 100)"
+    echo "- 状态：completed"
+  } > "$SESSION_FILE"
+  echo "[session] Record written to $SESSION_FILE" >&2
+
   # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
   EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
   if [ -x "$EMIT_EVENT" ]; then
@@ -848,20 +873,30 @@ EOSUMMARY
     SLACK_SUCCESS_MSG=$(format_slack_message "success" "$AGENT_NAME" "$TASK_ID" "$ROUND" "修改文件: ${MODIFIED:-none}" "$DURATION")
     send_slack_notify "$SLACK_SUCCESS_MSG"
 
-    # Phase 2: 成功时记录经验
-    LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
-    if [ -f "$LESSONS_FILE" ] && [ "$LESSONS_SIZE" -lt 51200 ]; then
-      LESSON_PROMPT="任务完成。请用 1-3 句话总结这次任务中值得记住的经验教训（遇到了什么坑、怎么解决的、下次该注意什么）。只输出经验内容，格式：## $(date +%Y-%m-%d): <模块名>\n- <经验1>\n- <经验2>"
-      LESSON_JSON=$(cd "$RUN_DIR" && unset ANTHROPIC_API_KEY && claude -p \
-        --output-format json \
-        --system-prompt "你是一个代码开发助手。简洁地总结经验教训。" \
-        "$LESSON_PROMPT" 2>/dev/null) || true
-      LESSON=$(python3 -c "import sys,json; print(json.load(sys.stdin).get('result',''))" <<< "$LESSON_JSON" 2>/dev/null || echo "")
-      if [ -n "$LESSON" ] && [ ${#LESSON} -gt 10 ]; then
-        echo -e "\n$LESSON" >> "$LESSONS_FILE"
-      fi
-    elif [ "$LESSONS_SIZE" -ge 51200 ]; then
-      echo "⚠️ Lessons file for $AGENT_NAME exceeds 50KB limit. Skipping."
+    # Phase 2: 成功时记录经验 → 写到 session 文件（v1.1 隔离写入）
+    LESSON_PROMPT="任务完成。请用 1-3 句话总结这次任务中值得记住的经验教训（遇到了什么坑、怎么解决的、下次该注意什么）。只输出经验内容，格式：## $(date +%Y-%m-%d): <模块名>\n- <经验1>\n- <经验2>"
+    LESSON_JSON=$(cd "$RUN_DIR" && unset ANTHROPIC_API_KEY && claude -p \
+      --output-format json \
+      --max-budget-usd 0.05 \
+      --system-prompt "你是一个代码开发助手。简洁地总结经验教训。" \
+      "$LESSON_PROMPT" 2>/dev/null) || true
+    LESSON=$(python3 -c "import sys,json; print(json.load(sys.stdin).get('result',''))" <<< "$LESSON_JSON" 2>/dev/null || echo "")
+    if [ -n "$LESSON" ] && [ ${#LESSON} -gt 10 ]; then
+      # v1.1: 写到 session 文件，不直接写 lessons.md
+      {
+        echo "---"
+        echo "instance_id: $INSTANCE_ID"
+        echo "role_id: $AGENT_NAME"
+        echo "task_id: $TASK_ID"
+        echo "status: completed"
+        echo "started_at: $START_TIME"
+        echo "ended_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+        echo "schema_version: 1"
+        echo "---"
+        echo ""
+        echo "$LESSON"
+      } > "$SESSION_FILE"
+      echo "[session] Lesson written to $SESSION_FILE" >&2
     fi
   else
     # === 补丁 3：失败处理 ===
@@ -936,12 +971,26 @@ EOSUMMARY
     fi
     send_slack_notify "$SLACK_MSG"
 
-    # Phase 2: 失败时记录经验
-    LESSONS_SIZE=$(stat -c %s "$LESSONS_FILE" 2>/dev/null || echo 0)
-    if [ -f "$LESSONS_FILE" ] && [ "$LESSONS_SIZE" -lt 51200 ]; then
-      ERROR_HEAD=$(echo "$ATTEMPTS_JSON" | python3 -c "import sys,json; a=json.load(sys.stdin); print('; '.join([x.get('error','')[:60] for x in a]))" 2>/dev/null || echo "parse error")
-      echo -e "\n## $(date +%Y-%m-%d): [FAILED] $TASK_ID_EXTRACTED\n- ${ROUND}轮修复失败\n- 错误摘要：$ERROR_HEAD\n- 已 escalate" >> "$LESSONS_FILE"
-    fi
+    # Phase 2: 失败时记录经验 → 写到 session 文件（v1.1 隔离写入）
+    ERROR_HEAD=$(echo "$ATTEMPTS_JSON" | python3 -c "import sys,json; a=json.load(sys.stdin); print('; '.join([x.get('error','')[:60] for x in a]))" 2>/dev/null || echo "parse error")
+    {
+      echo "---"
+      echo "instance_id: $INSTANCE_ID"
+      echo "role_id: $AGENT_NAME"
+      echo "task_id: $TASK_ID_EXTRACTED"
+      echo "status: repair_failed"
+      echo "started_at: $START_TIME"
+      echo "ended_at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+      echo "rounds: $ROUND"
+      echo "schema_version: 1"
+      echo "---"
+      echo ""
+      echo "## $(date +%Y-%m-%d): [FAILED] $TASK_ID_EXTRACTED"
+      echo "- ${ROUND}轮修复失败"
+      echo "- 错误摘要：$ERROR_HEAD"
+      echo "- 已 escalate"
+    } > "$SESSION_FILE"
+    echo "[session] Failure record written to $SESSION_FILE" >&2
 
     echo ""
     echo "=== REPAIR FAILED ==="
