@@ -17,7 +17,7 @@
 
 ## 快捷命令
 
-`/standup` 晨会 | `/commit` 智能提交 | `/deploy` 部署 | `/health` 健康检查 | `/dev-task` 派活 | `/scout` 情报
+`/standup` 晨会 | `/commit` 智能提交 | `/deploy` 部署 | `/health` 健康检查 | `/dev-task` 派活 | `/scout` 情报 | `/solve` 问题解决
 
 ## Role 调用规则（防止 token 浪费）
 
@@ -37,6 +37,7 @@ Role 有三种使用模式，**必须先判断模式再行动**：
 2. **修 bug 先定位根因** — 不允许"先试试"，每次只改一个变量。连续 3 次失败 → 停下来质疑架构
 3. **记忆追加不删除** — 新内容加新条目，过时标注 `→ 已更新 (日期)`，Mason 授权才删
 4. **收工必须写 Lesson** — session 结束前更新 `agents/EMP_XXXX/memory/`，格式参照 `shared/templates/lesson_format.md`，Gap 类型必填
+5. **发现问题走 /solve** — 非 trivial 问题必须走 `/solve` 流程（定级→方案→验收），不能跳步直接执行。简单问题至少要有定级+验收标准
 
 ## 执行检查点
 
