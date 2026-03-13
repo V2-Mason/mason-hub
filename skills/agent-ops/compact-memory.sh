@@ -429,6 +429,41 @@ $lt_tail" 2>/dev/null) || warm_content=""
   else
     echo "[$agent_id] warm.md generation failed or empty output"
   fi
+
+  # v1.1 §5.1: warm→cold 蒸馏（周度执行）
+  # 条件：long_term.md 最后修改超过 7 天 + warm.md 存在
+  if [ -f "$warm_file" ] && [ -f "$long_term_file" ]; then
+    local lt_age
+    lt_age=$(( NOW_EPOCH - $(stat -c %Y "$long_term_file") ))
+    local lt_lines
+    lt_lines=$(wc -l < "$long_term_file")
+
+    if [ "$lt_age" -gt "$SEVEN_DAYS" ] && [ "$lt_lines" -lt 300 ]; then
+      echo "[$agent_id] warm→cold distillation candidate (lt_age=${lt_age}s, lt_lines=${lt_lines})"
+      if [ "$DRY_RUN" = true ]; then
+        echo "[$agent_id] DRY RUN: would distill warm.md highlights into long_term.md"
+      else
+        # 从 warm.md 提取关键条目追加到 long_term.md
+        local distilled
+        distilled=$(unset CLAUDECODE 2>/dev/null; claude -p \
+          --output-format text \
+          --max-budget-usd 0.03 \
+          --system-prompt "你是记忆蒸馏助手。从以下 warm memory 中提取值得永久保存的关键教训（不超过 5 条）。跳过临时状态和已过时信息。每条格式：- [日期] 要点。只输出要点列表，无其他内容。" \
+          "$(cat "$warm_file")" 2>/dev/null) || distilled=""
+        if [ -n "$distilled" ] && [ ${#distilled} -gt 20 ]; then
+          {
+            echo ""
+            echo "## [DISTILLED $(date +%Y-%m-%d)] from warm.md"
+            echo "$distilled"
+          } >> "$long_term_file"
+          echo "[$agent_id] distilled $(echo "$distilled" | wc -l) entries to long_term.md"
+        fi
+      fi
+    fi
+  fi
+
+  # 释放 flock
+  exec 9>&-
 }
 
 # --- 执行 ---
@@ -451,7 +486,46 @@ else
   generate_warm_memory "$AGENT_ID"
 fi
 
+# --- Part 5: 归档旧 session 文件（30天+）---
+archive_old_sessions() {
+  echo ""
+  echo "=== SESSION ARCHIVAL ==="
+
+  local archived_total=0
+  for d in "$MEMORY_DIR"/EMP_*/memory/sessions/; do
+    [ -d "$d" ] || continue
+    local agent
+    agent=$(basename "$(dirname "$(dirname "$d")")")
+    [ "$agent" = "EMP_0007" ] && continue
+
+    local archived=0
+    for sf in "$d"session-*.md; do
+      [ -f "$sf" ] || continue
+      local file_age
+      file_age=$(( NOW_EPOCH - $(stat -c %Y "$sf") ))
+      if [ "$file_age" -gt "$THIRTY_DAYS" ]; then
+        # 提取月份用于归档目录
+        local file_month
+        file_month=$(stat -c %Y "$sf" | xargs -I{} date -d @{} +%Y-%m 2>/dev/null || date +%Y-%m)
+        local archive_dir="$MEMORY_DIR/$agent/memory/archive/$file_month"
+
+        if [ "$DRY_RUN" = true ]; then
+          echo "  [$agent] DRY RUN: would archive $(basename "$sf")"
+        else
+          mkdir -p "$archive_dir"
+          mv "$sf" "$archive_dir/"
+        fi
+        archived=$((archived + 1))
+      fi
+    done
+    [ "$archived" -gt 0 ] && echo "  [$agent] archived $archived session files"
+    archived_total=$((archived_total + archived))
+  done
+  echo "Session archival: $archived_total total"
+}
+
 archive_task_logs
+archive_old_sessions
 compact_audit
 
 echo ""

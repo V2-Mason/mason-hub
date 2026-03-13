@@ -123,6 +123,47 @@ routes:
         channel: "#system-alerts"
         level: 2
 
+  # === v1.1 Workflow + Memory 事件 ===
+
+  dispatcher-t1-complete:
+    description: "T1 纯脚本任务直接执行完成"
+    preconditions: []
+    actions:
+      - type: write_report
+        description: "记录到 reports/（零 token 成本）"
+
+  memory-merge-complete:
+    description: "compact-memory.sh 完成 warm.md 生成"
+    preconditions: []
+    actions:
+      - type: write_report
+        description: "记录 merge 结果"
+
+  workflow-step-complete:
+    description: "Workflow 步骤完成（Phase 3 启用）"
+    preconditions: []
+    actions:
+      - type: check_downstream
+        description: "推进下一个 workflow step"
+      - type: slack_if_level_ge_2
+
+  workflow-approval-needed:
+    description: "Workflow 步骤需要人类审批"
+    preconditions: []
+    actions:
+      - type: slack
+        channel: "#system-alerts"
+        level: 3
+        description: "通知 Mason 审批"
+
+  efficiency-alert:
+    description: "Session 效率异常（token/output 比过高、成本超预算）"
+    preconditions: []
+    actions:
+      - type: write_report
+        description: "写入 efficiency digest"
+      - type: slack_if_level_ge_2
+
   # === 外部条件到达 ===
 
   external-dependency-met:

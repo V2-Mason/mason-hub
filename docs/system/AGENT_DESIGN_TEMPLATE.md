@@ -101,6 +101,34 @@
 
 ---
 
+## 五、自评估配置（v1.1 §9 — 可选）
+
+```yaml
+self_eval:
+  enabled: true | false        # 是否启用交付前自评
+  max_iterations: 3            # 最多自我修正几次
+  criteria:                    # 评估维度
+    - "Output completeness: 是否覆盖所有任务要求?"
+    - "Logical consistency: 有无矛盾或遗漏?"
+    - "Granularity: 每个步骤是否可直接执行?"
+  on_fail: refine              # 不合格时: refine（自修正）
+  on_3x_fail: seek_new_skill   # 3 次失败: 触发 Scout 搜索新技能
+```
+
+## 六、运行时配置（v1.1 §6 — 可选）
+
+```yaml
+runtime:
+  type: llm | pipeline | script | hybrid
+  engine: claude-api | comfyui | python-script
+  timeout: 600                 # 最大执行秒数
+  model_routing:               # 不同阶段用不同模型
+    execution: sonnet           # 日常执行（快、便宜）
+    reflection: opus            # 自评估（深度推理）
+```
+
+---
+
 ## 审核清单（EMP_0012 检查）
 
 - [ ] 四个层都填了，没有空白

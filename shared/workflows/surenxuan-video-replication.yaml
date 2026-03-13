@@ -1,0 +1,74 @@
+# surenxuan-video-replication.yaml — v1.1 §12 视频复制工作流
+#
+# 自动化手动视频复制流程的 5 步管道
+# 依赖：Gemini API + ComfyUI/Kling + Ping-pong QA
+
+id: video-replication
+version: 1
+account: surenxuan
+trigger:
+  type: manual
+  input: [source_video, product_id, model_photos]
+
+steps:
+  - id: analyze-source
+    role: EMP_0009
+    task: "分解源视频为场景、关键帧、脚本"
+    runtime_override:
+      type: hybrid
+      engine: gemini-api + python
+    output_artifact: scene_breakdown.json
+    coupling: tight_with_next
+    timeout: 600
+
+  - id: generate-assets
+    role: EMP_0009
+    task: "替换关键帧主体、生成新产品脚本"
+    runtime_override:
+      type: hybrid
+      engine: gemini-api
+    input_from: [analyze-source.output_artifact]
+    output_artifact: replaced_keyframes/
+    coupling: loose_with_next
+    requires_approval: true
+    timeout: 900
+
+  - id: generate-video
+    role: EMP_0009
+    task: "用替换后的关键帧和参数生成视频"
+    runtime_override:
+      type: pipeline
+      engine: comfyui-kling
+    input_from: [generate-assets.output_artifact]
+    output_artifact: output_video.mp4
+    coupling: loose_with_next
+    timeout: 1800
+
+  - id: quality-check
+    role: EMP_0008
+    task: "视频质量审核：品牌一致性、视觉质量、脚本匹配"
+    dialogue_protocol: ping-pong
+    dialogue_config:
+      creator: EMP_0009
+      reviewer: EMP_0008
+      reviewer_modality: multimodal
+      max_rounds: 2
+    input_from: [generate-video.output_artifact]
+    output_artifact: qa_result.json
+    coupling: conditional
+    on_fail: rerun_from:generate-video
+    timeout: 600
+
+  - id: e2e-evaluation
+    role: EMP_0008
+    task: "源视频 vs 产出视频 side-by-side 对比评分"
+    runtime_override:
+      type: llm
+      engine: gemini-pro
+      modality: multimodal
+    input_from: [generate-video.output_artifact]
+    output_artifact: e2e_score.json
+    scoring:
+      pass_threshold: 7
+      on_fail: identify_weakest_component
+    timeout: 600

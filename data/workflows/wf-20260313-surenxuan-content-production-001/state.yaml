@@ -1,0 +1,44 @@
+workflow_id: wf-20260313-surenxuan-content-production-001
+template: surenxuan-content-production
+account: surenxuan
+status: pending
+created_at: 2026-03-13T22:23:40Z
+updated_at: 2026-03-13T22:23:40Z
+current_step: research
+trigger_input: {}
+steps:
+  research:
+    status: pending
+    instance_id: 
+    output: 
+    started_at: 
+    completed_at: 
+    error: 
+  scope-definition:
+    status: pending
+    instance_id: 
+    output: 
+    started_at: 
+    completed_at: 
+    error: 
+  content-creation:
+    status: pending
+    instance_id: 
+    output: 
+    started_at: 
+    completed_at: 
+    error: 
+  quality-review:
+    status: pending
+    instance_id: 
+    output: 
+    started_at: 
+    completed_at: 
+    error: 
+  publish:
+    status: pending
+    instance_id: 
+    output: 
+    started_at: 
+    completed_at: 
+    error: 

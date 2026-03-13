@@ -158,6 +158,17 @@ else
   RUN_DIR="$HUB_DIR"
 fi
 
+# --- v1.1 §6: Runtime Adapter — 从 frontmatter 提取 runtime 配置 ---
+RUNTIME_TYPE=$(awk 'BEGIN{c=0} /^---$/{c++; next} c>=2{exit} c==1{
+  if(/^  type:/){gsub(/^  type:\s*/, ""); print; exit}
+}' "$AGENT_FILE" 2>/dev/null || echo "llm")
+RUNTIME_TYPE="${RUNTIME_TYPE:-llm}"
+
+# 如果 runtime type 不是 llm，记录并可在未来分流
+if [ "$RUNTIME_TYPE" != "llm" ] && [ -n "$RUNTIME_TYPE" ]; then
+  echo "[runtime] Agent $AGENT_NAME runtime type: $RUNTIME_TYPE" >&2
+fi
+
 # --- Worktree 模式（USE_WORKTREE=1 时在独立分支上工作）---
 WORKTREE_BRANCH=""
 WORKTREE_DIR=""
@@ -679,6 +690,21 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
   log_structured "output" "$(printf '%s' "$OUTPUT" | head -c 2000 | tr '\n' ' ')" \
     output_bytes="$output_len" duration="$DURATION"
 
+  # v1.1 §9: 自评估（verify_command 存在时执行）
+  if [ -n "$TASK_VERIFY_COMMAND" ]; then
+    echo "[self-eval] Running verify: $TASK_VERIFY_COMMAND" >&2
+    local verify_exit=0
+    (cd "$HUB_DIR" && eval "$TASK_VERIFY_COMMAND") >/dev/null 2>&1 || verify_exit=$?
+    if [ "$verify_exit" -ne 0 ]; then
+      log_structured "self-eval" "Verify command failed (exit=$verify_exit). Task may need re-run." \
+        verify_exit="$verify_exit" verify_cmd="$TASK_VERIFY_COMMAND"
+      echo "[self-eval] ❌ verify failed (exit=$verify_exit)" >&2
+    else
+      log_structured "self-eval" "Verify passed" verify_exit=0
+      echo "[self-eval] ✅ verify passed" >&2
+    fi
+  fi
+
   # Phase 1: 生成 summary
   cat > "${TASK_LOG_DIR}/${TASK_ID}_summary.json" <<EOSUMMARY
 {"task_id":"$TASK_ID","agent":"$AGENT_NAME","start_time":"$START_TIME","end_time":"$END_TIME","total_rounds":1,"final_status":"completed","task_log_dir":"$TASK_LOG_DIR"}
@@ -959,6 +985,16 @@ EOSUMMARY
       ROUND_SUMMARIES="${ROUND_SUMMARIES}\n- 第${i}轮: ${ERR}"
     done
 
+    # v1.1 §9.3: Skill search on repeated failure
+    # PM escalate 之前，先让 Scout 搜索是否有更好的方法
+    EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+    if [ -x "$EMIT_EVENT" ]; then
+      "$EMIT_EVENT" "agent-skill-search-needed" "$AGENT_NAME" "warning" 1 \
+        "{\"task_id\":\"$TASK_ID_EXTRACTED\",\"agent\":\"$AGENT_NAME\",\"error_summary\":\"$(echo "$ERROR_HEAD" | head -c 100 | tr '"' "'")\"}" 2>/dev/null || true
+      log_structured "skill-search" "Emitted skill-search-needed event for Scout" \
+        task_id="$TASK_ID_EXTRACTED" error="$(echo "$ERROR_HEAD" | head -c 100)"
+    fi
+
     PM_RETRIES_LEFT=$((MAX_PM_RETRIES - PM_RETRY_COUNT))
     if [ "$PM_RETRIES_LEFT" -lt 0 ]; then PM_RETRIES_LEFT=0; fi
 
@@ -1045,6 +1081,44 @@ if [ -n "${WORKTREE_BRANCH:-}" ] && [ -n "${WORKTREE_DIR:-}" ]; then
   fi
 fi
 
-log_structured "end" "Task finished. Duration: ${DURATION}s"
+# --- v1.1 X4: 效率异常检测 ---
+check_efficiency() {
+  local token_json="$1"
+  local inp out cost
+  inp=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('input_tokens',0))" 2>/dev/null || echo 0)
+  out=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('output_tokens',0))" 2>/dev/null || echo 0)
+  cost=$(echo "$token_json" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('cost_usd',0))" 2>/dev/null || echo 0)
+
+  # 检测 1: input/output 比 > 200:1（读多写少，可能是 Lens 候选）
+  if [ "$out" -gt 0 ] 2>/dev/null; then
+    local ratio=$(( inp / out ))
+    if [ "$ratio" -gt 200 ] 2>/dev/null; then
+      log_structured "efficiency-alert" "High input/output ratio: ${ratio}:1 (${inp} in / ${out} out). Consider Lens mode." \
+        ratio="$ratio" input_tokens="$inp" output_tokens="$out"
+      local EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
+      [ -x "$EMIT_EVENT" ] && "$EMIT_EVENT" "efficiency-alert" "$AGENT_NAME" "warning" 1 \
+        "{\"agent\":\"$AGENT_NAME\",\"task_id\":\"$TASK_ID\",\"alert\":\"high_io_ratio\",\"ratio\":$ratio,\"cost\":$cost}" 2>/dev/null || true
+    fi
+  fi
+
+  # 检测 2: 成本接近上限（>80% 的 budget）
+  local budget_pct
+  budget_pct=$(python3 -c "
+b = float('${MAX_BUDGET_USD}')
+c = float('${cost}')
+print(int(c / b * 100)) if b > 0 else print(0)
+" 2>/dev/null || echo 0)
+  if [ "$budget_pct" -gt 80 ] 2>/dev/null; then
+    log_structured "efficiency-alert" "Session cost \$${cost} is ${budget_pct}% of budget \$${MAX_BUDGET_USD}" \
+      cost="$cost" budget_pct="$budget_pct"
+  fi
+}
+
+# 只在有 token 数据时检测
+if [ -n "${TOKEN_DATA:-}" ] && [ "$TOKEN_DATA" != "{}" ]; then
+  check_efficiency "$TOKEN_DATA"
+fi
+
+log_structured "end" "Task finished. Duration: ${DURATION:-0}s"
 echo "<<<AGENT_END>>>"
 echo "任务完成，结果已记录"

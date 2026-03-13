@@ -1,0 +1,47 @@
+# negotiation.yaml — v1.1 §8.3 Proposer ↔ Evaluator 协商协议
+#
+# 两个角色协商达成妥协。双方都有修改权。
+# 每轮产出结构化 position statement，不是自由文本。
+
+type: negotiation
+description: "Proposer 提需求 → Evaluator 评估可行性 → 多轮协商直到达成共识"
+
+config:
+  roles:
+    proposer: ""             # 通常是 PM
+    evaluator: ""            # 通常是 Dev
+  max_rounds: 3
+  termination: consensus_reached | max_rounds_divergence_report
+
+turn_format:
+  proposer_turn:
+    output_fields:
+      - requirements: "[{id, description, priority, negotiable: bool}]"
+      - constraints_accepted: "[constraint_id]"  # 接受 Evaluator 上轮提出的约束
+      - concessions: "本轮做出的让步说明"
+
+  evaluator_turn:
+    output_fields:
+      - feasibility: "[{req_id, verdict: feasible|infeasible|partial, effort: S|M|L|XL, risk: low|medium|high, alternative: '替代方案'}]"
+      - new_constraints: "[{id, description, severity: blocking|important|nice_to_have}]"
+      - concessions: "本轮做出的让步说明"
+
+consensus_check: |
+  共识条件：所有 priority=high 的需求被标记为 feasible 或有被接受的 alternative。
+  如果 evaluator 仍然标记任何 high-priority 需求为 infeasible 且无 alternative → 未达成共识。
+
+divergence_report:
+  format: |
+    ## 协商分歧报告
+    - 达成共识的需求: [list]
+    - 未解决的分歧: [{req_id, proposer_position, evaluator_position, evidence}]
+    - 建议: Mason 需要在以下分歧点做决策
+  destination: escalate_to_mason
+
+boundary_marker: |
+  [PHASE COMPLETE: {role}_round_{round}]
+  Position statement saved.
+  [PHASE START: {next_role}_round_{round}]
+  Role: {next_role_name}
+  Previous role instructions no longer apply.
+  Review the position statement above and respond with your structured output.

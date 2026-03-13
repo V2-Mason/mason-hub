@@ -1,0 +1,54 @@
+# surenxuan-content-production.yaml — 素仁轩内容生产管道
+#
+# v1.1 §7 + §12 首个实际 workflow 模板
+# 流程：调研 → 策划 → 生产 → QA → 发布
+
+id: surenxuan-content-production
+version: 1
+account: surenxuan
+trigger:
+  type: manual
+  input: [content_type, topic, platform]
+
+steps:
+  - id: research
+    role: EMP_0006
+    task: "根据 topic 调研竞品内容、热点趋势、平台规则"
+    coupling: loose_with_next
+    output_artifact: research.md
+    timeout: 600
+
+  - id: scope-definition
+    role: EMP_0008
+    task: "基于调研结果定义内容范围、角度、核心卖点"
+    coupling: loose_with_next
+    requires_approval: true
+    input_from: [research.output_artifact]
+    output_artifact: scope.md
+    timeout: 600
+
+  - id: content-creation
+    role: EMP_0010
+    task: "按 scope 生产内容（文案 + 图片/视频脚本）"
+    coupling: loose_with_next
+    input_from: [scope-definition.output_artifact]
+    output_artifact: content_draft.md
+    timeout: 900
+
+  - id: quality-review
+    role: EMP_0008
+    task: "审核内容质量：品牌一致性、平台合规、文案质量"
+    coupling: conditional
+    input_from: [content-creation.output_artifact]
+    output_artifact: review_result.json
+    on_fail: rerun_from:content-creation
+    timeout: 600
+
+  - id: publish
+    role: EMP_0008
+    task: "安排发布排期，执行发布"
+    coupling: loose_with_next
+    requires_approval: true
+    input_from: [content-creation.output_artifact, quality-review.output_artifact]
+    output_artifact: publish_record.json
+    timeout: 300
