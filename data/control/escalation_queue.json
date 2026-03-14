@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-03-14T01:31:04.430915",
+  "period_days": 7,
+  "total_items": 2,
+  "by_type": {
+    "task_failure": 2,
+    "memory_pending": 0,
+    "expired_decision": 0
+  },
+  "items": [
+    {
+      "type": "task_failure",
+      "task_id": "task_EMP_0004_1773450001",
+      "agent": "EMP_0004",
+      "status": "failed",
+      "timestamp": "2026-03-14T01:02:35Z",
+      "detail": "基础设施日报：检查服务状态/磁盘内存/agent调用统计(audit.jso",
+      "urgency": 2,
+      "impact": 2,
+      "priority_score": 7.988694240224868
+    },
+    {
+      "type": "task_failure",
+      "task_id": "task_EMP_0001_1773446402",
+      "agent": "EMP_0001",
+      "status": "failed",
+      "timestamp": "2026-03-14T00:03:20Z",
+      "detail": "每日巡检：1)库存巡检-扫描临期(30天内)/低库存(<5)/滞销(30天�",
+      "urgency": 2,
+      "impact": 2,
+      "priority_score": 7.965182335462963
+    }
+  ]
+}

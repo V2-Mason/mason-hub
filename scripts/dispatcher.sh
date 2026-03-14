@@ -192,6 +192,8 @@ execute_task() {
         TASK_CONTEXT_FILES="$context_files" \
         TASK_TYPE="$task_type" \
         TASK_ACCOUNT="$account" \
+        TASK_ACCEPTANCE_CRITERIA="${TASK_ACCEPTANCE_CRITERIA:-}" \
+        TASK_ASSIGNED_BY="dispatcher" \
         "$RUN_AGENT" "$agent_path" "自主任务: $desc" \
             > "$report_dir/${agent_name}_${task_id}.log" 2>&1 &
         local pid=$!
@@ -366,7 +368,8 @@ t = tasks[$idx]
 for k in ('id','agent','lane','line','description',
           'expected_output','verify_command','output_path',
           'max_duration','context_files','task_type',
-          'tier','tier_script','tier_escalate_on_fail','account'):
+          'tier','tier_script','tier_escalate_on_fail','account',
+          'depends_on','acceptance_criteria'):
     v = str(t.get(k, ''))[:200]
     print(f'TASK_{k.upper()}={shlex.quote(v)}')
 " 2>/dev/null) || continue
@@ -380,6 +383,31 @@ for k in ('id','agent','lane','line','description',
         if [[ "$TASK_LANE" != "independent" ]] && ! echo "$free_lanes" | grep -qw "$TASK_LANE"; then
             log "  ⏸️  $TASK_ID: lane $TASK_LANE 正忙，跳过"
             continue
+        fi
+
+        # === v2: depends_on 检查 ===
+        if [[ -n "${TASK_DEPENDS_ON:-}" ]]; then
+            local deps_met=true
+            IFS=',' read -ra DEPS <<< "$TASK_DEPENDS_ON"
+            for dep in "${DEPS[@]}"; do
+                dep=$(echo "$dep" | xargs)
+                local dep_yaml="$HUB_DIR/data/tasks/${dep}.yaml"
+                if [ -f "$dep_yaml" ]; then
+                    local dep_status
+                    dep_status=$(grep "^status:" "$dep_yaml" | head -1 | sed 's/status: *//' | tr -d '"')
+                    if [[ "$dep_status" != "done" ]]; then
+                        deps_met=false
+                        break
+                    fi
+                else
+                    deps_met=false
+                    break
+                fi
+            done
+            if ! $deps_met; then
+                log "  ⏸️  $TASK_ID: depends_on 未满足 ($TASK_DEPENDS_ON)"
+                continue
+            fi
         fi
 
         # === T1 直接执行：纯脚本任务不启动 Agent session ===

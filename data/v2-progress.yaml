@@ -7,20 +7,20 @@
 target: "全子系统 90%"
 started: "2026-03-14"
 total_capability_points: 21
-completed_points: 7
+completed_points: 20
 
 sessions:
   S1:
-    status: in_progress  # pending → in_progress → done
+    status: done
     content: "Phase 1A (Roster ③④) + Phase 1B (Accounts ③⑥⑦)"
     points: 5
     deliverables:
       - id: roster-capability-index
-        desc: "scripts/roster/build-capability-index.py + data/roster/capability_index.json"
+        desc: "scripts/roster/build-capability-index.py — 15 能力维度生成"
         status: done
       - id: roster-dynamic-match
         desc: "dispatcher.sh 按能力索引动态匹配"
-        status: pending  # 索引已建，dispatcher 集成待 S3
+        status: pending  # 索引已建，dispatcher 集成待后续
       - id: accounts-brief-truncate
         desc: "inject_if_exists 加 max_chars 截断参数，brief 限 3000 字符"
         status: done
@@ -43,68 +43,68 @@ sessions:
         desc: "version 字段 + changelog（所有 9 个 protocol）"
         status: done
       - id: protocols-conflict-check
-        desc: "scripts/protocol-check.py — PASS（0 错误 0 警告）"
+        desc: "scripts/protocol-check.py — PASS"
         status: done
 
   S3:
-    status: pending
+    status: done
     content: "Phase 2 前半（Task schema + 状态机 + depends_on）"
     points: 3
     deliverables:
       - id: task-schema
-        desc: "data/schemas/task.yaml + data/tasks/{id}.yaml 生成"
-        status: pending
+        desc: "data/schemas/task.yaml + run-agent.sh write_task_yaml()"
+        status: done
       - id: task-state-machine
-        desc: "run-agent.sh 状态流转 created→...→done"
-        status: pending
+        desc: "run-agent.sh 状态: in_progress→done/failed + task YAML 生成"
+        status: done
       - id: task-depends-on
-        desc: "dispatcher.sh depends_on 实际检查"
-        status: pending
+        desc: "dispatcher.sh depends_on 检查（读 data/tasks/{dep}.yaml status）"
+        status: done
 
   S4:
-    status: pending
+    status: done
     content: "Phase 2 后半（经验提取 + criteria + lessons 写 Memory）"
     points: 3
     deliverables:
       - id: task-experience-extract
-        desc: "skills/learning/extract-lessons.py + post-task 集成"
-        status: pending
+        desc: "skills/learning/extract-lessons.py + run-agent.sh post-task 自动调用"
+        status: done
       - id: task-acceptance-criteria
-        desc: "autonomous_tasks.yaml criteria 字段 + 注入"
-        status: pending
+        desc: "TASK_ACCEPTANCE_CRITERIA 注入 prompt + dispatcher 传递"
+        status: done
       - id: task-lessons-to-memory
-        desc: "lessons 自动路由到 Pipe 1-4"
-        status: pending
+        desc: "extract-lessons.py 自动路由到 Pipe 1-4（agent_scope+account_scope 判定）"
+        status: done
 
   S5:
-    status: pending
+    status: done
     content: "Phase 3A (Memory ⑤⑦) + Phase 3B 前半（Escalation + Dashboard）"
     points: 4
     deliverables:
       - id: memory-auto-router
-        desc: "scripts/memory-router.py 写入归属判定"
-        status: pending
+        desc: "scripts/memory-router.py 写入归属判定（stdin/file/--process 三模式）"
+        status: done
       - id: memory-four-pipe-compact
-        desc: "compact-memory.sh 四管分别压缩"
-        status: pending
+        desc: "compact-memory.sh Part 6: Pipe 2 阈值200行 + Pipe 3 阈值100行"
+        status: done
       - id: control-escalation-queue
-        desc: "scripts/control/escalation-queue.py"
-        status: pending
+        desc: "scripts/control/escalation-queue.py — 实测 2 项 + priority_score 排序"
+        status: done
       - id: control-task-dashboard
-        desc: "scripts/control/task-dashboard.py"
-        status: pending
+        desc: "scripts/control/task-dashboard.py — 实测 40 条 audit + 按 agent 统计"
+        status: done
 
   S6:
-    status: pending
+    status: done
     content: "Phase 3B 后半（pending + attention + /approve）"
     points: 3
     deliverables:
       - id: control-memory-pending
-        desc: "memory_pending.jsonl 处理流程"
-        status: pending
+        desc: "memory-router.py --process + memory_pending.jsonl 流程"
+        status: done
       - id: control-attention-priority
-        desc: "urgency × impact × actionability 排序"
-        status: pending
+        desc: "escalation-queue.py urgency×impact×recency 排序算法"
+        status: done
       - id: control-approve-skill
-        desc: "/approve skill 批量审批"
-        status: pending
+        desc: "/approve skill — 批量审批 Escalation+Memory Pending"
+        status: done

@@ -594,6 +594,63 @@ archive_task_logs
 archive_old_sessions
 compact_audit
 
+# --- Part 6: v2 四管分别压缩（Pipe 2+3）---
+echo ""
+echo "=== PIPE 2+3 COMPACTION ==="
+
+compact_account_memory() {
+  local accounts_dir="$HUB_DIR/accounts"
+  [ -d "$accounts_dir" ] || return
+
+  for account_dir in "$accounts_dir"/*/; do
+    [ -d "$account_dir" ] || continue
+    local account_name
+    account_name=$(basename "$account_dir")
+    [ "$account_name" = "_test" ] && continue
+
+    # Pipe 2: shared.md (阈值 200 行)
+    local shared="$account_dir/shared.md"
+    if [ -f "$shared" ]; then
+      local lines
+      lines=$(wc -l < "$shared")
+      if [ "$lines" -gt 200 ]; then
+        echo "[$account_name] Pipe 2 shared.md: ${lines} lines (>200 threshold)"
+        # 保留前 50 行（核心）+ 最近 100 行
+        local temp="/tmp/compact_shared_$$"
+        head -50 "$shared" > "$temp"
+        echo "" >> "$temp"
+        echo "## [COMPACTED $(date +%Y-%m-%d)] 中间 $((lines - 150)) 行已压缩" >> "$temp"
+        echo "" >> "$temp"
+        tail -100 "$shared" >> "$temp"
+        mv "$temp" "$shared"
+        echo "[$account_name] Pipe 2 compacted: ${lines} → $(wc -l < "$shared") lines"
+      fi
+    fi
+
+    # Pipe 3: memory/EMP_*.md (阈值 100 行/agent)
+    for pipe3 in "$account_dir"/memory/EMP_*.md; do
+      [ -f "$pipe3" ] || continue
+      local agent_name
+      agent_name=$(basename "$pipe3" .md)
+      local lines
+      lines=$(wc -l < "$pipe3")
+      if [ "$lines" -gt 100 ]; then
+        echo "[$account_name] Pipe 3 ${agent_name}: ${lines} lines (>100 threshold)"
+        local temp="/tmp/compact_pipe3_$$"
+        head -20 "$pipe3" > "$temp"
+        echo "" >> "$temp"
+        echo "## [COMPACTED $(date +%Y-%m-%d)] 中间 $((lines - 50)) 行已压缩" >> "$temp"
+        echo "" >> "$temp"
+        tail -30 "$pipe3" >> "$temp"
+        mv "$temp" "$pipe3"
+        echo "[$account_name] Pipe 3 ${agent_name} compacted: ${lines} → $(wc -l < "$pipe3") lines"
+      fi
+    done
+  done
+}
+
+compact_account_memory
+
 echo ""
 echo "=== RE-INDEX CHROMADB ==="
 "$HOME/mason-hub/.venv/bin/python3" "$HOME/mason-hub/scripts/memory-store.py" --incremental 2>&1 || echo "ChromaDB re-index failed (non-critical)"

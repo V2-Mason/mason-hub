@@ -218,6 +218,35 @@ if [ -z "$TASK_ID" ]; then
 fi
 mkdir -p "$TASK_LOG_DIR"
 
+# --- v2: Task YAML 生成（标准数据对象）---
+TASK_YAML_DIR="$HUB_DIR/data/tasks"
+TASK_YAML_FILE="${TASK_YAML_DIR}/${TASK_ID}.yaml"
+mkdir -p "$TASK_YAML_DIR"
+
+write_task_yaml() {
+  local status="$1"
+  local extra="${2:-}"
+  local task_brief
+  task_brief=$(printf '%s' "$TASK" | head -c 200 | tr '\n' ' ' | tr "'" '"')
+  cat > "$TASK_YAML_FILE" <<TASKYAML
+id: "$TASK_ID"
+account: "${TASK_ACCOUNT:-}"
+agent: "$AGENT_NAME"
+assigned_by: "${TASK_ASSIGNED_BY:-dispatcher}"
+status: "$status"
+description: "$(printf '%s' "$task_brief" | head -c 150)"
+created_at: "$START_TIME"
+updated_at: "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+acceptance_criteria: "${TASK_ACCEPTANCE_CRITERIA:-}"
+verify_command: "${TASK_VERIFY_COMMAND:-}"
+task_type: "$TASK_TYPE"
+${extra}
+TASKYAML
+}
+
+TASK_ASSIGNED_BY="${TASK_ASSIGNED_BY:-dispatcher}"
+TASK_ACCEPTANCE_CRITERIA="${TASK_ACCEPTANCE_CRITERIA:-}"
+
 # --- v1.1 Instance ID 生成（唯一 session 标识）---
 INSTANCE_ID="session-$(date +%Y%m%d)-${AGENT_NAME}-$(head -c 4 /dev/urandom | xxd -p)"
 SESSION_DIR="$HUB_DIR/agents/${AGENT_NAME}/memory/sessions"
@@ -445,6 +474,12 @@ if [ -n "$TASK_OUTPUT_PATH" ]; then
 
 ## 输出路径
 结果写入: ${TASK_OUTPUT_PATH}"
+fi
+if [ -n "$TASK_ACCEPTANCE_CRITERIA" ]; then
+  TASK="${TASK}
+
+## 验收标准
+${TASK_ACCEPTANCE_CRITERIA}"
 fi
 
 # --- 提取 launcher_args（从 YAML frontmatter）---
@@ -682,6 +717,9 @@ log_structured "start" "Task started. Work dir: $RUN_DIR. Verify: $HAS_VERIFY_LO
   work_dir="$RUN_DIR" has_verify="$HAS_VERIFY_LOOP" task_type="$TASK_TYPE" chain_depth="$CHAIN_DEPTH"
 echo "<<<AGENT_START $AGENT_NAME>>>"
 
+# v2: 写初始 task YAML (status: in_progress)
+write_task_yaml "in_progress"
+
 # === 主执行逻辑 ===
 
 # 记录 agent 调用前的 git diff baseline（用于只检测 agent 新增的改动）
@@ -747,6 +785,10 @@ EOSUMMARY
   write_audit "completed" "" "$TOKEN_DATA"
   write_daily_log "✅" "${DURATION}s"
   log_api_usage "$JSON_OUTPUT" "$DURATION"
+  # v2: 更新 task YAML (done)
+  write_task_yaml "done" "duration_seconds: $DURATION
+result: \"completed successfully\"
+rounds: 1"
 
   # v1.1: 写 session 记录（非开发类 agent）
   {
@@ -919,6 +961,10 @@ EOSUMMARY
 
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
     write_audit "completed" ",\"verify_rounds\":$ROUND" "$TOKEN_DATA"
+    # v2: 更新 task YAML (done)
+    write_task_yaml "done" "duration_seconds: $DURATION
+result: \"completed after $ROUND verify rounds\"
+rounds: $ROUND"
     write_daily_log "✅" "R${ROUND} ${DURATION}s"
 
     # 发射任务完成事件（供 Dispatcher/Gateway 追踪）
@@ -1002,6 +1048,10 @@ EOSUMMARY
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
     write_audit "repair_failed" ",\"verify_rounds\":$ROUND,\"pm_retry_count\":$PM_RETRY_COUNT,\"root_cause_guess\":\"$ROOT_CAUSE\"" "$TOKEN_DATA"
     write_daily_log "❌ 修复失败(R${ROUND})" "PM重试${PM_RETRY_COUNT}"
+    # v2: 更新 task YAML (failed)
+    write_task_yaml "failed" "duration_seconds: $DURATION
+rounds: $ROUND
+error_summary: \"$(printf '%s' "$ROOT_CAUSE" | head -c 100 | tr '"' "'")\""
 
     # 发射任务失败事件（供 Dispatcher/Gateway 追踪）
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
@@ -1150,6 +1200,15 @@ print(int(c / b * 100)) if b > 0 else print(0)
 # 只在有 token 数据时检测
 if [ -n "${TOKEN_DATA:-}" ] && [ "$TOKEN_DATA" != "{}" ]; then
   check_efficiency "$TOKEN_DATA"
+fi
+
+# --- v2: 自动经验提取（Task Engine → Memory 桥梁）---
+if [ -f "$TASK_YAML_FILE" ] && [ "$TASK_TYPE" != "lightweight" ]; then
+  EXTRACT_SCRIPT="$HUB_DIR/skills/learning/extract-lessons.py"
+  if [ -f "$EXTRACT_SCRIPT" ]; then
+    python3 "$EXTRACT_SCRIPT" "$TASK_YAML_FILE" 2>/dev/null || true
+    echo "[v2] Lessons extracted from $TASK_ID" >&2
+  fi
 fi
 
 log_structured "end" "Task finished. Duration: ${DURATION:-0}s"

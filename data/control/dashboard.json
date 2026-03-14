@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-03-14T01:31:04.621928",
+  "task_yaml_count": 0,
+  "audit_record_count": 40,
+  "by_account": {},
+  "by_agent": {},
+  "total_by_status": {},
+  "agent_audit_summary": {
+    "EMP_0006": {
+      "completed": 2,
+      "failed": 0,
+      "total_cost": 0
+    },
+    "EMP_0002": {
+      "completed": 6,
+      "failed": 0,
+      "total_cost": 3.0557559999999997
+    },
+    "EMP_0004": {
+      "completed": 2,
+      "failed": 1,
+      "total_cost": 1.084529
+    },
+    "EMP_0014": {
+      "completed": 19,
+      "failed": 0,
+      "total_cost": 7.433441
+    },
+    "EMP_0001": {
+      "completed": 4,
+      "failed": 1,
+      "total_cost": 2.423657
+    },
+    "EMP_0008": {
+      "completed": 1,
+      "failed": 0,
+      "total_cost": 0.605274
+    },
+    "EMP_0000": {
+      "completed": 3,
+      "failed": 0,
+      "total_cost": 2.058343
+    },
+    "EMP_0005": {
+      "completed": 1,
+      "failed": 0,
+      "total_cost": 1.861377
+    }
+  }
+}
