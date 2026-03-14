@@ -567,12 +567,12 @@ Phase 3 — 数据 SDK + 扩展:
 - [x] Memory Phase 2：run-agent.sh + dispatcher.sh 支持 TASK_ACCOUNT 四管注入 — 2026-03-14（EMP_0002）
 
 待办：
-- [ ] 自建 Skill（4 个）：content-performance.py、cross-correlate.py、decision-log.py、pattern-extract.py — 按五维 Gap 分析产出，遵循三层架构（EMP_0002）
-- [ ] compact-memory.sh 扩展：加 lesson 质量评分步骤（检查 gap 分类/可操作/重复）（EMP_0002）
+- [x] 自建 Skill（4 个）：content-performance/cross-correlate/decision-log/pattern-extract — 2026-03-14（EMP_0002）
+- [x] compact-memory.sh 扩展：lesson 质量评分 + 四管分别压缩 — 2026-03-14（EMP_0002）
 - [ ] Role/Playbook 增强（3 个）：EMP_0015 加趋势归因+决策回顾方法论、EMP_0000 加自主度评估方法论
-- [ ] Roster 能力索引：从 agents.yaml 生成反向查询表（"谁能做 X"），Dispatcher 按能力匹配（EMP_0002）
-- [ ] Task Engine 标准化：Task 数据对象 schema + 经验自动提取（等 Accounts/Memory 跑顺后）
-- [ ] Control Plane 统一：Escalation 队列聚合 + attention prioritization（等 Task Engine 后）
+- [x] Roster 能力索引 + 动态匹配：build-capability-index.py + dispatcher 中文关键词匹配（6/6 测试通过）— 2026-03-14（EMP_0002）
+- [x] Task Engine 标准化：task.yaml schema + 状态机 + depends_on + extract-lessons.py 经验自动提取 — 2026-03-14（EMP_0002）
+- [x] Control Plane 统一：escalation-queue.py + task-dashboard.py + /approve skill — 2026-03-14（EMP_0002）
 
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 
