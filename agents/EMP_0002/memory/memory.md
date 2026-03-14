@@ -7,6 +7,17 @@
 
 ## 平台架构
 
+### agent-loader.sh 创建与 run-agent.sh v2 适配 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- 从 run-agent.sh 提取文件加载逻辑为独立模块 `scripts/agent-loader.sh`
+- 两个核心函数：`load_agent_context`（组装 5 文件上下文）、`update_agent_state`（覆写 state.md）
+- Layer 参数：`0`=identity+state（T1），`01`=全部五文件（T3+，默认）
+- run-agent.sh 改为：检测 identity.md 存在 → `USE_V2_LOADER=true` → 调用 agent-loader
+- fallback 保留：无 identity.md 时回退读 config.md，无感降级
+- launcher_args 提取从 frontmatter YAML 改为 identity.md body 的 `**launcher**:` 行
+- 验证结果：bash -n 通过，load_agent_context 输出 5 个分隔符 + 正确内容
+- 下游调用（901/908/1212/1219 行）仍硬编码 config.md 路径，待后续迁移
+
 ### Skills 去重 (2026-02-28)
 - `~/.claude/skills/` (user 级) 和 `~/mason-hub/.claude/skills/` (project 级) 存在同名 skill，导致系统提示里重复显示
 - 应统一保留一套，推荐 project 级（跟 git 走）

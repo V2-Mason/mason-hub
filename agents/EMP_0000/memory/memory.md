@@ -101,3 +101,15 @@
 ### Radar Tracker 关注率 (2026-03-09)
 - 关注率 = hits vs dismissed 比率，淘汰阈值 < 50% 连续两周
 - 每日去重：Mason 看过的新闻次日自动隐藏
+
+---
+
+## 平台架构
+
+### agent-loader.sh 上线 + run-agent.sh v2 适配 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- EMP_0002 完成 TASK-20260314-001：从 run-agent.sh 提取文件加载逻辑为独立模块
+- `scripts/agent-loader.sh`（168 行）：`load_agent_context`（Layer 0/01 分层加载）+ `update_agent_state`（覆写 state.md）
+- run-agent.sh 适配：检测 identity.md → v2 loader，否则 fallback 到 config.md
+- 这是 v2 文件架构的运行时支撑层——之前只有文件结构，现在 Dispatcher 也能按层加载
+- 首次完整走通 message_schema.md 双向通信：EMP_0002 → task_complete → EMP_0000 接收处理

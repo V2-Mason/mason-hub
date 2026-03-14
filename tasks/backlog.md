@@ -580,12 +580,17 @@ Phase 3 — 数据 SDK + 扩展:
 > 核心问题：系统是"自动化调度"不是"Agent"——agent 不反思、不自主选工具、不规划、不协作。
 > 突破点：Planning 先行（让 agent 收到目标自己拆解），自然带动 Reflection 和 Tool Use。
 
+已完成（Agent 化基础设施）：
+- [x] v2 文件架构全量迁移 — 15 个活跃 EMP 从 config.md 单文件迁移到 5 文件分层（identity/state/soul/tools/memory.md），抽查修复 3 处内容缺失（EMP_0001 消亡条件/EMP_0006 情报分发+紧急情报/EMP_0014 launcher）— 2026-03-14
+- [x] agent-loader.sh — 从 run-agent.sh 提取文件加载逻辑为独立模块（load_agent_context Layer 0/01 + update_agent_state + extract_launcher_args），run-agent.sh 适配 v2 loader — 2026-03-14（EMP_0002）
+- [x] message_schema.md — 跨 agent 通信协议（7 种消息类型 + 使用规则 + 示例），首次双向通信验证通过（EMP_0002→task_complete→EMP_0000）— 2026-03-14
+
 待办（Agent 化路线）：
 - [ ] Planning 能力：agent 收到目标而非指令，自主拆解步骤并评估可行性（decompose.py 需接 LLM）
 - [ ] Reflection 能力：critic.py 接 LLM 做真正的质量评估，agent 执行中途可暂停反思
 - [ ] Tool Use 自主化：agent 运行时查 registry.yaml 自主选择工具，而非流程硬编码
 - [ ] Multi-agent 实战：ping-pong/roundtable 协议跑第一个真实场景
-- [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime
+- [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime（agent-loader.sh 是第一步，下游调用仍硬编码 config.md）
 - [x] Roster 能力索引 + 动态匹配：build-capability-index.py + dispatcher 中文关键词匹配（6/6 测试通过）— 2026-03-14（EMP_0002）
 - [x] Task Engine 标准化：task.yaml schema + 状态机 + depends_on + extract-lessons.py 经验自动提取 — 2026-03-14（EMP_0002）
 - [x] Control Plane 统一：escalation-queue.py + task-dashboard.py + /approve skill — 2026-03-14（EMP_0002）

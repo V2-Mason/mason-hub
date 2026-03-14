@@ -45,7 +45,7 @@ def get_service():
 
 
 def do_auth():
-    """执行 OAuth 认证流程"""
+    """执行 OAuth 认证流程（支持无头环境 console 模式）"""
     from google_auth_oauthlib.flow import InstalledAppFlow
 
     if not CREDENTIALS_PATH.exists():
@@ -56,7 +56,19 @@ def do_auth():
 
     TOKEN_PATH.parent.mkdir(parents=True, exist_ok=True)
     flow = InstalledAppFlow.from_client_secrets_file(str(CREDENTIALS_PATH), SCOPES)
-    creds = flow.run_local_server(port=0)
+
+    # 无头环境用 console 模式，有浏览器时用 local server
+    try:
+        creds = flow.run_local_server(port=0)
+    except Exception:
+        # Fallback: console 模式 — 打印 URL，用户手动授权后粘贴 code
+        flow.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
+        auth_url, _ = flow.authorization_url(prompt="consent")
+        print(f"\n🔗 请在浏览器中打开以下链接完成授权：\n\n{auth_url}\n")
+        code = input("授权后粘贴 authorization code: ").strip()
+        flow.fetch_token(code=code)
+        creds = flow.credentials
+
     TOKEN_PATH.write_text(creds.to_json())
     print(f"✅ 认证成功，token 保存到 {TOKEN_PATH}")
 

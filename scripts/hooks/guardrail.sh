@@ -42,8 +42,8 @@ print(cmd)
       exit 2
     fi
 
-    # 硬拦截：敏感文件操作
-    if echo "$COMMAND_CORE" | grep -qE '(cat\s+.*\.env\b|cat\s+.*credentials|cat\s+.*secret|curl.*\.env)'; then
+    # 硬拦截：敏感文件操作（.env / secret / token 文件，credentials 目录放行非密钥文件）
+    if echo "$COMMAND_CORE" | grep -qE '(cat\s+.*\.env\b|cat\s+.*(secret|token|\.pem|\.key|id_rsa)\b|curl.*\.env)'; then
       echo "🚫 硬红线：检测到敏感文件读取，已拦截" >&2
       exit 2
     fi

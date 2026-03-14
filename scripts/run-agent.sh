@@ -5,6 +5,7 @@ set -euo pipefail
 export PATH="$HOME/.local/bin:$PATH"
 
 HUB_DIR="$HOME/mason-hub"
+source "$HUB_DIR/scripts/agent-loader.sh"
 SKILLS_DIR="$HUB_DIR/skills"
 NOTIFY_MASON="$SKILLS_DIR/notify-mason.sh"
 LOG_FILE="$HUB_DIR/logs/agent.log"
@@ -45,12 +46,12 @@ fi
 
 # --- 参数检查 ---
 if [ $# -lt 2 ]; then
-  echo "用法: $0 <agent配置文件> <任务内容>"
+  echo "用法: $0 <agent目录或配置文件> <任务内容>"
+  echo "示例: $0 agents/EMP_0002 \"创建 agent-loader.sh\""
   echo "示例: $0 agents/EMP_0000/config.md \"读取context.json并分析\""
   exit 1
 fi
 
-AGENT_FILE="$HUB_DIR/$1"
 TASK="$2"
 SLACK_CHANNEL="${3:-}"
 
@@ -58,17 +59,33 @@ SLACK_CHANNEL="${3:-}"
 export SLACK_NOTIFY="/home/hangn/slack-bot/slack_notify.sh"
 export SLACK_CHANNEL
 
-if [ ! -f "$AGENT_FILE" ]; then
-  echo "错误: 找不到配置文件 $AGENT_FILE"
-  exit 1
-fi
+# --- v2: 支持目录格式（agents/EMP_XXXX）和旧文件格式（agents/EMP_XXXX/config.md）---
+AGENT_INPUT="$HUB_DIR/$1"
+USE_V2_LOADER=false
+AGENT_DIR=""
 
-# --- 提取 agent 名称 ---
-# 支持新格式 agents/EMP_0002/config.md 和旧格式 agents/EMP_0002/config.md
-if [[ "$(basename "$1")" == "config.md" ]]; then
-  AGENT_NAME=$(basename "$(dirname "$1")")
+if [ -d "$AGENT_INPUT" ] && [ -f "$AGENT_INPUT/identity.md" ]; then
+  # v2 目录格式
+  USE_V2_LOADER=true
+  AGENT_DIR="$AGENT_INPUT"
+  AGENT_FILE="$AGENT_INPUT/identity.md"
+  AGENT_NAME=$(basename "$AGENT_INPUT")
+elif [ -f "$AGENT_INPUT" ]; then
+  # 旧文件格式（config.md）
+  AGENT_FILE="$AGENT_INPUT"
+  AGENT_DIR=$(dirname "$AGENT_FILE")
+  if [[ "$(basename "$1")" == "config.md" ]]; then
+    AGENT_NAME=$(basename "$(dirname "$1")")
+    # 检查是否有 identity.md，优先用 v2
+    if [ -f "$AGENT_DIR/identity.md" ]; then
+      USE_V2_LOADER=true
+    fi
+  else
+    AGENT_NAME=$(basename "$1" .md)
+  fi
 else
-  AGENT_NAME=$(basename "$1" .md)
+  echo "错误: 找不到 agent 目录或配置文件: $AGENT_INPUT"
+  exit 1
 fi
 
 # --- Lane Queue: serial execution lock ---
@@ -145,12 +162,26 @@ if [ "${CLAUDECODE:-}" = "1" ]; then
   exit 1
 fi
 
-# --- 提取 markdown body（跳过 YAML frontmatter）---
-SYSPROMPT=$(awk "BEGIN{c=0} /^---$/{c++; next} c>=2{print}" "$AGENT_FILE")
-
-if [ -z "$SYSPROMPT" ]; then
-  echo "错误: 无法从 $AGENT_FILE 提取 system prompt"
-  exit 1
+# --- 提取 system prompt ---
+if [ "$USE_V2_LOADER" = true ]; then
+  # v2: 使用 agent-loader.sh 组装上下文
+  TASK_LAYER="01"
+  if [ "$TASK_TYPE" = "lightweight" ]; then
+    TASK_LAYER="0"
+  fi
+  SYSPROMPT=$(load_agent_context "$AGENT_DIR" "$TASK_LAYER")
+  if [ $? -ne 0 ] || [ -z "$SYSPROMPT" ]; then
+    echo "错误: agent-loader 无法加载 $AGENT_DIR"
+    exit 1
+  fi
+  echo "[context] v2 loader: $AGENT_NAME layer=$TASK_LAYER" >&2
+else
+  # 旧路径：从 config.md 提取 markdown body
+  SYSPROMPT=$(awk "BEGIN{c=0} /^---$/{c++; next} c>=2{print}" "$AGENT_FILE")
+  if [ -z "$SYSPROMPT" ]; then
+    echo "错误: 无法从 $AGENT_FILE 提取 system prompt"
+    exit 1
+  fi
 fi
 
 # --- 提取 working_directory（从 YAML frontmatter）---
@@ -482,12 +513,18 @@ if [ -n "$TASK_ACCEPTANCE_CRITERIA" ]; then
 ${TASK_ACCEPTANCE_CRITERIA}"
 fi
 
-# --- 提取 launcher_args（从 YAML frontmatter）---
-LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
-  if(/^launcher_args:/){in_la=1; next}
-  if(in_la && /^  - /){gsub(/^  - /,""); printf "%s ", $0; next}
-  if(in_la && !/^  /){in_la=0}
-}' "$AGENT_FILE")
+# --- 提取 launcher_args ---
+if [ "$USE_V2_LOADER" = true ]; then
+  # v2: 从 identity.md body 的 **launcher**: 行提取
+  LAUNCHER_ARGS=$(extract_launcher_args "$AGENT_DIR")
+else
+  # 旧路径：从 YAML frontmatter 提取
+  LAUNCHER_ARGS=$(awk 'BEGIN{c=0; in_la=0} /^---$/{c++; next} c>=2{exit} c==1{
+    if(/^launcher_args:/){in_la=1; next}
+    if(in_la && /^  - /){gsub(/^  - /,""); printf "%s ", $0; next}
+    if(in_la && !/^  /){in_la=0}
+  }' "$AGENT_FILE")
+fi
 
 # --- 辅助函数：调用 claude -p 并记录 token ---
 # 走 Max 订阅（OAuth）而非 API key 计费：unset ANTHROPIC_API_KEY
