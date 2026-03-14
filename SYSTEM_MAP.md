@@ -1,6 +1,6 @@
 # System Map — 受力分析
 
-> 最后更新: 2026-03-12 05:44 ET (/standup 增量更新)
+> 最后更新: 2026-03-14 21:33 ET (/standup 增量更新)
 > 更新权: Agent 自动更新可推断字段，耦合关系变更需 Mason 确认
 > 所有 Agent session 启动时读取此文件 + MASON_AUTHORITY.md
 
@@ -8,9 +8,9 @@
 
 ## 全局状态
 
-**Layer 2 建立中** — 数据管道是当前系统瓶颈，阻塞内容线和商业线。Agent 自治框架刚落地，等 3 天验证。
+**Layer 2 建立中 → Agent OS v2 架构升级** — 六子系统框架落地（21/21 能力点），但四支柱评估揭示系统是"自动化调度"不是真 Agent（Planning 10%/Reflection 15%）。Dispatcher 处于 /pause 状态。
 
-当前合力方向: **向内收敛**（先稳定数据管道，再向外扩张）
+当前合力方向: **向内收敛 + Agent 化**（六子系统稳定后推 Planning 能力）
 
 ---
 
@@ -19,12 +19,12 @@
 ### 1. Agent 自治线
 ```
 状态:    active
-里程碑:  Gateway LLM 停用，Dispatcher 改走 Max 订阅，日常监控用 health-check-lite.sh 纯 bash 替代
-阻力:    无（成本大幅下降，Max 订阅无 API 计费）
+里程碑:  Agent OS v2 六子系统 21/21 + 质量框架（decompose+critic+error-analysis）集成到 run-agent.sh + pre-commit hook 铁律执行
+阻力:    设计缺口: 四支柱（Planning/Reflection/Tool Use/Collab）全面不足，run-agent.sh 1300行 God Script 待拆
 耦合:    ↓ 效率影响 → 数据线、内容线、商业线
-上次更新: 2026-03-12
+上次更新: 2026-03-14
 ```
-**解读**: Gateway LLM 于 3/12 停用（成本考量），mason-gateway.py 保留作按需诊断。Dispatcher 改为 unset API key 走 Max 订阅。昨夜 Dispatcher 派发 28 个任务全部完成（含 EMP_0014 健康检查 ×10、EMP_0001 巡检 ×3、EMP_0006 斥候 ×2 等）。日成本从 ~$2.80 降到 ~$0（Max 订阅内）。
+**解读**: 3/14 大幅推进 Agent OS v2——六子系统全部落地（Accounts 标准化+四管 Memory+Protocols YAML+Task Engine+Control Plane），质量框架（递归拆解+多维评估+错误分析）集成到执行流程。但四支柱评估揭示根本差距：系统是调度器不是 Agent。Dispatcher 处于 /pause 状态（3/13 起）。
 
 ### 2. 数据线
 ```
@@ -65,11 +65,11 @@
 ### 5. 审计与可观测性线
 ```
 状态:    active
-里程碑:  audit schema 落地 + token/cost 追踪 + 30 条审计记录（目标: 连续 7 天）
-阻力:    内部工程: 三层审计模型（执行/决策/因果）仅完成执行层
+里程碑:  audit schema + error-analysis.py（错误分类+通过率+模式识别）+ critic.py（E2E+Component评估）
+阻力:    设计缺口: 评估维度是规则引擎不是 LLM，深度不够
 耦合:    ← 依赖: 自治线稳定（agent 要先能自主跑，才有东西可审计）
          ↓ 解锁: 系统自我诊断、历史追溯、自动优化建议
-上次更新: 2026-03-12
+上次更新: 2026-03-14
 ```
 **解读**: 审计数据持续积累，30 条记录。新增记录包含精确 token/cost 追踪（input_tokens/output_tokens/cost_usd/model 字段）。三层审计中执行层完成，决策层和因果层待设计。
 
@@ -106,13 +106,14 @@
 | 优先级 | 行动 | 理由 | Owner |
 |--------|------|------|-------|
 
-| 1 | XHS 主干管道统一 | 采集→清洗→分析→briefing 用标准接口串联，SDK 已就绪，17/17 全绿 | EMP_0014 |
-| 2 | Dispatcher 稳定性观察 | Gateway LLM 已停用，Dispatcher 走 Max，观察 3 天确认无副作用 | 自动 |
-| 3 | 审计线决策层设计 | 执行层已落地（30 条），设计决策层（why）记录机制 | EMP_0002 |
+| 1 | Planning 能力建设 | 让 agent 收到目标自己拆解（decompose.py 接 LLM），四支柱突破点 | EMP_0002 |
+| 2 | run-agent.sh 模块化拆分 | 1300 行 God Script → 子系统模块，降低维护成本和 bug 风险 | EMP_0002 |
+| 3 | Dispatcher /pause 解除 | 3/13 起暂停，Agent OS v2 落地后应恢复自动派发 | Mason 决定 |
+| 4 | 阿里云连通性排查 | 当前 SSH 不通，影响数据同步 | EMP_0004 |
 
 **不推荐现在做的**:
 - 商业运营线任何事 → 全是外部依赖
-- CosyVoice 调参 → 内容线优先级低于数据线
+- CosyVoice 调参 → 内容线优先级低于自治线
 - 方案 C 升级（API 网关）→ 数据总量未触发 50MB 阈值
 
 ---
