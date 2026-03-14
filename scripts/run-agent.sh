@@ -23,6 +23,8 @@ TASK_MAX_DURATION="${TASK_MAX_DURATION:-0}"
 TASK_CONTEXT_FILES="${TASK_CONTEXT_FILES:-}"
 TASK_TYPE="${TASK_TYPE:-execute}"
 # task_type: execute（完整注入）| query（轻量，跳过收工/genes）| lightweight（最小注入，只 config+warm）| repair（语义搜索+context_files）
+TASK_ACCOUNT="${TASK_ACCOUNT:-}"
+# task_account: 品牌/客户 ID（如 surenxuan），用于加载 Pipe 2+3 记忆
 
 # --- Token 成本上限（防止上下文累积失控）---
 # 默认 $0.50/session，可通过环境变量覆盖
@@ -342,6 +344,23 @@ $(cat "$LESSONS_FILE")"
 fi
 
 # --- Phase 2.5: 知识注入（context_files 优先，否则按角色默认）---
+# --- Phase 2.5a: Account context loading (四管 Pipe 2+3) ---
+if [ -n "$TASK_ACCOUNT" ] && [ "$TASK_TYPE" != "lightweight" ]; then
+  ACCOUNT_DIR="$HUB_DIR/accounts/$TASK_ACCOUNT"
+  if [ -d "$ACCOUNT_DIR" ]; then
+    # Pipe 2: account 公共记忆
+    inject_if_exists "$ACCOUNT_DIR/shared.md" "🏢 品牌公共记忆: $TASK_ACCOUNT"
+    # Pipe 3: account×agent 工作记忆
+    inject_if_exists "$ACCOUNT_DIR/memory/${AGENT_NAME}.md" "🔗 品牌工作记忆: $TASK_ACCOUNT × $AGENT_NAME"
+    # Brand brief (轻量上下文)
+    inject_if_exists "$ACCOUNT_DIR/context/brief.md" "📋 品牌简报: $TASK_ACCOUNT"
+    echo "[context] Account loaded: $TASK_ACCOUNT (Pipe 2+3)" >&2
+  else
+    echo "[context] ⚠️ Account dir not found: $ACCOUNT_DIR" >&2
+  fi
+fi
+
+# --- Phase 2.5b: 知识注入（context_files 优先，否则按角色默认）---
 if [ "$TASK_TYPE" = "lightweight" ]; then
   # lightweight 模式：跳过所有 knowledge 注入
   echo "[context] SKIP knowledge (task_type=lightweight)" >&2

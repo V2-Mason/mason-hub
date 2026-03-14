@@ -1,0 +1,21 @@
+# 素仁轩 — Account 定义
+id: surenxuan
+name: 素仁轩
+status: active
+owner: mason
+domain: ecommerce
+project_path: domains/ecommerce/projects/srx
+
+slack_channels:
+  business: C0AGXNH7F6J
+  alerts: C0AGXNH7F6J
+
+# 服务此 account 的 agent
+agents:
+  - EMP_0001  # PM
+  - EMP_0003  # Domain Manager
+  - EMP_0005  # Dev
+  - EMP_0008  # Content-Ops PM
+  - EMP_0010  # Content Creator
+  - EMP_0013  # 店铺运营（待激活）
+  - EMP_0015  # 数据分析师

@@ -551,6 +551,29 @@ Phase 3 — 数据 SDK + 扩展:
 - [x] warm.md 记忆层 — 2026-03-13 完成，compact-memory.sh 生成 warm.md 滚动摘要，run-agent.sh 优先注入 warm.md（EMP_0002）
 - [ ] 效率审计自动化 — post-task hook 检测异常消耗模式，/standup 呈现 efficiency digest
 
+**Agent OS v2 注入优化 + Accounts/Memory 四管（2026-03-14 Mason 确认）**:
+
+> 背景：五维能力评估 → Skill Gap 分析 → 三层 Skill 架构 → 注入优化 → Accounts 标准化 + 四管 Memory。
+> 设计文档：memory/architecture_agent_os_v2.md（六子系统架构）
+
+已完成：
+- [x] CLAUDE.md 瘦身 89→52 行（删基础设施表/配置架构详表，预加载→按需读取）— 2026-03-14（EMP_0002）
+- [x] run-agent.sh 新增 lightweight 任务类型（跳过 daily/knowledge/post-task/genes）— 2026-03-14（EMP_0002）
+- [x] skills/registry.yaml 统一索引 20 个 skill — 2026-03-14（EMP_0002）
+- [x] SessionStart hook（session-bootstrap.sh）— interactive session 自动注入系统快照 — 2026-03-14（EMP_0002）
+- [x] MEMORY.md 新增 Memory 检索指南 + 当前系统焦点 — 2026-03-14
+- [x] 安装 social-content + analytics-tracking skill（>=15K installs 门槛）— 2026-03-14
+- [x] Accounts Phase 1：accounts/surenxuan/ 标准目录 + account.yaml + symlinks + shared.md(Pipe2) + memory/(Pipe3) — 2026-03-14（EMP_0002）
+- [x] Memory Phase 2：run-agent.sh + dispatcher.sh 支持 TASK_ACCOUNT 四管注入 — 2026-03-14（EMP_0002）
+
+待办：
+- [ ] 自建 Skill（4 个）：content-performance.py、cross-correlate.py、decision-log.py、pattern-extract.py — 按五维 Gap 分析产出，遵循三层架构（EMP_0002）
+- [ ] compact-memory.sh 扩展：加 lesson 质量评分步骤（检查 gap 分类/可操作/重复）（EMP_0002）
+- [ ] Role/Playbook 增强（3 个）：EMP_0015 加趋势归因+决策回顾方法论、EMP_0000 加自主度评估方法论
+- [ ] Roster 能力索引：从 agents.yaml 生成反向查询表（"谁能做 X"），Dispatcher 按能力匹配（EMP_0002）
+- [ ] Task Engine 标准化：Task 数据对象 schema + 经验自动提取（等 Accounts/Memory 跑顺后）
+- [ ] Control Plane 统一：Escalation 队列聚合 + attention prioritization（等 Task Engine 后）
+
 ### Phase 4: 事件驱动 + 自主决策（生意稳定后）
 
 **目标**: Agent 不仅按时间运行，还能响应事件自主决策。Mason 从操作者变成审批者。

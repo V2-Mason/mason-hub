@@ -160,6 +160,7 @@ execute_task() {
     local task_id="$1" agent_path="$2" line="$3" desc="$4"
     local expected_output="${5:-}" verify_command="${6:-}" output_path="${7:-}"
     local max_duration="${8:-0}" context_files="${9:-}" task_type="${10:-execute}"
+    local account="${11:-}"
     local agent_name
     # 支持新格式 agents/EMP_0002/config.md 和旧格式 agents/EMP_0002.md
     if [[ "$(basename "$agent_path")" == "config.md" ]]; then
@@ -190,6 +191,7 @@ execute_task() {
         TASK_MAX_DURATION="$max_duration" \
         TASK_CONTEXT_FILES="$context_files" \
         TASK_TYPE="$task_type" \
+        TASK_ACCOUNT="$account" \
         "$RUN_AGENT" "$agent_path" "自主任务: $desc" \
             > "$report_dir/${agent_name}_${task_id}.log" 2>&1 &
         local pid=$!
@@ -364,7 +366,7 @@ t = tasks[$idx]
 for k in ('id','agent','lane','line','description',
           'expected_output','verify_command','output_path',
           'max_duration','context_files','task_type',
-          'tier','tier_script','tier_escalate_on_fail'):
+          'tier','tier_script','tier_escalate_on_fail','account'):
     v = str(t.get(k, ''))[:200]
     print(f'TASK_{k.upper()}={shlex.quote(v)}')
 " 2>/dev/null) || continue
@@ -416,7 +418,8 @@ for k in ('id','agent','lane','line','description',
                     execute_task "$TASK_ID" "$TASK_AGENT" "$TASK_LINE" \
                         "T1 脚本执行失败 (exit $t1_exit)。脚本: $TASK_TIER_SCRIPT。错误: $t1_errors。请诊断并修复。" \
                         "$TASK_EXPECTED_OUTPUT" "$TASK_VERIFY_COMMAND" "$TASK_OUTPUT_PATH" \
-                        "$TASK_MAX_DURATION" "$TASK_CONTEXT_FILES" "$TASK_TASK_TYPE"
+                        "$TASK_MAX_DURATION" "$TASK_CONTEXT_FILES" "$TASK_TASK_TYPE" \
+                        "${TASK_ACCOUNT:-}"
                 fi
             fi
             dispatched=$((dispatched + 1))
@@ -426,7 +429,8 @@ for k in ('id','agent','lane','line','description',
         # 派发任务（lane lock 由 run-agent.sh 自行管理互斥）
         execute_task "$TASK_ID" "$TASK_AGENT" "$TASK_LINE" "$TASK_DESCRIPTION" \
             "$TASK_EXPECTED_OUTPUT" "$TASK_VERIFY_COMMAND" "$TASK_OUTPUT_PATH" \
-            "$TASK_MAX_DURATION" "$TASK_CONTEXT_FILES" "$TASK_TASK_TYPE"
+            "$TASK_MAX_DURATION" "$TASK_CONTEXT_FILES" "$TASK_TASK_TYPE" \
+            "${TASK_ACCOUNT:-}"
         dispatched=$((dispatched + 1))
     done
 

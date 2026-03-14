@@ -1,0 +1,1 @@
+{"id": "dec_20260314_010702_f25796", "timestamp": "2026-03-14T01:07:02.341428", "decision": "先做 Accounts+Memory 四管，不先做 Task Engine", "context": "v2 六子系统架构评估，Task Engine ROI 在单品牌下不高", "expected_outcome": "Accounts 30%→60%, Memory 50%→70%", "account": "surenxuan", "decided_by": "mason", "status": "pending", "outcome": null, "outcome_date": null, "review_notes": null}

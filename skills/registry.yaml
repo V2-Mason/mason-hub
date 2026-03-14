@@ -139,3 +139,32 @@ cookie-reminder:
   entry: scripts/cookie-reminder.sh
   type: script
   output: text
+
+# === 五维 Gap 自建 Skill (2026-03-14) ===
+content-performance:
+  description: "内容效果追踪（XHS + SocialMesh 发布指标）"
+  entry: skills/analytics/content-performance.py
+  type: script
+  input: [--platform, --days, --format]
+  output: json
+
+cross-correlate:
+  description: "跨数据源关联分析（XHS×Scout×销售交叉）"
+  entry: skills/analytics/cross-correlate.py
+  type: script
+  input: [--sources, --days, --format]
+  output: json
+
+decision-log:
+  description: "决策记录+结果追踪（log/review/outcome 三子命令）"
+  entry: skills/analytics/decision-log.py
+  type: script
+  input: [log|review|outcome, --decision, --result, --days]
+  output: json
+
+pattern-extract:
+  description: "跨任务规律提炼（扫描 cold memory 找重复模式）"
+  entry: skills/learning/pattern-extract.py
+  type: script
+  input: [--agent, --min-count, --format]
+  output: json

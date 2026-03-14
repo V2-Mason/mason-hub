@@ -1,0 +1,41 @@
+# daily_plan.yaml — EMP_0000 每日计划
+# 首次生成：2026-03-14（手动，为 EMP_0000 自动生成机制打样）
+
+date: "2026-03-14"
+planner: EMP_0000
+
+priorities:
+  - task_id: skill-content-performance
+    agent: agents/EMP_0002/config.md
+    description: "自建 skill: content-performance.py — 内容效果追踪（五维 Gap #1 感知-数据回流）"
+    priority: P1
+    reason: "感知层最大缺口，发了内容看不到效果"
+    mode: parallel_ok
+
+  - task_id: skill-cross-correlate
+    agent: agents/EMP_0002/config.md
+    description: "自建 skill: cross-correlate.py — 跨数据源关联分析（五维 Gap #3 理解-关联）"
+    priority: P1
+    reason: "Scout×XHS×销售数据不自动交叉，理解层缺口"
+    mode: parallel_ok
+
+  - task_id: skill-decision-log
+    agent: agents/EMP_0002/config.md
+    description: "自建 skill: decision-log.py — 决策记录+结果追踪（五维 Gap #4 决策-质量）"
+    priority: P1
+    reason: "做了决策不追踪效果，决策质量无法提升"
+    mode: parallel_ok
+
+  - task_id: skill-pattern-extract
+    agent: agents/EMP_0002/config.md
+    description: "自建 skill: pattern-extract.py — 跨任务规律提炼（五维 Gap #5 学习-模式识别）"
+    priority: P1
+    reason: "cold memory 里的 pattern 没人挖，学习层缺口"
+    mode: parallel_ok
+
+  - task_id: compact-memory-quality
+    agent: agents/EMP_0002/config.md
+    description: "扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测）"
+    priority: P1
+    reason: "agent 自评流水账多，经验提取质量弱"
+    mode: parallel_ok

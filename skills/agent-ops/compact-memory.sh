@@ -289,6 +289,70 @@ print(f'Kept {len(recent)} recent, archived {len(old)} old entries')
 " 2>/dev/null || echo "Audit compaction failed (non-critical)"
 }
 
+# --- Part 3.5: Lesson 质量评分（压缩后运行）---
+score_lesson_quality() {
+  local agent_id="$1"
+  local lt_file="$MEMORY_DIR/${agent_id}/memory/long_term.md"
+  [ -f "$lt_file" ] || return
+
+  echo "[$agent_id] Scoring lesson quality..."
+
+  python3 -c "
+import sys
+
+filepath = '$lt_file'
+agent = '$agent_id'
+issues = []
+total_lessons = 0
+has_gap = 0
+too_short = 0
+duplicates = {}
+
+with open(filepath, 'r') as f:
+    lines = f.readlines()
+
+seen_texts = set()
+for line in lines:
+    stripped = line.strip()
+    if not stripped.startswith('- '):
+        continue
+    text = stripped[2:].strip()
+    if len(text) < 5:
+        continue
+    total_lessons += 1
+
+    # Check 1: has gap classification
+    if 'Gap' in text and '类型' in text:
+        has_gap += 1
+
+    # Check 2: too short (< 15 chars = likely not actionable)
+    if len(text) < 15:
+        too_short += 1
+
+    # Check 3: near-duplicate detection (first 30 chars)
+    key = text[:30].lower()
+    if key in seen_texts:
+        dup_key = key[:20]
+        duplicates[dup_key] = duplicates.get(dup_key, 1) + 1
+    seen_texts.add(key)
+
+gap_rate = has_gap / total_lessons * 100 if total_lessons else 0
+short_rate = too_short / total_lessons * 100 if total_lessons else 0
+
+print(f'  总 lesson: {total_lessons}')
+print(f'  有 Gap 分类: {has_gap} ({gap_rate:.0f}%)')
+print(f'  过短(<15字): {too_short} ({short_rate:.0f}%)')
+print(f'  疑似重复: {len(duplicates)}')
+
+if gap_rate < 30 and total_lessons > 10:
+    print(f'  ⚠️ Gap 分类率低 ({gap_rate:.0f}%)，建议补充 Gap 类型标注')
+if short_rate > 30:
+    print(f'  ⚠️ {short_rate:.0f}% lesson 过短，可操作性不足')
+if len(duplicates) > 3:
+    print(f'  ⚠️ 疑似重复 {len(duplicates)} 组，建议合并')
+" 2>/dev/null || echo "[$agent_id] Quality scoring skipped (python error)"
+}
+
 # --- Part 4: 生成 warm.md（最近任务的滚动摘要，~3K tokens）---
 generate_warm_memory() {
   local agent_id="$1"
@@ -479,10 +543,12 @@ if [ "$AGENT_ID" = "all" ]; then
     agent=$(basename "$(dirname "$d")")
     # 跳过 deprecated agent
     [ "$agent" = "EMP_0007" ] && continue
+    score_lesson_quality "$agent"
     generate_warm_memory "$agent"
   done
 else
   compact_lessons "$MEMORY_DIR/${AGENT_ID}/memory/lessons.md" "$AGENT_ID"
+  score_lesson_quality "$AGENT_ID"
   generate_warm_memory "$AGENT_ID"
 fi
 

@@ -19,6 +19,7 @@
 #   depends_on:      依赖的前序 task ID（逗号分隔，全部完成才执行）
 #   context_files:   需要注入 context 的文件路径（逗号分隔，替代默认 knowledge 注入）
 #   task_type:       execute（默认，完整注入）| query（轻量，不注入收工/gene）| repair（只注入语义搜索+context_files）
+#   account:         品牌/客户 ID（如 surenxuan），加载 accounts/{id}/ 的 Pipe 2+3 记忆
 
 tasks:
   # === 自治线 ===
