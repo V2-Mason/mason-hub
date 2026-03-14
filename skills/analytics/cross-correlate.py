@@ -182,7 +182,7 @@ def load_agent_memory_keywords(days: int) -> list[dict]:
         memory_dir = agent_dir / "memory"
         if not memory_dir.exists():
             continue
-        for filename in ("long_term.md", "lessons.md"):
+        for filename in ("memory.md", "long_term.md", "lessons.md"):
             fp = memory_dir / filename
             if not fp.exists():
                 continue

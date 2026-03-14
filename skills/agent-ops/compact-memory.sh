@@ -623,6 +623,8 @@ generate_warm_memory() {
   local agent_id="$1"
   local agent_mem_dir="$MEMORY_DIR/${agent_id}/memory"
   local warm_file="$agent_mem_dir/warm.md"
+  local memory_file="$agent_mem_dir/memory.md"
+  # fallback to legacy files
   local long_term_file="$agent_mem_dir/long_term.md"
   local lessons_file="$agent_mem_dir/lessons.md"
   local sessions_dir="$agent_mem_dir/sessions"
@@ -682,17 +684,19 @@ with open('$HUB_DIR/logs/audit.jsonl', encoding='utf-8', errors='replace') as f:
 " 2>/dev/null) || audit_entries=""
   fi
 
-  # 从 lessons.md 取最近 7 天的 section
+  # 从 memory.md（v2）或 lessons.md（fallback）取最近 7 天的 section
   local recent_lessons=""
-  if [ -f "$lessons_file" ]; then
+  local lessons_source="$memory_file"
+  [ ! -f "$lessons_source" ] && lessons_source="$lessons_file"
+  if [ -f "$lessons_source" ]; then
     recent_lessons=$(python3 -c "
 import re, sys
 from datetime import datetime, timedelta
 cutoff = datetime.now() - timedelta(days=7)
-content = open('$lessons_file').read()
-sections = re.split(r'(?=^## \d{4}-\d{2}-\d{2})', content, flags=re.MULTILINE)
+content = open('$lessons_source').read()
+sections = re.split(r'(?=^## \d{4}-\d{2}-\d{2}|^### .+\(\d{4}-\d{2}-\d{2}\))', content, flags=re.MULTILINE)
 for s in sections:
-    m = re.match(r'## (\d{4}-\d{2}-\d{2})', s)
+    m = re.search(r'(\d{4}-\d{2}-\d{2})', s[:80])
     if m:
         try:
             d = datetime.strptime(m.group(1), '%Y-%m-%d')
@@ -702,10 +706,12 @@ for s in sections:
 " 2>/dev/null) || recent_lessons=""
   fi
 
-  # 从 long_term.md 取最后 30 行作为参考
+  # 从 memory.md（v2）或 long_term.md（fallback）取最后 30 行作为参考
   local lt_tail=""
-  if [ -f "$long_term_file" ]; then
-    lt_tail=$(tail -30 "$long_term_file")
+  local lt_source="$memory_file"
+  [ ! -f "$lt_source" ] && lt_source="$long_term_file"
+  if [ -f "$lt_source" ]; then
+    lt_tail=$(tail -30 "$lt_source")
   fi
 
   # 如果没有任何素材，跳过
@@ -760,19 +766,21 @@ $lt_tail" 2>/dev/null) || warm_content=""
   fi
 
   # v1.1 §5.1: warm→cold 蒸馏（周度执行）
-  # 条件：long_term.md 最后修改超过 7 天 + warm.md 存在
-  if [ -f "$warm_file" ] && [ -f "$long_term_file" ]; then
+  # 条件：memory.md（或 long_term.md）最后修改超过 7 天 + warm.md 存在
+  local distill_target="$memory_file"
+  [ ! -f "$distill_target" ] && distill_target="$long_term_file"
+  if [ -f "$warm_file" ] && [ -f "$distill_target" ]; then
     local lt_age
-    lt_age=$(( NOW_EPOCH - $(stat -c %Y "$long_term_file") ))
+    lt_age=$(( NOW_EPOCH - $(stat -c %Y "$distill_target") ))
     local lt_lines
-    lt_lines=$(wc -l < "$long_term_file")
+    lt_lines=$(wc -l < "$distill_target")
 
     if [ "$lt_age" -gt "$SEVEN_DAYS" ] && [ "$lt_lines" -lt 300 ]; then
       echo "[$agent_id] warm→cold distillation candidate (lt_age=${lt_age}s, lt_lines=${lt_lines})"
       if [ "$DRY_RUN" = true ]; then
-        echo "[$agent_id] DRY RUN: would distill warm.md highlights into long_term.md"
+        echo "[$agent_id] DRY RUN: would distill warm.md highlights into $(basename "$distill_target")"
       else
-        # 从 warm.md 提取关键条目追加到 long_term.md
+        # 从 warm.md 提取关键条目追加到 memory.md
         local distilled
         distilled=$(unset CLAUDECODE 2>/dev/null; claude -p \
           --output-format text \
@@ -784,8 +792,8 @@ $lt_tail" 2>/dev/null) || warm_content=""
             echo ""
             echo "## [DISTILLED $(date +%Y-%m-%d)] from warm.md"
             echo "$distilled"
-          } >> "$long_term_file"
-          echo "[$agent_id] distilled $(echo "$distilled" | wc -l) entries to long_term.md"
+          } >> "$distill_target"
+          echo "[$agent_id] distilled $(echo "$distilled" | wc -l) entries to $(basename "$distill_target")"
         fi
       fi
     fi
@@ -796,23 +804,30 @@ $lt_tail" 2>/dev/null) || warm_content=""
 }
 
 # --- 执行 ---
+# v2: 优先压缩 memory.md，fallback lessons.md
+_get_compact_target() {
+  local agent="$1"
+  local mem="$MEMORY_DIR/${agent}/memory/memory.md"
+  local les="$MEMORY_DIR/${agent}/memory/lessons.md"
+  if [ -f "$mem" ]; then echo "$mem"
+  elif [ -f "$les" ]; then echo "$les"
+  else echo ""
+  fi
+}
+
 if [ "$AGENT_ID" = "all" ]; then
-  for f in "$MEMORY_DIR"/EMP_*/memory/lessons.md; do
-    [ -f "$f" ] || continue
-    agent=$(basename "$(dirname "$(dirname "$f")")")
-    compact_lessons "$f" "$agent"
-  done
-  # 为所有 active agent 生成 warm.md
   for d in "$MEMORY_DIR"/EMP_*/memory/; do
     [ -d "$d" ] || continue
     agent=$(basename "$(dirname "$d")")
-    # 跳过 deprecated agent
     [ "$agent" = "EMP_0007" ] && continue
+    target=$(_get_compact_target "$agent")
+    [ -n "$target" ] && compact_lessons "$target" "$agent"
     score_lesson_quality "$agent"
     generate_warm_memory "$agent"
   done
 else
-  compact_lessons "$MEMORY_DIR/${AGENT_ID}/memory/lessons.md" "$AGENT_ID"
+  target=$(_get_compact_target "$AGENT_ID")
+  [ -n "$target" ] && compact_lessons "$target" "$AGENT_ID"
   score_lesson_quality "$AGENT_ID"
   generate_warm_memory "$AGENT_ID"
 fi

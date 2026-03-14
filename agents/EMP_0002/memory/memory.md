@@ -267,3 +267,11 @@
 - 四支柱评估揭示 mason-hub 是"自动化调度系统"不是"Agent 系统"
 - run-agent.sh 从 50 行长到 1300 行是 God Script 反模式
 - Gap 类型：认知偏差
+
+### v2 兼容性修复：执行路径 + 记忆工具链 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- 问题1（执行路径）：dispatcher.sh/run-agent.sh/backlog-scanner.py/workflow-engine.py/build-capability-index.py/find-actionable-task.py 全部硬编码 config.md → 改为 identity.md 优先 + config.md fallback
+- 问题2（记忆工具链）：memory-router.py/memory-store.py/compact-memory.sh/extract-lessons.py/pattern-extract.py/cross-correlate.py/agent-status-report.sh 全部指向 long_term.md/lessons.md → 改为 memory.md 优先 + 旧文件 fallback
+- 关键模式：所有修改保留 v1 fallback，避免破坏尚未迁移完成的 agent
+- dispatcher.sh 动态匹配输出从 `agents/{best}/config.md` 改为 `agents/{best}/`（目录格式），execute_task 新增 `*/` 结尾的 v2 目录解析
+- Gap 类型：🏗️ 系统能力缺失 → 已修复

@@ -48,7 +48,7 @@ fi
 if [ $# -lt 2 ]; then
   echo "用法: $0 <agent目录或配置文件> <任务内容>"
   echo "示例: $0 agents/EMP_0002 \"创建 agent-loader.sh\""
-  echo "示例: $0 agents/EMP_0000/config.md \"读取context.json并分析\""
+  echo "示例: $0 agents/EMP_0000/config.md \"读取context.json并分析\"  # v1 fallback"
   exit 1
 fi
 
@@ -367,8 +367,10 @@ fi
 # 三温度记忆注入策略（v1.1）：
 #   1. warm.md 优先（最近 7 天滚动摘要，~3K tokens）
 #   2. warm 不存在时 → 语义搜索（精准召回）
-#   3. 语义搜索也失败 → 全量 lessons 回退
+#   3. 语义搜索也失败 → 全量 memory.md 回退
 WARM_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/warm.md"
+MEMORY_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/memory.md"
+# fallback: 旧 lessons.md（v2 迁移过渡期）
 LESSONS_FILE="$HUB_DIR/agents/${AGENT_NAME}/memory/lessons.md"
 
 if [ -f "$WARM_FILE" ] && [ -s "$WARM_FILE" ]; then
@@ -395,17 +397,23 @@ ${SEMANTIC_RESULT}"
     INJECT_USED=${#SYSPROMPT}
     echo "[context] Layer 3 semantic search for $AGENT_NAME (no warm.md)" >&2
   else
-    # 最终回退：全量 lessons
-    if [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
+    # 最终回退：全量 memory.md（v2）或 lessons.md（v1 fallback）
+    local memory_fallback=""
+    if [ -f "$MEMORY_FILE" ] && [ -s "$MEMORY_FILE" ]; then
+      memory_fallback="$MEMORY_FILE"
+    elif [ -f "$LESSONS_FILE" ] && [ -s "$LESSONS_FILE" ]; then
+      memory_fallback="$LESSONS_FILE"
+    fi
+    if [ -n "$memory_fallback" ]; then
       SYSPROMPT="${SYSPROMPT}
 
 ---
 ## 历史经验（来自过去任务的教训，请参考但不必完全遵循）
 
-$(cat "$LESSONS_FILE")"
+$(cat "$memory_fallback")"
       INJECT_USED=${#SYSPROMPT}
     fi
-    echo "[context] Layer 2 full lessons fallback for $AGENT_NAME (no warm.md, no semantic)" >&2
+    echo "[context] Layer 2 full memory fallback for $AGENT_NAME (no warm.md, no semantic)" >&2
   fi
 fi
 
@@ -898,14 +906,14 @@ rounds: 1"
         echo "🔄 PM reassigning to Dev (retry $RETRY_COUNT, chain depth: $((CHAIN_DEPTH+1)))"
         send_slack_notify "🔄 PM 重新分配任务给 Dev（第 ${RETRY_COUNT} 次重分配）"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0005/config.md "$NEW_TASK" "${SLACK_CHANNEL:-}"
+          agents/EMP_0005 "$NEW_TASK" "${SLACK_CHANNEL:-}"
         ;;
       "escalate_to_platform_dev")
         CONTEXT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('context',''))" 2>/dev/null)
         echo "⬆️ Escalating to Platform Dev (chain depth: $((CHAIN_DEPTH+1)))"
         send_slack_notify "⬆️ PM escalate 给 Platform Dev"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0002/config.md "Escalation from PM. task_id: $TASK_ID. $CONTEXT" "${SLACK_CHANNEL:-}"
+          agents/EMP_0002 "Escalation from PM. task_id: $TASK_ID. $CONTEXT" "${SLACK_CHANNEL:-}"
         ;;
       "escalate_to_mason")
         CONTEXT=$(echo "$ACTION_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('context',''))" 2>/dev/null)
@@ -1209,14 +1217,14 @@ error_summary: \"$(printf '%s' "$ROOT_CAUSE" | head -c 100 | tr '"' "'")\""
         echo "🔄 Auto-triggering PM evaluation (chain depth: $((CHAIN_DEPTH+1)), PM retry: $((PM_RETRY_COUNT+1))/$MAX_PM_RETRIES)"
         send_slack_notify "🔄 任务 $TASK_ID_EXTRACTED Dev 修复失败，自动触发 PM 评估（第 $((PM_RETRY_COUNT+1))/$MAX_PM_RETRIES 次）"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0001/config.md \
+          agents/EMP_0001 \
           "评估 Dev 失败任务。task_id: $TASK_ID_EXTRACTED。PM 重试次数: $PM_RETRY_COUNT/$MAX_PM_RETRIES。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json 和 $AUDIT_LOG。运行 ~/mason-hub/skills/monitoring/check-escalation.sh --task $TASK_ID_EXTRACTED 查看完整历史。判断失败类型（A-E），决定下一步。在回复最后一行输出 ACTION。" \
           "${SLACK_CHANNEL:-}"
       else
         echo "⬆️ PM retries exhausted. Auto-escalating to Platform Dev (chain depth: $((CHAIN_DEPTH+1)))"
         send_slack_notify "⬆️ 任务 $TASK_ID_EXTRACTED 已耗尽 PM 重试次数（$MAX_PM_RETRIES/$MAX_PM_RETRIES），自动 escalate 给 Platform Dev"
         CHAIN_DEPTH=$((CHAIN_DEPTH+1)) bash "$HUB_DIR/scripts/run-agent.sh" \
-          agents/EMP_0002/config.md \
+          agents/EMP_0002 \
           "接收 escalation。task_id: $TASK_ID_EXTRACTED。Dev 3轮×$((PM_RETRY_COUNT+1))次均失败。请读取 $TASK_LOG_DIR/${TASK_ID_EXTRACTED}_*.json，分析根因并尝试修复。" \
           "${SLACK_CHANNEL:-}"
       fi

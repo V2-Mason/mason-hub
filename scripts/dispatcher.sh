@@ -162,8 +162,10 @@ execute_task() {
     local max_duration="${8:-0}" context_files="${9:-}" task_type="${10:-execute}"
     local account="${11:-}"
     local agent_name
-    # 支持新格式 agents/EMP_0002/config.md 和旧格式 agents/EMP_0002.md
-    if [[ "$(basename "$agent_path")" == "config.md" ]]; then
+    # 支持 v2 目录格式（agents/EMP_0002/）、v1 config.md、旧单文件格式
+    if [[ "$agent_path" == */ ]]; then
+      agent_name=$(basename "$agent_path")
+    elif [[ "$(basename "$agent_path")" == "config.md" ]]; then
       agent_name=$(basename "$(dirname "$agent_path")")
     else
       agent_name=$(basename "$agent_path" .md)
@@ -447,7 +449,11 @@ for cap in matched_caps:
             scores[a] = scores.get(a, 0) + 1
 if scores:
     best = max(scores, key=scores.get)
-    print(f'agents/{best}/config.md')
+    identity = f'agents/{best}/identity.md'
+    if __import__('os').path.exists(identity):
+        print(f'agents/{best}/')
+    else:
+        print(f'agents/{best}/config.md')
 " 2>/dev/null)
                 if [[ -n "$matched_agent" ]]; then
                     log "  🎯 动态匹配: $TASK_ID → $matched_agent (能力索引)"

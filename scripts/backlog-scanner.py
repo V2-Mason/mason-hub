@@ -76,21 +76,21 @@ AGENT_PATTERN = re.compile(r'[（(]EMP_(\d{4})[）)]')
 # 也匹配内联写法如 "EMP_0014 建管道"
 AGENT_INLINE_PATTERN = re.compile(r'EMP_(\d{4})')
 
-# Agent ID → 配置文件路径
+def _get_agent_config(agent_num: str) -> str:
+    """v2 优先 identity.md，fallback config.md"""
+    agent_id = f"EMP_{agent_num}"
+    identity = f"agents/{agent_id}/identity.md"
+    config = f"agents/{agent_id}/config.md"
+    hub = os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub"))
+    if os.path.exists(os.path.join(hub, identity)):
+        return identity
+    return config  # fallback
+
+# Agent ID → 配置文件路径（动态检测 v2/v1）
 AGENT_CONFIG = {
-    "0000": "agents/EMP_0000/config.md",
-    "0001": "agents/EMP_0001/config.md",
-    "0002": "agents/EMP_0002/config.md",
-    "0003": "agents/EMP_0003/config.md",
-    "0004": "agents/EMP_0004/config.md",
-    "0005": "agents/EMP_0005/config.md",
-    "0006": "agents/EMP_0006/config.md",
-    "0008": "agents/EMP_0008/config.md",
-    "0009": "agents/EMP_0009/config.md",
-    "0010": "agents/EMP_0010/config.md",
-    "0013": "agents/EMP_0013/config.md",
-    "0014": "agents/EMP_0014/config.md",
-    "0015": "agents/EMP_0015/config.md",
+    num: _get_agent_config(num)
+    for num in ["0000", "0001", "0002", "0003", "0004", "0005",
+                "0006", "0008", "0009", "0010", "0013", "0014", "0015"]
 }
 
 # 能力线关键词映射（backlog section → SYSTEM_MAP 能力线名称）

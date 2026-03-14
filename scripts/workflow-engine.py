@@ -187,7 +187,12 @@ def advance_workflow(wf_id: str) -> bool:
 
         role = step_def.get("role", "")
         task = step_def.get("task", "")
-        config_path = f"agents/{role}/config.md"
+        # v2 优先目录格式，fallback config.md
+        identity_path = f"agents/{role}/identity.md"
+        if os.path.exists(identity_path):
+            config_path = f"agents/{role}/"
+        else:
+            config_path = f"agents/{role}/config.md"
 
         # 更新状态
         state["status"] = "in_progress"

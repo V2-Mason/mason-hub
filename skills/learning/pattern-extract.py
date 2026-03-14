@@ -24,11 +24,11 @@ AGENTS_DIR = HUB_DIR / "agents"
 
 
 def extract_lessons(agent_id: str) -> list[dict]:
-    """从 agent 的 long_term.md 提取结构化 lesson"""
+    """从 agent 的 memory.md（v2）或 long_term.md/lessons.md（fallback）提取结构化 lesson"""
     memory_dir = AGENTS_DIR / agent_id / "memory"
     lessons = []
 
-    for filename in ("long_term.md", "lessons.md"):
+    for filename in ("memory.md", "long_term.md", "lessons.md"):
         filepath = memory_dir / filename
         if not filepath.exists():
             continue

@@ -375,11 +375,15 @@ AGENT_LANE = {
 
 def get_agent_lane(agent_path: str) -> str:
     """从 agent 配置路径推断 lane"""
-    # 新格式: agents/EMP_0002/config.md → EMP_0002
+    # v2 目录格式: agents/EMP_0002/ → EMP_0002
+    # v1 格式: agents/EMP_0002/config.md → EMP_0002
     # 旧格式: agents/EMP_0002.md → EMP_0002
+    agent_path = agent_path.rstrip("/")
     basename = os.path.basename(agent_path)
-    if basename == "config.md":
+    if basename == "config.md" or basename == "identity.md":
         agent_id = os.path.basename(os.path.dirname(agent_path))
+    elif basename.startswith("EMP_") and os.path.isdir(agent_path):
+        agent_id = basename
     else:
         agent_id = basename.replace(".md", "")
     return AGENT_LANE.get(agent_id, "independent")

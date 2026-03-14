@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build-capability-index.py — 从 agents.yaml + config.md 生成能力索引
+"""build-capability-index.py — 从 agents.yaml + identity.md/soul.md 生成能力索引
 
 输出 data/roster/capability_index.json：
 {
@@ -60,12 +60,20 @@ def load_agents():
 
 
 def extract_capabilities(agent_id: str) -> set:
-    """从 config.md 提取能力关键词"""
+    """从 identity.md + soul.md（v2）或 config.md（v1 fallback）提取能力关键词"""
+    # v2: 合并 identity.md + soul.md 内容
+    identity_path = AGENTS_DIR / agent_id / "identity.md"
+    soul_path = AGENTS_DIR / agent_id / "soul.md"
     config_path = AGENTS_DIR / agent_id / "config.md"
-    if not config_path.exists():
-        return set()
 
-    content = config_path.read_text(encoding="utf-8").lower()
+    if identity_path.exists():
+        content = identity_path.read_text(encoding="utf-8").lower()
+        if soul_path.exists():
+            content += "\n" + soul_path.read_text(encoding="utf-8").lower()
+    elif config_path.exists():
+        content = config_path.read_text(encoding="utf-8").lower()
+    else:
+        return set()
     caps = set()
 
     for cap, keywords in CAPABILITY_KEYWORDS.items():

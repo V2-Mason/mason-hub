@@ -169,10 +169,15 @@ fi
 echo ""
 echo "--- 4. Memory Files ---"
 
-for f in "$HUB_DIR/memory"/*_lessons.md; do
-  [ -f "$f" ] || continue
-  agent=$(basename "$f" _lessons.md)
-  size=$(stat -c %s "$f" 2>/dev/null || echo 0)
+# v2: 各 EMP 的 memory/memory.md
+for d in "$HUB_DIR/agents"/EMP_*/memory/; do
+  [ -d "$d" ] || continue
+  agent=$(basename "$(dirname "$d")")
+  mem_file="$d/memory.md"
+  # fallback to legacy lessons.md
+  [ ! -f "$mem_file" ] && mem_file="$d/../../../memory/${agent}_lessons.md"
+  [ ! -f "$mem_file" ] && continue
+  size=$(stat -c %s "$mem_file" 2>/dev/null || echo 0)
   size_kb=$(( size / 1024 ))
   if [ "$size" -ge 51200 ]; then
     echo "  🔴 $agent: ${size_kb}KB (AT LIMIT)"

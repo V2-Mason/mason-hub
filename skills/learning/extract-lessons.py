@@ -102,7 +102,7 @@ def route_lesson(lesson: dict, dry_run: bool = False) -> str:
     account = lesson.get("account_scope", "")
 
     if pipe == 1 and agent:
-        target = HUB_DIR / "agents" / agent / "memory" / "long_term.md"
+        target = HUB_DIR / "agents" / agent / "memory" / "memory.md"
     elif pipe == 2 and account:
         target = HUB_DIR / "accounts" / account / "shared.md"
     elif pipe == 3 and agent and account:

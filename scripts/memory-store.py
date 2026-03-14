@@ -8,10 +8,10 @@
   python3 memory-store.py --incremental     # 只索引有变更的文件
 
 数据源:
-  1. memory/*_lessons.md           — agent lessons (existing)
+  1. memory/*_lessons.md           — agent lessons (legacy, fallback)
   2. domains/ecommerce/.../decisions.md — project decisions (existing)
-  3. agents/EMP_*/memory/long_term.md  — agent long-term memory (new)
-  4. ~/.claude/projects/-home-hangn-mason-hub/memory/*.md — global memory (new)
+  3. agents/EMP_*/memory/memory.md     — agent memory (v2, primary)
+  4. ~/.claude/projects/-home-hangn-mason-hub/memory/*.md — global memory
 
 依赖: chromadb, sentence-transformers (在 ~/mason-hub/.venv 中)
 """
@@ -204,13 +204,13 @@ def collect_all_sources(agent_id: str = None) -> list[tuple[Path, str]]:
     """Return list of (filepath, source_type) for all indexable files."""
     sources = []
 
-    # 1. Lessons files
+    # 1. Legacy lessons files (fallback, only if no v2 memory.md)
     if agent_id and agent_id not in ("--all", "--rebuild", "--incremental"):
         lesson_files = [MEMORY_DIR / f"{agent_id}_lessons.md"]
     else:
         lesson_files = list(MEMORY_DIR.glob("*_lessons.md"))
     for f in lesson_files:
-        if f.exists():
+        if f.exists() and not str(f).endswith(".archived"):
             sources.append((f, "lesson"))
 
     # 2. Decisions file
@@ -218,10 +218,15 @@ def collect_all_sources(agent_id: str = None) -> list[tuple[Path, str]]:
     if decisions_file.exists():
         sources.append((decisions_file, "decision"))
 
-    # 3. Agent long-term memory files
+    # 3. Agent memory files (v2: memory.md, fallback: long_term.md)
     if LONG_TERM_DIR.exists():
+        for mem_file in sorted(LONG_TERM_DIR.glob("EMP_*/memory/memory.md")):
+            sources.append((mem_file, "long_term"))
+        # fallback: 没有 memory.md 的 agent 仍读 long_term.md
         for lt_file in sorted(LONG_TERM_DIR.glob("EMP_*/memory/long_term.md")):
-            sources.append((lt_file, "long_term"))
+            memory_md = lt_file.parent / "memory.md"
+            if not memory_md.exists() and not str(lt_file).endswith(".archived"):
+                sources.append((lt_file, "long_term"))
 
     # 4. Global memory files
     if GLOBAL_MEMORY_DIR.exists():

@@ -3,7 +3,7 @@
 
 根据 agent_scope + account_scope 自动路由到正确的 Pipe：
 - agent + account → Pipe 3 (accounts/{account}/memory/{agent}.md)
-- agent only → Pipe 1 (agents/{agent}/memory/long_term.md)
+- agent only → Pipe 1 (agents/{agent}/memory/memory.md)
 - account only → Pipe 2 (accounts/{account}/shared.md)
 - neither → Pipe 4 (全局，写到 memory_pending.jsonl 让人判定)
 
@@ -32,7 +32,7 @@ def route_entry(entry: dict, dry_run: bool = False) -> dict:
         target = HUB_DIR / "accounts" / account / "memory" / f"{agent}.md"
     elif agent:
         pipe = 1
-        target = HUB_DIR / "agents" / agent / "memory" / "long_term.md"
+        target = HUB_DIR / "agents" / agent / "memory" / "memory.md"
     elif account:
         pipe = 2
         target = HUB_DIR / "accounts" / account / "shared.md"

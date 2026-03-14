@@ -592,9 +592,10 @@ Phase 3 — 数据 SDK + 扩展:
 - [ ] Tool Use 自主化：agent 运行时查 registry.yaml 自主选择工具，而非流程硬编码
 - [x] Multi-agent 实战：首个真实场景跑通 — EMP_0001→EMP_0010 task_assign 素仁轩短视频脚本，全程 inbox 自动通信（4条消息链路），验收通过 — 2026-03-14
 - [x] SYSTEM_MAP 自动更新闭环 — affects_system_map 字段 + EMP_0000 soul.md 7 步更新流程，task_complete 触发自动刷新能力线 — 2026-03-14
+- [x] v2 兼容性修复（执行路径+记忆工具链）— 12 个脚本从 config.md/long_term.md/lessons.md 硬编码切换到 v2 格式优先（identity.md/memory.md）+ v1 fallback — 2026-03-14
 - [ ] claude -p → Claude API 调用层：嵌套限制是 agent 自主执行的硬阻塞，通信层已就绪但执行层受限
 - [ ] workflow 文件兼容性验证：v2 迁移后四个 grep 命令待跑，确认无断裂
-- [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime（agent-loader.sh 是第一步，下游调用仍硬编码 config.md）
+- [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime（agent-loader.sh 是第一步，下游调用已切换 v2 格式）
 - [x] Roster 能力索引 + 动态匹配：build-capability-index.py + dispatcher 中文关键词匹配（6/6 测试通过）— 2026-03-14（EMP_0002）
 - [x] Task Engine 标准化：task.yaml schema + 状态机 + depends_on + extract-lessons.py 经验自动提取 — 2026-03-14（EMP_0002）
 - [x] Control Plane 统一：escalation-queue.py + task-dashboard.py + /approve skill — 2026-03-14（EMP_0002）
