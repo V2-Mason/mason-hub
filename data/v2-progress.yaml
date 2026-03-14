@@ -7,7 +7,7 @@
 target: "全子系统 90%"
 started: "2026-03-14"
 total_capability_points: 21
-completed_points: 20
+completed_points: 21
 
 sessions:
   S1:
@@ -19,8 +19,8 @@ sessions:
         desc: "scripts/roster/build-capability-index.py — 15 能力维度生成"
         status: done
       - id: roster-dynamic-match
-        desc: "dispatcher.sh 按能力索引动态匹配"
-        status: pending  # 索引已建，dispatcher 集成待后续
+        desc: "dispatcher.sh 动态匹配（中文关键词→能力映射，6/6 测试通过）"
+        status: done
       - id: accounts-brief-truncate
         desc: "inject_if_exists 加 max_chars 截断参数，brief 限 3000 字符"
         status: done

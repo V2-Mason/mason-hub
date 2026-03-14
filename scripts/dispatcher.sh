@@ -410,6 +410,58 @@ for k in ('id','agent','lane','line','description',
             fi
         fi
 
+        # === v2: 动态 Agent 匹配（无指定 agent 时从能力索引匹配）===
+        if [[ -z "${TASK_AGENT:-}" ]] || [[ "$TASK_AGENT" == "auto" ]]; then
+            local cap_index="$HUB_DIR/data/roster/capability_index.json"
+            if [[ -f "$cap_index" ]]; then
+                local matched_agent
+                matched_agent=$(python3 -c "
+import json, sys
+with open('$cap_index') as f:
+    idx = json.load(f)
+desc = '''${TASK_DESCRIPTION:-}'''.lower()
+# 中文→能力映射
+cn_map = {'部署':'infrastructure','服务器':'infrastructure','docker':'infrastructure',
+  '店铺':'ecommerce','售后':'ecommerce','库存':'ecommerce','订单':'ecommerce',
+  '视频':'video','剪辑':'video','内容':'content','文案':'content',
+  '分析':'data_analysis','数据':'data_analysis','指标':'data_analysis',
+  '管道':'data_engineering','管线':'data_engineering',
+  '情报':'intelligence','趋势':'intelligence','监控':'intelligence',
+  '运维':'devops','健康':'devops','告警':'devops',
+  '前端':'frontend','页面':'frontend','ui':'frontend',
+  '营销':'marketing','推广':'marketing','种草':'marketing',
+  'xhs':'xhs','小红书':'xhs','红书':'xhs'}
+# 从描述提取能力
+matched_caps = set()
+for cn, cap in cn_map.items():
+    if cn in desc:
+        matched_caps.add(cap)
+for cap in idx.get('capabilities', {}).keys():
+    if cap in desc:
+        matched_caps.add(cap)
+scores = {}
+for cap in matched_caps:
+    for a in idx.get('capabilities', {}).get(cap, []):
+        info = idx['agents'].get(a, {})
+        if info.get('can_own_tasks', False):
+            scores[a] = scores.get(a, 0) + 1
+if scores:
+    best = max(scores, key=scores.get)
+    print(f'agents/{best}/config.md')
+" 2>/dev/null)
+                if [[ -n "$matched_agent" ]]; then
+                    log "  🎯 动态匹配: $TASK_ID → $matched_agent (能力索引)"
+                    TASK_AGENT="$matched_agent"
+                else
+                    log "  ⚠️ $TASK_ID: 无 agent 且能力匹配失败，跳过"
+                    continue
+                fi
+            else
+                log "  ⚠️ $TASK_ID: 无 agent 且能力索引不存在，跳过"
+                continue
+            fi
+        fi
+
         # === T1 直接执行：纯脚本任务不启动 Agent session ===
         if [[ "${TASK_TIER:-}" == "T1" ]] && [[ -n "${TASK_TIER_SCRIPT:-}" ]]; then
             log "  ⚡ T1 直接执行: $TASK_ID → $TASK_TIER_SCRIPT"
