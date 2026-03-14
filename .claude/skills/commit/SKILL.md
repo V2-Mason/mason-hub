@@ -73,10 +73,10 @@
 bash ~/mason-hub/scripts/config-health-check.sh --brief
 ```
 
-有警告时：
-- **Config 膨胀** → 必须拆分到 playbook 后再 commit
+有警告时 **必须修复后再 commit**（pre-commit hook 会阻塞膨胀提交）：
+- **Config 膨胀** → 必须拆分到 playbook 后再 commit（pre-commit hook 硬阻塞）
 - **引用断裂** → 修复引用或创建缺失文件后再 commit
-- **Protocol/Playbook 过时** → 记录到 commit message 中，不阻塞提交
+- **Protocol/Playbook 过时** → 更新后再 commit
 
 ## 6. 执行 Git Commit
 
