@@ -584,6 +584,7 @@ Phase 3 — 数据 SDK + 扩展:
 - [x] v2 文件架构全量迁移 — 15 个活跃 EMP 从 config.md 单文件迁移到 5 文件分层（identity/state/soul/tools/memory.md），抽查修复 3 处内容缺失（EMP_0001 消亡条件/EMP_0006 情报分发+紧急情报/EMP_0014 launcher）— 2026-03-14
 - [x] agent-loader.sh — 从 run-agent.sh 提取文件加载逻辑为独立模块（load_agent_context Layer 0/01 + update_agent_state + extract_launcher_args），run-agent.sh 适配 v2 loader — 2026-03-14（EMP_0002）
 - [x] message_schema.md — 跨 agent 通信协议（7 种消息类型 + 使用规则 + 示例），首次双向通信验证通过（EMP_0002→task_complete→EMP_0000）— 2026-03-14
+- [x] inbox 通信机制 — agent-loader.sh 新增 send_message/check_inbox，集中式 JSONL inbox + 按月 archive，load_agent_context 启动时自动收信，update_agent_state 完成时自动发信，15 个 EMP soul.md 追加收件处理规则 — 2026-03-14
 
 待办（Agent 化路线）：
 - [ ] Planning 能力：agent 收到目标而非指令，自主拆解步骤并评估可行性（decompose.py 需接 LLM）

@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-03-14T09:35:00Z
+last_updated: 2026-03-14T09:31:00Z
 ---
 
 # EMP_0000 当前状态
@@ -8,6 +8,7 @@ last_updated: 2026-03-14T09:35:00Z
 （无）
 
 ## 最近完成
+- 2026-03-14: [via inbox] EMP_0002 TASK-20260314-002 完成 — inbox 机制目录结构验证通过
 - 2026-03-14: 接收 EMP_0002 TASK-20260314-001 完成通知（agent-loader.sh + run-agent.sh v2 适配）
 - 2026-03-14: 全 EMP v2 文件迁移协调 + 抽查修复 + message_schema.md 创建
 - 2026-03-12: 记忆系统 v2 评估（二次审查）+ L3a/L3b 拆分框架

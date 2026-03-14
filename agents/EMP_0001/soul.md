@@ -81,3 +81,15 @@ project 结束时：确认无 pending 任务 → 最后一次记忆压缩 → �
 
 3. **更新 state.md**
    → 把刚完成的任务写入"最近完成"，把"活跃任务"清空或更新
+
+---
+
+## 收件处理规则
+
+| type | 动作 |
+|------|------|
+| task_complete | 更新任务进度，检查是否触发下一个workflow步骤 |
+| task_failed | 重新评估任务拆分，决定是否escalate给EMP_0000 |
+| review_response | 读取approved/rejected，更新对应任务状态 |
+| escalate | 不处理，转发给EMP_0000 |
+| ping | 返回pong |

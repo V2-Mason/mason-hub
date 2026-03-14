@@ -113,3 +113,9 @@
 - run-agent.sh 适配：检测 identity.md → v2 loader，否则 fallback 到 config.md
 - 这是 v2 文件架构的运行时支撑层——之前只有文件结构，现在 Dispatcher 也能按层加载
 - 首次完整走通 message_schema.md 双向通信：EMP_0002 → task_complete → EMP_0000 接收处理
+
+### inbox 自动通信机制验证 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- TASK-20260314-002：EMP_0002 验证 inbox 目录结构 → update_agent_state 自动触发 send_message → EMP_0000 load_agent_context 自动 check_inbox 接收
+- 全程零人工传递，agent-loader.sh 的 send/check/archive 闭环验证通过
+- 消息路径：`data/messages/inbox_<receiver>.jsonl` → 读取后归档到 `archive/inbox_<id>_YYYY-MM.jsonl`

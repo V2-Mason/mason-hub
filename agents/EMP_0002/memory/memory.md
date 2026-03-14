@@ -226,6 +226,17 @@
 - 修复：引入 `parent_section` 变量
 - Gap 类型：设计缺口
 
+### inbox 通信机制实现 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- agent-loader.sh 新增 `send_message()` + `check_inbox()`，集中式 `data/messages/inbox_<id>.jsonl`
+- check_inbox 用 inline python3 处理 JSONL（bash 原生处理 JSON 不可靠）
+- archive 按月归档到 `archive/inbox_<id>_YYYY-MM.jsonl`，inbox 文件处理后清空
+- `load_agent_context` 末尾自动 `check_inbox`，启动即收信
+- `update_agent_state` 第5参数 receiver 触发自动 `send_message`，完成即发信
+- 15 个 soul.md 追加"收件处理规则"：EMP_0000/0001/0002 定制，其余通用
+- TASK-20260314-002 端到端验证：send → inbox → load_context → auto check → archive，零人工传递
+- Gap 类型：🏗️ 系统能力缺失 → 已修复
+
 ### 注入优化三级架构 + SessionStart Hook (2026-03-14)
 - CLAUDE.md 从 89→52 行，run-agent.sh 新增 `lightweight` 任务类型
 - SessionStart hook：新 interactive session 自动注入系统快照（~300 tokens）

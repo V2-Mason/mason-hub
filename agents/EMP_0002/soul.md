@@ -60,3 +60,15 @@
 
 3. **更新 state.md**
    → 把刚完成的任务写入"最近完成"，把"活跃任务"清空或更新
+
+---
+
+## 收件处理规则
+
+| type | 动作 |
+|------|------|
+| task_complete | 记录到 memory.md，无需其他动作 |
+| task_failed | 读取失败原因，判断是否需要基础设施修复 |
+| review_request | 审核代码/架构变更，返回 review_response |
+| escalate | 不处理，转发给EMP_0000 |
+| ping | 返回pong |

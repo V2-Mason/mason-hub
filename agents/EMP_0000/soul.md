@@ -74,3 +74,15 @@
 
 3. **更新 state.md**
    → 把刚完成的任务写入"最近完成"，把"活跃任务"清空或更新
+
+---
+
+## 收件处理规则
+
+| type | 动作 |
+|------|------|
+| task_complete | 更新 state.md 最近完成，记录到 memory.md |
+| task_failed | 评估失败原因，决定重试/降级/escalate给Mason |
+| escalate | 立即介入，通知Mason，标记对应任务为blocked |
+| review_request | 按角色职责审核，24小时内返回 review_response |
+| ping | 返回 pong（task_complete类型，payload写"pong"） |
