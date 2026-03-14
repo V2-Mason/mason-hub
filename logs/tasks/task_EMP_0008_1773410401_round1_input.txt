@@ -1,0 +1,1 @@
+每日巡检：1)检查各平台adapter健康(调用health检测)；2)查socialmesh DB的platform_posts表，是否有status=scheduled超过due时间的任务(卡住的发布)；3)检查API配额(OpenAI token用量from ~/socialmesh/logs/api_usage.jsonl)；4)查feedback表status=pending的反馈，bug类建task、ux/feature类汇总。有异常发alert到#socialmesh

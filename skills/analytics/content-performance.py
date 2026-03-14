@@ -19,6 +19,14 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 HUB_DIR = Path(os.environ.get("HUB_DIR", os.path.expanduser("~/mason-hub")))
+
+# 使用 SSOT 指标（data/tools/metrics.py）
+sys.path.insert(0, str(HUB_DIR))
+try:
+    from data.tools.metrics import interaction_score, engage_rate, save_rate, fake_traffic_flags
+    HAS_METRICS = True
+except ImportError:
+    HAS_METRICS = False
 MIRROR_DIR = HUB_DIR / "data" / "mirrors"
 ANALYSIS_DIR = HUB_DIR / "data" / "reports"
 

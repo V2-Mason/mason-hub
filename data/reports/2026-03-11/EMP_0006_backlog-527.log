@@ -1,0 +1,17 @@
+[context] Layer 3 semantic search for EMP_0006 (skipping full lessons)
+<<<AGENT_START EMP_0006>>>
+完成。更新内容：
+
+**`agents/EMP_0006/config.md` 新增/修改：**
+
+1. **新增「Scout v2 Engine 架构」章节**（搜集规范前）：
+   - 6 引擎职责表（Spider → Query → Media → Insight → Forum → Report）
+   - 入口命令 `python -m intel.engines.pipeline`
+   - 多模型策略（DeepSeek/Gemini/Qwen）
+   - 搜索源（GitHub/SearXNG/DuckDuckGo）
+   - 与旧版 scout-*.sh 脚本的关系说明
+   - Engine 数据流目录结构
+
+2. **更新 weekly-deep-patrol cron 任务**：从手动跑脚本改为调用 Engine 管道，保留手动回退方案
+
+3. **更新数据存储目录**：加入 `engines/`、`scout.db`、`validated/`、`reports/`

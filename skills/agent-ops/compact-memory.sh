@@ -297,60 +297,325 @@ score_lesson_quality() {
 
   echo "[$agent_id] Scoring lesson quality..."
 
-  python3 -c "
-import sys
+  python3 - "$lt_file" "$agent_id" "$HUB_DIR" <<'PYEOF'
+import sys, re, json, os
+from collections import defaultdict
+from datetime import datetime
 
-filepath = '$lt_file'
-agent = '$agent_id'
-issues = []
-total_lessons = 0
-has_gap = 0
-too_short = 0
-duplicates = {}
+filepath = sys.argv[1]
+agent = sys.argv[2]
+hub_dir = sys.argv[3]
+report_dir = os.path.join(hub_dir, 'logs', 'quality-reports')
+os.makedirs(report_dir, exist_ok=True)
 
+# --- 读取文件 ---
 with open(filepath, 'r') as f:
-    lines = f.readlines()
+    content = f.read()
+    lines = content.splitlines()
 
-seen_texts = set()
-for line in lines:
-    stripped = line.strip()
-    if not stripped.startswith('- '):
+# --- 1. Section 级别分析（按 ## 日期: 标题 分段）---
+sections = re.split(r'(?=^## )', content, flags=re.MULTILINE)
+section_data = []
+
+# Gap 分类 emoji 模式（收工流程定义的 5 种）
+GAP_PATTERNS = [
+    r'🔧\s*配置错误',
+    r'🏗️?\s*系统能力缺失',
+    r'📄\s*文档更新',
+    r'🔗\s*集成缺失',
+    r'📚\s*纯知识',
+    r'认知偏差',
+    # 兼容旧格式
+    r'Gap\s*(分类|类型)',
+]
+GAP_RE = re.compile('|'.join(GAP_PATTERNS))
+
+for s in sections:
+    s = s.strip()
+    if not s:
         continue
-    text = stripped[2:].strip()
-    if len(text) < 5:
+    header_match = re.match(r'^## (\d{4}-\d{2}-\d{2}):\s*(.+)', s)
+    if not header_match:
         continue
-    total_lessons += 1
+    date_str = header_match.group(1)
+    title = header_match.group(2).strip()
+    bullet_lines = [l.strip() for l in s.splitlines() if l.strip().startswith('- ')]
 
-    # Check 1: has gap classification
-    if 'Gap' in text and '类型' in text:
-        has_gap += 1
+    section_data.append({
+        'date': date_str,
+        'title': title,
+        'bullets': bullet_lines,
+        'full': s,
+        'has_gap': bool(GAP_RE.search(s)),
+        'line_count': len(bullet_lines),
+    })
 
-    # Check 2: too short (< 15 chars = likely not actionable)
-    if len(text) < 15:
-        too_short += 1
+total_sections = len(section_data)
 
-    # Check 3: near-duplicate detection (first 30 chars)
-    key = text[:30].lower()
-    if key in seen_texts:
-        dup_key = key[:20]
-        duplicates[dup_key] = duplicates.get(dup_key, 1) + 1
-    seen_texts.add(key)
+# --- 2. Gap 分类率（section 级别）---
+sections_with_gap = sum(1 for s in section_data if s['has_gap'])
+gap_rate = sections_with_gap / total_sections * 100 if total_sections else 0
 
-gap_rate = has_gap / total_lessons * 100 if total_lessons else 0
-short_rate = too_short / total_lessons * 100 if total_lessons else 0
+# --- 3. 可操作性评分（bullet 级别）---
+# 可操作 = 有动词/具体动作 + 有文件名/命令/具体技术名词
+ACTION_VERBS = re.compile(r'(用|使用|改|修|加|删|跑|执行|部署|配置|检查|写|读|避免|禁止|必须|需要|应该|不要|确保|验证|测试|migrate|fix|add|update|use|run|check|deploy|set|→)')
+SPECIFICS = re.compile(r'(\.\w+|/\w+|`[^`]+`|\w+\.\w+\.\w+|\w+\.py|\w+\.sh|\w+\.md|\w+\.yaml|\w+\.json|EMP_\d{4}|https?://)')
 
-print(f'  总 lesson: {total_lessons}')
-print(f'  有 Gap 分类: {has_gap} ({gap_rate:.0f}%)')
-print(f'  过短(<15字): {too_short} ({short_rate:.0f}%)')
-print(f'  疑似重复: {len(duplicates)}')
+total_bullets = 0
+actionable_bullets = 0
+too_short_bullets = 0
+non_actionable_examples = []
 
-if gap_rate < 30 and total_lessons > 10:
-    print(f'  ⚠️ Gap 分类率低 ({gap_rate:.0f}%)，建议补充 Gap 类型标注')
+for s in section_data:
+    for b in s['bullets']:
+        text = b[2:].strip()  # remove '- '
+        if len(text) < 5:
+            continue
+        total_bullets += 1
+
+        if len(text) < 15:
+            too_short_bullets += 1
+
+        has_verb = bool(ACTION_VERBS.search(text))
+        has_specific = bool(SPECIFICS.search(text))
+
+        if has_verb or has_specific:
+            actionable_bullets += 1
+        else:
+            if len(non_actionable_examples) < 3:
+                non_actionable_examples.append(text[:60])
+
+actionable_rate = actionable_bullets / total_bullets * 100 if total_bullets else 0
+short_rate = too_short_bullets / total_bullets * 100 if total_bullets else 0
+
+# --- 4. 重复检测（归一化后比较）---
+def normalize(text):
+    """去标点/emoji/空格，小写，提取核心内容"""
+    text = re.sub(r'[🔧🏗️📄🔗📚⚠️✅❌🔴🟡🟢→]', '', text)
+    text = re.sub(r'[^\w\s]', '', text.lower())
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+def jaccard_similarity(a, b):
+    \"\"\"词级别 Jaccard 相似度\"\"\"
+    sa = set(a.split())
+    sb = set(b.split())
+    if not sa or not sb:
+        return 0
+    return len(sa & sb) / len(sa | sb)
+
+# 收集所有 bullet 的归一化版本
+normalized_bullets = []
+for s in section_data:
+    for b in s['bullets']:
+        text = b[2:].strip()
+        if len(text) < 10:
+            continue
+        normalized_bullets.append({
+            'original': text[:80],
+            'normalized': normalize(text),
+            'section_date': s['date'],
+            'section_title': s['title'],
+        })
+
+# O(n²) 比较，但 lesson 数量有限（通常 < 200）
+duplicates = []
+seen_dup_pairs = set()
+SIMILARITY_THRESHOLD = 0.7
+
+for i, a in enumerate(normalized_bullets):
+    for j, b in enumerate(normalized_bullets):
+        if j <= i:
+            continue
+        # 同 section 内不算跨 section 重复
+        if a['section_date'] == b['section_date'] and a['section_title'] == b['section_title']:
+            continue
+        sim = jaccard_similarity(a['normalized'], b['normalized'])
+        if sim >= SIMILARITY_THRESHOLD:
+            pair_key = (min(i,j), max(i,j))
+            if pair_key not in seen_dup_pairs:
+                seen_dup_pairs.add(pair_key)
+                duplicates.append({
+                    'similarity': round(sim, 2),
+                    'a': a['original'][:50],
+                    'a_section': f\"{a['section_date']}: {a['section_title']}\",
+                    'b': b['original'][:50],
+                    'b_section': f\"{b['section_date']}: {b['section_title']}\",
+                })
+
+# --- 5. Per-section 质量评分 ---
+per_section_scores = []
+for s in section_data:
+    sec_gap = 1.0 if s['has_gap'] else 0.0
+    sec_bullets = s['bullets']
+    sec_actionable = 0
+    sec_total = 0
+    for b in sec_bullets:
+        text = b[2:].strip()
+        if len(text) < 5:
+            continue
+        sec_total += 1
+        if ACTION_VERBS.search(text) or SPECIFICS.search(text):
+            sec_actionable += 1
+    sec_action_rate = sec_actionable / sec_total * 100 if sec_total else 0
+
+    # 深度评分：bullet 数量适中（3-10 为满分，<3 或 >15 扣分）
+    if 3 <= s['line_count'] <= 10:
+        depth = 100
+    elif s['line_count'] < 3:
+        depth = max(0, s['line_count'] * 33)
+    else:
+        depth = max(50, 100 - (s['line_count'] - 10) * 5)
+
+    sec_score = round(sec_gap * 100 * 0.3 + sec_action_rate * 0.4 + depth * 0.3)
+    grade_letter = 'A' if sec_score >= 80 else 'B' if sec_score >= 60 else 'C' if sec_score >= 40 else 'D'
+
+    per_section_scores.append({
+        'date': s['date'],
+        'title': s['title'][:40],
+        'gap': s['has_gap'],
+        'action_rate': round(sec_action_rate, 1),
+        'depth': depth,
+        'bullet_count': s['line_count'],
+        'score': sec_score,
+        'grade': grade_letter,
+    })
+
+# --- 6. 综合评分 ---
+# 权重：Gap 分类 40%，可操作性 35%，无重复 25%
+gap_score = min(gap_rate, 100)  # 0-100
+action_score = min(actionable_rate, 100)  # 0-100
+dup_penalty = min(len(duplicates) * 10, 100)  # 每组重复扣 10 分
+dup_score = max(0, 100 - dup_penalty)
+
+quality_score = round(gap_score * 0.4 + action_score * 0.35 + dup_score * 0.25)
+
+# Grade: A/B/C/D
+if quality_score >= 80:
+    grade = 'A'
+elif quality_score >= 60:
+    grade = 'B'
+elif quality_score >= 40:
+    grade = 'C'
+else:
+    grade = 'D'
+
+# --- 7. Trend tracking（与上次报告比较）---
+trend = {}
+report_file = os.path.join(report_dir, f'{agent}_quality.json')
+try:
+    if os.path.exists(report_file):
+        with open(report_file, 'r') as f:
+            prev = json.load(f)
+        prev_score = prev.get('quality_score', 0)
+        trend = {
+            'prev_score': prev_score,
+            'prev_grade': prev.get('grade', '?'),
+            'prev_date': prev.get('timestamp', '')[:10],
+            'delta': quality_score - prev_score,
+            'gap_delta': round(gap_rate - prev.get('gap_rate', 0), 1),
+            'action_delta': round(actionable_rate - prev.get('actionable_rate', 0), 1),
+            'dup_delta': len(duplicates) - prev.get('duplicate_count', 0),
+        }
+except:
+    pass
+
+# --- 8. 生成改进建议（具体可操作）---
+improvements = []
+# 找最差的 sections
+worst = sorted(per_section_scores, key=lambda x: x['score'])[:3]
+for w in worst:
+    hints = []
+    if not w['gap']:
+        hints.append('补充 Gap 分类（🔧🏗️📄🔗📚 之一）')
+    if w['action_rate'] < 50:
+        hints.append('增加具体动作/文件名/命令')
+    if w['bullet_count'] < 3:
+        hints.append('补充更多要点（建议 3-10 条）')
+    if hints:
+        improvements.append({
+            'section': f\"{w['date']}: {w['title']}\",
+            'score': w['score'],
+            'hints': hints,
+        })
+
+# --- 输出 ---
+print(f'  总 lesson sections: {total_sections}')
+print(f'  总 bullet points: {total_bullets}')
+print(f'  Gap 分类覆盖: {sections_with_gap}/{total_sections} ({gap_rate:.0f}%)')
+print(f'  可操作性: {actionable_bullets}/{total_bullets} ({actionable_rate:.0f}%)')
+print(f'  过短(<15字): {too_short_bullets} ({short_rate:.0f}%)')
+print(f'  跨 section 重复: {len(duplicates)} 组')
+print(f'  质量评分: {quality_score}/100 (Grade {grade})')
+
+# Trend 输出
+if trend:
+    arrow = '↑' if trend['delta'] > 0 else '↓' if trend['delta'] < 0 else '→'
+    print(f'  趋势: {trend[\"prev_score\"]}→{quality_score} ({arrow}{abs(trend[\"delta\"])})')
+
+# Per-section 最差 3 个
+if worst and total_sections > 3:
+    print(f'  最低分 sections:')
+    for w in worst[:3]:
+        print(f'    [{w[\"grade\"]}:{w[\"score\"]}] {w[\"date\"]}: {w[\"title\"]}')
+
+# 诊断建议
+if gap_rate < 50 and total_sections > 5:
+    print(f'  ⚠️ Gap 分类率 {gap_rate:.0f}% < 50%，需补充 Gap 类型（🔧🏗️📄🔗📚）')
+if actionable_rate < 60 and total_bullets > 10:
+    print(f'  ⚠️ 可操作性 {actionable_rate:.0f}% < 60%，lesson 应包含具体动作/文件名')
+    for ex in non_actionable_examples:
+        print(f'    例: \"{ex}\"')
 if short_rate > 30:
-    print(f'  ⚠️ {short_rate:.0f}% lesson 过短，可操作性不足')
-if len(duplicates) > 3:
-    print(f'  ⚠️ 疑似重复 {len(duplicates)} 组，建议合并')
-" 2>/dev/null || echo "[$agent_id] Quality scoring skipped (python error)"
+    print(f'  ⚠️ {short_rate:.0f}% bullet 过短，可操作性不足')
+if len(duplicates) > 0:
+    print(f'  ⚠️ 发现 {len(duplicates)} 组跨 section 重复，建议合并：')
+    for d in duplicates[:5]:  # 最多显示 5 组
+        print(f'    [{d[\"similarity\"]}] \"{d[\"a\"]}\" ↔ \"{d[\"b\"]}\"')
+if improvements:
+    print(f'  📋 改进建议:')
+    for imp in improvements[:3]:
+        print(f'    {imp[\"section\"]} (得分{imp[\"score\"]}): {\" / \".join(imp[\"hints\"])}')
+
+# --- 写入报告文件 ---
+report = {
+    'agent': agent,
+    'timestamp': datetime.now().isoformat(),
+    'total_sections': total_sections,
+    'total_bullets': total_bullets,
+    'gap_rate': round(gap_rate, 1),
+    'actionable_rate': round(actionable_rate, 1),
+    'short_rate': round(short_rate, 1),
+    'duplicate_count': len(duplicates),
+    'quality_score': quality_score,
+    'grade': grade,
+    'trend': trend,
+    'per_section': per_section_scores,
+    'improvements': improvements,
+    'duplicates': duplicates[:10],
+    'non_actionable_examples': non_actionable_examples,
+}
+with open(report_file, 'w') as f:
+    json.dump(report, f, ensure_ascii=False, indent=2)
+
+# --- 写入 audit.jsonl ---
+audit_file = os.path.join(hub_dir, 'logs', 'audit.jsonl')
+audit_entry = {
+    'ts': datetime.now().isoformat(),
+    'type': 'lesson_quality',
+    'agent': agent,
+    'score': quality_score,
+    'grade': grade,
+    'gap_rate': round(gap_rate, 1),
+    'actionable_rate': round(actionable_rate, 1),
+    'dup_count': len(duplicates),
+    'sections': total_sections,
+    'trend_delta': trend.get('delta', None),
+}
+with open(audit_file, 'a') as f:
+    f.write(json.dumps(audit_entry, ensure_ascii=False) + '\n')
+PYEOF
+  ) 2>/dev/null || echo "[$agent_id] Quality scoring skipped (python error)"
 }
 
 # --- Part 4: 生成 warm.md（最近任务的滚动摘要，~3K tokens）---
@@ -657,3 +922,34 @@ echo "=== RE-INDEX CHROMADB ==="
 
 echo ""
 echo "=== COMPACTION COMPLETE ==="
+
+# --- v2: EMP_0002 新格式浓缩逻辑 ---
+# 针对迁移后的 memory/memory.md（带 written/last_ref/ref_count 元数据注释）
+# 两阶段：B 语义聚合 → A 规则清理
+generate_warm_memory_v2() {
+  local emp_dir=$1
+  local memory_file="$emp_dir/memory/memory.md"
+  local archive_dir="$emp_dir/memory/archive"
+  local month
+  month=$(date +%Y-%m)
+
+  mkdir -p "$archive_dir"
+
+  # 阶段 B：语义聚合（必须先于阶段 A 执行）
+  # 找出同一 ## 主题块下，写入超过 30 天且 ref_count < 2 的条目（热度低、密度低）
+  # 调用 LLM（Haiku）对这些条目做聚合，输出一条可操作原则写回原主题块顶部
+  # 被聚合的原始条目打上标记：[aggregated: YYYY-MM-DD]
+  echo "[compact-memory] Phase B: semantic aggregation — $(date)" >> "$archive_dir/compact-log.md"
+
+  # 阶段 A：规则清理（必须在阶段 B 之后执行）
+  # 把所有带 [aggregated] 标记 或 last_ref 超过 90 天的条目
+  # 移入 archive/YYYY-MM.md
+  echo "[compact-memory] Phase A: rule-based cleanup — $(date)" >> "$archive_dir/compact-log.md"
+
+  echo "[compact-memory] Done. Archive: $archive_dir/$month.md"
+}
+
+# 如果直接执行脚本（非 source），对传入的 EMP 目录运行
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]] && [ "${1:-}" = "--v2" ]; then
+  generate_warm_memory_v2 "${2:-agents/EMP_0002}"
+fi

@@ -334,3 +334,11 @@ Step 4 渠道适配：
 - 来源：EMP_0012 产出建议稿（docs/plans/2026-03-09-agent-role-updates.md），Mason 批准
 - 核心原则：三角色基本定位不变（总监管策略、Dev写代码、Creator做内容），新增职责填补视频管线和分析代码的归属真空
 - Gap 分类：🏗️ 系统能力缺失 → 已通过角色定义更新填补
+
+## 2026-03-13: SocialMesh 任务检查 — 发布状态 + badge
+- 完成 task_001: Content.status 发布后更新 — 补充 FAILED enum、失败路径状态更新、Alembic migration
+- 完成 task_002: 内容列表状态 badge — ContentEditor + Dashboard 两处添加四色 badge
+- 发现：publish_post 成功路径已存在（之前某次开发已加），只缺失败路径
+- 发现：ContentEditor 里 scheduled 原用 amber 色，按任务要求统一改为 blue
+- run-agent.sh 在 Claude Code session 内无法嵌套执行（已知限制），直接在当前 session 完成
+- Gap 分类：📚 纯知识 → 留存

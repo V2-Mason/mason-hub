@@ -1,0 +1,11 @@
+{
+  "event": "xhs-analysis-complete",
+  "source": "xhs-analyze.sh",
+  "timestamp": "2026-03-12T22:41:04+00:00",
+  "status": "ok",
+  "level": 1,
+  "data": {
+    "notes": 1278,
+    "project": "default"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "event": "health-check-failed",
+  "source": "data_health_check.sh",
+  "timestamp": "2026-03-11T19:44:53+00:00",
+  "status": "failed",
+  "level": 2,
+  "data": {
+    "ok": 10,
+    "total": 15,
+    "errors": 4
+  }
+}

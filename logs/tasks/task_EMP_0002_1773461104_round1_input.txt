@@ -1,0 +1,1 @@
+自主任务: 扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测）

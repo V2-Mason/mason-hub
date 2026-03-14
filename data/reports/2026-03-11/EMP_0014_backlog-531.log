@@ -1,0 +1,44 @@
+Lock acquired: lane=platform agent=EMP_0014 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0014 (skipping full lessons)
+<<<AGENT_START EMP_0014>>>
+## 任务完成：数据读取 SDK v0.1.0
+
+### 产出物
+
+`data/tools/` Python 包（888 行），5 个模块：
+
+| 模块 | 职责 |
+|------|------|
+| `metrics.py` | 标准指标唯一口径：`interaction_score`、`parse_count`、`fake_traffic_flags` 等 |
+| `catalog.py` | 解析 `data_catalog.yaml`，`resolve_location()` 自动映射 `aliyun:` → `data/mirror/` |
+| `readers.py` | 4 种存储类型读取器：sqlite / json / jsonl / markdown_files |
+| `sdk.py` | 高级 API：`get_xhs_notes()`、`get_xhs_analysis()`、`get_scout_intel()` 等 |
+| `__init__.py` | 统一导出，一行 import 即可使用 |
+
+### 业务 agent 用法示例
+
+```python
+from data.tools import get_xhs_analysis, get_xhs_notes, get_scout_intel, interaction_score
+
+# XHS 互动分析（最新）
+report = get_xhs_analysis()                    # → 1168 条笔记分析
+
+# XHS 笔记（含互动分 + 假流量标记）
+notes = get_xhs_notes(keywords=["韩国护肤"])    # → 35 条，按互动分降序
+
+# Scout 红色情报
+red = get_scout_intel(priority="red")           # → 10 条
+
+# 标准指标（唯一口径）
+score = interaction_score(100, 50, 10, 5)       # → 300
+```
+
+### 验证结果
+- ✅ 语法检查 5/5 通过
+- ✅ 指标计算测试全部正确
+- ✅ Catalog 解析 17 个 active 数据集
+- ✅ 端到端数据读取：1168 条笔记、分析报告、趋势、评论、策略简报、23 条 Scout 情报
+
+### 后续待办
+- 下游消费者（`xhs-analyze-viral.py` 等）渐进迁移到 SDK 导入，消除重复的 `parse_count`/`interaction_score`
+Lock released: lane=platform agent=EMP_0014

@@ -1,0 +1,80 @@
+# API Usage Daily Report - 01:00 ET (05:00 UTC)
+0 5 * * * cd /home/hangn/mason-hub/scripts && /usr/bin/python3 /home/hangn/mason-hub/scripts/daily_usage_report.py >> /home/hangn/mason-hub/logs/cron.log 2>&1
+# === 素仁轩自动守护 ===
+0 */6 * * * /opt/surenxuan/scripts/health-check.sh
+0 0 * * * /opt/surenxuan/scripts/system-monitor.sh
+0 1 * * * /opt/surenxuan/scripts/daily-report.sh
+*/5 * * * * /opt/surenxuan/scripts/tunnel-keepalive.sh
+
+# === 感知层触发器 (2026-02-27 部署) ===
+# PM 每日库存巡检 + 反馈分诊 (20:00 ET = 00:00 UTC)
+0 0 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "每日巡检：1)库存巡检-扫描临期(30天内)/低库存(<5)/滞销(30天无销售)SKU，有异常发alert到#srx-alerts；2)反馈分诊-查询阿里云DB的system_feedback表(status=new)，bug类直接建backlog任务，ux/feature类整理摘要发Slack，P0立刻告警，处理完的标记status=reviewed" "C0AGXNH7F6J" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# SRE 每日基础设施报告 (21:00 ET = 01:00 UTC)
+0 1 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0004/config.md "基础设施日报：检查服务状态/磁盘内存/agent调用统计(audit.jsonl)，汇总发#system-alerts" "C0AHCMUC057" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# PM 每周记忆压缩 + UX 周报 (周一 22:00 ET = 02:00 UTC)
+0 2 * * 1 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "每周汇总：1)记忆压缩-读completed_tasks和long_term.md，提取本周经验，更新long_term.md；2)UX周报-统计system_feedback表本周反馈数量和分类分布，从nginx access log统计5xx错误率，汇总简报发#srx-business：本周N条反馈(bug X/ux Y/feature Z)，已修X个，待Mason决策Y个，5xx错误率N%" "C0AGWBWU0BF" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# SRE 每周记忆压缩 (周日 23:00 ET = 03:00 UTC)
+0 3 * * 0 /home/hangn/mason-hub/skills/agent-ops/compact-memory.sh all >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# SRE Agent 全局状态报告 (每日 21:30 ET = 01:30 UTC)
+30 1 * * * /home/hangn/mason-hub/skills/monitoring/agent-status-report.sh --slack C0AHCMUC057 >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# === Phase 3 Agent 触发器 (2026-02-27 部署) ===
+# Agent #0 数据COO 每周报告 (周日 08:00 ET = 12:00 UTC)
+0 12 * * 0 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "每周数据报告：1)本周销售汇总(总额/单数/top5品)；2)库存健康度(周转天数/滞销品/临期品)；3)客户活跃度(新增/复购率/流失预警)；4)采购建议(需补货SKU)。生成结构化报告发#srx-business" "C0AGXNH7F6J" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# Agent #2 营销引擎 每日客户跟进 (22:00 ET = 02:00 UTC)
+0 2 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "每日客户跟进：1)查询3天内有购买的客户，生成售后关怀话术；2)查询7天未复购的活跃客户，生成唤醒话术；3)查询有生日/纪念日临近的客户，生成祝福话术。每条话术附客户名和推荐理由，发#srx-business供Mason复制使用" "C0AGXNH7F6J" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# === SocialMesh Agent 触发器 (2026-02-27 部署) ===
+# SocialMesh PM 每日平台巡检 (10:00 ET = 14:00 UTC)
+0 14 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0008/config.md "每日巡检：1)检查各平台adapter健康(调用health检测)；2)查socialmesh DB的platform_posts表，是否有status=scheduled超过due时间的任务(卡住的发布)；3)检查API配额(OpenAI token用量from ~/socialmesh/logs/api_usage.jsonl)；4)查feedback表status=pending的反馈，bug类建task、ux/feature类汇总。有异常发alert到#socialmesh" "C0AHTA97EAY" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# SocialMesh PM 任务检查 (12:00 + 18:00 ET = 16:00 + 22:00 UTC)
+0 16,22 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0008/config.md "任务检查：读取 domains/content-tech/projects/socialmesh/task_list.json，评估pending任务优先级，有可执行的就拆解分配给Dev(EMP_0009)。完成后更新task_list.json" "C0AHTA97EAY" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# SocialMesh PM 每周记忆压缩 (周一 13:00 ET = 17:00 UTC)
+0 17 * * 1 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0008/config.md "每周汇总：1)记忆压缩-从completed_tasks和long_term.md提取本周经验，更新long_term.md；2)平台周报-统计本周发帖数量/成功率/各平台分布，GEO评分趋势，API消耗，汇总简报发#socialmesh" "C0AHTA97EAY" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# Agent #0 数据COO 每日巡检 (20:30 ET = 00:30 UTC)
+30 0 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0001/config.md "数据COO每日巡检：运行 ~/mason-hub/skills/agent-ops/data-coo-daily.sh --slack C0AGXNH7F6J 获取库存风险告警和销售摘要，汇总结果发到 #srx-business。如果有临期/低库存/滞销告警，标注优先级并建议处理方案" "C0AGXNH7F6J" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# === Scout 三档调度 ===
+# 每日快扫 19:00 ET (23:00 UTC) — Anthropic + trending + AI agent
+0 23 * * * /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0006/config.md "每日快扫：1)scout-anthropic.sh查Claude/Anthropic更新；2)scout-trending.sh查GitHub trending；3)scout-github.sh查AI agent新项目。汇总存入intel/raw/，有🔴级发现立即发#scout并上报Meta Manager" "C0AHCMUC057" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# 中频扫描 19:30 ET (23:30 UTC) 周一三五 — XHS + 工具 + 市场
+30 23 * * 1,3,5 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0006/config.md "中频扫描：1)scout-xhs-trends.sh查小红书话题风向；2)scout-find-skill.sh查新工具；3)scout-products.sh查市场动态。按domain分发到对应Slack频道" "C0AHCMUC057" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# 每周深扫 20:00 ET (00:00 UTC) 周一 — 竞品 + UI + 周报
+0 0 * * 1 /home/hangn/mason-hub/scripts/run-agent.sh agents/EMP_0006/config.md "每周深度巡逻：1)scout-ecom-compete.sh竞品深度分析；2)scout-ui-inspiration.sh UI设计趋势；3)汇总本周所有情报生成周度简报；4)更新watchlist.md；5)发#scout并存档intel/digests/；6)🔴级发现上报Meta Manager" "C0AHCMUC057" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# === Cookie 过期提醒 (每日 22:00 ET = 02:00 UTC) ===
+0 2 * * * /home/hangn/mason-hub/scripts/cookie-reminder.sh >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# === XHS 采集管道 (2026-03-01 部署, 时间对齐中国用户活跃时段) ===
+# Task 1 内容灵感: 周二+周五 18:00 ET (22:00 UTC) — 对应中国次日 06:00
+0 22 * * 1,4 /home/hangn/mason-hub/skills/xhs/xhs-crawl.sh --task 1 >> /home/hangn/mason-hub/logs/xhs-crawl.log 2>&1
+# Task 2 选品情报: 周三 18:00 ET (22:00 UTC)
+0 22 * * 2 /home/hangn/mason-hub/skills/xhs/xhs-crawl.sh --task 2 >> /home/hangn/mason-hub/logs/xhs-crawl.log 2>&1
+# Task 3 竞品监控: 周四 18:00 ET (22:00 UTC)
+0 22 * * 3 /home/hangn/mason-hub/skills/xhs/xhs-crawl.sh --task 3 >> /home/hangn/mason-hub/logs/xhs-crawl.log 2>&1
+# XHS 分析: 周六 20:00 ET (00:00 UTC)
+0 0 * * 6 /home/hangn/mason-hub/skills/xhs/xhs-analyze.sh >> /home/hangn/mason-hub/logs/xhs-analyze.log 2>&1
+# XHS 策略简报: 周六 22:00 ET (02:00 UTC)
+0 2 * * 6 /home/hangn/mason-hub/skills/xhs/xhs-strategy-briefing.sh >> /home/hangn/mason-hub/logs/xhs-briefing.log 2>&1
+# Task 4 趋势发现: 每月 1+15 号 18:00 ET — 每天 22:00 UTC 检查，脚本内判断日期
+0 22 * * * DAY=$(TZ=America/New_York date +\%d); [ "$DAY" = "01" -o "$DAY" = "15" ] && /home/hangn/mason-hub/skills/xhs/xhs-crawl.sh --task 4 >> /home/hangn/mason-hub/logs/xhs-crawl.log 2>&1
+
+# === TrendRadar 趋势监控 (2026-03-08 部署, 00/06/12/18 ET = 04/10/16/22 UTC) ===
+0 4,10,16,22 * * * cd /home/hangn/mason-hub/tools/trendradar && /home/hangn/mason-hub/.venv/bin/python -m trendradar >> /home/hangn/mason-hub/logs/trendradar.log 2>&1
+
+# === 自优化周期 (2026-03-09 部署) ===
+# 每周三 02:00 ET (06:00 UTC) — Scout 周报+XHS分析之后运行
+0 6 * * 3 /home/hangn/mason-hub/skills/agent-ops/optimization-cycle.sh >> /home/hangn/mason-hub/logs/optimization-cycle.log 2>&1
+
+# === 数据健康检查 (2026-03-10 部署) ===
+# 每日 21:15 ET (01:15 UTC) — SRE日报之后检查数据集健康
+15 1 * * * /home/hangn/mason-hub/data/pipelines/data_health_check.sh --slack >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+
+# === XHS 帮助中心文档刷新提醒 (2026-03-10 部署) ===
+# 每月 1 日 22:00 ET (02:00 UTC) — 提醒 Mason 手动触发刷新
+0 2 1 * * /home/hangn/slack-bot/slack_notify.sh "C0AHCMUC057" "📋 月度提醒：XHS 帮助中心文档需刷新。运行: python3 ~/mason-hub/skills/xhs/_xhs_helper_full_crawl.py && python3 ~/mason-hub/skills/xhs/_xhs_school_fetch_details.py" >> /home/hangn/mason-hub/logs/triggers.log 2>&1
+# Dispatcher — 自主任务调度（每小时，24h 运行）
+0 * * * * /home/hangn/mason-hub/scripts/dispatcher.sh >> /home/hangn/mason-hub/logs/dispatcher.log 2>&1
+# Skill 蒸馏 — 每周日 23:30 ET (03:30 UTC)，compact-memory 之后
+30 3 * * 0 source .env && /home/hangn/mason-hub/.venv/bin/python3 scripts/distill-skills.py --apply >> logs/triggers.log 2>&1

@@ -1,0 +1,1 @@
+自主任务: XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014）

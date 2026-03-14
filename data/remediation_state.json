@@ -1,0 +1,12 @@
+{
+  "raw_scout_intel": {
+    "retries": 2,
+    "last_attempt": 1773270083.0982513,
+    "last_result": "failed"
+  },
+  "_gateway_heartbeat": {
+    "retries": 0,
+    "last_attempt": 1773276690.4316866,
+    "last_result": "ok"
+  }
+}

@@ -1,0 +1,16 @@
+验证失败，请修复以下问题然后重新修改代码：
+
+--- 验证输出 ---
+=== DEV VERIFY LOOP ===
+Modified files: scripts/mason-gateway.py
+Test module: auto
+
+--- Step 1: Syntax Check ---
+/home/hangn/mason-hub/skills/dev-tools/dev-verify-loop.sh: line 39: /home/hangn/mason-hub/skills/dev-tools/check-syntax.sh: No such file or directory
+
+=== VERIFY LOOP FAILED at Step 1 (Syntax) ===
+--- 原始任务 ---
+自主任务: 为关键函数编写单元测试：parse_count()、interaction_score()、假流量过滤逻辑。防回归 bug。测试文件放 tests/
+
+## 输出路径
+结果写入: tests/

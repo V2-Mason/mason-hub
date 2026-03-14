@@ -1,0 +1,1 @@
+自主任务: 自建 skill: pattern-extract.py — 跨任务规律提炼（五维 Gap #5 学习-模式识别）

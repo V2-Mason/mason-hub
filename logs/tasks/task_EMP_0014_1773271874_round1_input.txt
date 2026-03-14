@@ -1,0 +1,1 @@
+自主任务: clean_xhs_notes 集成到 xhs-analyze.sh — 在阿里云注册 xhs-clean.py 为分析前置步骤，analysis 层改读 clean JSON（EMP_0014）

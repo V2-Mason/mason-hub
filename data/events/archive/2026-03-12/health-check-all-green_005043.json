@@ -1,0 +1,12 @@
+{
+  "event": "health-check-all-green",
+  "source": "data_health_check.sh",
+  "timestamp": "2026-03-12T00:50:42+00:00",
+  "status": "ok",
+  "level": 1,
+  "data": {
+    "ok": 16,
+    "total": 17,
+    "warn": 1
+  }
+}

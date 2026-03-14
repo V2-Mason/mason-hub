@@ -1,0 +1,11 @@
+{
+  "event": "data-sync-complete",
+  "source": "data-sync.sh",
+  "timestamp": "2026-03-12T22:37:10+00:00",
+  "status": "ok",
+  "level": 1,
+  "data": {
+    "synced": 3,
+    "total": 3
+  }
+}

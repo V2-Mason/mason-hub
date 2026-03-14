@@ -1,0 +1,9 @@
+修复完成。总结：
+
+**问题**: `repair-dispatch.sh` 的 `log()` 函数用 `tee -a` 同时写 stdout 和文件，当 cron 用 `>>` 重定向 stdout 到同一文件时，每行出现两次。
+
+**修复**:
+1. `log()` 函数：`echo | tee -a` → `echo >> $LOG_FILE` + `echo >&2`
+2. 3 处 `submit-repair.py` 调用的 `| tee -a "$LOG_FILE"` → `>> "$LOG_FILE" 2>&1`
+
+**验证**: `bash -n` 语法检查通过，`grep tee` 确认零残留。

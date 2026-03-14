@@ -1,0 +1,1 @@
+数据COO每日巡检：运行 ~/mason-hub/skills/agent-ops/data-coo-daily.sh --slack C0AGXNH7F6J 获取库存风险告警和销售摘要，汇总结果发到 #srx-business。如果有临期/低库存/滞销告警，标注优先级并建议处理方案

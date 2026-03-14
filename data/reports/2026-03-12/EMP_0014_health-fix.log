@@ -1,0 +1,18 @@
+Lock acquired: lane=platform agent=EMP_0014 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0014 (skipping full lessons)
+[context-budget] SKIP 📄 Context: data/data_catalog.yaml (18419B would exceed budget)
+[context-budget] SKIP 📄 Context: data/pipelines/data_health_check.sh (22350B would exceed budget)
+[context] Task-specific context files: data/data_catalog.yaml,data/pipelines/data_health_check.sh
+<<<AGENT_START EMP_0014>>>
+全部 17/17 健康，0 异常项。所有数据集状态正常，无需修复。
+
+健康检查摘要：
+- **Raw 层**：XHS 笔记/评论/创作者、TrendRadar、素仁轩 API、Scout 情报、XHS 帮助文档 — 全部 ✅
+- **Clean 层**：XHS 笔记、Scout 情报 — 全部 ✅
+- **Analysis 层**：病毒式内容/趋势/评论分析 — 全部 ✅
+- **Report 层**：策略简报、优化报告 — 全部 ✅
+- **跳过**：2 项（stdout/Slack 类型，设计如此）
+
+本次无异常，任务完成。
+/home/hangn/mason-hub/scripts/run-agent.sh: line 647: local: can only be used in a function
+Lock released: lane=platform agent=EMP_0014

@@ -1,0 +1,43 @@
+Lock acquired: lane=platform agent=EMP_0014 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0014 (skipping full lessons)
+<<<AGENT_START EMP_0014>>>
+任务完成。总结：
+
+---
+
+## 任务完成报告
+
+### 产出物
+
+| 文件 | 说明 |
+|------|------|
+| `data/schemas/srx_sales_snapshot.yaml` | Schema 定义（3 张业务表 + 1 张元信息表）|
+| `data/pipelines/srx-snapshot.py` | 快照管道脚本（3 API 端点 → SQLite）|
+| `data/tools/sdk.py` | 新增 `get_srx_history()` + `get_srx_snapshot()` |
+| `data/tools/__init__.py` | 导出新函数 |
+| `data/data_catalog.yaml` | `planned_srx_history` → `raw_srx_history` (active) |
+| `data/srx_history.db` | 时序数据库（首条快照已入库）|
+
+### 首条快照数据
+
+- **销售**: revenue=¥0, orders=0（还没正式开售）
+- **库存**: 58 个 SKU, 63 件总量, 库存成本 ¥169K / 零售价值 ¥439K
+- **风险**: 2 条告警（1 缺货 + 库存相关）
+
+### 业务 agent 用法
+
+```python
+from data.tools import get_srx_history, get_srx_snapshot
+
+# 最近 30 天趋势
+history = get_srx_history(days=30, metric='all')
+
+# 某日快照
+snap = get_srx_snapshot(date='2026-03-11')
+```
+
+### 待跟进（非本次职责）
+
+1. **cron 注册**: `srx-snapshot.py` 需每日 20:00 ET 运行 → EMP_0004 负责
+2. **data-coo-daily.sh 字段映射 bug**: sales/dashboard API 嵌套 `data` 键未解包，revenue 一直报 N/A → EMP_0002 通知
+Lock released: lane=platform agent=EMP_0014

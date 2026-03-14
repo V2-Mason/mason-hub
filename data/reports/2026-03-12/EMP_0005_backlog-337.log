@@ -1,0 +1,81 @@
+Lock acquired: lane=ecommerce agent=EMP_0005 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0005 (skipping full lessons)
+<<<AGENT_START EMP_0005>>>
+--- Round 1 / 3 ---
+[verify] Modified files: backend/api/market_dashboard.py,backend/tests/test_market_dashboard.py
+[verify] Test module: full suite
+[verify] Running verification...
+[verify] Round 1: PASSED
+## ✅ 任务完成：市场看板后端 API
+
+### 新建文件
+| 文件 | 说明 |
+|------|------|
+| `backend/api/market_dashboard.py` | 12 个 API 端点，475 行 |
+| `backend/tests/test_market_dashboard.py` | 19 个单元测试，全部通过 |
+
+### API 端点清单 (`/api/market-dashboard/`)
+
+| # | 模块 | 端点 | 方法 | 说明 |
+|---|------|------|------|------|
+| 1 | 品类热度 | `/category-heat` | GET | 品类销量/收入/热度评分排行 |
+| 2 | | `/category-heat/trend` | GET | 单品类时间序列趋势 |
+| 3 | 爆款排行 | `/bestsellers` | GET | 按收入/销量/毛利/日均销速排行 |
+| 4 | | `/bestsellers/emerging` | GET | 加速上升中的潜力爆款 |
+| 5 | 竞品分析 | `/competitor/brand-overview` | GET | 品牌维度业绩 + 价格定位 |
+| 6 | | `/competitor/category-price-map` | GET | 品牌×品类价格矩阵 |
+| 7 | | `/competitor/brand-vs-brand` | GET | 两品牌 Head-to-head 对比 |
+| 8 | 关键词 | `/keywords/product-selling-points` | GET | 产品卖点关键词频次 |
+| 9 | | `/keywords/content-performance` | GET | 关键词↔内容互动效果 |
+| 10 | | `/keywords/market-trends` | GET | 外部市场趋势数据查询 |
+| 11 | 数据写入 | `/market-trends/ingest` | POST | 管道/采集器批量写入趋势数据 |
+| 12 | 总览 | `/overview` | GET | 全模块关键指标汇总 |
+
+### 注意事项
+- `market_trends` 表当前为空，需数据采集管道填充（已提供 `/ingest` 写入端口）
+- 生产库 products 全部 `excluded`、sales=0 → API 正常返回空数据不报错
+- 所有端点已注册 auth 依赖，需登录后访问
+
+=== DEV VERIFY LOOP ===
+Modified files: backend/api/market_dashboard.py,backend/tests/test_market_dashboard.py
+Test module: auto
+
+--- Step 1: Syntax Check ---
+WARN: File not found: backend/api/market_dashboard.py (skipped)
+WARN: File not found: backend/tests/test_market_dashboard.py (skipped)
+Syntax check passed
+
+--- Step 2: Skipped (no test module specified) ---
+
+--- Step 3: Full Regression ---
+[service] Starting backend...
+[service] Backend ready (7s, PID=861538)
+=== BACKEND TESTS ===
+Target: /home/hangn/surenxuan/backend/tests
+Marker: none
+---
+============================= test session starts ==============================
+collected 60 items
+
+backend/tests/test_customers.py .ss...                                   [ 10%]
+backend/tests/test_finance.py ...                                        [ 15%]
+backend/tests/test_intelligence.py ..                                    [ 18%]
+backend/tests/test_market_dashboard.py ...................               [ 50%]
+backend/tests/test_purchases.py ssssss                                   [ 60%]
+backend/tests/test_sales.py sssssss.ss                                   [ 76%]
+backend/tests/test_selection.py ....                                     [ 83%]
+backend/tests/test_smoke.py ..........                                   [100%]
+
+======================= 43 passed, 17 skipped in 10.29s ========================
+---
+=== SUMMARY ===
+Passed: 43
+Failed: 0
+Errors: 0
+Exit code: 0
+[service] Backend stopped (PGID=861538)
+
+=== ALL VERIFICATION PASSED ===
+/home/hangn/mason-hub/skills/dev-tools/run-backend-tests.sh: line 35: 861540 Killed                  DEV_MODE=true setsid python3 -m uvicorn main:app --host 127.0.0.1 --port 8000 --log-level warning > "$STARTUP_LOG" 2>&1
+/home/hangn/mason-hub/scripts/run-agent.sh: line 781: LESSONS_FILE: unbound variable
+Lock released: lane=ecommerce agent=EMP_0005

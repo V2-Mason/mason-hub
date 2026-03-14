@@ -1,0 +1,1 @@
+自主任务: 注册 Scout v2 管道到 crontab，替换旧 scout-*.sh cron。入口: python -m intel.engines.pipeline。建议每周二/五 19:00 ET 运行

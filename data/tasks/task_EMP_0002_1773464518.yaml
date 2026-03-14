@@ -1,0 +1,12 @@
+id: "task_EMP_0002_1773464518"
+account: ""
+agent: "EMP_0002"
+assigned_by: "dispatcher"
+status: "in_progress"
+description: "自主任务: 自建 skill: cross-correlate.py — 跨数据源关联分析（五维 Gap #3 理解-关联）"
+created_at: "2026-03-14T05:02:09Z"
+updated_at: "2026-03-14T05:02:09Z"
+acceptance_criteria: ""
+verify_command: ""
+task_type: "execute"
+

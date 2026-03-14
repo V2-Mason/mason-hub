@@ -1,0 +1,1261 @@
+[2026-03-10 18:37:20] 安全门 [时间]: 当前 CST 02 时，不在 08:00-22:00 窗口内
+[2026-03-10 18:40:39] 安全门 [时间]: 当前 CST 02 时，不在 08:00-22:00 窗口内
+[2026-03-10 18:46:43] 安全门 [时间]: 当前 CST 02 时，不在 08:00-22:00 窗口内
+[2026-03-10 19:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 19:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 19:00:01] 安全门 [时间]: 当前 CST 03 时，不在 08:00-22:00 窗口内
+[2026-03-10 19:00:01] 安全门 [时间]: 当前 CST 03 时，不在 08:00-22:00 窗口内
+[2026-03-10 20:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 20:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 20:00:01] 安全门 [时间]: 当前 CST 04 时，不在 08:00-22:00 窗口内
+[2026-03-10 20:00:01] 安全门 [时间]: 当前 CST 04 时，不在 08:00-22:00 窗口内
+[2026-03-10 21:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 21:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 21:00:01] 安全门 [时间]: 当前 CST 05 时，不在 08:00-22:00 窗口内
+[2026-03-10 21:00:01] 安全门 [时间]: 当前 CST 05 时，不在 08:00-22:00 窗口内
+[2026-03-10 22:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 22:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 22:00:01] 安全门 [时间]: 当前 CST 06 时，不在 08:00-22:00 窗口内
+[2026-03-10 22:00:01] 安全门 [时间]: 当前 CST 06 时，不在 08:00-22:00 窗口内
+[2026-03-10 22:15:30] 安全门 [时间]: 当前 CST 06 时，不在 08:00-22:00 窗口内
+[2026-03-10 23:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 23:00:01] === Dispatcher 开始扫描 ===
+[2026-03-10 23:00:01] 安全门 [时间]: 当前 CST 07 时，不在 08:00-22:00 窗口内
+[2026-03-10 23:00:01] 安全门 [时间]: 当前 CST 07 时，不在 08:00-22:00 窗口内
+[2026-03-11 00:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 00:00:01] === Dispatcher 开始扫描 ===
+/home/hangn/mason-hub/scripts/dispatcher.sh: line 38: ((: 08: value too great for base (error token is "08")
+[2026-03-11 00:00:01] 安全门 [时间]: 当前 CST 08 时，不在 08:00-22:00 窗口内
+[2026-03-11 00:00:01] 安全门 [时间]: 当前 CST 08 时，不在 08:00-22:00 窗口内
+[2026-03-11 01:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 01:00:01] === Dispatcher 开始扫描 ===
+/home/hangn/mason-hub/scripts/dispatcher.sh: line 38: ((: 09: value too great for base (error token is "09")
+[2026-03-11 01:00:01] 安全门 [时间]: 当前 CST 09 时，不在 08:00-22:00 窗口内
+[2026-03-11 01:00:01] 安全门 [时间]: 当前 CST 09 时，不在 08:00-22:00 窗口内
+[2026-03-11 02:00:02] === Dispatcher 开始扫描 ===
+[2026-03-11 02:00:02] === Dispatcher 开始扫描 ===
+[2026-03-11 02:00:02] 无新事件
+[2026-03-11 02:00:02] 无新事件
+[2026-03-11 02:00:02] 检查 9 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: blocker-resolved
+[2026-03-11 02:00:02] 检查 8 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-all-green
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → active
+[2026-03-11 02:00:02] 检查 7 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-all-green
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → active
+[2026-03-11 02:00:02] 检查 6 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:03]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:03]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:03]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:03]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_195452.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_195452.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_212839.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_212839.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_231358.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_231358.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_232816.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_232816.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_233554.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_233554.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_234325.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_234325.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-all-green_20260310_184402.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-all-green_20260310_184402.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_195452.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_195452.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_212839.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_212839.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_231358.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_231358.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_232816.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_232816.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_233554.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_233554.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_234325.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_234325.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-all-green_20260310_184027.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-all-green_20260310_184027.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-all-green_20260310_184402.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-all-green_20260310_184402.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_195452.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_195452.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_212839.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_212839.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_231358.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_231358.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_232816.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_232816.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_233554.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_233554.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_234325.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_234325.json'
+[2026-03-11 02:00:02] 检查 9 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: blocker-resolved
+[2026-03-11 02:00:02] 检查 8 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-all-green
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → active
+[2026-03-11 02:00:02] 检查 7 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-all-green
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → active
+[2026-03-11 02:00:02] 检查 6 条 pending 事件
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:03]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:03]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:03]   pending 事件条件满足: health-check-failed
+[2026-03-11 02:00:03]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_195452.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_195452.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_212839.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_212839.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_231358.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_231358.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_232816.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_232816.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_233554.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_233554.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_234325.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_234325.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-all-green_20260310_184402.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-all-green_20260310_184402.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_195452.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_195452.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_212839.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_212839.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_231358.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_231358.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_232816.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_232816.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_233554.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_233554.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_234325.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_234325.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-all-green_20260310_184027.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-all-green_20260310_184027.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-all-green_20260310_184402.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-all-green_20260310_184402.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_195452.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_195452.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_212839.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_212839.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_231358.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_231358.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_232816.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_232816.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_233554.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_233554.json'
+[2026-03-11 02:00:03]   pending 处理失败: health-check-failed_20260310_234325.json: [Errno 2] No such file or directory: '/home/hangn/mason-hub/data/events/pending/health-check-failed_20260310_234325.json'
+[2026-03-11 02:00:03] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 02:00:03] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 02:00:03]   Agent EMP_0002 已启动 (PID: 560390)
+[2026-03-11 02:00:03]   Agent EMP_0002 已启动 (PID: 560390)
+[2026-03-11 02:00:03] === Dispatcher 扫描完成 ===
+[2026-03-11 02:00:03] === Dispatcher 扫描完成 ===
+[2026-03-11 03:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 03:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 03:00:01] 无新事件
+[2026-03-11 03:00:01] 无新事件
+[2026-03-11 03:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 03:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 03:00:02]   Agent EMP_0002 已启动 (PID: 569959)
+[2026-03-11 03:00:02]   Agent EMP_0002 已启动 (PID: 569959)
+[2026-03-11 03:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 03:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 04:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 04:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 04:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 04:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 05:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 05:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 05:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 05:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 06:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 06:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 06:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 06:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 07:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 07:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 07:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 07:00:01] 安全门 [并发]: 已有 claude agent 在运行，跳过本轮
+[2026-03-11 07:22:20] === Dispatcher 开始扫描 ===
+[2026-03-11 07:22:20] 无新事件
+[2026-03-11 07:22:21]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 07:22:21]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 07:22:21] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 07:22:21]   [DRY-RUN] 会启动 EMP_0002 执行: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用
+[2026-03-11 07:22:21] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 07:22:21]   [DRY-RUN] 会启动 EMP_0006 执行: EMP_0006.md 更新 — 加入 Engine 架构职责描述
+[2026-03-11 07:22:21]   本轮派发: 2 个任务
+[2026-03-11 07:22:21] === Dispatcher 扫描完成 ===
+[2026-03-11 07:52:02] === Dispatcher 开始扫描 ===
+[2026-03-11 07:52:03] 无新事件
+[2026-03-11 07:52:03]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 07:52:03]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 07:52:03] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 07:52:03]   Agent EMP_0002 已启动 (PID: 610109)
+[2026-03-11 07:52:04] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 07:52:04]   Agent EMP_0006 已启动 (PID: 610137)
+[2026-03-11 07:52:04]   本轮派发: 2 个任务
+[2026-03-11 07:52:04] === Dispatcher 扫描完成 ===
+[2026-03-11 08:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 08:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 08:00:01] 无新事件
+[2026-03-11 08:00:01] 无新事件
+[2026-03-11 08:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 08:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 08:00:01]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 08:00:01]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 08:00:01] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 08:00:01] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 08:00:01]   Agent EMP_0002 已启动 (PID: 610813)
+[2026-03-11 08:00:01]   Agent EMP_0002 已启动 (PID: 610813)
+[2026-03-11 08:00:01] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 08:00:01] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 08:00:01]   Agent EMP_0006 已启动 (PID: 610840)
+[2026-03-11 08:00:01]   Agent EMP_0006 已启动 (PID: 610840)
+[2026-03-11 08:00:01]   本轮派发: 2 个任务
+[2026-03-11 08:00:01]   本轮派发: 2 个任务
+[2026-03-11 08:00:01] === Dispatcher 扫描完成 ===
+[2026-03-11 08:00:01] === Dispatcher 扫描完成 ===
+[2026-03-11 09:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 09:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 09:00:01] 无新事件
+[2026-03-11 09:00:01] 无新事件
+[2026-03-11 09:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 09:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 09:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 09:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 09:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 09:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 09:00:02]   Agent EMP_0002 已启动 (PID: 616293)
+[2026-03-11 09:00:02]   Agent EMP_0002 已启动 (PID: 616293)
+[2026-03-11 09:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 09:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 09:00:02]   Agent EMP_0006 已启动 (PID: 616320)
+[2026-03-11 09:00:02]   Agent EMP_0006 已启动 (PID: 616320)
+[2026-03-11 09:00:02]   本轮派发: 2 个任务
+[2026-03-11 09:00:02]   本轮派发: 2 个任务
+[2026-03-11 09:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 09:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 10:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 10:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 10:00:01] 无新事件
+[2026-03-11 10:00:01] 无新事件
+[2026-03-11 10:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 10:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 10:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 10:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 10:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 10:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 10:00:02]   Agent EMP_0002 已启动 (PID: 621270)
+[2026-03-11 10:00:02]   Agent EMP_0002 已启动 (PID: 621270)
+[2026-03-11 10:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 10:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 10:00:02]   Agent EMP_0006 已启动 (PID: 621297)
+[2026-03-11 10:00:02]   Agent EMP_0006 已启动 (PID: 621297)
+[2026-03-11 10:00:02]   本轮派发: 2 个任务
+[2026-03-11 10:00:02]   本轮派发: 2 个任务
+[2026-03-11 10:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 10:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 11:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 11:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 11:00:01] 无新事件
+[2026-03-11 11:00:01] 无新事件
+[2026-03-11 11:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 11:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 11:00:01]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 11:00:01]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 11:00:01] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 11:00:01] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 11:00:01]   Agent EMP_0002 已启动 (PID: 626312)
+[2026-03-11 11:00:01]   Agent EMP_0002 已启动 (PID: 626312)
+[2026-03-11 11:00:01] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 11:00:01] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 11:00:01]   Agent EMP_0006 已启动 (PID: 626339)
+[2026-03-11 11:00:01]   Agent EMP_0006 已启动 (PID: 626339)
+[2026-03-11 11:00:01]   本轮派发: 2 个任务
+[2026-03-11 11:00:01]   本轮派发: 2 个任务
+[2026-03-11 11:00:01] === Dispatcher 扫描完成 ===
+[2026-03-11 11:00:01] === Dispatcher 扫描完成 ===
+[2026-03-11 12:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 12:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 12:00:01] 无新事件
+[2026-03-11 12:00:01] 无新事件
+[2026-03-11 12:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 12:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 12:00:01]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 12:00:01]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 12:00:01] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 12:00:01] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 12:00:01]   Agent EMP_0002 已启动 (PID: 631337)
+[2026-03-11 12:00:01]   Agent EMP_0002 已启动 (PID: 631337)
+[2026-03-11 12:00:01] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 12:00:01] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 12:00:01]   Agent EMP_0006 已启动 (PID: 631364)
+[2026-03-11 12:00:01]   Agent EMP_0006 已启动 (PID: 631364)
+[2026-03-11 12:00:01]   本轮派发: 2 个任务
+[2026-03-11 12:00:01]   本轮派发: 2 个任务
+[2026-03-11 12:00:01] === Dispatcher 扫描完成 ===
+[2026-03-11 12:00:01] === Dispatcher 扫描完成 ===
+[2026-03-11 13:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 13:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 13:00:01] 无新事件
+[2026-03-11 13:00:01] 无新事件
+[2026-03-11 13:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 13:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 13:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 13:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 13:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 13:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 13:00:02]   Agent EMP_0002 已启动 (PID: 636206)
+[2026-03-11 13:00:02]   Agent EMP_0002 已启动 (PID: 636206)
+[2026-03-11 13:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 13:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 13:00:02]   Agent EMP_0006 已启动 (PID: 636233)
+[2026-03-11 13:00:02]   Agent EMP_0006 已启动 (PID: 636233)
+[2026-03-11 13:00:02]   本轮派发: 2 个任务
+[2026-03-11 13:00:02]   本轮派发: 2 个任务
+[2026-03-11 13:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 13:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 14:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 14:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 14:00:01] 安全门 [时间]: 当前 CST 22 时，不在 08:00-22:00 窗口内
+[2026-03-11 14:00:01] 安全门 [时间]: 当前 CST 22 时，不在 08:00-22:00 窗口内
+[2026-03-11 15:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 15:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 15:00:01] 安全门 [时间]: 当前 CST 23 时，不在 08:00-22:00 窗口内
+[2026-03-11 15:00:01] 安全门 [时间]: 当前 CST 23 时，不在 08:00-22:00 窗口内
+[2026-03-11 16:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 16:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 16:00:01] 安全门 [时间]: 当前 CST 0 时，不在 08:00-22:00 窗口内
+[2026-03-11 16:00:01] 安全门 [时间]: 当前 CST 0 时，不在 08:00-22:00 窗口内
+[2026-03-11 17:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 17:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 17:00:01] 安全门 [时间]: 当前 CST 1 时，不在 08:00-22:00 窗口内
+[2026-03-11 17:00:01] 安全门 [时间]: 当前 CST 1 时，不在 08:00-22:00 窗口内
+[2026-03-11 18:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 18:00:01] 安全门 [时间]: 当前 CST 2 时，不在 08:00-22:00 窗口内
+[2026-03-11 19:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 19:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-11 20:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 20:00:01] 无新事件
+[2026-03-11 20:00:01] 无新事件
+[2026-03-11 20:00:02] 检查 1 条 pending 事件
+[2026-03-11 20:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 20:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 20:00:02] 检查 1 条 pending 事件
+[2026-03-11 20:00:02]   pending 事件条件满足: health-check-failed
+[2026-03-11 20:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-11 20:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 20:00:02]   批量扫描到 2 个任务（按 lane 去重）
+[2026-03-11 20:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002)
+[2026-03-11 20:00:02]   Agent EMP_0002 已启动 (PID: 697313)
+[2026-03-11 20:00:02] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006)
+[2026-03-11 20:00:02]   Agent EMP_0006 已启动 (PID: 697336)
+[2026-03-11 20:00:02]   本轮派发: 2 个任务
+[2026-03-11 20:00:02] === Dispatcher 扫描完成 ===
+[2026-03-11 21:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 21:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-11 21:34:25] === Dispatcher 开始扫描 ===
+[2026-03-11 21:34:25] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-11 21:34:34] === Dispatcher 开始扫描 ===
+[2026-03-11 21:34:34] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-11 21:34:49] === Dispatcher 开始扫描 ===
+[2026-03-11 21:34:49] 无新事件
+[2026-03-11 21:34:49]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 21:34:49]   批量扫描到 4 个任务（按 lane+agent 去重）
+[2026-03-11 21:34:49] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002, type=execute)
+[2026-03-11 21:34:49]   [DRY-RUN] 会启动 EMP_0002 执行: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用
+[2026-03-11 21:34:49] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-11 21:34:49]   [DRY-RUN] 会启动 EMP_0014 执行: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项）
+[2026-03-11 21:34:50] >>> 启动任务: Scout cron 首次执行验证 — 每日 19:00 ET (23:00 UTC) 触发，确认 triggers.log 有输出且 intel/digests/ 有新文件（EMP_0004） (backlog-209 → EMP_0004, type=execute)
+[2026-03-11 21:34:50]   [DRY-RUN] 会启动 EMP_0004 执行: Scout cron 首次执行验证 — 每日 19:00 ET (23:00 UTC) 触发，确认 triggers.log 有输出且 intel/digests/ 有新文件（EMP_0004）
+[2026-03-11 21:34:50] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006, type=execute)
+[2026-03-11 21:34:50]   [DRY-RUN] 会启动 EMP_0006 执行: EMP_0006.md 更新 — 加入 Engine 架构职责描述
+[2026-03-11 21:34:50]   本轮派发: 4 个任务
+[2026-03-11 21:34:50] === Dispatcher 扫描完成 ===
+[2026-03-11 22:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 22:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-11 23:00:01] === Dispatcher 开始扫描 ===
+[2026-03-11 23:00:01] 无新事件
+[2026-03-11 23:00:01] 无新事件
+[2026-03-11 23:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:00:01]   批量扫描到 4 个任务（按 lane+agent 去重）
+[2026-03-11 23:00:02] >>> 启动任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用 (searxng-docker → EMP_0002, type=execute)
+[2026-03-11 23:00:02]   Agent EMP_0002 已启动 (PID: 729814)
+[2026-03-11 23:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-11 23:00:02]   Agent EMP_0014 已启动 (PID: 729844)
+[2026-03-11 23:00:02] >>> 启动任务: Scout cron 首次执行验证 — 每日 19:00 ET (23:00 UTC) 触发，确认 triggers.log 有输出且 intel/digests/ 有新文件（EMP_0004） (backlog-209 → EMP_0004, type=execute)
+[2026-03-11 23:00:02]   Agent EMP_0004 已启动 (PID: 729886)
+[2026-03-11 23:00:03] >>> 启动任务: EMP_0006.md 更新 — 加入 Engine 架构职责描述 (backlog-527 → EMP_0006, type=execute)
+[2026-03-11 23:00:03]   Agent EMP_0006 已启动 (PID: 729915)
+[2026-03-11 23:00:03]   本轮派发: 4 个任务
+[2026-03-11 23:00:03] === Dispatcher 扫描完成 ===
+[2026-03-11 23:02:31] === Dispatcher 开始扫描 ===
+[2026-03-11 23:02:31] 无新事件
+[2026-03-11 23:02:31]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:02:31]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:02:32]   ⏸️  unit-tests: lane platform 正忙，跳过
+[2026-03-11 23:02:32]   ⏸️  backlog-209: lane platform 正忙，跳过
+[2026-03-11 23:02:32]   ⏸️  backlog-530: lane platform 正忙，跳过
+[2026-03-11 23:02:32]   本轮派发: 0 个任务
+[2026-03-11 23:02:32] === Dispatcher 扫描完成 ===
+[2026-03-11 23:02:56] === Dispatcher 开始扫描 ===
+[2026-03-11 23:02:56] 无新事件
+[2026-03-11 23:02:57]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:02:57]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:02:57]   ⏸️  unit-tests: lane platform 正忙，跳过
+[2026-03-11 23:02:57]   ⏸️  backlog-210: lane platform 正忙，跳过
+[2026-03-11 23:02:57]   ⏸️  backlog-531: lane platform 正忙，跳过
+[2026-03-11 23:02:57]   本轮派发: 0 个任务
+[2026-03-11 23:02:57] === Dispatcher 扫描完成 ===
+[2026-03-11 23:03:13] === Dispatcher 开始扫描 ===
+[2026-03-11 23:03:14] 无新事件
+[2026-03-11 23:03:14]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:03:14]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:03:14]   ⏸️  unit-tests: lane platform 正忙，跳过
+[2026-03-11 23:03:15]   ⏸️  backlog-210: lane platform 正忙，跳过
+[2026-03-11 23:03:15]   ⏸️  backlog-531: lane platform 正忙，跳过
+[2026-03-11 23:03:15]   本轮派发: 0 个任务
+[2026-03-11 23:03:15] === Dispatcher 扫描完成 ===
+[2026-03-11 23:04:48] === Dispatcher 开始扫描 ===
+[2026-03-11 23:04:48] 无新事件
+[2026-03-11 23:04:48]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:04:48]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:04:48] >>> 启动任务: 为关键函数编写单元测试：parse_count()、interaction_score()、假流量过滤逻辑。防回归 bug。测试文件放 tests/ (unit-tests → EMP_0002, type=execute)
+[2026-03-11 23:04:48]   Agent EMP_0002 已启动 (PID: 739464)
+[2026-03-11 23:04:49] >>> 启动任务: Scout v2 cron 注册 — 替换旧 scout-*.sh cron 为新管道（EMP_0004） (backlog-527 → EMP_0004, type=execute)
+[2026-03-11 23:04:49]   Agent EMP_0004 已启动 (PID: 739490)
+[2026-03-11 23:04:49] >>> 启动任务: 数据读取 SDK — Python 模块，业务 agent 一行代码获取干净数据（EMP_0014） (backlog-531 → EMP_0014, type=execute)
+[2026-03-11 23:04:49]   Agent EMP_0014 已启动 (PID: 739560)
+[2026-03-11 23:04:49]   本轮派发: 3 个任务
+[2026-03-11 23:04:49] === Dispatcher 扫描完成 ===
+[2026-03-11 23:10:07] === Dispatcher 开始扫描 ===
+[2026-03-11 23:10:08] 无新事件
+[2026-03-11 23:10:08]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:10:08]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:10:08]   ⏸️  scout-v2-cron: lane platform 正忙，跳过
+[2026-03-11 23:10:08]   ⏸️  backlog-527: lane platform 正忙，跳过
+[2026-03-11 23:10:08]   ⏸️  backlog-531: lane platform 正忙，跳过
+[2026-03-11 23:10:08]   本轮派发: 0 个任务
+[2026-03-11 23:10:08] === Dispatcher 扫描完成 ===
+[2026-03-11 23:11:32] === Dispatcher 开始扫描 ===
+[2026-03-11 23:11:32] 无新事件
+[2026-03-11 23:11:32]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:11:33]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:11:33]   ⏸️  scout-v2-cron: lane platform 正忙，跳过
+[2026-03-11 23:11:33]   ⏸️  backlog-527: lane platform 正忙，跳过
+[2026-03-11 23:11:33]   ⏸️  backlog-531: lane platform 正忙，跳过
+[2026-03-11 23:11:33]   本轮派发: 0 个任务
+[2026-03-11 23:11:33] === Dispatcher 扫描完成 ===
+[2026-03-11 23:16:39] === Dispatcher 开始扫描 ===
+[2026-03-11 23:16:39] 无新事件
+[2026-03-11 23:16:39]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:16:39]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-11 23:16:39] >>> 启动任务: 注册 Scout v2 管道到 crontab，替换旧 scout-*.sh cron。入口: python -m intel.engines.pipeline。建议每周二/五 19:00 ET 运行 (scout-v2-cron → EMP_0002, type=execute)
+[2026-03-11 23:16:39]   Agent EMP_0002 已启动 (PID: 749687)
+[2026-03-11 23:16:39] >>> 启动任务: Scout v2 cron 注册 — 替换旧 scout-*.sh cron 为新管道（EMP_0004） (backlog-530 → EMP_0004, type=execute)
+[2026-03-11 23:16:39]   Agent EMP_0004 已启动 (PID: 749715)
+[2026-03-11 23:16:39] >>> 启动任务: 加工层标准化 — raw→clean→analysis→report 四层命名 + 指标唯一口径（EMP_0014） (backlog-535 → EMP_0014, type=execute)
+[2026-03-11 23:16:40]   Agent EMP_0014 已启动 (PID: 749763)
+[2026-03-11 23:16:40]   本轮派发: 3 个任务
+[2026-03-11 23:16:40] === Dispatcher 扫描完成 ===
+[2026-03-11 23:18:50] === Dispatcher 开始扫描 ===
+[2026-03-11 23:18:50] 无新事件
+[2026-03-11 23:18:50]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:18:50]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-11 23:18:50] >>> 启动任务: git worktree 工作流 — 重要改动在分支上做，不直接改 main（项目规模变大后启用）（EMP_0002） (backlog-177 → EMP_0002, type=execute)
+[2026-03-11 23:18:50]   Agent EMP_0002 已启动 (PID: 751172)
+[2026-03-11 23:18:50] >>> 启动任务: 加工层标准化 — raw→clean→analysis→report 四层命名 + 指标唯一口径（EMP_0014） (backlog-535 → EMP_0014, type=execute)
+[2026-03-11 23:18:50]   Agent EMP_0014 已启动 (PID: 751201)
+[2026-03-11 23:18:50]   本轮派发: 2 个任务
+[2026-03-11 23:18:50] === Dispatcher 扫描完成 ===
+[2026-03-11 23:21:34] === Dispatcher 开始扫描 ===
+[2026-03-11 23:21:34] 无新事件
+[2026-03-11 23:21:34]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:21:34]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-11 23:21:34]   ⏸️  backlog-535: lane platform 正忙，跳过
+[2026-03-11 23:21:34]   本轮派发: 0 个任务
+[2026-03-11 23:21:34] === Dispatcher 扫描完成 ===
+[2026-03-11 23:29:25] === Dispatcher 开始扫描 ===
+[2026-03-11 23:29:25] 无新事件
+[2026-03-11 23:29:26]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-11 23:29:26]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-11 23:29:26]   ⏸️  backlog-536: lane platform 正忙，跳过
+[2026-03-11 23:29:26]   本轮派发: 0 个任务
+[2026-03-11 23:29:26] === Dispatcher 扫描完成 ===
+[2026-03-11 23:31:14] === Dispatcher 开始扫描 ===
+[2026-03-11 23:31:14] 无新事件
+[2026-03-11 23:31:14]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:31:14]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-11 23:31:14] >>> 启动任务: clean_xhs_notes 集成到 xhs-analyze.sh — 在阿里云注册 xhs-clean.py 为分析前置步骤，analysis 层改读 clean JSON（EMP_0014） (backlog-536 → EMP_0014, type=execute)
+[2026-03-11 23:31:14]   Agent EMP_0014 已启动 (PID: 756736)
+[2026-03-11 23:31:14]   本轮派发: 1 个任务
+[2026-03-11 23:31:14] === Dispatcher 扫描完成 ===
+[2026-03-11 23:36:15] === Dispatcher 开始扫描 ===
+[2026-03-11 23:36:15] 无新事件
+[2026-03-11 23:36:15]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:36:16]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-11 23:36:16] >>> 启动任务: 素仁轩历史销售快照 — 定期快照 API 到时序表，支持趋势分析（EMP_0014） (backlog-537 → EMP_0014, type=execute)
+[2026-03-11 23:36:16]   Agent EMP_0014 已启动 (PID: 758133)
+[2026-03-11 23:36:16]   本轮派发: 1 个任务
+[2026-03-11 23:36:16] === Dispatcher 扫描完成 ===
+[2026-03-11 23:43:35] === Dispatcher 开始扫描 ===
+[2026-03-11 23:43:35] 无新事件
+[2026-03-11 23:43:36]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:43:36]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-11 23:43:36] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-11 23:43:36]   Agent EMP_0014 已启动 (PID: 759603)
+[2026-03-11 23:43:36]   本轮派发: 1 个任务
+[2026-03-11 23:43:36] === Dispatcher 扫描完成 ===
+[2026-03-11 23:49:44] === Dispatcher 开始扫描 ===
+[2026-03-11 23:49:44] 无新事件
+[2026-03-11 23:49:44]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-11 23:49:45]   无可执行任务
+[2026-03-11 23:49:45] === Dispatcher 扫描完成 ===
+[2026-03-12 00:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 00:00:01] 无新事件
+[2026-03-12 00:00:01] 无新事件
+[2026-03-12 00:00:02]   空闲 lanes:  platform socialmesh independent
+[2026-03-12 00:00:02]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 00:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 00:00:02]   Agent EMP_0014 已启动 (PID: 763579)
+[2026-03-12 00:00:02]   本轮派发: 1 个任务
+[2026-03-12 00:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 00:00:54] === Dispatcher 开始扫描 ===
+[2026-03-12 00:00:54] 无新事件
+[2026-03-12 00:00:54]   空闲 lanes:  socialmesh independent
+[2026-03-12 00:00:54]   无可执行任务
+[2026-03-12 00:00:54] === Dispatcher 扫描完成 ===
+[2026-03-12 00:01:41] === Dispatcher 开始扫描 ===
+[2026-03-12 00:01:41] 无新事件
+[2026-03-12 00:01:41]   空闲 lanes:  platform socialmesh independent
+[2026-03-12 00:01:41]   无可执行任务
+[2026-03-12 00:01:41] === Dispatcher 扫描完成 ===
+[2026-03-12 00:04:48] === Dispatcher 开始扫描 ===
+[2026-03-12 00:04:48] 无新事件
+[2026-03-12 00:04:48]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 00:04:49]   无可执行任务
+[2026-03-12 00:04:49] === Dispatcher 扫描完成 ===
+[2026-03-12 00:31:27] === Dispatcher 开始扫描 ===
+[2026-03-12 00:31:27] 无新事件
+[2026-03-12 00:31:28]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 00:31:28]   无可执行任务
+[2026-03-12 00:31:28] === Dispatcher 扫描完成 ===
+[2026-03-12 00:50:43] === Dispatcher 开始扫描 ===
+[2026-03-12 00:50:43] 无新事件
+[2026-03-12 00:50:43]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 00:50:43]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 00:50:43] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 00:50:43]   Agent EMP_0014 已启动 (PID: 779083)
+[2026-03-12 00:50:43]   本轮派发: 1 个任务
+[2026-03-12 00:50:43] === Dispatcher 扫描完成 ===
+[2026-03-12 01:00:02] === Dispatcher 开始扫描 ===
+[2026-03-12 01:00:02] 无新事件
+[2026-03-12 01:00:02] 无新事件
+[2026-03-12 01:00:02]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 01:00:02]   无可执行任务
+[2026-03-12 01:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 01:05:12] === Dispatcher 开始扫描 ===
+[2026-03-12 01:05:12] 无新事件
+[2026-03-12 01:05:12]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 01:05:12]   无可执行任务
+[2026-03-12 01:05:12] === Dispatcher 扫描完成 ===
+[2026-03-12 01:06:10] === Dispatcher 开始扫描 ===
+[2026-03-12 01:06:10] 无新事件
+[2026-03-12 01:06:10]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 01:06:11]   无可执行任务
+[2026-03-12 01:06:11] === Dispatcher 扫描完成 ===
+[2026-03-12 01:08:02] === Dispatcher 开始扫描 ===
+[2026-03-12 01:08:02] 无新事件
+[2026-03-12 01:08:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 01:08:03]   无可执行任务
+[2026-03-12 01:08:03] === Dispatcher 扫描完成 ===
+[2026-03-12 01:15:40] === Dispatcher 开始扫描 ===
+[2026-03-12 01:15:40] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-12 02:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 02:00:01] 无新事件
+[2026-03-12 02:00:01] 无新事件
+[2026-03-12 02:00:02]   空闲 lanes:  platform socialmesh independent
+[2026-03-12 02:00:02]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 02:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 02:00:02]   Agent EMP_0014 已启动 (PID: 797124)
+[2026-03-12 02:00:02]   本轮派发: 1 个任务
+[2026-03-12 02:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 02:01:24] === Dispatcher 开始扫描 ===
+[2026-03-12 02:01:24] 无新事件
+[2026-03-12 02:01:24]   空闲 lanes:  socialmesh independent
+[2026-03-12 02:01:24]   无可执行任务
+[2026-03-12 02:01:24] === Dispatcher 扫描完成 ===
+[2026-03-12 02:01:31] === Dispatcher 开始扫描 ===
+[2026-03-12 02:01:31] 无新事件
+[2026-03-12 02:01:32]   空闲 lanes:  platform socialmesh independent
+[2026-03-12 02:01:32]   无可执行任务
+[2026-03-12 02:01:32] === Dispatcher 扫描完成 ===
+[2026-03-12 02:06:27] === Dispatcher 开始扫描 ===
+[2026-03-12 02:06:27] 无新事件
+[2026-03-12 02:06:28]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 02:06:28]   无可执行任务
+[2026-03-12 02:06:28] === Dispatcher 扫描完成 ===
+[2026-03-12 03:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 03:00:01] 无新事件
+[2026-03-12 03:00:01] 无新事件
+[2026-03-12 03:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 03:00:01]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 03:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 03:00:02]   Agent EMP_0014 已启动 (PID: 807976)
+[2026-03-12 03:00:02]   本轮派发: 1 个任务
+[2026-03-12 03:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 03:01:37] === Dispatcher 开始扫描 ===
+[2026-03-12 03:01:37] 无新事件
+[2026-03-12 03:01:37]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 03:01:37]   无可执行任务
+[2026-03-12 03:01:37] === Dispatcher 扫描完成 ===
+[2026-03-12 03:02:36] === Dispatcher 开始扫描 ===
+[2026-03-12 03:02:36] 无新事件
+[2026-03-12 03:02:36]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 03:02:36]   无可执行任务
+[2026-03-12 03:02:36] === Dispatcher 扫描完成 ===
+[2026-03-12 04:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 04:00:01] 无新事件
+[2026-03-12 04:00:01] 无新事件
+[2026-03-12 04:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 04:00:01]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 04:00:01] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 04:00:01]   Agent EMP_0014 已启动 (PID: 813438)
+[2026-03-12 04:00:01]   本轮派发: 1 个任务
+[2026-03-12 04:00:01] === Dispatcher 扫描完成 ===
+[2026-03-12 04:01:02] === Dispatcher 开始扫描 ===
+[2026-03-12 04:01:02] 无新事件
+[2026-03-12 04:01:02]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 04:01:02]   无可执行任务
+[2026-03-12 04:01:02] === Dispatcher 扫描完成 ===
+[2026-03-12 04:01:29] === Dispatcher 开始扫描 ===
+[2026-03-12 04:01:29] 无新事件
+[2026-03-12 04:01:29]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 04:01:29]   无可执行任务
+[2026-03-12 04:01:29] === Dispatcher 扫描完成 ===
+[2026-03-12 05:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 05:00:01] 无新事件
+[2026-03-12 05:00:01] 无新事件
+[2026-03-12 05:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 05:00:02]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 05:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 05:00:02]   Agent EMP_0014 已启动 (PID: 819328)
+[2026-03-12 05:00:02]   本轮派发: 1 个任务
+[2026-03-12 05:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 05:01:17] === Dispatcher 开始扫描 ===
+[2026-03-12 05:01:17] 无新事件
+[2026-03-12 05:01:17]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 05:01:17]   无可执行任务
+[2026-03-12 05:01:17] === Dispatcher 扫描完成 ===
+[2026-03-12 05:01:54] === Dispatcher 开始扫描 ===
+[2026-03-12 05:01:54] 无新事件
+[2026-03-12 05:01:54]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 05:01:54]   无可执行任务
+[2026-03-12 05:01:54] === Dispatcher 扫描完成 ===
+[2026-03-12 06:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 06:00:01] 无新事件
+[2026-03-12 06:00:01] 无新事件
+[2026-03-12 06:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 06:00:02]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 06:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 06:00:02]   Agent EMP_0014 已启动 (PID: 825057)
+[2026-03-12 06:00:02]   本轮派发: 1 个任务
+[2026-03-12 06:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 06:01:09] === Dispatcher 开始扫描 ===
+[2026-03-12 06:01:09] 无新事件
+[2026-03-12 06:01:09]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 06:01:09]   无可执行任务
+[2026-03-12 06:01:09] === Dispatcher 扫描完成 ===
+[2026-03-12 06:01:16] === Dispatcher 开始扫描 ===
+[2026-03-12 06:01:16] 无新事件
+[2026-03-12 06:01:16]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 06:01:16]   无可执行任务
+[2026-03-12 06:01:16] === Dispatcher 扫描完成 ===
+[2026-03-12 07:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 07:00:01] 无新事件
+[2026-03-12 07:00:01] 无新事件
+[2026-03-12 07:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 07:00:01]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 07:00:01] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 07:00:01]   Agent EMP_0014 已启动 (PID: 831288)
+[2026-03-12 07:00:01]   本轮派发: 1 个任务
+[2026-03-12 07:00:01] === Dispatcher 扫描完成 ===
+[2026-03-12 07:01:02] === Dispatcher 开始扫描 ===
+[2026-03-12 07:01:02] 无新事件
+[2026-03-12 07:01:03]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 07:01:03]   无可执行任务
+[2026-03-12 07:01:03] === Dispatcher 扫描完成 ===
+[2026-03-12 07:01:10] === Dispatcher 开始扫描 ===
+[2026-03-12 07:01:10] 无新事件
+[2026-03-12 07:01:10]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 07:01:11]   无可执行任务
+[2026-03-12 07:01:11] === Dispatcher 扫描完成 ===
+[2026-03-12 08:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 08:00:01] 无新事件
+[2026-03-12 08:00:01] 无新事件
+[2026-03-12 08:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 08:00:01]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 08:00:01] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 08:00:01]   Agent EMP_0014 已启动 (PID: 836907)
+[2026-03-12 08:00:01]   本轮派发: 1 个任务
+[2026-03-12 08:00:01] === Dispatcher 扫描完成 ===
+[2026-03-12 08:01:02] === Dispatcher 开始扫描 ===
+[2026-03-12 08:01:02] 无新事件
+[2026-03-12 08:01:02]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 08:01:02]   无可执行任务
+[2026-03-12 08:01:02] === Dispatcher 扫描完成 ===
+[2026-03-12 08:01:41] === Dispatcher 开始扫描 ===
+[2026-03-12 08:01:41] 无新事件
+[2026-03-12 08:01:41]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 08:01:42]   无可执行任务
+[2026-03-12 08:01:42] === Dispatcher 扫描完成 ===
+[2026-03-12 09:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 09:00:01] 无新事件
+[2026-03-12 09:00:01] 无新事件
+[2026-03-12 09:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 09:00:02]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 09:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 09:00:02]   Agent EMP_0014 已启动 (PID: 842719)
+[2026-03-12 09:00:02]   本轮派发: 1 个任务
+[2026-03-12 09:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 09:01:05] === Dispatcher 开始扫描 ===
+[2026-03-12 09:01:05] 无新事件
+[2026-03-12 09:01:05]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 09:01:05]   无可执行任务
+[2026-03-12 09:01:05] === Dispatcher 扫描完成 ===
+[2026-03-12 09:01:25] === Dispatcher 开始扫描 ===
+[2026-03-12 09:01:25] 无新事件
+[2026-03-12 09:01:25]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 09:01:25]   无可执行任务
+[2026-03-12 09:01:25] === Dispatcher 扫描完成 ===
+[2026-03-12 10:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 10:00:01] 无新事件
+[2026-03-12 10:00:01] 无新事件
+[2026-03-12 10:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 10:00:02]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 10:00:02]   Agent EMP_0014 已启动 (PID: 850970)
+[2026-03-12 10:00:02] >>> 启动任务: Agent 角色定义更新：EMP_0008 + EMP_0009 + EMP_0010 加入视频/分析职责（EMP_0012 产出定义，Mason 批准） (backlog-273 → EMP_0008, type=execute)
+[2026-03-12 10:00:02]   Agent EMP_0008 已启动 (PID: 850996)
+[2026-03-12 10:00:03] >>> 启动任务: 看板后端 — FastAPI 查询采集数据库，提供品类热度/爆款排行/竞品分析/关键词监控 API（EMP_0005） (backlog-337 → EMP_0005, type=execute)
+[2026-03-12 10:00:03]   Agent EMP_0005 已启动 (PID: 851039)
+[2026-03-12 10:00:03]   本轮派发: 3 个任务
+[2026-03-12 10:00:03] === Dispatcher 扫描完成 ===
+[2026-03-12 10:01:30] === Dispatcher 开始扫描 ===
+[2026-03-12 10:01:30] 无新事件
+[2026-03-12 10:01:30]   空闲 lanes:  independent
+[2026-03-12 10:01:31]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:01:31] >>> 启动任务: 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计（EMP_0000） (backlog-161 → EMP_0000, type=execute)
+[2026-03-12 10:01:31]   Agent EMP_0000 已启动 (PID: 854070)
+[2026-03-12 10:01:31]   ⏸️  backlog-208: lane platform 正忙，跳过
+[2026-03-12 10:01:31]   ⏸️  backlog-222: lane ecommerce 正忙，跳过
+[2026-03-12 10:01:31]   本轮派发: 1 个任务
+[2026-03-12 10:01:31] === Dispatcher 扫描完成 ===
+[2026-03-12 10:01:40] === Dispatcher 开始扫描 ===
+[2026-03-12 10:01:40] 无新事件
+[2026-03-12 10:01:41]   空闲 lanes:  platform independent
+[2026-03-12 10:01:41]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:01:42] >>> 启动任务: 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计（EMP_0000） (backlog-161 → EMP_0000, type=execute)
+[2026-03-12 10:01:42]   Agent EMP_0000 已启动 (PID: 854355)
+[2026-03-12 10:01:42] >>> 启动任务: Agent .md 四层声明补齐（剩余 8 个）— EMP_0000/0001/0003/0004/0006/0008/0012/0013（EMP_0002） (backlog-208 → EMP_0002, type=execute)
+[2026-03-12 10:01:42]   Agent EMP_0002 已启动 (PID: 854398)
+[2026-03-12 10:01:42]   ⏸️  backlog-222: lane ecommerce 正忙，跳过
+[2026-03-12 10:01:42]   本轮派发: 2 个任务
+[2026-03-12 10:01:42] === Dispatcher 扫描完成 ===
+[2026-03-12 10:03:08] === Dispatcher 开始扫描 ===
+[2026-03-12 10:03:08] 无新事件
+[2026-03-12 10:03:09]   空闲 lanes:  socialmesh independent
+[2026-03-12 10:03:09]   批量扫描到 4 个任务（按 lane+agent 去重）
+[2026-03-12 10:03:09] >>> 启动任务: 记忆系统 v2: 当前 v1 够用（独立记忆 + run-agent.sh 知识注入），v2 共享知识自动沉淀等 Agent 跑一段时间再设计（EMP_0000） (backlog-161 → EMP_0000, type=execute)
+[2026-03-12 10:03:09]   Agent EMP_0000 已启动 (PID: 856201)
+[2026-03-12 10:03:09]   ⏸️  backlog-208: lane platform 正忙，跳过
+[2026-03-12 10:03:09]   ⏸️  backlog-222: lane ecommerce 正忙，跳过
+[2026-03-12 10:03:10]   ⏸️  backlog-502: lane platform 正忙，跳过
+[2026-03-12 10:03:10]   本轮派发: 1 个任务
+[2026-03-12 10:03:10] === Dispatcher 扫描完成 ===
+[2026-03-12 10:03:56] === Dispatcher 开始扫描 ===
+[2026-03-12 10:03:56] 无新事件
+[2026-03-12 10:03:56]   空闲 lanes:  socialmesh independent
+[2026-03-12 10:03:56]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:03:56]   ⏸️  backlog-208: lane platform 正忙，跳过
+[2026-03-12 10:03:56]   ⏸️  backlog-222: lane ecommerce 正忙，跳过
+[2026-03-12 10:03:56]   ⏸️  backlog-502: lane platform 正忙，跳过
+[2026-03-12 10:03:56]   本轮派发: 0 个任务
+[2026-03-12 10:03:56] === Dispatcher 扫描完成 ===
+[2026-03-12 10:04:20] === Dispatcher 开始扫描 ===
+[2026-03-12 10:04:20] 无新事件
+[2026-03-12 10:04:21]   空闲 lanes:  socialmesh independent
+[2026-03-12 10:04:21]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:04:21]   ⏸️  backlog-208: lane platform 正忙，跳过
+[2026-03-12 10:04:21]   ⏸️  backlog-222: lane ecommerce 正忙，跳过
+[2026-03-12 10:04:21]   ⏸️  backlog-502: lane platform 正忙，跳过
+[2026-03-12 10:04:21]   本轮派发: 0 个任务
+[2026-03-12 10:04:21] === Dispatcher 扫描完成 ===
+[2026-03-12 10:05:12] === Dispatcher 开始扫描 ===
+[2026-03-12 10:05:12] 无新事件
+[2026-03-12 10:05:12]   空闲 lanes:  socialmesh independent
+[2026-03-12 10:05:12]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:05:12]   ⏸️  backlog-211: lane platform 正忙，跳过
+[2026-03-12 10:05:12]   ⏸️  backlog-225: lane ecommerce 正忙，跳过
+[2026-03-12 10:05:12]   ⏸️  backlog-505: lane platform 正忙，跳过
+[2026-03-12 10:05:12]   本轮派发: 0 个任务
+[2026-03-12 10:05:12] === Dispatcher 扫描完成 ===
+[2026-03-12 10:06:22] === Dispatcher 开始扫描 ===
+[2026-03-12 10:06:22] 无新事件
+[2026-03-12 10:06:22]   空闲 lanes:  socialmesh independent
+[2026-03-12 10:06:23]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:06:23]   ⏸️  backlog-211: lane platform 正忙，跳过
+[2026-03-12 10:06:23]   ⏸️  backlog-225: lane ecommerce 正忙，跳过
+[2026-03-12 10:06:23]   ⏸️  backlog-505: lane platform 正忙，跳过
+[2026-03-12 10:06:23]   本轮派发: 0 个任务
+[2026-03-12 10:06:23] === Dispatcher 扫描完成 ===
+[2026-03-12 10:07:38] === Dispatcher 开始扫描 ===
+[2026-03-12 10:07:38] 无新事件
+[2026-03-12 10:07:39]   空闲 lanes:  platform socialmesh independent
+[2026-03-12 10:07:39]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:07:39] >>> 启动任务: agent.log 结构化 — 当前日志只有纯文本对话输出，不利于审计（EMP_0002） (backlog-66 → EMP_0002, type=execute)
+[2026-03-12 10:07:39]   Agent EMP_0002 已启动 (PID: 860448)
+[2026-03-12 10:07:39]   ⏸️  backlog-225: lane ecommerce 正忙，跳过
+[2026-03-12 10:07:39] >>> 启动任务: XHS 主干管道改造 — 采集→分析→briefing→optimization-cycle 用标准接口串联，不再 SSH 读文件（EMP_0014） (backlog-505 → EMP_0014, type=execute)
+[2026-03-12 10:07:39]   Agent EMP_0014 已启动 (PID: 860483)
+[2026-03-12 10:07:39]   本轮派发: 2 个任务
+[2026-03-12 10:07:39] === Dispatcher 扫描完成 ===
+[2026-03-12 10:08:39] === Dispatcher 开始扫描 ===
+[2026-03-12 10:08:39] 无新事件
+[2026-03-12 10:08:39]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 10:08:40]   批量扫描到 3 个任务（按 lane+agent 去重）
+[2026-03-12 10:08:40]   ⏸️  backlog-66: lane platform 正忙，跳过
+[2026-03-12 10:08:40] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 10:08:40]   Agent EMP_0001 已启动 (PID: 862799)
+[2026-03-12 10:08:41]   ⏸️  backlog-505: lane platform 正忙，跳过
+[2026-03-12 10:08:41]   本轮派发: 1 个任务
+[2026-03-12 10:08:41] === Dispatcher 扫描完成 ===
+[2026-03-12 10:15:04] === Dispatcher 开始扫描 ===
+[2026-03-12 10:15:04] 无新事件
+[2026-03-12 10:15:05]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 10:15:05]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 10:15:05] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 10:15:05]   Agent EMP_0001 已启动 (PID: 906188)
+[2026-03-12 10:15:05]   本轮派发: 1 个任务
+[2026-03-12 10:15:05] === Dispatcher 扫描完成 ===
+[2026-03-12 10:16:11] === Dispatcher 开始扫描 ===
+[2026-03-12 10:16:11] 无新事件
+[2026-03-12 10:16:11]   空闲 lanes:  ecommerce socialmesh independent
+[2026-03-12 10:16:11]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 10:16:11] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 10:16:11]   Agent EMP_0001 已启动 (PID: 907262)
+[2026-03-12 10:16:12]   本轮派发: 1 个任务
+[2026-03-12 10:16:12] === Dispatcher 扫描完成 ===
+[2026-03-12 10:25:13] === Dispatcher 开始扫描 ===
+[2026-03-12 10:25:13] 无新事件
+[2026-03-12 10:25:13]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 10:25:13]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 10:25:13] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 10:25:13]   Agent EMP_0001 已启动 (PID: 909478)
+[2026-03-12 10:25:13]   本轮派发: 1 个任务
+[2026-03-12 10:25:13] === Dispatcher 扫描完成 ===
+[2026-03-12 11:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 11:00:01] 无新事件
+[2026-03-12 11:00:01] 无新事件
+[2026-03-12 11:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 11:00:02]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 11:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 11:00:02]   Agent EMP_0014 已启动 (PID: 913273)
+[2026-03-12 11:00:02] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 11:00:02]   Agent EMP_0001 已启动 (PID: 913299)
+[2026-03-12 11:00:02]   本轮派发: 2 个任务
+[2026-03-12 11:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 11:00:52] === Dispatcher 开始扫描 ===
+[2026-03-12 11:00:52] 无新事件
+[2026-03-12 11:00:52]   空闲 lanes:  socialmesh independent
+[2026-03-12 11:00:52]   批量扫描到 1 个任务（按 lane+agent 去重）
+[2026-03-12 11:00:52]   ⏸️  backlog-225: lane ecommerce 正忙，跳过
+[2026-03-12 11:00:52]   本轮派发: 0 个任务
+[2026-03-12 11:00:52] === Dispatcher 扫描完成 ===
+[2026-03-12 12:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 12:00:01] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 13:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 13:00:01] 无新事件
+[2026-03-12 13:00:01] 无新事件
+[2026-03-12 13:00:02]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 13:00:02]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 13:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 13:00:02]   Agent EMP_0014 已启动 (PID: 925383)
+[2026-03-12 13:00:02] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 13:00:02]   Agent EMP_0001 已启动 (PID: 925410)
+[2026-03-12 13:00:02]   本轮派发: 2 个任务
+[2026-03-12 13:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 13:01:07] === Dispatcher 开始扫描 ===
+[2026-03-12 13:01:07] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 14:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 14:00:01] 无新事件
+[2026-03-12 14:00:01] 无新事件
+[2026-03-12 14:00:02]   空闲 lanes:  platform ecommerce independent
+[2026-03-12 14:00:02]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 14:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 14:00:02]   Agent EMP_0014 已启动 (PID: 930873)
+[2026-03-12 14:00:02] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 14:00:02]   Agent EMP_0001 已启动 (PID: 930900)
+[2026-03-12 14:00:02]   本轮派发: 2 个任务
+[2026-03-12 14:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 14:01:29] === Dispatcher 开始扫描 ===
+[2026-03-12 14:01:29] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 15:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 15:00:01] 无新事件
+[2026-03-12 15:00:01] 无新事件
+[2026-03-12 15:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 15:00:01]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 15:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 15:00:02]   Agent EMP_0014 已启动 (PID: 938381)
+[2026-03-12 15:00:02] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 15:00:02]   Agent EMP_0001 已启动 (PID: 938407)
+[2026-03-12 15:00:02]   本轮派发: 2 个任务
+[2026-03-12 15:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 15:00:58] === Dispatcher 开始扫描 ===
+[2026-03-12 15:00:58] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 16:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 16:00:01] 无新事件
+[2026-03-12 16:00:01] 无新事件
+[2026-03-12 16:00:02]   空闲 lanes:  platform ecommerce independent
+[2026-03-12 16:00:02]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 16:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 16:00:02]   Agent EMP_0014 已启动 (PID: 944137)
+[2026-03-12 16:00:03] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 16:00:03]   Agent EMP_0001 已启动 (PID: 944163)
+[2026-03-12 16:00:03]   本轮派发: 2 个任务
+[2026-03-12 16:00:03] === Dispatcher 扫描完成 ===
+[2026-03-12 16:01:00] === Dispatcher 开始扫描 ===
+[2026-03-12 16:01:00] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 17:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 17:00:01] 无新事件
+[2026-03-12 17:00:01] 无新事件
+[2026-03-12 17:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 17:00:01]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 17:00:01] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 17:00:01]   Agent EMP_0014 已启动 (PID: 950303)
+[2026-03-12 17:00:01] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 17:00:01]   Agent EMP_0001 已启动 (PID: 950329)
+[2026-03-12 17:00:01]   本轮派发: 2 个任务
+[2026-03-12 17:00:01] === Dispatcher 扫描完成 ===
+[2026-03-12 17:00:48] === Dispatcher 开始扫描 ===
+[2026-03-12 17:00:48] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 18:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 18:00:01] 无新事件
+[2026-03-12 18:00:01] 无新事件
+[2026-03-12 18:00:01]   空闲 lanes:  platform ecommerce socialmesh independent
+[2026-03-12 18:00:01]   批量扫描到 2 个任务（按 lane+agent 去重）
+[2026-03-12 18:00:02] >>> 启动任务: 运行 bash data/pipelines/data_health_check.sh，修复报告中的异常数据集（非全绿项） (health-fix → EMP_0014, type=repair)
+[2026-03-12 18:00:02]   Agent EMP_0014 已启动 (PID: 956470)
+[2026-03-12 18:00:02] >>> 启动任务: 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新 (backlog-225 → EMP_0001, type=execute)
+[2026-03-12 18:00:02]   Agent EMP_0001 已启动 (PID: 956497)
+[2026-03-12 18:00:02]   本轮派发: 2 个任务
+[2026-03-12 18:00:02] === Dispatcher 扫描完成 ===
+[2026-03-12 18:00:50] === Dispatcher 开始扫描 ===
+[2026-03-12 18:00:50] ⏸️  Mason 有活跃 session，本轮跳过
+[2026-03-12 19:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 19:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-12 20:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 20:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-12 21:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 21:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-12 22:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 22:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-12 22:37:39] === Dispatcher 开始扫描 ===
+[2026-03-12 22:37:39] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-12 23:00:01] === Dispatcher 开始扫描 ===
+[2026-03-12 23:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 00:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 00:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 01:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 01:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 02:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 02:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 03:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 03:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 04:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 04:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 05:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 05:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 06:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 06:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 07:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 07:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 08:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 08:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 09:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 09:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 10:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 10:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 11:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 11:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 12:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 12:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 13:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 13:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 14:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 14:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 15:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 15:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 16:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 16:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 17:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 17:00:02] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 18:00:02] === Dispatcher 开始扫描 ===
+[2026-03-13 18:00:02] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 19:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 19:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 20:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 20:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 21:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 21:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 22:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 22:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 22:03:12] === Dispatcher 开始扫描 ===
+[2026-03-13 22:03:12] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-13 23:00:01] === Dispatcher 开始扫描 ===
+[2026-03-13 23:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-14 00:00:02] === Dispatcher 开始扫描 ===
+[2026-03-14 00:00:02] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-14 01:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 01:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-14 02:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 02:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-14 03:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 03:00:01] Dispatcher 已在运行 (PID: 1191338)，跳过
+[2026-03-14 03:00:02] Dispatcher 已在运行 (PID: 1191338)，跳过
+[2026-03-14 03:00:01] 发现 11 条新事件 (offset=235)
+[2026-03-14 03:00:01] 处理事件: xhs-analysis-complete (来源: xhs-analyze.sh)
+[2026-03-14 03:00:01]   发射事件: intel-fresh
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0001)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0004)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-14 03:00:01]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0001)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0008)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0008)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: agent-task-failed (来源: EMP_0001)
+[2026-03-14 03:00:01]   触发 dispatcher 实时派发
+[2026-03-14 03:00:02] 处理事件: xhs-analysis-complete (来源: xhs-analyze.sh)
+[2026-03-14 03:00:02]   发射事件: intel-fresh
+[2026-03-14 03:00:02] 处理事件: agent-task-failed (来源: EMP_0004)
+[2026-03-14 03:00:02]   触发 dispatcher 实时派发
+[2026-03-14 03:00:02] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-14 03:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-14 03:00:01] 发现 11 条新事件 (offset=235)
+[2026-03-14 03:00:01] 处理事件: xhs-analysis-complete (来源: xhs-analyze.sh)
+[2026-03-14 03:00:01]   发射事件: intel-fresh
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0001)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0004)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-14 03:00:01]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0001)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0008)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: max-rate-limit (来源: EMP_0008)
+[2026-03-14 03:00:01]   无匹配路由，跳过
+[2026-03-14 03:00:01] 处理事件: agent-task-failed (来源: EMP_0001)
+[2026-03-14 03:00:01]   触发 dispatcher 实时派发
+[2026-03-14 03:00:02] 处理事件: xhs-analysis-complete (来源: xhs-analyze.sh)
+[2026-03-14 03:00:02]   发射事件: intel-fresh
+[2026-03-14 03:00:02] 处理事件: agent-task-failed (来源: EMP_0004)
+[2026-03-14 03:00:02]   触发 dispatcher 实时派发
+[2026-03-14 03:00:02] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-14 03:00:02]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-14 03:00:02]   📋 发现今日 daily_plan.yaml，按规划派发
+[2026-03-14 03:00:02]   daily_plan: 5 个任务待派发
+[2026-03-14 03:00:02]   📋 daily_plan 派发: skill-content-performance → EMP_0002
+[2026-03-14 03:00:02] >>> 启动任务: 自建 skill: content-performance.py — 内容效果追踪（五维 Gap #1 感知-数据回流） (skill-content-performance → EMP_0002, type=execute)
+[2026-03-14 03:00:02]   Agent EMP_0002 已启动 (PID: 1191398)
+[2026-03-14 03:00:02]   📋 daily_plan 派发: skill-cross-correlate → EMP_0002
+[2026-03-14 03:00:02] >>> 启动任务: 自建 skill: cross-correlate.py — 跨数据源关联分析（五维 Gap #3 理解-关联） (skill-cross-correlate → EMP_0002, type=execute)
+[2026-03-14 03:00:02]   Agent EMP_0002 已启动 (PID: 1191425)
+[2026-03-14 03:00:02]   📋 daily_plan 派发: skill-decision-log → EMP_0002
+[2026-03-14 03:00:02] >>> 启动任务: 自建 skill: decision-log.py — 决策记录+结果追踪（五维 Gap #4 决策-质量） (skill-decision-log → EMP_0002, type=execute)
+[2026-03-14 03:00:02]   Agent EMP_0002 已启动 (PID: 1191484)
+[2026-03-14 03:00:03]   📋 daily_plan 派发: skill-pattern-extract → EMP_0002
+[2026-03-14 03:00:03] >>> 启动任务: 自建 skill: pattern-extract.py — 跨任务规律提炼（五维 Gap #5 学习-模式识别） (skill-pattern-extract → EMP_0002, type=execute)
+[2026-03-14 03:00:03]   Agent EMP_0002 已启动 (PID: 1191514)
+[2026-03-14 03:00:03]   📋 daily_plan 派发: compact-memory-quality → EMP_0002
+[2026-03-14 03:00:03] >>> 启动任务: 扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测） (compact-memory-quality → EMP_0002, type=execute)
+[2026-03-14 03:00:03]   Agent EMP_0002 已启动 (PID: 1191545)
+[2026-03-14 03:00:03] === Dispatcher 扫描完成（daily_plan 模式）===
+[2026-03-14 04:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 04:00:01] 发现 12 条新事件 (offset=246)
+[2026-03-14 04:00:01] 处理事件: intel-fresh (来源: xhs-analyze.sh)
+[2026-03-14 04:00:01]   启动脚本: skills/agent-ops/optimization-cycle.sh
+[2026-03-14 04:00:01] 处理事件: intel-fresh (来源: xhs-analyze.sh)
+[2026-03-14 04:00:01]   启动脚本: skills/agent-ops/optimization-cycle.sh
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 发现 12 条新事件 (offset=246)
+[2026-03-14 04:00:01] 处理事件: intel-fresh (来源: xhs-analyze.sh)
+[2026-03-14 04:00:01]   启动脚本: skills/agent-ops/optimization-cycle.sh
+[2026-03-14 04:00:01] 处理事件: intel-fresh (来源: xhs-analyze.sh)
+[2026-03-14 04:00:01]   启动脚本: skills/agent-ops/optimization-cycle.sh
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 04:00:01]   无匹配路由，跳过
+[2026-03-14 04:00:01]   📋 发现今日 daily_plan.yaml，按规划派发
+[2026-03-14 04:00:02]   daily_plan: 5 个任务待派发
+[2026-03-14 04:00:02]   📋 daily_plan 派发: skill-content-performance → EMP_0002
+[2026-03-14 04:00:02] >>> 启动任务: 自建 skill: content-performance.py — 内容效果追踪（五维 Gap #1 感知-数据回流） (skill-content-performance → EMP_0002, type=execute)
+[2026-03-14 04:00:02]   Agent EMP_0002 已启动 (PID: 1201600)
+[2026-03-14 04:00:02]   📋 daily_plan 派发: skill-cross-correlate → EMP_0002
+[2026-03-14 04:00:02] >>> 启动任务: 自建 skill: cross-correlate.py — 跨数据源关联分析（五维 Gap #3 理解-关联） (skill-cross-correlate → EMP_0002, type=execute)
+[2026-03-14 04:00:02]   Agent EMP_0002 已启动 (PID: 1201628)
+[2026-03-14 04:00:02]   📋 daily_plan 派发: skill-decision-log → EMP_0002
+[2026-03-14 04:00:02] >>> 启动任务: 自建 skill: decision-log.py — 决策记录+结果追踪（五维 Gap #4 决策-质量） (skill-decision-log → EMP_0002, type=execute)
+[2026-03-14 04:00:02]   Agent EMP_0002 已启动 (PID: 1201687)
+[2026-03-14 04:00:03]   📋 daily_plan 派发: skill-pattern-extract → EMP_0002
+[2026-03-14 04:00:03] >>> 启动任务: 自建 skill: pattern-extract.py — 跨任务规律提炼（五维 Gap #5 学习-模式识别） (skill-pattern-extract → EMP_0002, type=execute)
+[2026-03-14 04:00:03]   Agent EMP_0002 已启动 (PID: 1201717)
+[2026-03-14 04:00:03]   📋 daily_plan 派发: compact-memory-quality → EMP_0002
+[2026-03-14 04:00:03] >>> 启动任务: 扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测） (compact-memory-quality → EMP_0002, type=execute)
+[2026-03-14 04:00:03]   Agent EMP_0002 已启动 (PID: 1201748)
+[2026-03-14 04:00:03] === Dispatcher 扫描完成（daily_plan 模式）===
+[2026-03-14 05:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 05:00:01] 发现 10 条新事件 (offset=258)
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 发现 10 条新事件 (offset=258)
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 05:00:01]   无匹配路由，跳过
+[2026-03-14 05:00:01]   📋 发现今日 daily_plan.yaml，按规划派发
+[2026-03-14 05:00:01]   daily_plan: 5 个任务待派发
+[2026-03-14 05:00:01]   📋 daily_plan 派发: skill-content-performance → EMP_0002
+[2026-03-14 05:00:01] >>> 启动任务: 自建 skill: content-performance.py — 内容效果追踪（五维 Gap #1 感知-数据回流） (skill-content-performance → EMP_0002, type=execute)
+[2026-03-14 05:00:01]   Agent EMP_0002 已启动 (PID: 1213101)
+[2026-03-14 05:00:01]   📋 daily_plan 派发: skill-cross-correlate → EMP_0002
+[2026-03-14 05:00:01] >>> 启动任务: 自建 skill: cross-correlate.py — 跨数据源关联分析（五维 Gap #3 理解-关联） (skill-cross-correlate → EMP_0002, type=execute)
+[2026-03-14 05:00:01]   Agent EMP_0002 已启动 (PID: 1213132)
+[2026-03-14 05:00:02]   📋 daily_plan 派发: skill-decision-log → EMP_0002
+[2026-03-14 05:00:02] >>> 启动任务: 自建 skill: decision-log.py — 决策记录+结果追踪（五维 Gap #4 决策-质量） (skill-decision-log → EMP_0002, type=execute)
+[2026-03-14 05:00:02]   Agent EMP_0002 已启动 (PID: 1213187)
+[2026-03-14 05:00:02]   📋 daily_plan 派发: skill-pattern-extract → EMP_0002
+[2026-03-14 05:00:02] >>> 启动任务: 自建 skill: pattern-extract.py — 跨任务规律提炼（五维 Gap #5 学习-模式识别） (skill-pattern-extract → EMP_0002, type=execute)
+[2026-03-14 05:00:02]   Agent EMP_0002 已启动 (PID: 1213216)
+[2026-03-14 05:00:02]   📋 daily_plan 派发: compact-memory-quality → EMP_0002
+[2026-03-14 05:00:02] >>> 启动任务: 扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测） (compact-memory-quality → EMP_0002, type=execute)
+[2026-03-14 05:00:02]   Agent EMP_0002 已启动 (PID: 1213246)
+[2026-03-14 05:00:02] === Dispatcher 扫描完成（daily_plan 模式）===
+[2026-03-14 06:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 06:00:01] 发现 10 条新事件 (offset=268)
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 发现 10 条新事件 (offset=268)
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-14 06:00:01]   无匹配路由，跳过
+[2026-03-14 06:00:01]   📋 发现今日 daily_plan.yaml，按规划派发
+[2026-03-14 06:00:01]   daily_plan: 5 个任务待派发
+[2026-03-14 06:00:01]   📋 daily_plan 派发: skill-content-performance → EMP_0002
+[2026-03-14 06:00:01] >>> 启动任务: 自建 skill: content-performance.py — 内容效果追踪（五维 Gap #1 感知-数据回流） (skill-content-performance → EMP_0002, type=execute)
+[2026-03-14 06:00:02]   Agent EMP_0002 已启动 (PID: 1224555)
+[2026-03-14 06:00:02]   📋 daily_plan 派发: skill-cross-correlate → EMP_0002
+[2026-03-14 06:00:02] >>> 启动任务: 自建 skill: cross-correlate.py — 跨数据源关联分析（五维 Gap #3 理解-关联） (skill-cross-correlate → EMP_0002, type=execute)
+[2026-03-14 06:00:02]   Agent EMP_0002 已启动 (PID: 1224582)
+[2026-03-14 06:00:02]   📋 daily_plan 派发: skill-decision-log → EMP_0002
+[2026-03-14 06:00:02] >>> 启动任务: 自建 skill: decision-log.py — 决策记录+结果追踪（五维 Gap #4 决策-质量） (skill-decision-log → EMP_0002, type=execute)
+[2026-03-14 06:00:02]   Agent EMP_0002 已启动 (PID: 1224636)
+[2026-03-14 06:00:02]   📋 daily_plan 派发: skill-pattern-extract → EMP_0002
+[2026-03-14 06:00:02] >>> 启动任务: 自建 skill: pattern-extract.py — 跨任务规律提炼（五维 Gap #5 学习-模式识别） (skill-pattern-extract → EMP_0002, type=execute)
+[2026-03-14 06:00:02]   Agent EMP_0002 已启动 (PID: 1224671)
+[2026-03-14 06:00:02]   📋 daily_plan 派发: compact-memory-quality → EMP_0002
+[2026-03-14 06:00:02] >>> 启动任务: 扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测） (compact-memory-quality → EMP_0002, type=execute)
+[2026-03-14 06:00:02]   Agent EMP_0002 已启动 (PID: 1224703)
+[2026-03-14 06:00:02] === Dispatcher 扫描完成（daily_plan 模式）===
+[2026-03-14 07:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 07:00:01] ⏸️ Mason /pause 生效中，跳过派发
+[2026-03-14 08:00:01] === Dispatcher 开始扫描 ===
+[2026-03-14 08:00:01] ⏸️ Mason /pause 生效中，跳过派发

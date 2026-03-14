@@ -1,0 +1,1 @@
+自主任务: 加工层标准化 — raw→clean→analysis→report 四层命名 + 指标唯一口径（EMP_0014）

@@ -1,0 +1,13 @@
+{
+  "event": "xhs-crawl-complete",
+  "source": "xhs-crawl.sh",
+  "timestamp": "2026-03-12T22:35:34+00:00",
+  "status": "ok",
+  "level": 1,
+  "data": {
+    "task": 1,
+    "account": "A",
+    "new": 52,
+    "total": 1278
+  }
+}

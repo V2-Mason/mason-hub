@@ -1,0 +1,13 @@
+{
+  "event": "agent-task-complete",
+  "source": "EMP_0000",
+  "timestamp": "2026-03-12T10:03:55+00:00",
+  "status": "ok",
+  "level": 1,
+  "data": {
+    "task_id": "task_EMP_0000_1773309691",
+    "agent": "EMP_0000",
+    "status": "completed",
+    "duration": 137
+  }
+}

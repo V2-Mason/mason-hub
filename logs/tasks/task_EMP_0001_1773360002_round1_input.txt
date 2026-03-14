@@ -1,0 +1,1 @@
+每日巡检：1)库存巡检-扫描临期(30天内)/低库存(<5)/滞销(30天无销售)SKU，有异常发alert到#srx-alerts；2)反馈分诊-查询阿里云DB的system_feedback表(status=new)，bug类直接建backlog任务，ux/feature类整理摘要发Slack，P0立刻告警，处理完的标记status=reviewed

@@ -1,0 +1,1 @@
+自主任务: 部署 SearXNG Docker 实例到 GCP，配置 --restart always，验证 localhost:8888 可用

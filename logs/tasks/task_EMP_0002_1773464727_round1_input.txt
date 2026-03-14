@@ -1,0 +1,1 @@
+自主任务: 自建 skill: decision-log.py — 决策记录+结果追踪（五维 Gap #4 决策-质量）

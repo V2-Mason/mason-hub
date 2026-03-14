@@ -1,0 +1,20 @@
+Lock acquired: lane=socialmesh agent=EMP_0008 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0008 (skipping full lessons)
+<<<AGENT_START EMP_0008>>>
+任务完成。三个 agent 的角色定义已更新：
+
+**EMP_0008（我自己）** 新增 3 项职责：
+- 视频管线策略决策（选题判断、分镜审批、质量标准、VEO 预算）
+- 数据分析策略所有权（规则定义、采集策略、策略简报产出）
+- 发布后效果追踪（评估节点、数据解读、策略迭代）
+
+**EMP_0009（Dev）** 新增 2 项职责：
+- 视频管线代码维护（bug 修复、依赖更新、新功能开发）
+- 分析代码维护（代码质量、测试、性能优化）
+
+**EMP_0010（Creator）** 新增 2 项职责：
+- 视频内容参与（分镜审阅、素材方向、社区互动）
+- 数据驱动内容优化（消化简报、内容调整、实验记录）
+
+核心原则不变：总监管策略、Dev 写代码、Creator 做内容。新增职责填补了视频管线和分析代码的归属真空。建议稿已标记为 2026-03-12 批准，backlog 已标完成。
+Lock released: lane=socialmesh agent=EMP_0008

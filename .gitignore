@@ -31,3 +31,4 @@ tools/trendradar-config/reports/
 
 # Git worktrees (agent 分支工作目录)
 .worktrees/
+credentials/

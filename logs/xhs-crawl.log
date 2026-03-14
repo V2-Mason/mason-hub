@@ -77,3 +77,196 @@ Notes before: 167
 --- Running two-tier crawl ---
 ERROR: Account "A" has no cookie
 ERROR: Crawl failed (exit 2)
+=== XHS Crawl: Task 1 — 内容灵感 ===
+Time: 2026-03-10 06:00 CST
+Account: A
+Keywords (this run): 韩国好物,韩国零食,韩国代购
+Full pool: 韩国护肤,韩国好物,韩国美妆教程,韩国零食,韩国代购
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 1471s (~24min)
+
+Notes before: 1168
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+=== Two-Tier Crawl ===
+Account: A (内容博主号)
+Keywords: ['韩国好物', '韩国零食', '韩国代购']
+Pages/keyword: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Browser ready
+
+--- Cookie check ---
+  Login OK: ?
+  Warming up...
+    [homepage] 5.1s
+    [browsing] 5.9s
+    [browsing] 2.6s
+    [browsing] 2.5s
+  Warm-up done
+
+=== TIER 1: Search ===
+  [1/3] "韩国好物" page 1
+    Found 0, saved 0 new
+    No more results
+    [between keywords] 50.2s
+  [2/3] "韩国零食" page 1
+    Found 0, saved 0 new
+    No more results
+    [between keywords] 83.6s
+  [3/3] "韩国代购" page 1
+    Found 0, saved 0 new
+    No more results
+
+Tier 1: found 0, saved 0 new
+
+=== TIER 2: Detail (2 viral + 0 control) ===
+
+  [VIRAL] 2 notes:
+    1. [  146246] 气的一口气分享17个好物  (赞6.7万 藏1.9万)
+    2. [   16093] 韩国🇰🇷便利店🏪的沉浸式体验  (赞1.1万 藏1067)
+  OK   [viral:691ef9e7000000001e025322]: +desc(0字) +tags()
+    [reading note] 19.6s
+  OK   [viral:69291f11000000001e0327f0]: +desc(0字) +tags()
+    [reading note] 18.1s
+
+Tier 2: 2 OK, 0 failed
+
+=== Summary ===
+DB total: 1168 notes (177 with detail)
+This run: +0 search, 2/10 detail
+
+Notes after: 1168
+New: 0 (2 with detail)
+
+=== XHS Crawl Complete ===
+=== XHS Crawl: Task 2 — 选品情报 ===
+Time: 2026-03-11 06:00 CST
+Account: B
+Keywords (this run): 防晒推荐,面膜推荐
+Full pool: 水乳推荐,精华液推荐,面膜推荐,防晒推荐
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 261s (~4min)
+
+Notes before: 1168
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+ERROR: Account "B" has no cookie
+ERROR: Crawl failed (exit 2)
+=== XHS Crawl: Task 3 — 竞品监控 ===
+Time: 2026-03-11 18:00 ET
+Account: B
+Keywords (this run): 韩国代购店铺,COSRX测评,SOME BY MI测评
+Full pool: COSRX测评,SOME BY MI测评,SKIN1004测评,ANUA测评,ROUND LAB测评,韩国代购店铺,oliveyoung代购,韩国护肤代购
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 2030s (~33min)
+
+Notes before: 1226
+
+--- Syncing crawl script ---
+scp: stat local "/home/hangn/mason-hub/skills/_two_tier_crawl.py": No such file or directory
+
+--- Running two-tier crawl ---
+ERROR: Account "B" has no cookie
+ERROR: Crawl failed (exit 2)
+=== XHS Crawl: Task 1 — 内容灵感 ===
+Time: 2026-03-12 18:00 ET
+Account: A
+Keywords (this run): 韩国好物,韩国美妆教程,韩国护肤
+Full pool: 韩国护肤,韩国好物,韩国美妆教程,韩国零食,韩国代购
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 1695s (~28min)
+
+Notes before: 1226
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+=== Two-Tier Crawl ===
+Account: A (内容博主号)
+Keywords: ['韩国好物', '韩国美妆教程', '韩国护肤']
+Pages/keyword: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Browser ready
+
+--- Cookie check ---
+  Login OK: ?
+  Warming up...
+    [homepage] 5.4s
+    [browsing] 5.3s
+    [browsing] 3.1s
+    [browsing] 5.4s
+  Warm-up done
+
+=== TIER 1: Search ===
+  [1/3] "韩国好物" page 1
+    Found 20, saved 17 new
+    [reading results] 5.2s
+    [between keywords] 62.6s
+  [2/3] "韩国美妆教程" page 1
+    Found 20, saved 20 new
+    [reading results] 8.1s
+    [between keywords] 71.6s
+  [3/3] "韩国护肤" page 1
+    Found 20, saved 15 new
+    [reading results] 14.1s
+
+Tier 1: found 60, saved 52 new
+
+=== TIER 2: Detail (10 viral + 0 control) ===
+
+  [VIRAL] 10 notes:
+    1. [  146237] 气的一口气分享17个好物  (赞6.7万 藏1.9万)
+    2. [   23885] 毛孔巨大进！对韩国人0毛孔的方法感到震惊…  (赞3547 藏5472)
+    3. [   15446] 你是说Aesop在小韩直接半价吗  (赞962 藏564)
+    4. [   11864] 单眼皮ins韩妆🩶教程！3min轻松拿捏网感！  (赞3219 藏2591)
+    5. [    7044] 无广！OY韩女推荐bi买清单，附赠退税教程！  (赞1289 藏1376)
+    6. [    3341] 国内贵，小韩很便宜的5个东西🇰🇷必买清单  (赞846 藏371)
+    7. [    3177] 无广！强推一个韩国的毛孔缩小剂🐮  (赞467 藏719)
+    8. [    3167] 韩国💊妆店这些真的别乱买  (赞920 藏587)
+    9. [    2686] 单眼皮通透消肿的日常妆跟练分享✨  (赞537 藏661)
+    10. [    1510] 🇰🇷油痘肌别乱买‼️韩女oy回购好物ೀ💡🛍️  (赞437 藏262)
+  OK   [viral:691ef9e7000000001e025322]: +desc(0字) +tags()
+    [reading note] 28.4s
+  OK   [viral:69aebc4f0000000026030cf6]: +desc(545字) +tags(浪漫生活的记录者,缩毛孔,缩毛孔方法)
+    [reading note] 17.0s
+  OK   [viral:69afcb67000000002202e551]: +desc(170字) +tags(Aesop,韩国汇率,济州岛)
+    [reading note] 15.8s
+  OK   [viral:69b041d2000000002603dc84]: +desc(110字) +tags(没事儿也化妆,单眼皮,淡颜)
+    [reading note] 15.2s
+  OK   [viral:69b13cf2000000002202c42e]: +desc(102字) +tags(韩系彩妆,无广告纯分享,oliveyoung)
+    [reading note] 30.0s
+  OK   [viral:69b13da2000000000c00b3ee]: +desc(136字) +tags(韩女的秘密,当代年轻人的消费观,韩国旅游)
+    [reading note] 18.0s
+  OK   [viral:69afd6b6000000001b017ed1]: +desc(133字) +tags(韩国olive必买,无敌水光肌,缩毛孔)
+    [reading note] 26.8s
+  OK   [viral:69b122c7000000001d026af5]: +desc(174字) +tags(韩国必买品,oliveyoung,韩国药店)
+    [reading note] 12.8s
+  OK   [viral:69afef8e0000000015032636]: +desc(118字) +tags(韩系妆容分享,单眼皮眼妆,日常新手妆)
+    [reading note] 21.3s
+  OK   [viral:69afb53e00000000220337c8]: +desc(151字) +tags(韩女的秘密,自用好物,oliveyoung必买好物)
+    [reading note] 26.4s
+
+Tier 2: 10 OK, 0 failed
+
+=== Summary ===
+DB total: 1278 notes (190 with detail)
+This run: +52 search, 10/10 detail
+
+Notes after: 1278
+New: 52 (10 with detail)
+
+=== XHS Crawl Complete ===

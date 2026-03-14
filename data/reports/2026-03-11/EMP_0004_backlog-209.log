@@ -1,0 +1,25 @@
+Lock acquired: lane=platform agent=EMP_0004 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0004 (skipping full lessons)
+<<<AGENT_START EMP_0004>>>
+## 任务完成：Scout Cron 首次执行验证 ✅
+
+### 验证结果
+
+| 检查项 | 状态 | 详情 |
+|--------|------|------|
+| Cron 注册 | ✅ | `0 23 * * *` 每日快扫已在 crontab |
+| triggers.log 输出 | ✅ | EMP_0006 完整执行，输出每日快扫汇总（5 项关注信号，无 🔴 级告警） |
+| intel/raw/ 新文件 | ✅ | `2026-W11-daily-0311-tech.md` 于 23:01 UTC 生成 |
+| intel/digests/ 新文件 | ⚠️ 预期无 | digests 仅由**周一深度巡逻**产出，每日快扫产物在 raw/ |
+| 执行内容完整性 | ✅ | scout-anthropic + scout-trending + scout-github 三个 skill 全部执行 |
+
+### 发现
+
+- 原任务描述"确认 intel/digests/ 有新文件"不完全准确 — 每日快扫写 `raw/`，只有周一深度巡逻才写 `digests/`
+- 下次周一深度巡逻（00:00 UTC）时建议再验证一次 digests/ 产出
+
+### 收工清单
+- [x] Lesson → `agents/EMP_0004/memory/long_term.md`
+- [x] Backlog → 任务标记 `[x]` 并注明差异说明
+- [x] Git commit → `34d29e9`
+Lock released: lane=platform agent=EMP_0004

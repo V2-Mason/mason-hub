@@ -1,0 +1,26 @@
+Lock acquired: lane=platform agent=EMP_0014 task=unknown timeout=20m
+[context] Layer 3 semantic search for EMP_0014 (skipping full lessons)
+<<<AGENT_START EMP_0014>>>
+任务完成。总结：
+
+## 变更摘要
+
+### 修改了 3 个核心文件 + 2 个记忆/backlog 文件
+
+| 文件 | 变更 |
+|------|------|
+| `skills/xhs/xhs-analyze.sh` | 新增 **Step 0** 清洗前置步骤：SCP `xhs-clean.py` → 运行 → 产出 `clean/notes_YYYY-MM-DD.json`，成功则传 `--clean-json` 给 Step 1 |
+| `skills/xhs/xhs-analyze-viral.py` | 新增 `--clean-json` 参数 + `analyze_from_clean()` 函数，直接读 clean JSON 跳过 SQLite + parse_count 重复计算 |
+| `data/data_catalog.yaml` | `clean_xhs_notes` status: `planned` → `active`；`analysis_xhs_viral` input: `[raw_xhs_notes]` → `[clean_xhs_notes]` |
+
+### 设计要点
+
+1. **向后兼容降级**：如果 clean 步骤失败（脚本出错/文件未生成），`CLEAN_ARG` 为空，Step 1 自动走原 SQLite 直读路径
+2. **字段兼容**：`analyze_from_clean()` 用 `setdefault` 补全 clean JSON 中缺少的 `content_tier`/`crawl_timestamp`
+3. **时区对齐**：clean 步骤加了 `TZ='America/New_York'`，避免已知的 CST/ET 文件名不匹配 bug
+4. **55 个已有测试全部通过** + 端到端 mock 测试验证通过
+
+### 下次 cron 触发时需确认
+- 阿里云端到端实际执行（本次为代码级验证）
+- `/opt/mediacrawler/clean/` 目录首次自动创建
+Lock released: lane=platform agent=EMP_0014

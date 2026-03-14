@@ -1,0 +1,1 @@
+自主任务: Scout cron 首次执行验证 — 每日 19:00 ET (23:00 UTC) 触发，确认 triggers.log 有输出且 intel/digests/ 有新文件（EMP_0004）

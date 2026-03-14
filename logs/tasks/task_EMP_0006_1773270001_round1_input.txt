@@ -1,0 +1,1 @@
+每日快扫：1)scout-anthropic.sh查Claude/Anthropic更新；2)scout-trending.sh查GitHub trending；3)scout-github.sh查AI agent新项目。汇总存入intel/raw/，有🔴级发现立即发#scout并上报Meta Manager

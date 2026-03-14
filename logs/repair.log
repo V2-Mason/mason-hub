@@ -1,0 +1,15 @@
+[2026-03-10 21:18:41] >>> 启动修复: repair_20260311_051841 — data_health_check.sh date format error
+[2026-03-10 21:18:41] [DRY-RUN] 会启动 claude -p 修复: data_health_check.sh date format error
+[2026-03-10 21:18:41] [DRY-RUN] allowedTools: Bash(git *),Bash(python3 *),Bash(bash scripts/*),Bash(scp *),Bash(systemctl restart surenxuan-fastapi),Bash(systemctl restart ssh-tunnel),Bash(systemctl restart mason-gateway),Edit,Read
+[2026-03-11 17:29:16] >>> 启动修复: repair_20260312_012906 — repair-dispatch.sh log() 函数使用 tee 导致日志双写
+[2026-03-11 17:29:16] [DRY-RUN] 会启动 claude -p 修复: repair-dispatch.sh log() 函数使用 tee 导致日志双写
+[2026-03-11 17:29:16] [DRY-RUN] allowedTools: Bash(git *),Bash(python3 *),Bash(bash scripts/*),Bash(scp *),Bash(systemctl restart surenxuan-fastapi),Bash(systemctl restart ssh-tunnel),Bash(systemctl restart mason-gateway),Edit,Read
+[2026-03-11 17:29:21] >>> 启动修复: repair_20260312_012906 — repair-dispatch.sh log() 函数使用 tee 导致日志双写
+[2026-03-11 17:29:21] 启动 claude -p (allowedTools 硬门控)
+[2026-03-11 17:29:56] >>> 启动修复: repair_20260312_012906 — repair-dispatch.sh log() 函数使用 tee 导致日志双写
+[2026-03-11 17:29:56] [DRY-RUN] 会启动 claude -p 修复: repair-dispatch.sh log() 函数使用 tee 导致日志双写
+[2026-03-11 17:29:56] [DRY-RUN] allowedTools: Bash(git *),Bash(python3 *),Bash(bash scripts/*),Bash(scp *),Bash(systemctl restart surenxuan-fastapi),Bash(systemctl restart ssh-tunnel),Bash(systemctl restart mason-gateway),Edit,Read
+[2026-03-11 17:30:00] >>> 启动修复: repair_20260312_012906 — repair-dispatch.sh log() 函数使用 tee 导致日志双写
+[2026-03-11 17:30:00] 启动 claude -p (allowedTools 硬门控)
+[2026-03-11 17:46:39] claude -p 完成 (exit 0)
+[2026-03-11 17:46:39] <<< 修复完成: repair_20260312_012906 (status: repair_attempted, attempts: 1)
