@@ -214,3 +214,12 @@
 - 修复：检测交互式 claude 进程（排除 `claude -p` agent 进程），有就跳过本轮
 - 配合已有的 `/tmp/mason-pause` 手动开关形成两层让路
 - Gap 类型：设计缺口 — 多入口调度没考虑互斥
+
+### 注入优化三级架构 + SessionStart Hook (2026-03-14)
+- CLAUDE.md 从 89→52 行（删基础设施表、Agent配置架构详表、强制预加载指令）
+- run-agent.sh 新增 `lightweight` 任务类型：跳过 daily log/knowledge/post-task/genes，只注入 config+warm
+- 创建 skills/registry.yaml 统一索引（20 个 skill），新 skill 增量成本仅 ~20 tokens
+- SessionStart hook（session-bootstrap.sh）：新 interactive session 自动注入系统快照（~300 tokens）
+- 关键经验：interactive session 和 agent session 是两个独立 memory 通道，之前只覆盖了 agent session
+- CLAUDE.md 里"必须启动时读取"这种指令会导致 Claude 主动 read_file → 进入上下文累积，改为"按需读取"
+- Gap 类型：设计缺口 — 两种 session 模式的 memory 覆盖不一致

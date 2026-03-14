@@ -22,6 +22,7 @@ TASK_OUTPUT_PATH="${TASK_OUTPUT_PATH:-}"
 TASK_MAX_DURATION="${TASK_MAX_DURATION:-0}"
 TASK_CONTEXT_FILES="${TASK_CONTEXT_FILES:-}"
 TASK_TYPE="${TASK_TYPE:-execute}"
+# task_type: execute（完整注入）| query（轻量，跳过收工/genes）| lightweight（最小注入，只 config+warm）| repair（语义搜索+context_files）
 
 # --- Token 成本上限（防止上下文累积失控）---
 # 默认 $0.50/session，可通过环境变量覆盖
@@ -287,9 +288,13 @@ except:
   return 1
 }
 
-# --- 每日日志注入（今天+昨天）---
-inject_if_exists "$DAILY_YESTERDAY" "📅 昨日日志"
-inject_if_exists "$DAILY_TODAY" "📅 今日日志"
+# --- 每日日志注入（今天+昨天）— lightweight 跳过 ---
+if [ "$TASK_TYPE" != "lightweight" ]; then
+  inject_if_exists "$DAILY_YESTERDAY" "📅 昨日日志"
+  inject_if_exists "$DAILY_TODAY" "📅 今日日志"
+else
+  echo "[context] SKIP daily logs (task_type=lightweight)" >&2
+fi
 
 # 三温度记忆注入策略（v1.1）：
 #   1. warm.md 优先（最近 7 天滚动摘要，~3K tokens）
@@ -337,7 +342,10 @@ $(cat "$LESSONS_FILE")"
 fi
 
 # --- Phase 2.5: 知识注入（context_files 优先，否则按角色默认）---
-if [ -n "$TASK_CONTEXT_FILES" ]; then
+if [ "$TASK_TYPE" = "lightweight" ]; then
+  # lightweight 模式：跳过所有 knowledge 注入
+  echo "[context] SKIP knowledge (task_type=lightweight)" >&2
+elif [ -n "$TASK_CONTEXT_FILES" ]; then
   # 任务指定了精确的 context files → 跳过默认 knowledge 注入
   IFS=',' read -ra CTX_FILES <<< "$TASK_CONTEXT_FILES"
   for ctx_file in "${CTX_FILES[@]}"; do
@@ -369,8 +377,8 @@ else
   esac
 fi
 
-# --- Phase 2.6: 收工流程注入（query 类任务跳过）---
-if [ "$TASK_TYPE" != "query" ]; then
+# --- Phase 2.6: 收工流程注入（query/lightweight 类任务跳过）---
+if [ "$TASK_TYPE" != "query" ] && [ "$TASK_TYPE" != "lightweight" ]; then
   POST_TASK_FILE="$HUB_DIR/docs/procedures/post-task.md"
   if [ -f "$POST_TASK_FILE" ]; then
     inject_if_exists "$POST_TASK_FILE" "⚠️ 收工流程（任务完成后必须执行）"
@@ -379,8 +387,8 @@ else
   echo "[context] SKIP post-task (task_type=query)" >&2
 fi
 
-# --- Phase 2.7: Gene 行为原语注入（query 类任务跳过）---
-if [ "$TASK_TYPE" != "query" ]; then
+# --- Phase 2.7: Gene 行为原语注入（query/lightweight 类任务跳过）---
+if [ "$TASK_TYPE" != "query" ] && [ "$TASK_TYPE" != "lightweight" ]; then
   GENES_DIR="$HUB_DIR/shared/genes"
   case "$AGENT_NAME" in
     EMP_0002|EMP_0004|EMP_0005|EMP_0009|EMP_0014)

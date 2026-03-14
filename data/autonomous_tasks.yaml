@@ -80,7 +80,7 @@ tasks:
     tier: T1
     tier_script: "bash data/pipelines/data_health_check.sh"
     tier_escalate_on_fail: true
-    task_type: repair
+    task_type: lightweight
     verify_command: "bash data/pipelines/data_health_check.sh 2>&1 | grep -c FAIL | grep -q '^0$'"
     context_files: "data/data_catalog.yaml,data/pipelines/data_health_check.sh"
 
