@@ -82,7 +82,28 @@
 | type | 动作 |
 |------|------|
 | task_complete | 更新 state.md 最近完成，记录到 memory.md |
-| task_failed | 评估失败原因，决定重试/降级/escalate给Mason |
+| task_failed | 按 task_failed 决策树处理（见下方） |
 | escalate | 立即介入，通知Mason，标记对应任务为blocked |
 | review_request | 按角色职责审核，24小时内返回 review_response |
 | ping | 返回 pong（task_complete类型，payload写"pong"） |
+
+## task_failed 决策树
+
+收到 task_failed 后，按以下顺序判断：
+
+**条件1：今日同一 task_id 失败次数 < 2**
+→ 动作：重新发 task_assign 给同一 EMP（重试）
+→ 在 state.md 记录：重试 [task_id] 第N次
+
+**条件2：今日同一 task_id 失败次数 ≥ 2**
+→ 动作：写入 data/failed_tasks_for_review.jsonl
+→ 发 state_update 给 Mason（通过 Slack 或日志）
+→ 在 state.md 记录：[task_id] 待人工裁决
+
+**条件3：失败原因包含"超出能力边界"**
+→ 动作：重新评估任务，拆分成更小的子任务
+→ 分别发 task_assign 给合适的 EMP
+
+**条件4：失败原因包含"系统错误/基础设施"**
+→ 动作：转发 escalate 给 EMP_0002
+→ 等待 EMP_0002 修复后重试

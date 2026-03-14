@@ -15,6 +15,7 @@ task_id: TASK-YYYYMMDD-XXX
 payload: |
   [具体内容]
 requires_response: true / false
+requires_review: true / false / null  # null = 由接收方soul.md决定
 deadline: ISO8601 / null
 timestamp: ISO8601
 ```
@@ -50,6 +51,11 @@ timestamp: ISO8601
    - description: 任务描述和验收标准
    - context_files: 相关文件路径列表（无则写 null）
    - deadline: 期望完成时间（ISO8601）
+7. 以下类型的任务产出必须触发 review_request 才能发 task_complete：
+   - 涉及对外发布的内容（视频脚本、图文、店铺文案）
+   - 涉及代码变更且影响生产环境
+   - 涉及品牌定价或营销策略决策
+   执行方在 task_complete 前检查任务的 requires_review 字段。
 
 ---
 

@@ -237,6 +237,15 @@
 - TASK-20260314-002 端到端验证：send → inbox → load_context → auto check → archive，零人工传递
 - Gap 类型：🏗️ 系统能力缺失 → 已修复
 
+### 通信治理四层补齐 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- 权限层：`shared/protocols/permissions.md` + `check_permission()` 在 send_message 前校验，task_assign 只允许 Manager/PM
+- 验证层：message_schema 新增 `requires_review` 字段 + 使用规则第7条，EMP_0010 soul.md 发布前强制检查
+- 异常处理层：EMP_0000 soul.md task_failed 决策树（4 条件：重试/人工裁决/拆分/转发基础设施）
+- 可观测层：`scripts/system-status.sh` 实时快照（15 EMP 状态 + 消息队列 + 任务统计）
+- 踩坑：audit.jsonl 含二进制内容，grep 需加 `-a` 标志；inbox 空文件 grep -c 返回空需 `${var:-0}` 兜底
+- Gap 类型：🏗️ 系统能力缺失 → 已修复
+
 ### task_assign 协议扩展 + 首个业务场景验证 (2026-03-14)
 <!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
 - message_schema.md 新增 `task_assign` 类型，payload 强制四字段（title/description/context_files/deadline）

@@ -16,7 +16,61 @@
 set -euo pipefail
 
 # ============================================================
-# send_message — 写入接收方 inbox
+# check_permission — 权限校验（基于 shared/protocols/permissions.md）
+# ============================================================
+# 返回 0=允许，1=拒绝。escalate 时通过 stdout 返回强制 receiver
+check_permission() {
+  local sender="$1"
+  local receiver="$2"
+  local type="$3"
+
+  local hub_dir="${HUB_DIR:-$HOME/mason-hub}"
+
+  # escalate 自动路由到 EMP_0000
+  if [ "$type" = "escalate" ]; then
+    echo "EMP_0000"
+    return 0
+  fi
+
+  # task_assign 权限检查：只有 Manager/PM 能派任务
+  if [ "$type" = "task_assign" ]; then
+    local sender_name
+    sender_name=$(grep "^name:" "$hub_dir/agents/$sender/identity.md" \
+                  2>/dev/null | awk '{print $2}') || true
+    case "$sender_name" in
+      meta-manager|pm-srx|ecommerce-manager|pm-socialmesh)
+        return 0 ;;
+      *)
+        echo "❌ ERROR: $sender ($sender_name) 无权发送 task_assign" >&2
+        local now
+        now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        printf '{"type":"permission_violation","sender":"%s","receiver":"%s","msg_type":"%s","timestamp":"%s"}\n' \
+          "$sender" "$receiver" "$type" "$now" >> "$hub_dir/logs/audit.jsonl"
+        return 1 ;;
+    esac
+  fi
+
+  # review_response 权限检查：只有审核方能回复
+  if [ "$type" = "review_response" ]; then
+    case "$sender" in
+      EMP_0000|EMP_0012)
+        return 0 ;;
+      *)
+        echo "❌ ERROR: $sender 无权发送 review_response" >&2
+        local now
+        now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        printf '{"type":"permission_violation","sender":"%s","receiver":"%s","msg_type":"%s","timestamp":"%s"}\n' \
+          "$sender" "$receiver" "$type" "$now" >> "$hub_dir/logs/audit.jsonl"
+        return 1 ;;
+    esac
+  fi
+
+  # 其他类型放行
+  return 0
+}
+
+# ============================================================
+# send_message — 写入接收方 inbox（含权限校验）
 # ============================================================
 # 用法: send_message <sender> <receiver> <type> <task_id> <payload> [requires_response] [deadline]
 # 写入: data/messages/inbox_<receiver>.jsonl
@@ -31,18 +85,22 @@ send_message() {
 
   local hub_dir="${HUB_DIR:-$HOME/mason-hub}"
   local inbox_dir="$hub_dir/data/messages"
-  local inbox_file="$inbox_dir/inbox_${receiver}.jsonl"
 
   local timestamp
   timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
   mkdir -p "$inbox_dir"
 
-  # escalate 类型自动路由到 EMP_0000
-  if [ "$type" = "escalate" ]; then
-    receiver="EMP_0000"
-    inbox_file="$inbox_dir/inbox_EMP_0000.jsonl"
+  # 权限校验
+  local perm_result
+  perm_result=$(check_permission "$sender" "$receiver" "$type") || return 1
+
+  # escalate 路由覆写
+  if [ "$type" = "escalate" ] && [ -n "$perm_result" ]; then
+    receiver="$perm_result"
   fi
+
+  local inbox_file="$inbox_dir/inbox_${receiver}.jsonl"
 
   # 构造符合 message_schema.md 的 JSON 消息
   local payload_json

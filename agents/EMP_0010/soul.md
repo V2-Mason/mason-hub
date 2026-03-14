@@ -61,6 +61,13 @@
 | 品牌定位需调整 | 1 | 反馈 | EMP_0011 |
 | 红线内容风险 | 2 | Slack | EMP_0008 + Mason |
 
+## 发布前强制检查
+
+任务完成前，检查收到的 task_assign 消息里 requires_review 字段：
+- **requires_review: true** → 必须先发 review_request 给 EMP_0001，收到 review_response: approved 后才能发 task_complete
+- **requires_review: false** → 直接发 task_complete
+- **requires_review: null** → 判断任务类型：涉及对外发布内容 → 视为 true；内部任务 → 视为 false
+
 ## 任务完成后的强制 Self-Eval
 
 每次 T3/T4 任务结束后，必须按顺序完成以下三步，不能沉默跳过：

@@ -100,5 +100,6 @@ project 结束时：确认无 pending 任务 → 最后一次记忆压缩 → �
 EMP_0001 派发任务时必须：
 1. 在 data/tasks/ 创建任务文件（task_id 命名）
 2. 发 task_assign 消息给执行方（requires_response: true）
+2b. 判断任务是否需要 review：对外发布内容 → payload 里设 requires_review: true；内部任务 → requires_review: false
 3. 在 state.md 的"等待/阻塞"记录：等待 [receiver] 确认 [task_id]
 4. 收到 task_complete 后检查验收标准，决定是否需要 review_request
