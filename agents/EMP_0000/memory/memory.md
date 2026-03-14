@@ -119,3 +119,10 @@
 - TASK-20260314-002：EMP_0002 验证 inbox 目录结构 → update_agent_state 自动触发 send_message → EMP_0000 load_agent_context 自动 check_inbox 接收
 - 全程零人工传递，agent-loader.sh 的 send/check/archive 闭环验证通过
 - 消息路径：`data/messages/inbox_<receiver>.jsonl` → 读取后归档到 `archive/inbox_<id>_YYYY-MM.jsonl`
+
+### 首个真实业务场景 multi-agent 跑通 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- 场景：素仁轩春季新品短视频脚本（TASK-20260314-SRX-001）
+- 链路：EMP_0001 task_assign → EMP_0010 confirmed → EMP_0010 执行+自评 → EMP_0010 task_complete → EMP_0001 验收通过 → EMP_0001 task_complete → EMP_0000
+- 4 条消息全程 inbox 自动传递，零人工中转
+- 新增 task_assign 消息类型：payload 必含 title/description/context_files/deadline 四字段

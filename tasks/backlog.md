@@ -590,7 +590,7 @@ Phase 3 — 数据 SDK + 扩展:
 - [ ] Planning 能力：agent 收到目标而非指令，自主拆解步骤并评估可行性（decompose.py 需接 LLM）
 - [ ] Reflection 能力：critic.py 接 LLM 做真正的质量评估，agent 执行中途可暂停反思
 - [ ] Tool Use 自主化：agent 运行时查 registry.yaml 自主选择工具，而非流程硬编码
-- [ ] Multi-agent 实战：ping-pong/roundtable 协议跑第一个真实场景
+- [x] Multi-agent 实战：首个真实场景跑通 — EMP_0001→EMP_0010 task_assign 素仁轩短视频脚本，全程 inbox 自动通信（4条消息链路），验收通过 — 2026-03-14
 - [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime（agent-loader.sh 是第一步，下游调用仍硬编码 config.md）
 - [x] Roster 能力索引 + 动态匹配：build-capability-index.py + dispatcher 中文关键词匹配（6/6 测试通过）— 2026-03-14（EMP_0002）
 - [x] Task Engine 标准化：task.yaml schema + 状态机 + depends_on + extract-lessons.py 经验自动提取 — 2026-03-14（EMP_0002）

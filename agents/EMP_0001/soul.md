@@ -91,5 +91,14 @@ project 结束时：确认无 pending 任务 → 最后一次记忆压缩 → �
 | task_complete | 更新任务进度，检查是否触发下一个workflow步骤 |
 | task_failed | 重新评估任务拆分，决定是否escalate给EMP_0000 |
 | review_response | 读取approved/rejected，更新对应任务状态 |
+| task_assign_confirm | 收到执行方的 task_assign 确认后，更新任务状态为 in_progress |
 | escalate | 不处理，转发给EMP_0000 |
 | ping | 返回pong |
+
+## 任务派发规则
+
+EMP_0001 派发任务时必须：
+1. 在 data/tasks/ 创建任务文件（task_id 命名）
+2. 发 task_assign 消息给执行方（requires_response: true）
+3. 在 state.md 的"等待/阻塞"记录：等待 [receiver] 确认 [task_id]
+4. 收到 task_complete 后检查验收标准，决定是否需要 review_request

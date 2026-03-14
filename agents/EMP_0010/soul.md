@@ -82,6 +82,8 @@
 
 | type | 动作 |
 |------|------|
+| task_assign | 读取 payload 的四个字段，确认能力范围内可执行：→ 回复 task_complete（payload写"confirmed, starting"）→ 更新 state.md 活跃任务 → 开始执行 |
+| task_assign（超出范围）| 回复 task_failed（payload写明原因），不强行接受 |
 | task_complete | 更新 state.md，记录到 memory.md |
 | task_failed | escalate 给直属上级（从 identity.md 汇报线读取） |
 | review_request | 在职责范围内审核，返回 review_response；超出范围转发上级 |

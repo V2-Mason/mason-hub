@@ -237,6 +237,14 @@
 - TASK-20260314-002 端到端验证：send → inbox → load_context → auto check → archive，零人工传递
 - Gap 类型：🏗️ 系统能力缺失 → 已修复
 
+### task_assign 协议扩展 + 首个业务场景验证 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- message_schema.md 新增 `task_assign` 类型，payload 强制四字段（title/description/context_files/deadline）
+- EMP_0001 soul.md 新增"任务派发规则"4步流程 + task_assign_confirm 收件规则
+- EMP_0010 soul.md 新增 task_assign 收件规则（含超出范围拒绝路径）
+- 首个真实场景：EMP_0001→EMP_0010 素仁轩短视频脚本，4 条消息链路全自动
+- Gap 类型：🏗️ 系统能力缺失 → 已修复
+
 ### 注入优化三级架构 + SessionStart Hook (2026-03-14)
 - CLAUDE.md 从 89→52 行，run-agent.sh 新增 `lightweight` 任务类型
 - SessionStart hook：新 interactive session 自动注入系统快照（~300 tokens）

@@ -25,6 +25,7 @@ timestamp: ISO8601
 
 | type | 触发场景 | requires_response 默认值 |
 |------|---------|------------------------|
+| task_assign | PM/Manager 向 EMP 派发任务 | true |
 | task_complete | 任务完成，通知下游消费者 | false |
 | task_failed | 任务失败，等待裁决 | true |
 | review_request | 请求另一 EMP 审核产出 | true |
@@ -44,6 +45,11 @@ timestamp: ISO8601
    "等待/阻塞"字段记录：等待 [receiver] 回复 [task_id]
 5. 收到 review_request 的 EMP，必须在 payload 里明确写
    approved 或 rejected，不允许模糊表态
+6. task_assign 消息的 payload 必须包含以下四个字段，缺一不可：
+   - title: 任务标题
+   - description: 任务描述和验收标准
+   - context_files: 相关文件路径列表（无则写 null）
+   - deadline: 期望完成时间（ISO8601）
 
 ---
 
@@ -95,6 +101,27 @@ payload: |
 requires_response: true
 deadline: 2026-03-14T12:00:00Z
 timestamp: 2026-03-14T10:10:00Z
+```
+
+### task_assign
+
+```yaml
+sender: EMP_0001
+receiver: EMP_0010
+type: task_assign
+task_id: TASK-20260314-004
+payload: |
+  title: 素仁轩春季新品短视频脚本
+  description: |
+    为素仁轩春季新品韩系护肤套装创作一条小红书短视频脚本。
+    验收标准：开头3秒有冲突点，时长45-60秒，符合素仁轩品牌tone。
+  context_files:
+    - shared/brands/surenxuan/brand-guide.md
+    - data/reports/srx-content-performance.md
+  deadline: 2026-03-15T18:00:00Z
+requires_response: true
+deadline: 2026-03-15T18:00:00Z
+timestamp: 2026-03-14T11:00:00Z
 ```
 
 ---

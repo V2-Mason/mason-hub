@@ -91,6 +91,13 @@
 ### 规则文件位置
 - 品牌语气词典+替换表：`mason-hub/shared/brands/surenxuan/editing_overrides.md`
 
+### inbox task_assign 首次执行 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- 首次通过 inbox 收到 EMP_0001 的 task_assign，按 soul.md 收件规则处理
+- 流程：check_inbox 自动读取 → 确认能力范围 → 回复 confirmed → 执行 → 发 task_complete
+- 短视频脚本创作要点：Hook 用价格反差制造冲突，四段结构（Hook/痛点/产品/收尾）控制在 50 秒
+- Gap 分类：📄 流程验证
+
 ## 效果经验
 （随内容发布后数据回流更新）
 
