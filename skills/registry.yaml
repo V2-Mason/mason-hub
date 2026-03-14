@@ -140,6 +140,28 @@ cookie-reminder:
   type: script
   output: text
 
+# === 任务执行质量框架 (2026-03-14) ===
+task-decompose:
+  description: "递归任务拆解 + 动态可行性评估（拆→评→再拆→直到通过）"
+  entry: skills/task-engine/decompose.py
+  type: script
+  input: [task_description, --max-depth, --format]
+  output: json
+
+task-critic:
+  description: "多维评估引擎（E2E + Component，5 默认维度 + 任务类型扩展 + 自定义）"
+  entry: skills/task-engine/critic.py
+  type: script
+  input: [e2e|component, --task-file, --output-file, --criteria]
+  output: json
+
+error-analysis:
+  description: "错误追踪+分类+模式识别+通过率统计"
+  entry: skills/task-engine/error-analysis.py
+  type: script
+  input: [trace|pass-rate|patterns|report, --task-id, --days]
+  output: json
+
 # === 五维 Gap 自建 Skill (2026-03-14) ===
 content-performance:
   description: "内容效果追踪（XHS + SocialMesh 发布指标）"
