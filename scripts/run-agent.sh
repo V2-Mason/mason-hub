@@ -238,14 +238,20 @@ INJECT_USED=${#SYSPROMPT}
 inject_if_exists() {
   local file="$1"
   local label="$2"
+  local max_chars="${3:-0}"  # 可选：截断字符数，0=不截断
   if [ -f "$file" ] && [ -s "$file" ]; then
-    local file_size
-    file_size=$(stat -c %s "$file")
-    local total_after=$(( INJECT_USED + file_size + 50 ))
+    local content
+    if [ "$max_chars" -gt 0 ] 2>/dev/null; then
+      content=$(head -c "$max_chars" "$file")
+    else
+      content=$(cat "$file")
+    fi
+    local content_size=${#content}
+    local total_after=$(( INJECT_USED + content_size + 50 ))
     local budget=$(( ${#SYSPROMPT} + MAX_INJECT_CHARS ))
 
     if [ "$total_after" -gt "$budget" ]; then
-      echo "[context-budget] SKIP $label (${file_size}B would exceed budget)" >&2
+      echo "[context-budget] SKIP $label (${content_size}B would exceed budget)" >&2
       return
     fi
 
@@ -254,7 +260,7 @@ inject_if_exists() {
 ---
 ## ${label}
 
-$(cat "$file")"
+${content}"
     INJECT_USED=${#SYSPROMPT}
   fi
 }
@@ -352,8 +358,8 @@ if [ -n "$TASK_ACCOUNT" ] && [ "$TASK_TYPE" != "lightweight" ]; then
     inject_if_exists "$ACCOUNT_DIR/shared.md" "🏢 品牌公共记忆: $TASK_ACCOUNT"
     # Pipe 3: account×agent 工作记忆
     inject_if_exists "$ACCOUNT_DIR/memory/${AGENT_NAME}.md" "🔗 品牌工作记忆: $TASK_ACCOUNT × $AGENT_NAME"
-    # Brand brief (轻量上下文)
-    inject_if_exists "$ACCOUNT_DIR/context/brief.md" "📋 品牌简报: $TASK_ACCOUNT"
+    # Brand brief (轻量上下文，截断到 3000 字符 ~750 tokens)
+    inject_if_exists "$ACCOUNT_DIR/context/brief.md" "📋 品牌简报: $TASK_ACCOUNT" 3000
     echo "[context] Account loaded: $TASK_ACCOUNT (Pipe 2+3)" >&2
   else
     echo "[context] ⚠️ Account dir not found: $ACCOUNT_DIR" >&2

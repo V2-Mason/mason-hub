@@ -1,0 +1,6 @@
+id: _test
+name: Test Account
+status: active
+owner: mason
+domain: test
+agents: [EMP_0002]

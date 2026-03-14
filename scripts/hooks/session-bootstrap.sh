@@ -62,6 +62,23 @@ find "$HUB_DIR/agents"/*/memory/sessions -name "*.md" -type f 2>/dev/null | \
     fi
   done
 
+# 6. v2 路线图进度
+PROGRESS_FILE="$HUB_DIR/data/v2-progress.yaml"
+if [ -f "$PROGRESS_FILE" ]; then
+  echo ""
+  echo "**v2 路线图进度**:"
+  # 提取下一个 pending session
+  next_session=$(grep -B1 "status: pending" "$PROGRESS_FILE" | grep "S[0-9]:" | head -1 | tr -d ' :')
+  completed=$(grep "status: done" "$PROGRESS_FILE" 2>/dev/null | grep -c "done" || echo 0)
+  total=$(grep -E "^\s+- id:" "$PROGRESS_FILE" 2>/dev/null | wc -l || echo 0)
+  if [ -n "$next_session" ]; then
+    content=$(grep -A2 "$next_session:" "$PROGRESS_FILE" | grep "content:" | sed 's/.*content: "//' | tr -d '"')
+    echo "  下一步: $next_session — $content"
+    echo "  进度: ${completed}/${total} 交付物完成"
+    echo "  路线图: docs/plans/2026-03-14-agent-os-v2-90-percent.md"
+  fi
+fi
+
 echo ""
 echo "---"
 echo "提示: 读 \`tasks/backlog.md\` 看完整待办，读 \`SYSTEM_MAP.md\` 看详细状态"

@@ -1,0 +1,358 @@
+{
+  "generated_at": "2026-03-14T01:18:13.520702",
+  "total_agents": 15,
+  "total_capabilities": 15,
+  "capabilities": {
+    "backend": [
+      "EMP_0014"
+    ],
+    "bash": [
+      "EMP_0001",
+      "EMP_0002",
+      "EMP_0004",
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0014",
+      "EMP_0015"
+    ],
+    "content": [
+      "EMP_0001",
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0015"
+    ],
+    "coordination": [
+      "EMP_0001",
+      "EMP_0002",
+      "EMP_0004",
+      "EMP_0005",
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0014",
+      "EMP_0015"
+    ],
+    "data_analysis": [
+      "EMP_0001",
+      "EMP_0002",
+      "EMP_0004",
+      "EMP_0005",
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0014",
+      "EMP_0015"
+    ],
+    "data_engineering": [
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0014",
+      "EMP_0015"
+    ],
+    "devops": [
+      "EMP_0004",
+      "EMP_0013",
+      "EMP_0014"
+    ],
+    "ecommerce": [
+      "EMP_0001",
+      "EMP_0005",
+      "EMP_0013",
+      "EMP_0015"
+    ],
+    "frontend": [
+      "EMP_0005",
+      "EMP_0009"
+    ],
+    "infrastructure": [
+      "EMP_0002",
+      "EMP_0004"
+    ],
+    "intelligence": [
+      "EMP_0004",
+      "EMP_0008",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0014",
+      "EMP_0015"
+    ],
+    "marketing": [
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0015"
+    ],
+    "python": [
+      "EMP_0001",
+      "EMP_0002",
+      "EMP_0004",
+      "EMP_0005",
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0014",
+      "EMP_0015"
+    ],
+    "video": [
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010"
+    ],
+    "xhs": [
+      "EMP_0008",
+      "EMP_0009",
+      "EMP_0010",
+      "EMP_0013",
+      "EMP_0014",
+      "EMP_0015"
+    ]
+  },
+  "agents": {
+    "EMP_0000": {
+      "name": "Meta Manager",
+      "domain": "meta",
+      "role": "跨域总调度，Mason 的主要 AI 对接人",
+      "can_own_tasks": false,
+      "capabilities": [
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "devops",
+        "ecommerce",
+        "infrastructure",
+        "intelligence",
+        "python",
+        "xhs"
+      ]
+    },
+    "EMP_0001": {
+      "name": "素仁轩 PM",
+      "domain": "ecommerce",
+      "role": "素仁轩项目管理",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "ecommerce",
+        "python"
+      ]
+    },
+    "EMP_0002": {
+      "name": "Platform Dev",
+      "domain": "platform",
+      "role": "平台基础设施开发（mason-hub 专属）",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "coordination",
+        "data_analysis",
+        "infrastructure",
+        "python"
+      ]
+    },
+    "EMP_0003": {
+      "name": "电商 Domain Manager",
+      "domain": "ecommerce",
+      "role": "电商行业判断和项目间协调",
+      "can_own_tasks": false,
+      "capabilities": [
+        "bash",
+        "coordination",
+        "data_analysis",
+        "devops",
+        "ecommerce",
+        "intelligence",
+        "marketing",
+        "python",
+        "xhs"
+      ]
+    },
+    "EMP_0004": {
+      "name": "SRE",
+      "domain": "platform",
+      "role": "全局基础设施运维",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "coordination",
+        "data_analysis",
+        "devops",
+        "infrastructure",
+        "intelligence",
+        "python"
+      ]
+    },
+    "EMP_0005": {
+      "name": "电商 Dev",
+      "domain": "ecommerce",
+      "role": "电商业务开发（/opt/surenxuan/ 专属）",
+      "can_own_tasks": true,
+      "capabilities": [
+        "coordination",
+        "data_analysis",
+        "ecommerce",
+        "frontend",
+        "python"
+      ]
+    },
+    "EMP_0006": {
+      "name": "斥候 Scout",
+      "domain": "independent",
+      "role": "全域情报搜集（技术/内容/电商/技术选型）",
+      "can_own_tasks": false,
+      "capabilities": [
+        "backend",
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "devops",
+        "ecommerce",
+        "intelligence",
+        "python",
+        "xhs"
+      ]
+    },
+    "EMP_0008": {
+      "name": "SocialMesh 内容运营总监",
+      "domain": "socialmesh",
+      "role": "内容策略 + 发布排程 + 效果复盘",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "intelligence",
+        "marketing",
+        "python",
+        "video",
+        "xhs"
+      ]
+    },
+    "EMP_0009": {
+      "name": "Content-Tech Dev",
+      "domain": "socialmesh",
+      "role": "内容技术开发（socialmesh 专属）",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "frontend",
+        "marketing",
+        "python",
+        "video",
+        "xhs"
+      ]
+    },
+    "EMP_0010": {
+      "name": "Content Creator",
+      "domain": "socialmesh",
+      "role": "多平台内容生产 + 社区互动",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "intelligence",
+        "marketing",
+        "python",
+        "video",
+        "xhs"
+      ]
+    },
+    "EMP_0011": {
+      "name": "Account Manager",
+      "domain": "independent",
+      "role": "品牌上下文管理，桥接品牌与内容团队",
+      "can_own_tasks": false,
+      "capabilities": [
+        "content",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "marketing",
+        "python"
+      ]
+    },
+    "EMP_0012": {
+      "name": "Product Architect",
+      "domain": "independent",
+      "role": "产品定义、归属判断、边界管理",
+      "can_own_tasks": false,
+      "capabilities": [
+        "coordination",
+        "python"
+      ]
+    },
+    "EMP_0013": {
+      "name": "店铺运营",
+      "domain": "ecommerce",
+      "role": "XHS 店铺日常运营（客服/评分/售后/合规/对账）",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "coordination",
+        "data_analysis",
+        "devops",
+        "ecommerce",
+        "intelligence",
+        "marketing",
+        "python",
+        "xhs"
+      ]
+    },
+    "EMP_0014": {
+      "name": "Data Engineer",
+      "domain": "platform",
+      "role": "数据中台建设与维护（管道/存储/加工/目录/工具）",
+      "can_own_tasks": true,
+      "capabilities": [
+        "backend",
+        "bash",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "devops",
+        "intelligence",
+        "python",
+        "xhs"
+      ]
+    },
+    "EMP_0015": {
+      "name": "数据分析师",
+      "domain": "ecommerce",
+      "role": "执行四维判断框架+五方法论，持续产出分析结论",
+      "can_own_tasks": true,
+      "capabilities": [
+        "bash",
+        "content",
+        "coordination",
+        "data_analysis",
+        "data_engineering",
+        "ecommerce",
+        "intelligence",
+        "marketing",
+        "python",
+        "xhs"
+      ]
+    }
+  }
+}
