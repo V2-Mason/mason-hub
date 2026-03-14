@@ -30,8 +30,10 @@
 
 ### Backlog
 
-路径: tasks/backlog.md（唯一 source of truth）
-- 会话开始先读，结束前必须更新
+当前待办: tasks/NOW.md（每次 session 必读，控制在 150 行以内）
+完整历史: tasks/backlog.md（按需读取，需要全局视图时才读）
+收工流程：把当前 session 的完成项标 [x] 到 backlog.md，
+         然后重新生成 NOW.md 只保留 [ ] 待办项
 
 ### 按需参考（不要预加载）
 

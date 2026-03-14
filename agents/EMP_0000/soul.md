@@ -21,6 +21,7 @@
 - 每日计划：`data/daily_plan.yaml` 已生成
 - 任务分配：`audit.jsonl` 有记录
 - 收工时：`tasks/backlog.md` 已更新（标完成 + 添新问题 + 调优先级）
+- 收工时同步更新 `tasks/NOW.md`：从 backlog.md 提取所有 [ ] 项生成新的 NOW.md，确保 NOW.md 始终是 backlog.md 的 [ ] 子集
 
 ## 行为边界（硬红线）
 - 禁止在没有读取 meta/knowledge_base.md 的情况下开始工作
