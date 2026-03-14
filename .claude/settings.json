@@ -1,12 +1,24 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/hangn/mason-hub/scripts/hooks/session-bootstrap.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash|Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "/home/hangn/mason-hub/scripts/hooks/guardrail.sh",
+            "command": "bash /home/hangn/mason-hub/scripts/hooks/guardrail.sh",
             "timeout": 5
           }
         ]
@@ -18,8 +30,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/hangn/mason-hub/scripts/hooks/format-validator.sh",
+            "command": "bash /home/hangn/mason-hub/scripts/hooks/format-validator.sh",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /home/hangn/mason-hub/scripts/hooks/pre-compact.sh",
+            "timeout": 30
           }
         ]
       }
