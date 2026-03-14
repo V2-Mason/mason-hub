@@ -22,26 +22,27 @@ user_invocable: true
 
 ### Step 2. 多源搜索（按优先级）
 
-**Source A — skills.sh（首选，CLI 直接搜索+安装，有安装量数据）**
+**Source A — prompts.chat MCP（首选，结构化搜索+一键安装）**
+
+使用 prompts.chat MCP 工具直接搜索：
+```
+search_skills({"query": "{关键词}", "limit": 10, "category": "coding"})
+```
+获取技能详情和所有文件：
+```
+get_skill({"id": "{skill_id}"})
+```
+可用分类: coding, automation, documentation, testing, devops 等。
+安装已有 skill：`/prompts.chat:skills {关键词}` 搜索 → 选择 → 安装。
+
+**Source B — skills.sh（CLI 搜索，有安装量数据）**
 ```bash
 npx skills find "{关键词}"
 ```
 输出包含：技能名、安装量、skills.sh 链接。安装量是质量的最佳代理指标。
 安装命令：`npx skills add {owner/repo@skill}`
 
-**Source B — SkillsMP（skillsmp.com，400K+ 技能，有分类和过滤）**
-```
-WebSearch: site:skillsmp.com {关键词} skill
-```
-或直接浏览：`https://skillsmp.com/search?q={关键词}`
-
-**Source C — Anthropic 官方**
-```
-WebSearch: site:github.com/anthropics/skills {关键词}
-```
-官方技能质量有保障，但数量少。
-
-**Source D — GitHub 社区（量大，需筛选）**
+**Source C — GitHub 社区（量大，需筛选）**
 ```
 WebSearch: github.com .claude/skills SKILL.md {关键词}
 ```
