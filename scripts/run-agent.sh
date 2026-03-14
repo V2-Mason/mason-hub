@@ -720,6 +720,38 @@ echo "<<<AGENT_START $AGENT_NAME>>>"
 # v2: 写初始 task YAML (status: in_progress)
 write_task_yaml "in_progress"
 
+# --- v2: 任务前置检查（decompose 粒度评估）---
+if [ "$TASK_TYPE" != "lightweight" ] && [ "$TASK_TYPE" != "query" ]; then
+  DECOMPOSE_SCRIPT="$HUB_DIR/skills/task-engine/decompose.py"
+  if [ -f "$DECOMPOSE_SCRIPT" ]; then
+    DECOMPOSE_RESULT=$(python3 "$DECOMPOSE_SCRIPT" "$TASK" --format json 2>/dev/null) || DECOMPOSE_RESULT=""
+    if [ -n "$DECOMPOSE_RESULT" ]; then
+      DECOMPOSE_PASS=$(echo "$DECOMPOSE_RESULT" | python3 -c "
+import sys,json
+try:
+    d=json.load(sys.stdin)
+    tree=d.get('tree',{})
+    # 如果根节点直接通过，或者拆解后所有子任务通过
+    if tree.get('status') in ('ready','decomposed'):
+        print('pass')
+    else:
+        needs=d.get('stats',{}).get('needs_human',0)
+        print(f'warn:{needs}')
+except: print('skip')
+" 2>/dev/null) || DECOMPOSE_PASS="skip"
+
+      if [[ "$DECOMPOSE_PASS" == warn:* ]]; then
+        needs_human="${DECOMPOSE_PASS#warn:}"
+        log_structured "decompose-warn" "Task may need further decomposition ($needs_human subtasks need human)" \
+          needs_human="$needs_human"
+        echo "[decompose] ⚠️ $needs_human 个子任务需要人工判断" >&2
+      elif [[ "$DECOMPOSE_PASS" == "pass" ]]; then
+        echo "[decompose] ✅ 粒度评估通过" >&2
+      fi
+    fi
+  fi
+fi
+
 # === 主执行逻辑 ===
 
 # 记录 agent 调用前的 git diff baseline（用于只检测 agent 新增的改动）
@@ -1046,7 +1078,21 @@ EOSUMMARY
 
     # 3.3 写入审计日志（统一格式 + token 数据）
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
-    write_audit "repair_failed" ",\"verify_rounds\":$ROUND,\"pm_retry_count\":$PM_RETRY_COUNT,\"root_cause_guess\":\"$ROOT_CAUSE\"" "$TOKEN_DATA"
+    # v2: 即时错误分类
+    INLINE_ERROR_CLASS=$(python3 -c "
+import sys
+desc = '''$ROOT_CAUSE'''.lower()
+cats = {'decomposition':['需求不清','目标不明','范围','scope'],
+  'execution':['syntax','import','TypeError','NameError','bug'],
+  'evaluation':['test','assert','验证','测试'],
+  'external':['timeout','connection','permission','404','500','rate limit'],
+  'context':['not found','找不到','缺少','不存在']}
+for cat,markers in cats.items():
+    if any(m.lower() in desc for m in markers):
+        print(cat); sys.exit()
+print('unknown')
+" 2>/dev/null) || INLINE_ERROR_CLASS="unknown"
+    write_audit "repair_failed" ",\"verify_rounds\":$ROUND,\"pm_retry_count\":$PM_RETRY_COUNT,\"root_cause_guess\":\"$ROOT_CAUSE\",\"error_category\":\"$INLINE_ERROR_CLASS\"" "$TOKEN_DATA"
     write_daily_log "❌ 修复失败(R${ROUND})" "PM重试${PM_RETRY_COUNT}"
     # v2: 更新 task YAML (failed)
     write_task_yaml "failed" "duration_seconds: $DURATION
@@ -1208,6 +1254,66 @@ if [ -f "$TASK_YAML_FILE" ] && [ "$TASK_TYPE" != "lightweight" ]; then
   if [ -f "$EXTRACT_SCRIPT" ]; then
     python3 "$EXTRACT_SCRIPT" "$TASK_YAML_FILE" 2>/dev/null || true
     echo "[v2] Lessons extracted from $TASK_ID" >&2
+  fi
+fi
+
+# --- v2: E2E 质量评估（Critic）---
+if [ -f "$TASK_YAML_FILE" ] && [ "$TASK_TYPE" != "lightweight" ] && [ "$TASK_TYPE" != "query" ]; then
+  CRITIC_SCRIPT="$HUB_DIR/skills/task-engine/critic.py"
+  if [ -f "$CRITIC_SCRIPT" ]; then
+    CRITIC_OUTPUT=$(python3 "$CRITIC_SCRIPT" e2e \
+      --task-file "$TASK_YAML_FILE" \
+      --output-file "${TASK_OUTPUT_PATH:-}" 2>/dev/null) || CRITIC_OUTPUT=""
+    if [ -n "$CRITIC_OUTPUT" ]; then
+      CRITIC_SCORE=$(echo "$CRITIC_OUTPUT" | python3 -c "
+import sys,json
+try:
+    d=json.load(sys.stdin)
+    e=d.get('evaluation',{})
+    print(f\"{e.get('total_score',0):.2f}\")
+except: print('0')
+" 2>/dev/null) || CRITIC_SCORE="0"
+      CRITIC_PASS=$(echo "$CRITIC_OUTPUT" | python3 -c "
+import sys,json
+try: print(json.load(sys.stdin).get('evaluation',{}).get('pass',False))
+except: print('False')
+" 2>/dev/null) || CRITIC_PASS="False"
+
+      log_structured "critic-eval" "E2E score: $CRITIC_SCORE, pass: $CRITIC_PASS" \
+        critic_score="$CRITIC_SCORE" critic_pass="$CRITIC_PASS"
+
+      if [ "$CRITIC_PASS" = "False" ]; then
+        echo "[critic] ⚠️ E2E 评估未通过 (score: $CRITIC_SCORE)" >&2
+      else
+        echo "[critic] ✅ E2E 评估通过 (score: $CRITIC_SCORE)" >&2
+      fi
+    fi
+  fi
+fi
+
+# --- v2: 失败任务错误分类（Error Analysis）---
+if [ -f "$TASK_YAML_FILE" ]; then
+  TASK_STATUS_CHECK=$(grep "^status:" "$TASK_YAML_FILE" 2>/dev/null | head -1 | sed 's/status: *//' | tr -d '"')
+  if [ "$TASK_STATUS_CHECK" = "failed" ]; then
+    ERROR_ANALYSIS_SCRIPT="$HUB_DIR/skills/task-engine/error-analysis.py"
+    if [ -f "$ERROR_ANALYSIS_SCRIPT" ]; then
+      ERROR_CLASS=$(python3 "$ERROR_ANALYSIS_SCRIPT" trace --task-id "$TASK_ID" 2>/dev/null | python3 -c "
+import sys,json
+try:
+    d=json.load(sys.stdin)
+    print(d.get('root_category','unknown'))
+except: print('unknown')
+" 2>/dev/null) || ERROR_CLASS="unknown"
+
+      log_structured "error-class" "Error classified as: $ERROR_CLASS" \
+        error_category="$ERROR_CLASS" task_id="$TASK_ID"
+      echo "[error-analysis] 错误分类: $ERROR_CLASS" >&2
+
+      # 更新 task YAML 加 error_category
+      if [ -n "$ERROR_CLASS" ] && [ "$ERROR_CLASS" != "unknown" ]; then
+        echo "error_category: \"$ERROR_CLASS\"" >> "$TASK_YAML_FILE"
+      fi
+    fi
   fi
 fi
 
