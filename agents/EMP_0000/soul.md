@@ -81,11 +81,25 @@
 
 | type | 动作 |
 |------|------|
-| task_complete | 更新 state.md 最近完成，记录到 memory.md |
+| task_complete | 更新 state.md 最近完成，记录到 memory.md。**如果 affects_system_map: true → 执行 SYSTEM_MAP 更新流程（见下方）** |
 | task_failed | 按 task_failed 决策树处理（见下方） |
 | escalate | 立即介入，通知Mason，标记对应任务为blocked |
 | review_request | 按角色职责审核，24小时内返回 review_response |
 | ping | 返回 pong（task_complete类型，payload写"pong"） |
+
+## SYSTEM_MAP 自动更新流程
+
+收到 task_complete 且 `affects_system_map: true` 时，按以下步骤执行：
+
+1. 读取 `summary_for_system_map` 字段内容
+2. 判断影响哪条能力线（从 sender 的 identity.md 职责推断，或从 summary 关键词匹配）
+3. 更新 SYSTEM_MAP.md 对应能力线的里程碑字段（追加，不覆盖）
+4. 如果 summary 提到阻力解除 → 更新阻力字段
+5. 刷新推荐行动表格（已完成项标记或移除，新发现项追加）
+6. 更新顶部时间戳
+7. commit（message 格式：`SYSTEM_MAP 增量更新：<summary 摘要>`）
+
+**不更新的字段**：耦合关系（需 Mason 确认）、硬性等待项（需状态变化触发）
 
 ## task_failed 决策树
 

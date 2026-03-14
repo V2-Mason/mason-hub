@@ -583,7 +583,7 @@ Phase 3 — 数据 SDK + 扩展:
 已完成（Agent 化基础设施）：
 - [x] v2 文件架构全量迁移 — 15 个活跃 EMP 从 config.md 单文件迁移到 5 文件分层（identity/state/soul/tools/memory.md），抽查修复 3 处内容缺失（EMP_0001 消亡条件/EMP_0006 情报分发+紧急情报/EMP_0014 launcher）— 2026-03-14
 - [x] agent-loader.sh — 从 run-agent.sh 提取文件加载逻辑为独立模块（load_agent_context Layer 0/01 + update_agent_state + extract_launcher_args），run-agent.sh 适配 v2 loader — 2026-03-14（EMP_0002）
-- [x] message_schema.md — 跨 agent 通信协议（7 种消息类型 + 使用规则 + 示例），首次双向通信验证通过（EMP_0002→task_complete→EMP_0000）— 2026-03-14
+- [x] message_schema.md — 跨 agent 通信协议（8 种消息类型 + 使用规则 + 示例 + affects_system_map 字段），首次双向通信验证通过（EMP_0002→task_complete→EMP_0000）— 2026-03-14
 - [x] inbox 通信机制 — agent-loader.sh 新增 send_message/check_inbox，集中式 JSONL inbox + 按月 archive，load_agent_context 启动时自动收信，update_agent_state 完成时自动发信，15 个 EMP soul.md 追加收件处理规则 — 2026-03-14
 
 待办（Agent 化路线）：
@@ -591,6 +591,9 @@ Phase 3 — 数据 SDK + 扩展:
 - [ ] Reflection 能力：critic.py 接 LLM 做真正的质量评估，agent 执行中途可暂停反思
 - [ ] Tool Use 自主化：agent 运行时查 registry.yaml 自主选择工具，而非流程硬编码
 - [x] Multi-agent 实战：首个真实场景跑通 — EMP_0001→EMP_0010 task_assign 素仁轩短视频脚本，全程 inbox 自动通信（4条消息链路），验收通过 — 2026-03-14
+- [x] SYSTEM_MAP 自动更新闭环 — affects_system_map 字段 + EMP_0000 soul.md 7 步更新流程，task_complete 触发自动刷新能力线 — 2026-03-14
+- [ ] claude -p → Claude API 调用层：嵌套限制是 agent 自主执行的硬阻塞，通信层已就绪但执行层受限
+- [ ] workflow 文件兼容性验证：v2 迁移后四个 grep 命令待跑，确认无断裂
 - [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime（agent-loader.sh 是第一步，下游调用仍硬编码 config.md）
 - [x] Roster 能力索引 + 动态匹配：build-capability-index.py + dispatcher 中文关键词匹配（6/6 测试通过）— 2026-03-14（EMP_0002）
 - [x] Task Engine 标准化：task.yaml schema + 状态机 + depends_on + extract-lessons.py 经验自动提取 — 2026-03-14（EMP_0002）

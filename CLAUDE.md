@@ -1,5 +1,8 @@
 # Mason Hub — 工作规范
 
+> 系统当前运行状态、能力线、推荐行动：见 SYSTEM_MAP.md
+> 本文件只包含开发规范和项目结构说明
+
 > 通用开发规范见 ~/CLAUDE.md
 
 ## mason-hub 专属规则

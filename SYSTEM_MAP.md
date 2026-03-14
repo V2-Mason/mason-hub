@@ -1,6 +1,6 @@
 # System Map — 受力分析
 
-> 最后更新: 2026-03-14 21:33 ET (/standup 增量更新)
+> 最后更新: 2026-03-14 23:45 ET (EMP_0000 架构变更更新)
 > 更新权: Agent 自动更新可推断字段，耦合关系变更需 Mason 确认
 > 所有 Agent session 启动时读取此文件 + MASON_AUTHORITY.md
 
@@ -8,9 +8,9 @@
 
 ## 全局状态
 
-**Layer 2 建立中 → Agent OS v2 架构升级** — 六子系统框架落地（21/21 能力点），但四支柱评估揭示系统是"自动化调度"不是真 Agent（Planning 10%/Reflection 15%）。Dispatcher 处于 /pause 状态。
+**Agent OS v2 基础设施落地** — 16 EMP 完成 v2 四文件迁移 + 通信协议栈建立（8 种消息类型 + inbox 机制 + 权限矩阵 + 异常处理）+ 首次真实业务场景 multi-agent 端到端跑通（EMP_0001→0010→0001→0000，零人工介入）。四支柱差距仍在（Planning 10%/Reflection 15%）。Dispatcher 处于 /pause 状态。
 
-当前合力方向: **向内收敛 + Agent 化**（六子系统稳定后推 Planning 能力）
+当前合力方向: **通信层验证 + claude -p 替换 + Dispatcher 恢复**（基础设施就绪，进入集成验证阶段）
 
 ---
 
@@ -19,12 +19,13 @@
 ### 1. Agent 自治线
 ```
 状态:    active
-里程碑:  Agent OS v2 六子系统 21/21 + 质量框架（decompose+critic+error-analysis）集成到 run-agent.sh + pre-commit hook 铁律执行
-阻力:    设计缺口: 四支柱（Planning/Reflection/Tool Use/Collab）全面不足，run-agent.sh 1300行 God Script 待拆
+里程碑:  Agent OS v2 六子系统 21/21 + 16 EMP v2 四文件迁移完成 + agent-loader.sh 提取 + 通信协议栈（message_schema 8类型 + inbox + permissions + requires_review + task_failed 决策树 + system-status.sh）+ 首次 multi-agent e2e 跑通（零人工）
+阻力:    内部工程: claude -p 需替换为 Claude API 调用层（嵌套限制）；workflow 文件兼容性待验证
+         设计缺口: 四支柱（Planning/Reflection/Tool Use/Collab）全面不足，run-agent.sh 1300行 God Script 待拆
 耦合:    ↓ 效率影响 → 数据线、内容线、商业线
 上次更新: 2026-03-14
 ```
-**解读**: 3/14 大幅推进 Agent OS v2——六子系统全部落地（Accounts 标准化+四管 Memory+Protocols YAML+Task Engine+Control Plane），质量框架（递归拆解+多维评估+错误分析）集成到执行流程。但四支柱评估揭示根本差距：系统是调度器不是 Agent。Dispatcher 处于 /pause 状态（3/13 起）。
+**解读**: 3/14 完成 Agent OS v2 基础设施三大块——(1) 16 EMP 从单文件 config.md 迁移到 v2 四文件格式（identity/state/soul/tools + memory），agent-loader.sh 从 run-agent.sh 提取适配新结构；(2) 通信协议栈全栈建立，从消息格式到权限控制到异常处理到可观测性；(3) 首次真实业务场景 multi-agent 跑通（素仁轩短视频脚本：EMP_0001 派活→EMP_0010 执行→EMP_0001 验收→EMP_0000 归档，4 条消息完整归档，零人工介入）。下一步：claude -p 替换 + workflow 兼容性验证 + Dispatcher 恢复。
 
 ### 2. 数据线
 ```
@@ -65,13 +66,38 @@
 ### 5. 审计与可观测性线
 ```
 状态:    active
-里程碑:  audit schema + error-analysis.py（错误分类+通过率+模式识别）+ critic.py（E2E+Component评估）
+里程碑:  audit schema + error-analysis.py + critic.py + system-status.sh（EMP 状态/消息队列/任务统计实时快照）+ permissions.md 权限矩阵 + check_permission() 运行时校验
 阻力:    设计缺口: 评估维度是规则引擎不是 LLM，深度不够
 耦合:    ← 依赖: 自治线稳定（agent 要先能自主跑，才有东西可审计）
          ↓ 解锁: 系统自我诊断、历史追溯、自动优化建议
 上次更新: 2026-03-14
 ```
 **解读**: 审计数据持续积累，30 条记录。新增记录包含精确 token/cost 追踪（input_tokens/output_tokens/cost_usd/model 字段）。三层审计中执行层完成，决策层和因果层待设计。
+
+---
+
+## 通信协议层（3/14 新增）
+
+```
+架构:
+  shared/protocols/message_schema.md    ← 8 种消息类型定义
+  shared/protocols/permissions.md       ← 权限矩阵（谁能发什么给谁）
+  scripts/agent-loader.sh               ← send_message / check_inbox / check_permission
+  scripts/system-status.sh              ← 实时可观测快照
+
+消息生命周期:
+  send_message() → data/messages/inbox_<id>.jsonl → check_inbox() 自动读取
+                                                   → archive/inbox_<id>_YYYY-MM.jsonl
+
+治理四层:
+  1. 权限控制    check_permission() — task_assign 仅 Manager/PM，review_response 仅 EMP_0000/0012
+  2. 验证机制    requires_review 字段 — 对外内容必须 review_request → approved 才能 complete
+  3. 异常处理    task_failed 决策树 — 重试/人工裁决/拆分/基础设施升级
+  4. 可观测性    system-status.sh — EMP 状态 + 消息队列 + 任务统计
+
+验证状态:
+  ✅ 首次 e2e 跑通: EMP_0001→EMP_0010→EMP_0001→EMP_0000（素仁轩短视频脚本，4 条消息完整归档）
+```
 
 ---
 
@@ -105,11 +131,12 @@
 
 | 优先级 | 行动 | 理由 | Owner |
 |--------|------|------|-------|
-
-| 1 | Planning 能力建设 | 让 agent 收到目标自己拆解（decompose.py 接 LLM），四支柱突破点 | EMP_0002 |
-| 2 | run-agent.sh 模块化拆分 | 1300 行 God Script → 子系统模块，降低维护成本和 bug 风险 | EMP_0002 |
-| 3 | Dispatcher /pause 解除 | 3/13 起暂停，Agent OS v2 落地后应恢复自动派发 | Mason 决定 |
-| 4 | 阿里云连通性排查 | 当前 SSH 不通，影响数据同步 | EMP_0004 |
+| 1 | claude -p → Claude API 调用层 | claude -p 嵌套限制是 agent 自主执行的硬阻塞，通信层已就绪但执行层受限 | EMP_0002 |
+| 2 | workflow 文件兼容性验证 | v2 迁移后 workflow 四个 grep 命令待跑，确认无断裂 | EMP_0002 |
+| 3 | Dispatcher /pause 解除 | 3/13 起暂停，v2 基础设施+通信层已就绪，应恢复自动派发 | Mason 决定 |
+| 4 | Planning 能力建设 | 让 agent 收到目标自己拆解（decompose.py 接 LLM），四支柱突破点 | EMP_0002 |
+| 5 | run-agent.sh 模块化拆分 | 1300 行 God Script → 子系统模块，降低维护成本和 bug 风险 | EMP_0002 |
+| 6 | 阿里云连通性排查 | 当前 SSH 不通，影响数据同步 | EMP_0004 |
 
 **不推荐现在做的**:
 - 商业运营线任何事 → 全是外部依赖

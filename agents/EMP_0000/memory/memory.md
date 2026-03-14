@@ -126,3 +126,10 @@
 - 链路：EMP_0001 task_assign → EMP_0010 confirmed → EMP_0010 执行+自评 → EMP_0010 task_complete → EMP_0001 验收通过 → EMP_0001 task_complete → EMP_0000
 - 4 条消息全程 inbox 自动传递，零人工中转
 - 新增 task_assign 消息类型：payload 必含 title/description/context_files/deadline 四字段
+
+### SYSTEM_MAP 自动更新闭环 (2026-03-14)
+<!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
+- 新增 affects_system_map / summary_for_system_map 字段到 message_schema
+- soul.md 新增 7 步更新流程：收到 affects_system_map:true 的 task_complete → 自动更新对应能力线里程碑+阻力+推荐行动+时间戳 → commit
+- 不自动更新的字段：耦合关系（需 Mason 确认）、硬性等待项（需状态变化触发）
+- 这解决了 SYSTEM_MAP 手动更新的滞后问题——之前每次架构变更后需要 Mason 手动指示更新

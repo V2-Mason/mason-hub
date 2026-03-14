@@ -16,6 +16,9 @@ payload: |
   [具体内容]
 requires_response: true / false
 requires_review: true / false / null  # null = 由接收方soul.md决定
+affects_system_map: true / false / null  # 该任务完成是否影响能力线状态
+summary_for_system_map: |              # affects_system_map为true时必填
+  [一句话描述变更对能力线的影响]
 deadline: ISO8601 / null
 timestamp: ISO8601
 ```
@@ -56,6 +59,9 @@ timestamp: ISO8601
    - 涉及代码变更且影响生产环境
    - 涉及品牌定价或营销策略决策
    执行方在 task_complete 前检查任务的 requires_review 字段。
+8. 当 task_complete 涉及架构变更、能力线里程碑推进、或阻力状态变化时，
+   发送方必须设 `affects_system_map: true` 并填写 `summary_for_system_map`。
+   EMP_0000 收到后自动更新 SYSTEM_MAP.md。
 
 ---
 
