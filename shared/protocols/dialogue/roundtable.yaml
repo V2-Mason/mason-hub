@@ -3,6 +3,8 @@
 # 多个角色各自独立表态 → 强制互相挑战 → 修正立场。
 # 三阶段结构防止锚定偏见和虚假共识。
 
+id: roundtable
+version: "1.0"
 type: roundtable
 description: "多角色独立表态 → 强制挑战 → 修正立场，产出共识或分歧报告"
 

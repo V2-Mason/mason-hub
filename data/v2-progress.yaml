@@ -7,7 +7,7 @@
 target: "全子系统 90%"
 started: "2026-03-14"
 total_capability_points: 21
-completed_points: 4
+completed_points: 7
 
 sessions:
   S1:
@@ -32,19 +32,19 @@ sessions:
         status: done
 
   S2:
-    status: pending
+    status: done
     content: "Phase 1C (Protocols ④⑤⑥)"
     points: 3
     deliverables:
       - id: protocols-yaml-format
-        desc: "shared/protocols/*.yaml 声明式格式"
-        status: pending
+        desc: "6 个 md→yaml 转换 + 3 个 dialogue yaml 补 id/version"
+        status: done
       - id: protocols-versioning
-        desc: "version 字段 + changelog"
-        status: pending
+        desc: "version 字段 + changelog（所有 9 个 protocol）"
+        status: done
       - id: protocols-conflict-check
-        desc: "scripts/protocol-check.py"
-        status: pending
+        desc: "scripts/protocol-check.py — PASS（0 错误 0 警告）"
+        status: done
 
   S3:
     status: pending

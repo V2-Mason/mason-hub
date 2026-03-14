@@ -1,0 +1,55 @@
+# escalation-architecture.yaml — 四层 Debug Escalation 架构
+# 源文件: escalation-architecture.md (2026-03-12)
+
+id: escalation-architecture
+version: "1.0"
+type: global
+description: "四层自动 escalation 链路：Dev → PM → Platform Dev → Mason"
+
+changelog:
+  - version: "1.0"
+    date: "2026-03-14"
+    change: "从 markdown 转为声明式 YAML"
+
+layers:
+  - level: 0
+    name: "Dev"
+    agent_pattern: "EMP_0002|EMP_0005|EMP_0009"
+    action: "自动修复（每次最多 3 轮 dev-verify-loop）"
+    on_failure: "git checkout 恢复 + audit + Slack → 触发 Layer 1"
+    max_rounds: 3
+
+  - level: 1
+    name: "PM"
+    agent_pattern: "EMP_0001|EMP_0008"
+    action: "评估分类（A-E），运行 check-escalation.sh"
+    on_failure: "A/B→Dev, C/D→Platform Dev, E→Mason"
+    max_retries: 2
+
+  - level: 2
+    name: "Platform Dev"
+    agent: "EMP_0002"
+    action: "跨域修复（skills/测试/agent 配置）"
+    on_failure: "Slack 通知 Mason"
+    max_rounds: 3
+
+  - level: 3
+    name: "Mason"
+    action: "人工决策（需求调整/架构重设计/搁置）"
+
+  - level: horizontal
+    name: "SRE"
+    agent: "EMP_0004"
+    action: "全局监控 audit.jsonl + chain depth + token 消耗"
+
+limits:
+  max_chain_depth: 10
+  total_max_rounds: 15  # Dev 9 + PM 3 + Platform Dev 3
+  total_max_tokens: 216000
+
+principles:
+  - "不跳层：Dev 不直接找 Mason"
+  - "带上下文：每次附 audit.jsonl 记录"
+  - "有时限：每层一个工作周期，超时自动升级"
+  - "可追溯：所有 escalation 记录在 audit.jsonl"
+  - "有上限：每层明确重试次数，防止无限循环"

@@ -1,0 +1,54 @@
+# dev-execution.yaml — Dev Agent 标准任务执行协议
+# 源文件: dev-execution.md (2026-03-12)
+
+id: dev-execution
+version: "1.0"
+type: global
+description: "无状态 Dev agent (EMP_0002/0005/0009) 的标准任务执行流程"
+
+changelog:
+  - version: "1.0"
+    date: "2026-03-14"
+    change: "从 markdown 转为声明式 YAML"
+
+task_types:
+  code:
+    steps:
+      - "读现有代码，理解当前逻辑"
+      - "规划修改方案（影响文件/副作用）"
+      - "执行修改——保持最小化"
+      - "强制验证: skills/dev-tools/dev-verify-loop.sh {files} {test_module}"
+      - "验证通过后汇报完成"
+    verify_command: "skills/dev-tools/dev-verify-loop.sh"
+    max_verify_rounds: 3
+    on_verify_fail: "汇报 task_failed，附完整验证输出"
+
+  analysis:
+    steps:
+      - "明确分析目标和输出格式"
+      - "收集数据 → 执行分析 → 区分事实和推断"
+      - "汇报完成，附分析结果"
+
+  troubleshooting:
+    steps:
+      - "收集信息（日志/代码）→ 定位问题 → 分析根因"
+      - "执行修复 → 验证修复有效"
+      - "汇报：问题原因、修复方案、验证结果"
+
+report_format:
+  success: "做了什么 + 修改文件 + 验证结果 + insights"
+  failure: "每轮错误 + 根因判断 + 尝试过的方向 + 建议"
+
+code_rules:
+  - "先理解再改，保持修改最小化"
+  - "不做顺便优化"
+  - "发现其他问题记 insights，不自行修复"
+  - "不删文件除非明确要求"
+
+forbidden:
+  - "绕过验证"
+  - "伪造结果"
+  - "3 轮后继续改代码"
+  - "跳过 PM 直报 Mason"
+  - "改测试文件让测试过"
+  - "隐瞒失败信息"

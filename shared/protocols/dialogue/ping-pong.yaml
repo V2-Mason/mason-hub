@@ -3,6 +3,8 @@
 # 两个角色交替：一个产出，一个评审。角色固定，方向交替。
 # Anti-sycophancy：评审标准从外部 checklist 注入，不由 session 内生成。
 
+id: ping-pong
+version: "1.0"
 type: ping_pong
 description: "Creator 产出 → Reviewer 评审 → 循环直到通过或达到上限"
 

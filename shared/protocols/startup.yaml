@@ -1,0 +1,42 @@
+# startup.yaml — 有状态 Agent 启动流程协议
+# 源文件: startup.md (2026-03-12)
+
+id: startup
+version: "1.0"
+type: global
+description: "有状态 Agent 的标准启动流程（run-agent.sh 自动处理注入后的补充行为）"
+
+changelog:
+  - version: "1.0"
+    date: "2026-03-14"
+    change: "从 markdown 转为声明式 YAML"
+
+note: "run-agent.sh 已自动注入 lessons 和 knowledge_base，以下是 session 内补充"
+
+steps:
+  - id: load_context
+    desc: "加载项目上下文"
+    files:
+      - "knowledge_base.md（如已注入则跳过）"
+      - "context.json — 项目当前状态"
+      - "task_list.json — 待办/进行中/已完成"
+      - "decisions.md — 历史决策"
+
+  - id: evaluate_tasks
+    desc: "评估当前任务状态（内部评估，不输出）"
+    checks:
+      - "pending 任务数量和优先级"
+      - "是否有 in_progress 的中断恢复场景"
+      - "最近 decisions.md 有没有影响当前任务的新决策"
+
+  - id: interrupt_recovery
+    desc: "中断恢复检查"
+    condition: "task_list.json 有 in_progress 任务"
+    actions:
+      - "检查对应文件是否有部分修改（git status）"
+      - "评估从头重做还是接续"
+      - "原子性子任务直接重新分配给 Dev"
+
+memory_write_timing:
+  long_term: "每完成 5 个任务或每周一次"
+  short_term: "session 异常退出时可选写入"
