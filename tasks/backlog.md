@@ -570,6 +570,22 @@ Phase 3 — 数据 SDK + 扩展:
 - [x] 自建 Skill（4 个）：content-performance/cross-correlate/decision-log/pattern-extract — 2026-03-14（EMP_0002）
 - [x] compact-memory.sh 扩展：lesson 质量评分 + 四管分别压缩 — 2026-03-14（EMP_0002）
 - [ ] Role/Playbook 增强（3 个）：EMP_0015 加趋势归因+决策回顾方法论、EMP_0000 加自主度评估方法论
+- [x] Config 膨胀修复：EMP_0000 5.4K→4.1K + EMP_0008 7.3K→5.0K，操作细节移到 playbook — 2026-03-14（EMP_0002）
+- [x] 铁律执行层：pre-commit hook 硬阻塞 config 膨胀（从 advisory 变 blocking）— 2026-03-14（EMP_0002）
+- [x] 质量框架：decompose.py + critic.py + error-analysis.py + 集成到 run-agent.sh — 2026-03-14（EMP_0002）
+
+**Agent Design 四支柱评估（2026-03-14 Mason 对话）**:
+
+> mason-hub 离真正的 Agent 系统差距：Reflection 15% / Tool Use 40% / Planning 10% / Multi-agent Collab 10%。
+> 核心问题：系统是"自动化调度"不是"Agent"——agent 不反思、不自主选工具、不规划、不协作。
+> 突破点：Planning 先行（让 agent 收到目标自己拆解），自然带动 Reflection 和 Tool Use。
+
+待办（Agent 化路线）：
+- [ ] Planning 能力：agent 收到目标而非指令，自主拆解步骤并评估可行性（decompose.py 需接 LLM）
+- [ ] Reflection 能力：critic.py 接 LLM 做真正的质量评估，agent 执行中途可暂停反思
+- [ ] Tool Use 自主化：agent 运行时查 registry.yaml 自主选择工具，而非流程硬编码
+- [ ] Multi-agent 实战：ping-pong/roundtable 协议跑第一个真实场景
+- [ ] run-agent.sh 拆分：从 1300 行 God Script 拆为模块化 Agent Runtime
 - [x] Roster 能力索引 + 动态匹配：build-capability-index.py + dispatcher 中文关键词匹配（6/6 测试通过）— 2026-03-14（EMP_0002）
 - [x] Task Engine 标准化：task.yaml schema + 状态机 + depends_on + extract-lessons.py 经验自动提取 — 2026-03-14（EMP_0002）
 - [x] Control Plane 统一：escalation-queue.py + task-dashboard.py + /approve skill — 2026-03-14（EMP_0002）

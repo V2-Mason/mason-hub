@@ -223,3 +223,10 @@
 - 关键经验：interactive session 和 agent session 是两个独立 memory 通道，之前只覆盖了 agent session
 - CLAUDE.md 里"必须启动时读取"这种指令会导致 Claude 主动 read_file → 进入上下文累积，改为"按需读取"
 - Gap 类型：设计缺口 — 两种 session 模式的 memory 覆盖不一致
+
+### 铁律执行 + 质量框架 + 四支柱诚实评估 (2026-03-14)
+- pre-commit hook 是唯一可靠的铁律执行方式——规则写在文档里 Claude 会合理化绕过，写在代码里才强制
+- 给自己的工作打分时，"文件存在"≠"能力存在"。decompose/critic/error-analysis 写了脚本但从未在真实流程中被验证过时不应该算 90%
+- 四支柱评估（Reflection/Tool Use/Planning/Collab）揭示 mason-hub 是"自动化调度系统"不是"Agent 系统"——agent 不反思、不自主选工具、不规划、不协作
+- run-agent.sh 从 50 行长到 1300 行是 God Script 反模式，应拆为模块化 Agent Runtime
+- Gap 类型：认知偏差 — 过度评估自己工作的完成度，需要外部校准
