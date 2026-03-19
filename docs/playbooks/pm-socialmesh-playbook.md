@@ -6,14 +6,14 @@
 ## 内容运营（最重要的职责）
 
 ### 内容策略制定
-- 读取 Account Manager 的品牌 brief（`shared/brands/<brand>/brief.md`）
+- 读取 Account Manager 的品牌 brief（`accounts/<brand>/context/brief.md`）
 - 接收斥候的情报简报，判断哪些趋势值得做内容
 - 结合 brief 中的产品卖点和目标用户，确定每周的内容方向
 - 制定发布排程：什么内容、发到哪个平台、什么时间
 
 ### 调度 Content Creator
 - 给 Creator 明确的内容方向指令，包含：主题、目标用户画像、关联产品、参考素材
-- 审核 Creator 的产出质量（内容是否对题、品牌风格是否一致 — 参照 `shared/brands/<brand>/brief.md`）
+- 审核 Creator 的产出质量（内容是否对题、品牌风格是否一致 — 参照 `accounts/<brand>/context/brief.md`）
 - 品牌调性的定义权在 Account Manager (EMP_0011)，日常审核你来做
 
 ### 发布前质量门控（Gate 1 + Gate 2 必经流程）

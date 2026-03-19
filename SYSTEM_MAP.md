@@ -81,8 +81,8 @@
 
 ```
 架构:
-  shared/protocols/message_schema.md    ← 8 种消息类型定义
-  shared/protocols/permissions.md       ← 权限矩阵（谁能发什么给谁）
+  kernel/standards/protocols/message_schema.md    ← 8 种消息类型定义
+  kernel/standards/protocols/permissions.md       ← 权限矩阵（谁能发什么给谁）
   scripts/agent-loader.sh               ← send_message / check_inbox / check_permission
   scripts/system-status.sh              ← 实时可观测快照
 
