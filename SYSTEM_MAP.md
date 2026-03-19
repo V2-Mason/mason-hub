@@ -224,3 +224,51 @@ stable  = 已达当前里程碑，等解锁下一层
 ```
 
 **核心过滤规则**: 只有"内部工程"类阻力值得立即投入。其他三类要么等、要么绕、要么先设计。
+
+---
+
+## 联邦节点状态
+
+> Mason 联邦体系：mason-hub 作为中枢调度，各项目保持独立运行能力。
+> 协议版本: v0.1（声明式，无实际通信）
+> 规范文档: shared/adapter-spec.md
+
+| 节点 | 项目路径 | 类型 | 端点 | 能力数 | 状态 | 备注 |
+|------|----------|------|------|--------|------|------|
+| surenxuan | ~/surenxuan | API | localhost:8000 | 9 | active | 有 P0 bug 待修 |
+| tiktok-viral | ~/tiktok-viral-analysis | Script | script-based | 7 | active | Pipeline 80% |
+| socialmesh | ~/socialmesh | API | localhost:8001 | 5 | active | 基础功能完成 |
+
+### 联邦能力全景
+
+```
+数据采集        tiktok-viral: scrape_tiktok, scrape_amazon
+分析            tiktok-viral: viral_score, review_nlp, competitor_price
+库存管理        surenxuan: inventory.query, inventory.update
+商品管理        surenxuan: product.list, product.detail
+订单管理        surenxuan: order.create, order.list
+定价            surenxuan: pricing.get
+内容生成        surenxuan: content.generate
+视频生成        tiktok-viral: video.generate, video.reverse_engineer
+内容发布        socialmesh: content.publish, content.schedule, content.draft
+数据分析        socialmesh: analytics.engagement, analytics.reach
+报表            surenxuan: report.sales
+```
+
+### 未来节点（planned）
+
+| 节点 | 用途 | 触发条件 |
+|------|------|----------|
+| shopify connector | Shopify API 对接 | 素仁轩出海启动时 |
+| amazon connector | Amazon API 对接 | merchant agent Layer 1B |
+| tiktok-shop connector | TikTok Shop API 对接 | 素仁轩出海启动时 |
+| EMP_0017 merchant agent | 跨平台商家代理 | 联邦架构 v0.2 就绪后 |
+
+### 联邦架构版本路线
+
+```
+v0.1（当前）  声明式 — adapter.yaml 只读，无实际通信
+v0.2          单向 — mason-hub 可通过 hooks 向节点发指令
+v0.3          双向 — 节点可主动向 mason-hub 上报事件
+v1.0          完整 A2A — 支持跨平台 agent 间协作
+```

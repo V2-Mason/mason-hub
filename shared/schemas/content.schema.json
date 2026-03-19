@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Content",
+  "description": "跨项目内容数据标准格式",
+  "version": "0.1",
+  "type": "object",
+  "required": ["content_id", "type", "status"],
+  "properties": {
+    "content_id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["video", "image", "text", "carousel"]
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["tiktok", "xhs", "douyin", "wechat", "instagram", "youtube", "linkedin"]
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "media_urls": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "hashtags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "scheduled", "published", "archived"]
+    },
+    "scheduled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "views": { "type": "integer" },
+        "likes": { "type": "integer" },
+        "comments": { "type": "integer" },
+        "shares": { "type": "integer" }
+      }
+    },
+    "related_skus": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "关联的商品SKU"
+    },
+    "extra": {
+      "type": "object"
+    }
+  }
+}

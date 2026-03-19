@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Product",
+  "description": "跨项目商品数据标准格式",
+  "version": "0.1",
+  "type": "object",
+  "required": ["sku", "name"],
+  "properties": {
+    "sku": {
+      "type": "string",
+      "description": "全局唯一SKU标识"
+    },
+    "name": {
+      "type": "string",
+      "description": "商品名称"
+    },
+    "brand": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "description": "品类",
+      "examples": ["skincare", "bags", "luggage", "clothing", "shoes"]
+    },
+    "cost": {
+      "type": "number",
+      "description": "采购成本（原始币种）"
+    },
+    "cost_currency": {
+      "type": "string",
+      "default": "CNY"
+    },
+    "weight_g": {
+      "type": "number",
+      "description": "重量（克）"
+    },
+    "images": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "discontinued", "planned"]
+    },
+    "markets": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "上架的市场列表"
+    },
+    "supplier": {
+      "type": "string",
+      "description": "供应商标识"
+    },
+    "expiry_date": {
+      "type": "string",
+      "format": "date",
+      "description": "保质期（适用于护肤品等）"
+    },
+    "extra": {
+      "type": "object"
+    }
+  }
+}

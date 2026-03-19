@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Price",
+  "description": "跨项目价格数据标准格式",
+  "version": "0.1",
+  "type": "object",
+  "required": ["sku", "channel", "price", "currency"],
+  "properties": {
+    "sku": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["offline", "wechat", "xhs", "douyin", "shopify", "amazon", "tiktok-shop"]
+    },
+    "market": {
+      "type": "string",
+      "enum": ["domestic", "international"]
+    },
+    "price": {
+      "type": "number",
+      "description": "当前售价"
+    },
+    "currency": {
+      "type": "string",
+      "examples": ["CNY", "USD"]
+    },
+    "compare_at_price": {
+      "type": "number",
+      "description": "划线价/原价"
+    },
+    "cost": {
+      "type": "number",
+      "description": "成本价"
+    },
+    "margin_pct": {
+      "type": "number",
+      "description": "毛利率百分比"
+    },
+    "competitor_prices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "competitor": { "type": "string" },
+          "price": { "type": "number" },
+          "url": { "type": "string" },
+          "scraped_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "extra": {
+      "type": "object"
+    }
+  }
+}

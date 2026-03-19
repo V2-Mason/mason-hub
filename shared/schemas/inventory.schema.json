@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Inventory",
+  "description": "跨项目库存数据标准格式",
+  "version": "0.1",
+  "type": "object",
+  "required": ["sku", "quantity", "channel"],
+  "properties": {
+    "sku": {
+      "type": "string",
+      "description": "全局唯一SKU标识"
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "当前库存数量"
+    },
+    "channel": {
+      "type": "string",
+      "description": "渠道标识",
+      "enum": ["offline", "wechat", "xhs", "douyin", "shopify", "amazon", "tiktok-shop"]
+    },
+    "market": {
+      "type": "string",
+      "description": "市场标识",
+      "enum": ["domestic", "international"]
+    },
+    "warehouse": {
+      "type": "string",
+      "description": "仓库标识"
+    },
+    "reserved": {
+      "type": "integer",
+      "description": "已预留数量（已下单未发货）",
+      "default": 0
+    },
+    "available": {
+      "type": "integer",
+      "description": "可用数量（quantity - reserved）"
+    },
+    "reorder_point": {
+      "type": "integer",
+      "description": "补货触发点"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "extra": {
+      "type": "object",
+      "description": "项目特有的扩展字段"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+# Connector: socialmesh
+# 多平台社交媒体管理工具
+
+project: socialmesh
+project_path: /home/hangn/socialmesh
+adapter_path: /home/hangn/socialmesh/.mason/adapter.yaml
+
+connection:
+  type: api
+  endpoint: http://localhost:8001
+  auth: none  # 本地运行
+
+tech_stack:
+  backend: FastAPI + SQLAlchemy + Celery + Redis
+  frontend: React 18 + Vite + Tailwind
+  database: PostgreSQL 16
+  automation: Playwright
+
+schema_mappings:
+  content:
+    # socialmesh 内部内容数据 → content schema
+    field_map:
+      content_id: post_id
+      platform: platform
+      status: status
+
+notes: |
+  socialmesh 提供多平台内容发布和排期能力。
+  可与 tiktok-viral 的视频生成能力配合使用。

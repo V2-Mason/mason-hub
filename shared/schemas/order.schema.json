@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order",
+  "description": "跨项目订单数据标准格式",
+  "version": "0.1",
+  "type": "object",
+  "required": ["order_id", "channel", "items", "status"],
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "description": "全局唯一订单ID"
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["offline", "wechat", "xhs", "douyin", "shopify", "amazon", "tiktok-shop"]
+    },
+    "market": {
+      "type": "string",
+      "enum": ["domestic", "international"]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sku", "quantity", "unit_price"],
+        "properties": {
+          "sku": { "type": "string" },
+          "quantity": { "type": "integer" },
+          "unit_price": { "type": "number" },
+          "discount": { "type": "number", "default": 0 }
+        }
+      }
+    },
+    "total": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "confirmed", "shipped", "delivered", "returned", "cancelled"]
+    },
+    "customer_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "extra": {
+      "type": "object"
+    }
+  }
+}

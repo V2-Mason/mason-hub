@@ -1,0 +1,33 @@
+# Connector: tiktok-viral
+# TikTok 爆款研究工具
+
+project: tiktok-viral-analysis
+project_path: /home/hangn/tiktok-viral-analysis
+adapter_path: /home/hangn/tiktok-viral-analysis/.mason/adapter.yaml
+
+connection:
+  type: script
+  # 不是 API 服务，通过 Python 脚本调用
+  scripts:
+    scrape_tiktok: scripts/run_reverse_engineer.py
+    scrape_amazon: scripts/scrape_pet_reviews.py  # parking-lot 中的能力
+    viral_score: scripts/viral_score.py
+    generate_video: scripts/generate_video.py
+
+tech_stack:
+  language: Python
+  ai: Gemini 2.5 Flash + Kling 3.0 API
+  data: Apify REST API
+
+schema_mappings:
+  content:
+    # tiktok-viral 的视频数据 → content schema
+    field_map:
+      content_id: video_id
+      platform: "tiktok"  # 固定值
+      title: desc
+      # 详细映射在 transforms.py 中实现
+
+notes: |
+  主要提供数据采集和分析能力给其他项目。
+  视频生成能力（Kling API）可供 socialmesh 调用。
