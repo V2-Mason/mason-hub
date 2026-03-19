@@ -1,0 +1,33 @@
+# Mason Hub — Project Registry
+# 所有已注册项目及其能力声明
+# 更新时机：项目毕业（从 parking-lot 升级）或能力变更时
+
+projects:
+  surenxuan:
+    path: ~/surenxuan
+    adapter: ~/surenxuan/.mason/adapter.yaml
+    type: api
+    endpoint: http://localhost:8000
+    status: active
+    account: accounts/surenxuan/
+    deployment: kernel/deployments/surenxuan.yaml
+    description: K-Beauty 韩妆零售管理系统
+
+  tiktok-viral:
+    path: ~/tiktok-viral-analysis
+    adapter: ~/tiktok-viral-analysis/.mason/adapter.yaml
+    type: script
+    status: active
+    account: null  # 内部工具，无客户账户
+    deployment: kernel/deployments/tiktok-viral.yaml
+    description: TikTok 爆款视频分析工具
+
+  socialmesh:
+    path: ~/socialmesh
+    adapter: ~/socialmesh/.mason/adapter.yaml
+    type: api
+    endpoint: http://localhost:8001
+    status: active
+    account: accounts/socialmesh/
+    deployment: kernel/deployments/socialmesh.yaml
+    description: 社交媒体内容发布平台

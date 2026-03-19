@@ -1,0 +1,23 @@
+# Deployment: tiktok-viral
+# TikTok 爆款视频分析工具 — agent 配备清单
+# 内部工具，无客户账户
+
+project: tiktok-viral
+path: ~/tiktok-viral-analysis
+account: null
+
+orchestration_agents:
+  - id: EMP_0010
+    role: Dev
+    scope: Python 脚本开发、数据管道
+
+code_agents: []  # 暂无独立 Python agent，全部是脚本
+
+capabilities:
+  - scrape.tiktok
+  - scrape.amazon
+  - analysis.viral_score
+  - analysis.review_nlp
+  - analysis.competitor_price
+  - video.generate
+  - video.reverse_engineer

@@ -1,0 +1,31 @@
+# Kernel Memory Sync Rules v0.1
+# 定义什么记忆从 EMP/项目本地上提到 kernel/memory/
+#
+# 三层写入规则：
+#   EMP memory (agents/EMP_XXXX/memory/)  = 技术经验、流程经验、失败教训
+#   Account (accounts/[name]/)            = 客户专属业务数据、品牌知识
+#   Kernel (kernel/memory/)               = 跨客户洞察、品类通用知识
+#
+# 不自动同步：项目内任务状态、临时缓存、翻译缓存、客户业务数据
+
+rules:
+  - id: category_insight
+    name: 品类洞察上提
+    description: Agent 发现品类级别（非客户专属）的规律时，写入 kernel/memory/
+    trigger: EMP 记忆中包含品类级别的发现
+    example: "韩妆测评视频完播率比种草高 40%"
+    destination: kernel/memory/category_insights.md
+
+  - id: decision_pattern
+    name: 决策模式上提
+    description: 同一类决策重复出现 3 次以上，提炼为规则
+    trigger: 同类决策在不同客户/项目中出现 ≥3 次
+    example: "库存低于 X 天销量时补货"
+    destination: rules/  # 成为产品的"出厂设置"
+
+  - id: failure_lesson
+    name: 失败经验上提
+    description: Agent 连续失败 + 根因分析完成后，提炼为通用教训
+    trigger: 连续失败 + 根因分析完成
+    example: "Apify TikTok scraper 对私密账号返回空数据"
+    destination: kernel/memory/failure_lessons.md

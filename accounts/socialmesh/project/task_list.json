@@ -1,0 +1,117 @@
+{
+  "project_id": "socialmesh",
+  "last_updated": "2026-03-13T10:05:00",
+  "tasks": [
+    {
+      "task_id": "socialmesh_20260312_003",
+      "title": "界面中文化",
+      "description": "将 SocialMesh 前端界面文字从英文改为中文。先硬编码中文，不做 i18n 框架。范围：导航栏、按钮、表单标签、提示信息、状态文字",
+      "priority": "P0",
+      "status": "assigned",
+      "assigned_at": "2026-03-12T10:30:00",
+      "type": "dev",
+      "assignee": "EMP_0009",
+      "created_at": "2026-03-12",
+      "source": "backlog sprint 2026-03-03"
+    },
+    {
+      "task_id": "socialmesh_20260312_004",
+      "title": "内容编辑器图片上传",
+      "description": "需前端上传组件 + 后端存储 API + adapter 传递 image_paths。具体：1) 后端 POST /api/upload 接收图片存到 uploads/ 目录，返回 URL 2) 前端编辑器添加图片上传区域（拖拽或点击） 3) 适配器生成内容时带上 image_paths",
+      "priority": "P0",
+      "status": "pending",
+      "type": "dev",
+      "assignee": "EMP_0009",
+      "created_at": "2026-03-12",
+      "source": "backlog sprint 2026-03-03"
+    },
+    {
+      "task_id": "socialmesh_20260312_005",
+      "title": "增加立即发布按钮",
+      "description": "后端已支持立即发布，前端补上按钮。在内容编辑器的排程按钮旁增加'立即发布'按钮，点击后直接调用 publish API（不走 Celery 排程）",
+      "priority": "P1",
+      "status": "pending",
+      "type": "dev",
+      "assignee": "EMP_0009",
+      "created_at": "2026-03-12",
+      "source": "backlog sprint 2026-03-03"
+    },
+    {
+      "task_id": "socialmesh_20260312_006",
+      "title": "XHS 标题长度实时校验",
+      "description": "在内容编辑器中，当选择小红书平台时，标题输入框实时校验不超过 20 字，超出时显示红色提示",
+      "priority": "P1",
+      "status": "pending",
+      "type": "dev",
+      "assignee": "EMP_0009",
+      "created_at": "2026-03-12",
+      "source": "backlog sprint 2026-03-03"
+    },
+    {
+      "task_id": "socialmesh_20260227_003",
+      "title": "配置 Reddit/LinkedIn OAuth API Keys",
+      "description": "Reddit 和 LinkedIn 的 CLIENT_ID/CLIENT_SECRET 为空。需要 Mason 在平台开发者控制台注册应用获取",
+      "priority": "P1",
+      "status": "blocked",
+      "type": "config",
+      "created_at": "2026-02-27",
+      "blocked_by": "Mason 操作"
+    },
+    {
+      "task_id": "socialmesh_20260227_004",
+      "title": "Twitter/X CLIENT_SECRET 配置",
+      "description": "已有 CLIENT_ID，但 CLIENT_SECRET 为空。需要 Mason 从 X Developer Portal 复制 secret",
+      "priority": "P1",
+      "status": "blocked",
+      "type": "config",
+      "created_at": "2026-02-27",
+      "blocked_by": "Mason 操作"
+    }
+  ],
+  "completed_tasks": [
+    {
+      "task_id": "socialmesh_20260312_001",
+      "title": "Content.status 发布后更新",
+      "completed_at": "2026-03-13",
+      "insights": "成功路径已存在，补充了：ContentStatus.FAILED enum + 两个失败路径更新 Content.status + Alembic migration"
+    },
+    {
+      "task_id": "socialmesh_20260312_002",
+      "title": "内容列表显示发布状态 badge",
+      "completed_at": "2026-03-13",
+      "insights": "ContentEditor + Dashboard 两处添加四色 badge(published 绿/scheduled 蓝/draft 灰/failed 红)。vite build 验证通过"
+    },
+    {
+      "task_id": "socialmesh_20260227_init",
+      "title": "MVP 全栈搭建",
+      "completed_at": "2026-02-27",
+      "insights": "一天内从 0 到 MVP，20 个文件 +1787/-637 行变更。关键决策：OpenAI 替代 Anthropic 作为主力 LLM、XHS 用 Playwright 而非 API"
+    },
+    {
+      "task_id": "socialmesh_20260227_bugfix",
+      "title": "第一轮 QA + Bug 修复（7 个）",
+      "completed_at": "2026-02-27",
+      "insights": "关键发现：适配结果从未显示过（dict vs array 格式问题）、OAuth 按钮静默失效（字段名不一致）。新增 /adapt-raw 端点消除'先保存再适配'痛点"
+    }
+  ],
+  "archived_tasks": [
+    {
+      "task_id": "socialmesh_20260227_001",
+      "title": "验证 ContentEditor 一体化流程",
+      "archived_at": "2026-03-12",
+      "reason": "被 sprint 2026-03-03 的 P0 开发任务取代，新功能完成后需重新验证"
+    },
+    {
+      "task_id": "socialmesh_20260227_002",
+      "title": "XHS 全流程验证（QR 登录 → 发帖）",
+      "archived_at": "2026-03-12",
+      "reason": "XHS 已改为半自动模式（Mason 手动发布），Playwright 自动发帖不再适用"
+    },
+    {
+      "task_id": "socialmesh_20260227_005",
+      "title": "Feedback 功能端到端验证",
+      "archived_at": "2026-03-12",
+      "reason": "降低优先级，等核心功能（内容管理+发布状态）完成后再验证辅助功能"
+    }
+  ]
+}

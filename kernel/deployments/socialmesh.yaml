@@ -1,0 +1,23 @@
+# Deployment: socialmesh
+# 社交媒体内容发布平台 — agent 配备清单
+
+project: socialmesh
+path: ~/socialmesh
+account: accounts/socialmesh/
+
+orchestration_agents:
+  - id: EMP_0008
+    role: 内容运营
+    scope: 内容审核、发布调度
+  - id: EMP_0010
+    role: Dev
+    scope: 功能开发
+
+code_agents: []  # 待确认
+
+capabilities:
+  - content.publish
+  - content.schedule
+  - content.draft
+  - analytics.engagement
+  - analytics.reach

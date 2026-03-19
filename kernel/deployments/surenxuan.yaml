@@ -1,0 +1,57 @@
+# Deployment: surenxuan
+# 素仁轩 K-Beauty 零售管理系统 — agent 配备清单
+#
+# 编排层 = mason-hub EMP（Claude Code agent，任务分配/审核/调度）
+# 执行层 = 项目内 Python 代码（FastAPI 内运行）
+
+project: surenxuan
+path: ~/surenxuan
+account: accounts/surenxuan/
+
+orchestration_agents:
+  - id: EMP_0001
+    role: PM（项目经理）
+    scope: 任务拆解、调度 Dev、维护项目上下文
+  - id: EMP_0005
+    role: Dev（前端）
+    scope: React + Tailwind 页面开发
+  - id: EMP_0008
+    role: 内容运营
+    scope: 内容策划、品牌一致性审核、发布排期
+  - id: EMP_0010
+    role: Dev（全栈）
+    scope: FastAPI 后端 + 前端开发
+  - id: EMP_0013
+    role: 店铺运营
+    scope: XHS 店铺运营（等外部依赖就绪）
+  - id: EMP_0015
+    role: 数据分析
+    scope: 销售快照、趋势分析
+
+code_agents:
+  - name: selection_agent
+    path: backend/agents/selection_agent.py
+    lines: 753
+    trigger: 供货单上传
+    capabilities: [翻译, 分类, 价格计算, 规则过滤, 采购单生成]
+  - name: content_agent
+    path: backend/agents/content_agent.py
+    lines: 682
+    trigger: 内容创作/客户跟进
+    capabilities: [文案生成, 合规审核, Copilot, 复购推荐]
+  - name: data_coo_agent
+    path: backend/agents/data_coo_agent.py
+    lines: 493
+    trigger: 事件驱动（SALE_RECORDED, INVENTORY_LOW 等）
+    capabilities: [库存管理, 客户分级, 采购预警, 报表生成]
+
+capabilities:
+  - inventory.query
+  - inventory.update
+  - product.list
+  - product.detail
+  - order.create
+  - order.list
+  - pricing.get
+  - report.sales
+  - content.generate
