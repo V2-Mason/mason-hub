@@ -34,3 +34,21 @@
 理由：Google OAuth 在中国网络环境不稳定，影响用户登录体验
 放弃的选项：继续使用 Google OAuth（不稳定）、微信登录（需要企业资质）
 影响：修改了后端和前端认证流程，新增 init_admin.py
+
+[2026-03-19]
+情境：surenxuan 和 mason-hub 的架构关系需要定义
+决策：采用 Option C (OS模式) + 选择 3 (deployment清单)
+理由：mason-hub = 产品原型（多租户），surenxuan = 第一个客户（dogfood）。EMP 全留 mason-hub，通过 deployment yaml 索引每个项目的 agent 配备。accounts/ 统一客户数据。三层记忆：EMP(技术) + accounts(业务) + kernel(跨客户)
+放弃的选项：A(中央大脑，agent跨两个repo读文件) / B(项目自治，手动跨项目协作)
+
+[2026-03-19]
+情境：品牌知识分散在 shared/brands/ 和 accounts/ 两处
+决策：合并到 accounts/（按客户分），shared/ 只保留真正跨客户共享的资源
+理由：多租户产品模型下，品牌资产属于客户，不是"共享"的
+放弃的选项：C(保持两处，用规则区分——增加认知负担)
+
+[2026-03-19]
+情境：EMP 记忆按项目分还是通用共享
+决策：通用共享 + 三层写入规则（EMP/accounts/kernel）
+理由：Mason 的项目是一个生态（都围绕电商），经验应该跨项目复用。按项目分会导致 16 EMP × N 项目的记忆爆炸
+放弃的选项：按项目分目录（适合互不相关的外包项目，不适合 Mason 的场景）
