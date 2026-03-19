@@ -1,1 +1,32 @@
-../../../shared/brands/surenxuan/campaign_state.json
+{
+  "current_campaign": {
+    "name": "38女神节 — 宠自己从认真护肤开始",
+    "stage": "multicut_generation",
+    "start_date": "2026-03-05",
+    "peak_date": "2026-03-08",
+    "focus_products": ["COSRX 全效蜂蜜光感安瓶"],
+    "theme": "换季维稳 + 提亮滋养 + 女神节自用推荐",
+    "cuts_matrix": [
+      "小红书×种草型",
+      "抖音×促销型",
+      "视频号×信任型",
+      "微信私域×复购型",
+      "产品聚焦×种草型"
+    ]
+  },
+  "channel_last_published": {
+    "小红书": null,
+    "抖音": null,
+    "视频号": null,
+    "微信私域": null
+  },
+  "previous_campaigns": [
+    {
+      "name": "春季护肤",
+      "stage": "content_production",
+      "start_date": "2026-03-01",
+      "focus_products": ["化妆刷", "定妆喷雾", "补水精华"],
+      "notes": "初始化，待管线跑通后自动更新"
+    }
+  ]
+}
