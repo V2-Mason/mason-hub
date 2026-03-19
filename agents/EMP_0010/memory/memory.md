@@ -89,7 +89,7 @@
 - 口播替换"非常好用"→"真的好用"（比"挺顺手的"更适合口播节奏）
 
 ### 规则文件位置
-- 品牌语气词典+替换表：`mason-hub/shared/brands/surenxuan/editing_overrides.md`
+- 品牌语气词典+替换表：`mason-hub/accounts/surenxuan/context/editing_overrides.md`
 
 ### inbox task_assign 首次执行 (2026-03-14)
 <!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->

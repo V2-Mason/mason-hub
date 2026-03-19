@@ -30,7 +30,7 @@
 ## 按需参考
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/tools.md` | 使用 Semantic Snapshot 时 |
+| `kernel/standards/protocols/tools.md` | 使用 Semantic Snapshot 时 |
 | `docs/plans/2026-03-10-scout-v2-design.md` | Engine 详细设计 |
 
 ## 情报分发路由

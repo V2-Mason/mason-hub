@@ -239,7 +239,7 @@
 
 ### 通信治理四层补齐 (2026-03-14)
 <!-- written: 2026-03-14 · last_ref: 2026-03-14 · ref_count: 1 -->
-- 权限层：`shared/protocols/permissions.md` + `check_permission()` 在 send_message 前校验，task_assign 只允许 Manager/PM
+- 权限层：`kernel/standards/protocols/permissions.md` + `check_permission()` 在 send_message 前校验，task_assign 只允许 Manager/PM
 - 验证层：message_schema 新增 `requires_review` 字段 + 使用规则第7条，EMP_0010 soul.md 发布前强制检查
 - 异常处理层：EMP_0000 soul.md task_failed 决策树（4 条件：重试/人工裁决/拆分/转发基础设施）
 - 可观测层：`scripts/system-status.sh` 实时快照（15 EMP 状态 + 消息队列 + 任务统计）

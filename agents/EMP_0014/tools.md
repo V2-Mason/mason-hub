@@ -8,7 +8,7 @@
 
 - → `data/data_catalog.yaml` — 数据目录（核心工作文件）
 - → `data/pipelines/` — 管道脚本（xhs-clean.py, assemble-data.py）
-- → `data/schemas/` — Schema 定义
+- → `kernel/standards/schemas/` — Schema 定义
 - → `data/tools/` — SDK 接口 v0.2.0（pipeline.py, sdk.py, metrics.py）
 - → `data/mirror/` — 阿里云数据镜像
 
@@ -17,7 +17,7 @@
 | 文件 | 何时读 |
 |------|--------|
 | `data/data_catalog.yaml` | 核心工作文件 |
-| `shared/protocols/startup.md` | 标准启动流程 |
+| `kernel/standards/protocols/startup.md` | 标准启动流程 |
 
 ## 关键脚本
 

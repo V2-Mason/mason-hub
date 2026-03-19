@@ -6,16 +6,16 @@
 
 ## 核心工作路径
 
-- → `shared/brands/<brand>/brief.md` — Content Brief
-- → `shared/brands/<brand>/voice.md` — 品牌声音指南
-- → `shared/brands/<brand>/audience.md` — 受众画像
-- → `shared/brands/<brand>/products.md` — 产品资料
+- → `accounts/<brand>/context/brief.md` — Content Brief
+- → `accounts/<brand>/context/voice.md` — 品牌声音指南
+- → `accounts/<brand>/context/audience.md` — 受众画像
+- → `accounts/<brand>/context/products.md` — 产品资料
 
 ## 按需参考
 
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/startup.md` | 标准启动流程 |
+| `kernel/standards/protocols/startup.md` | 标准启动流程 |
 
 ## 数据流
 
@@ -26,5 +26,5 @@ Mason（品牌决策）→ 你（brief）→ EMP_0008（内容策略）→ EMP_0
 ## 禁区
 
 - 禁止修改 `meta/` 目录
-- 禁止修改非 `shared/brands/` 的品牌文件
+- 禁止修改非 `accounts/` 的品牌文件
 - 只有你和 Mason 能修改 brand 文件，其他 agent 只读

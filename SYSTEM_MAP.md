@@ -229,11 +229,37 @@ stable  = 已达当前里程碑，等解锁下一层
 
 ---
 
+## Kernel 架构（2026-03-19 重构）
+
+> mason-hub = 产品原型（Option C: OS 模式）
+> 项目 = App，通过 adapter.yaml 注册到 kernel
+> accounts/ = 多租户客户数据（品牌战略 + 执行资产）
+> 架构决策详见: ~/.claude/projects/-home-hangn/memory/project_mason_hub_kernel.md
+
+```
+kernel/
+├── standards/       ← schemas, protocols, agent template, knowledge bases
+├── registry/        ← projects.yaml（已注册项目清单）
+├── deployments/     ← 每个项目的 agent 配备清单（编排层 EMP + 执行层 code agent）
+├── connectors/      ← 项目间数据桥梁
+├── memory/          ← 全局跨客户记忆
+└── sync-rules/      ← 记忆同步规则（品类洞察/决策模式/失败经验 → kernel）
+```
+
+### 三层记忆模型
+
+```
+EMP memory    agents/EMP_XXXX/memory/         技术经验（跨客户通用）
+Account       accounts/[name]/                客户专属业务数据
+Kernel        kernel/memory/                  跨客户洞察、品类知识
+```
+
+---
+
 ## 联邦节点状态
 
-> Mason 联邦体系：mason-hub 作为中枢调度，各项目保持独立运行能力。
-> 协议版本: v0.1（声明式，无实际通信）
-> 规范文档: shared/adapter-spec.md
+> 注册表: kernel/registry/projects.yaml
+> 部署清单: kernel/deployments/*.yaml
 
 | 节点 | 项目路径 | 类型 | 端点 | 能力数 | 状态 | 备注 |
 |------|----------|------|------|--------|------|------|
@@ -264,13 +290,13 @@ stable  = 已达当前里程碑，等解锁下一层
 | shopify connector | Shopify API 对接 | 素仁轩出海启动时 |
 | amazon connector | Amazon API 对接 | merchant agent Layer 1B |
 | tiktok-shop connector | TikTok Shop API 对接 | 素仁轩出海启动时 |
-| EMP_0017 merchant agent | 跨平台商家代理 | 联邦架构 v0.2 就绪后 |
+| EMP_0017 merchant agent | 跨平台商家代理 | kernel v0.2 就绪后 |
 
 ### 联邦架构版本路线
 
 ```
-v0.1（当前）  声明式 — adapter.yaml 只读，无实际通信
-v0.2          单向 — mason-hub 可通过 hooks 向节点发指令
-v0.3          双向 — 节点可主动向 mason-hub 上报事件
+v0.1（当前）  声明式 — adapter.yaml + kernel registry，无实际通信
+v0.2          单向 — kernel 可通过 hooks 向节点发指令
+v0.3          双向 — 节点可主动向 kernel 上报事件
 v1.0          完整 A2A — 支持跨平台 agent 间协作
 ```

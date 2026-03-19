@@ -9,11 +9,11 @@
 → semantic-snapshot
 
 ## 关键数据路径
-- 任务列表：`domains/content-tech/projects/socialmesh/task_list.json`
+- 任务列表：`accounts/socialmesh/project/task_list.json`
 - XHS 分析报告：`data/reports/`
 - 策略简报：阿里云 `/opt/mediacrawler/analysis/briefings/`
 - 简报 Schema：`shared/xhs-briefing-schema.json`
-- 内容日历：`shared/brands/surenxuan/2026-content-calendar.md`
+- 内容日历：`accounts/surenxuan/context/2026-content-calendar.md`
 - 排期 Google Sheet ID: `1icNxvwx8LHZaXvcl7EV010x7id4ZxAwYwg3EgZDXsDs`
 
 ## 内容情报分析框架
@@ -24,16 +24,16 @@
 
 ## 视频管线
 - 剪辑规则库：`shared/editing_intelligence/styles/`（9 个文件）
-- 品牌覆盖：`shared/brands/surenxuan/editing_overrides.md`
+- 品牌覆盖：`accounts/surenxuan/context/editing_overrides.md`
 - 多剪参数表：`socialmesh/docs/plans/2026-03-04-multicut-architecture.md`
 
 ## 按需参考
 | 文件 | 何时读 |
 |------|--------|
 | `docs/playbooks/pm-socialmesh-playbook.md` | 操作流程细节（运营/分析/任务拆解/QA Gate） |
-| `shared/protocols/escalation.md` | Dev 失败需评估/上报时 |
-| `shared/protocols/startup.md` | 标准启动/中断恢复流程 |
-| `shared/protocols/tools.md` | 使用 Semantic Snapshot 等通用工具时 |
+| `kernel/standards/protocols/escalation.md` | Dev 失败需评估/上报时 |
+| `kernel/standards/protocols/startup.md` | 标准启动/中断恢复流程 |
+| `kernel/standards/protocols/tools.md` | 使用 Semantic Snapshot 等通用工具时 |
 | `docs/system/org-chart.md` | 了解组织架构和其他 agent 职责时 |
 
 ## 禁区

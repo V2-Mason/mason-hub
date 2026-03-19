@@ -45,7 +45,7 @@
 | docs/system/dev-rules.md | Agent 配置架构、Code Review、反合理化清单 |
 | MASONHUB.md | Gateway 相关工作时 |
 | data/autonomous_tasks.yaml | Dispatcher/任务调度相关时 |
-| shared/protocols/ | Escalation、Dev 执行等跨 agent 协议时 |
+| kernel/standards/protocols/ | Escalation、Dev 执行等跨 agent 协议时 |
 | docs/playbooks/ | PM 操作手册时 |
 
 ### 快捷命令

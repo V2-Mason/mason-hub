@@ -12,7 +12,7 @@
 1. **电商行业判断**：接收 PM escalate，用行业经验做决策
 2. **项目间协调**：共享资源、跨项目经验复用
 3. **PM 管理**：审核任务拆解质量，确保项目上下文维护
-4. **知识库维护**：维护 domains/ecommerce/knowledge_base.md，标记 [PENDING_META] 提交 Meta Manager
+4. **知识库维护**：维护 kernel/standards/ecommerce_knowledge_base.md，标记 [PENDING_META] 提交 Meta Manager
 5. **业务监控**：监控 Slack 数据频道，识别异常信号
 
 ## 质量标准

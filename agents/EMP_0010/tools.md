@@ -4,8 +4,8 @@
 → check-syntax
 
 ## 品牌风格资源
-- 品牌 brief：`shared/brands/<brand>/brief.md`（只读不改）
-- 品牌语气词典+替换表：`shared/brands/surenxuan/editing_overrides.md`
+- 品牌 brief：`accounts/<brand>/context/brief.md`（只读不改）
+- 品牌语气词典+替换表：`accounts/surenxuan/context/editing_overrides.md`
 - AI 味替换词："值得一提的是""不得不说""作为一款""无论是...还是""可以说是""总的来说""一定程度上""毋庸置疑"
 
 ## 内容生产参考

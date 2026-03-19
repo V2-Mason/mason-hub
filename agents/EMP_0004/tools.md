@@ -20,7 +20,7 @@ df -h && free -h && ps aux | grep -E "python|node" && ss -tlnp
 
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/escalation-architecture.md` | 理解 escalation 链路和监控指标时 |
+| `kernel/standards/protocols/escalation-architecture.md` | 理解 escalation 链路和监控指标时 |
 
 ## 关键路径
 

@@ -21,7 +21,7 @@
 |------|--------|
 | 相关 agent config | 边界判断时 |
 | `tasks/backlog.md` | Lesson Triage 时 |
-| `shared/protocols/startup.md` | 标准启动流程 |
+| `kernel/standards/protocols/startup.md` | 标准启动流程 |
 
 ## 禁区
 

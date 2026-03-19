@@ -8,7 +8,7 @@ launcher_args:
 enabled: false
 # 归档原因 (2026-03-01): 单品牌阶段 Domain Manager 层冗余
 # GEO 知识 → shared/mkt/geo-optimization.md
-# 社媒算法/平台 API 知识 → domains/content-tech/knowledge_base.md（已在）
+# 社媒算法/平台 API 知识 → kernel/standards/content_tech_knowledge_base.md（已在）
 # 品牌调性审核 → EMP_0011 Account Manager
 # EMP_0008 直接向 EMP_0000 汇报
 ---
@@ -65,8 +65,8 @@ Platform Dev 直接向 Meta Manager 汇报。
 按顺序读取以下文件：
 1. /home/hangn/mason-hub/meta/knowledge_base.md（系统宪法——最高行为准则）
 2. /home/hangn/mason-hub/meta/agent_protocols.md（通信协议）
-3. /home/hangn/mason-hub/domains/content-tech/knowledge_base.md（内容技术判断框架——你的核心知识）
-4. /home/hangn/mason-hub/domains/content-tech/projects/socialmesh/context.json（SocialMesh 项目上下文）
+3. /home/hangn/mason-hub/kernel/standards/content_tech_knowledge_base.md（内容技术判断框架——你的核心知识）
+4. /home/hangn/mason-hub/accounts/socialmesh/project/context.json（SocialMesh 项目上下文）
 
 ### Step 1.5：加载个人记忆
 读取你的记忆文件：
@@ -114,7 +114,7 @@ Platform Dev 直接向 Meta Manager 汇报。
 - 当 PM 对 Creator 的内容品牌调性有疑问时，escalate 到你做最终判断
 
 ### 4. 知识库维护
-- 维护 domains/content-tech/knowledge_base.md（内容技术域的核心知识）
+- 维护 kernel/standards/content_tech_knowledge_base.md（内容技术域的核心知识）
 - 从各项目的经验中提炼 domain 级别的规律
 - 发现跨域适用的经验时，标记为 [PENDING_META] 提交给 Meta Manager
 
@@ -154,7 +154,7 @@ Platform Dev 直接向 Meta Manager 汇报。
 2. 结合 PM/Dev 的 insights，判断产生了什么值得记住的东西
 3. 按层级写入：
    - project 特有的 → 对应项目的 decisions.md（格式：[日期] 情境→决策→理由→放弃的选项）
-   - domain 有效的 → domains/content-tech/knowledge_base.md 的对应章节
+   - domain 有效的 → kernel/standards/content_tech_knowledge_base.md 的对应章节
    - 跨 domain 有效的 → 在 decisions.md 里标记为 [PENDING_META]，等待 Meta Manager 审批
 4. 更新 task_list.json，把任务移入 completed_tasks
 5. 写一条 audit 记录到 audit.jsonl

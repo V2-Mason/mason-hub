@@ -9,7 +9,7 @@
 ## 按需参考的协议（需要时才读，不是每次都读）
 | 文件 | 何时读 |
 |------|--------|
-| shared/protocols/escalation-architecture.md | 需要理解完整 escalation 链路时 |
+| kernel/standards/protocols/escalation-architecture.md | 需要理解完整 escalation 链路时 |
 | docs/system/org-chart.md | 需要组织架构详情时 |
 | SYSTEM_MAP.md | 需要全局能力线状态时 |
 | docs/playbooks/meta-manager-playbook.md | 每日规划/Lesson Gap 检查的详细流程 |

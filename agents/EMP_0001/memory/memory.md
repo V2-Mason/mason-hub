@@ -80,7 +80,7 @@
 - 视频号：XHS视频搬运，零成本挂着
 
 ### 详细文档
-- 选品分析: shared/brands/surenxuan/2026-selection-analysis.md
+- 选品分析: accounts/surenxuan/context/2026-selection-analysis.md
 - 执行报告: docs/plans/2026-03-05-annual-plan.md
 
 ## 任务拆解经验

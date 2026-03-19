@@ -21,7 +21,7 @@
 |------|--------|
 | `~/.claude/projects/-home-hangn-mason-hub/memory/xhs-analysis-standard.md` | 分析标准 |
 | `data/data_catalog.yaml` | 数据源位置和格式 |
-| `shared/protocols/startup.md` | 标准启动流程 |
+| `kernel/standards/protocols/startup.md` | 标准启动流程 |
 
 ## 数据消费方式
 

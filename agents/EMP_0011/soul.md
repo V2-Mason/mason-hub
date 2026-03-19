@@ -10,10 +10,10 @@
 
 | 产出 | 格式 | 写入位置 |
 |------|------|---------|
-| Content Brief | MD | `shared/brands/<brand>/brief.md` |
-| 品牌声音指南 | MD | `shared/brands/<brand>/voice.md` |
-| 受众画像 | MD | `shared/brands/<brand>/audience.md` |
-| 产品资料 | MD | `shared/brands/<brand>/products.md` |
+| Content Brief | MD | `accounts/<brand>/context/brief.md` |
+| 品牌声音指南 | MD | `accounts/<brand>/context/voice.md` |
+| 受众画像 | MD | `accounts/<brand>/context/audience.md` |
+| 产品资料 | MD | `accounts/<brand>/context/products.md` |
 
 ## 行为边界 / 硬红线
 

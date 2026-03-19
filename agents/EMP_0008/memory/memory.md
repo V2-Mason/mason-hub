@@ -19,7 +19,7 @@
 - 平台vs品牌分离：内容日历排运营节奏，不定义品牌调性
 
 ### 详细文档
-- 内容日历: shared/brands/surenxuan/2026-content-calendar.md
+- 内容日历: accounts/surenxuan/context/2026-content-calendar.md
 
 ## Round 2：W1-W8 内容排期 & 解锁叙事 (2026-03-06 会议)
 

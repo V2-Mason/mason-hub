@@ -67,7 +67,7 @@
 - 排期已精确到日（Google Sheet），电商侧对齐同一份排期表
 
 ### 详细文档
-- 电商策略: shared/brands/surenxuan/2026-ecom-strategy.md
+- 电商策略: accounts/surenxuan/context/2026-ecom-strategy.md
 
 ## 行业判断经验
 

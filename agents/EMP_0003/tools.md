@@ -21,13 +21,13 @@ Slack 频道：#ecommerce
 
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/startup.md` | 标准启动流程 |
+| `kernel/standards/protocols/startup.md` | 标准启动流程 |
 | `docs/system/org-chart.md` | 组织架构 |
-| `domains/ecommerce/knowledge_base.md` | 行业知识库 |
+| `kernel/standards/ecommerce_knowledge_base.md` | 行业知识库 |
 
 ## 关键路径
 
-- 知识库：`domains/ecommerce/knowledge_base.md`
+- 知识库：`kernel/standards/ecommerce_knowledge_base.md`
 - 下属 PM：EMP_0001（素仁轩）
 - 下属分析师：EMP_0015（数据分析）
 - Escalation 目标：EMP_0000（Meta Manager）

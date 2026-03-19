@@ -28,7 +28,7 @@
 ## 按需参考
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/dev-execution.md` | 需要任务执行流程细节时 |
+| `kernel/standards/protocols/dev-execution.md` | 需要任务执行流程细节时 |
 | `docs/plans/2026-03-06-video-pipeline-style-review.md` | 剪辑规则库执行决议 |
 | `docs/plans/2026-03-07-video-pipeline-upgrade-from-course.md` | 视频管线升级计划 |
 

@@ -12,7 +12,7 @@
 |------|------|---------|
 | 数据管道脚本 | Shell/Python | `data/pipelines/` |
 | 数据目录更新 | YAML | `data/data_catalog.yaml` |
-| Schema 定义 | YAML | `data/schemas/` |
+| Schema 定义 | YAML | `kernel/standards/schemas/` |
 | SDK 接口 | Python | `data/tools/` |
 | 清洗后数据 | SQLite/JSONL | `data/` 各层 |
 

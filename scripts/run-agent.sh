@@ -29,7 +29,7 @@ TASK_ACCOUNT="${TASK_ACCOUNT:-}"
 
 # --- Token 成本上限（防止上下文累积失控）---
 # 默认 $0.50/session，可通过环境变量覆盖
-MAX_BUDGET_USD="${MAX_BUDGET_USD:-0.50}"
+MAX_BUDGET_USD="${MAX_BUDGET_USD:-2.00}"
 
 # --- Chain depth 限制（防止无限递归）---
 CHAIN_DEPTH=${CHAIN_DEPTH:-0}
@@ -821,14 +821,21 @@ if [ "$HAS_VERIFY_LOOP" = false ]; then
 
   # 检查 claude -p 是否返回有效输出
   if [ -z "$OUTPUT" ] || [ ${#OUTPUT} -lt 10 ]; then
-    echo "❌ claude -p 返回空或无效输出 (len=${#OUTPUT})" >&2
+    # 区分预算截断 vs 真空输出
+    local ERROR_TYPE="empty_output"
+    local ERROR_MSG="❌ claude -p 返回空或无效输出"
+    if echo "$JSON_OUTPUT" | grep -q "error_max_budget_usd"; then
+      ERROR_TYPE="budget_exceeded"
+      ERROR_MSG="❌ 预算耗尽（MAX_BUDGET_USD=$MAX_BUDGET_USD），任务被截断"
+    fi
+    echo "$ERROR_MSG (len=${#OUTPUT})" >&2
     TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
-    write_audit "failed" ',"error":"empty_output"' "$TOKEN_DATA"
-    write_daily_log "❌ 空输出" "${DURATION}s"
+    write_audit "failed" ",\"error\":\"$ERROR_TYPE\"" "$TOKEN_DATA"
+    write_daily_log "$ERROR_MSG" "${DURATION}s"
     EMIT_EVENT="$HUB_DIR/scripts/emit_event.sh"
     if [ -x "$EMIT_EVENT" ]; then
       "$EMIT_EVENT" "agent-task-failed" "$AGENT_NAME" "error" 2 \
-        "{\"task_id\":\"$TASK_ID\",\"agent\":\"$AGENT_NAME\",\"error\":\"empty_output\",\"duration\":$DURATION}" 2>/dev/null || true
+        "{\"task_id\":\"$TASK_ID\",\"agent\":\"$AGENT_NAME\",\"error\":\"$ERROR_TYPE\",\"duration\":$DURATION}" 2>/dev/null || true
     fi
     exit 1
   fi
@@ -959,10 +966,16 @@ else
 
     # 检查 claude -p 是否返回有效输出
     if [ -z "$OUTPUT" ] || [ ${#OUTPUT} -lt 10 ]; then
-      echo "❌ claude -p 返回空或无效输出 (round $ROUND, len=${#OUTPUT})" >&2
+      local ROUND_ERROR="empty_output_round${ROUND}"
+      local ROUND_MSG="❌ claude -p 返回空或无效输出"
+      if echo "$JSON_OUTPUT" | grep -q "error_max_budget_usd"; then
+        ROUND_ERROR="budget_exceeded_round${ROUND}"
+        ROUND_MSG="❌ 预算耗尽（MAX_BUDGET_USD=$MAX_BUDGET_USD）"
+      fi
+      echo "$ROUND_MSG (round $ROUND, len=${#OUTPUT})" >&2
       TOKEN_DATA=$(extract_token_data "$JSON_OUTPUT")
-      write_audit "failed" ",\"error\":\"empty_output_round${ROUND}\",\"verify_round\":$ROUND" "$TOKEN_DATA"
-      write_daily_log "❌ 空输出(R${ROUND})" ""
+      write_audit "failed" ",\"error\":\"$ROUND_ERROR\",\"verify_round\":$ROUND" "$TOKEN_DATA"
+      write_daily_log "$ROUND_MSG(R${ROUND})" ""
       exit 1
     fi
 

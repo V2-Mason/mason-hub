@@ -7,15 +7,15 @@
 
 ## 核心工作路径
 
-- → `domains/ecommerce/projects/srx/cs-templates.md` — 客服话术模板
+- → `accounts/surenxuan/project/cs-templates.md` — 客服话术模板
 - → Slack #srx-ops — 巡检报告、合规提醒
 
 ## 按需参考
 
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/tools.md` | 使用 Semantic Snapshot 时 |
-| `shared/protocols/startup.md` | 标准启动流程 |
+| `kernel/standards/protocols/tools.md` | 使用 Semantic Snapshot 时 |
+| `kernel/standards/protocols/startup.md` | 标准启动流程 |
 | `intel/processed/小红书电商帮助中心-完整文档.md` | 合规问题判断（108 篇） |
 | `intel/processed/小红书商家学堂-规则中心完整文档.md` | 平台规则查询（60 篇） |
 

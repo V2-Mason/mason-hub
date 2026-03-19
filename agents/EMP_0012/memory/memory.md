@@ -24,7 +24,7 @@
 ### 归属判断
 - styles/ 规则库放 `mason-hub/shared/editing_intelligence/styles/`（和 channel_profiles.json 同层）
 - 它是平台级资产（渠道知识），不是品牌级资产
-- 品牌特定内容（语气词典、品牌色）放 `shared/brands/{brand}/editing_overrides.md`
+- 品牌特定内容（语气词典、品牌色）放 `accounts/{brand}/context/editing_overrides.md`
 - 应用优先级：品牌覆盖 > 渠道规则 > 全局默认
 
 ### 三源归一决策

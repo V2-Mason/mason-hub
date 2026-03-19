@@ -19,7 +19,7 @@
 
 ### 关键代码位置
 - styles/ 规则库：`mason-hub/shared/editing_intelligence/styles/`
-- 品牌覆盖（含自动替换词典 JSON）：`mason-hub/shared/brands/surenxuan/editing_overrides.md`
+- 品牌覆盖（含自动替换词典 JSON）：`mason-hub/accounts/surenxuan/context/editing_overrides.md`
 - assemble.py 字幕渲染：_normalize_text_overlay() L158-190, _build_drawtext_filter() L437-532
 - voiceover_writer.py 文案生成：SYSTEM_PROMPT L24-35, VOICE_STYLES L14-22, write_voiceover() L144+
 - channel_profiles.json：mason-hub/shared/editing_intelligence/channel_profiles.json

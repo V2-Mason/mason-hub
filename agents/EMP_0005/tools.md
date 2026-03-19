@@ -10,7 +10,7 @@
 
 | 文件 | 何时读 |
 |------|--------|
-| `shared/protocols/dev-execution.md` | 需要任务执行流程细节时 |
+| `kernel/standards/protocols/dev-execution.md` | 需要任务执行流程细节时 |
 | `intel/processed/小红书开放平台-完整规则文档.md` | XHS API 开发时（签名算法、OAuth、商品/订单 API） |
 | `intel/processed/微信小店-完整规则文档.md` | 微信小店 API 开发时 |
 

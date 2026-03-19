@@ -43,7 +43,7 @@
 
 ### 二、前置条件
 - 权限：Layer 1（内容表达自主）；主题方向由 EMP_0008 定
-- 上游：`long_term.md` 已读、品牌 brief 已读（`shared/brands/<brand>/brief.md`）
+- 上游：`long_term.md` 已读、品牌 brief 已读（`accounts/<brand>/context/brief.md`）
 - 系统状态：无硬性要求
 
 ### 三、输出契约
