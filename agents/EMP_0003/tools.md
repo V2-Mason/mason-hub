@@ -22,7 +22,7 @@ Slack 频道：#ecommerce
 | 文件 | 何时读 |
 |------|--------|
 | `kernel/standards/protocols/startup.md` | 标准启动流程 |
-| `docs/system/org-chart.md` | 组织架构 |
+| `kernel/standards/org-chart.md` | 组织架构 |
 | `kernel/standards/ecommerce_knowledge_base.md` | 行业知识库 |
 
 ## 关键路径

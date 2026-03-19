@@ -23,7 +23,7 @@ $SLACK_NOTIFY "$SLACK_CHANNEL" "消息内容"
 | `kernel/standards/protocols/escalation.md` | 遇到 Dev 失败需要评估/上报时 |
 | `kernel/standards/protocols/startup.md` | 参考标准启动/中断恢复流程时 |
 | `kernel/standards/protocols/tools.md` | 使用通用工具时 |
-| `docs/system/org-chart.md` | 了解组织架构时 |
+| `kernel/standards/org-chart.md` | 了解组织架构时 |
 
 ## 关键路径
 

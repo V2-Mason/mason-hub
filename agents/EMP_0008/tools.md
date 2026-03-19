@@ -34,7 +34,7 @@
 | `kernel/standards/protocols/escalation.md` | Dev 失败需评估/上报时 |
 | `kernel/standards/protocols/startup.md` | 标准启动/中断恢复流程 |
 | `kernel/standards/protocols/tools.md` | 使用 Semantic Snapshot 等通用工具时 |
-| `docs/system/org-chart.md` | 了解组织架构和其他 agent 职责时 |
+| `kernel/standards/org-chart.md` | 了解组织架构和其他 agent 职责时 |
 
 ## 禁区
 - 禁止修改 knowledge_base.md / meta/ 目录

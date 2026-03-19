@@ -41,8 +41,8 @@
 |------|--------|
 | MASON_AUTHORITY.md | 判断是否在授权范围内时 |
 | SYSTEM_MAP.md | /standup 或需要了解能力线状态时 |
-| docs/system/org-chart.md | 需要知道 agent 职责/团队加载规则时 |
-| docs/system/dev-rules.md | Agent 配置架构、Code Review、反合理化清单 |
+| kernel/standards/org-chart.md | 需要知道 agent 职责/团队加载规则时 |
+| kernel/standards/dev-rules.md | Agent 配置架构、Code Review、反合理化清单 |
 | MASONHUB.md | Gateway 相关工作时 |
 | data/autonomous_tasks.yaml | Dispatcher/任务调度相关时 |
 | kernel/standards/protocols/ | Escalation、Dev 执行等跨 agent 协议时 |
@@ -54,4 +54,4 @@
 
 ### 组织架构
 
-16 个 Agent，详见 docs/system/org-chart.md。Agent 名册 SSOT: docs/system/agents.yaml
+16 个 Agent，详见 kernel/standards/org-chart.md。Agent 名册 SSOT: kernel/standards/agents.yaml

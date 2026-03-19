@@ -91,7 +91,7 @@
 
 ### Agent 四层声明补齐（第二批 8 个）(2026-03-12)
 - 为 EMP_0000/0001/0003/0004/0006/0008/0012/0013 补齐四层声明
-- 模板来源：`docs/system/AGENT_DESIGN_TEMPLATE.md`
+- 模板来源：`kernel/standards/AGENT_DESIGN_TEMPLATE.md`
 - **发现 2 个 config 超 5KB**：EMP_0000 (5.3KB)、EMP_0008 (7.1KB)。需后续拆 playbook
 - Gap 分类：📄 文档更新 → 已更新 8 个 config.md
 
