@@ -1475,3 +1475,472 @@ Mason，这个任务现在没法执行，我直说原因：
 你想让我先把话术模板库建起来吗？还是优先推动修复客户系统的连接问题？
 /home/hangn/mason-hub/scripts/run-agent.sh: line 792: local: can only be used in a function
 Lock released: lane=ecommerce agent=EMP_0001
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0004/config.md
+:bar_chart: 数据健康检查 -- 2026-03-14 21:15 ET
+
+  :white_check_mark: raw_xhs_notes -- 更新于 2d 前，1278 行
+  :white_check_mark: raw_xhs_comments -- 更新于 2d 前，412 行
+  :white_check_mark: raw_xhs_creators -- 更新于 2d 前，23 行
+  :white_check_mark: raw_trendradar_news -- 更新于 9h 前，大小 200K
+  :white_check_mark: raw_trendradar_rss -- 更新于 9h 前，大小 384K
+  :white_check_mark: raw_radar_interactions -- 更新于 1h 前，大小 120K
+  :white_check_mark: raw_srx_sales -- API 可达 (HTTP 200)
+  :white_check_mark: raw_scout_intel -- 更新于 1d 前，3 个文件
+  :white_check_mark: raw_xhs_helper_docs -- 更新于 5d 前，5 个文件
+  :x: clean_xhs_notes -- 文件不存在
+  :white_check_mark: clean_scout_intel -- 更新于 4d 前，23 条，大小 16K
+  :x: analysis_xhs_viral -- 文件不存在
+  :white_check_mark: analysis_xhs_trends -- 更新于 1d 前，大小 8.0K
+  :x: analysis_xhs_comments -- 文件不存在
+  :fast_forward: analysis_radar_weekly -- stdout 类型，跳过
+  :white_check_mark: report_strategy_briefing -- 更新于 23h 前，大小 52K
+  :white_check_mark: report_optimization -- 更新于 5d 前，大小 12K
+  :fast_forward: report_api_usage -- Slack 消息类型，跳过
+  :warning: raw_srx_history -- 更新于 3d 前，大小 56K
+
+总结: 13/17 健康，1 警告，3 异常（2 跳过）
+总数据量: 21MB
+
+>>> 发送到 Slack #system-alerts ...
+>>> 已发送
+>>> 自愈检查: 查询 remediation_registry ...
+  >>> 无需自愈（所有异常项无注册修复动作或在冷却期）
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-15T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-11: 14209202 in /   139011 out | $16.708
+  2026-03-12: 14440017 in /   125145 out | $18.590
+  2026-03-14:  3046805 in /    45199 out | $10.960
+  Total: $46.257
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 7KB
+  ✅ EMP_0001: 6KB
+  ⚠️ EMP_0002: 18KB (consider compaction)
+  ⚠️ EMP_0003: 11KB (consider compaction)
+  ✅ EMP_0004: 6KB
+  ✅ EMP_0005: 5KB
+  ✅ EMP_0006: 4KB
+  ⚠️ EMP_0008: 15KB (consider compaction)
+  ✅ EMP_0009: 4KB
+  ✅ EMP_0010: 4KB
+  ✅ EMP_0011: 0KB
+  ✅ EMP_0012: 4KB
+  ✅ EMP_0013: 0KB
+  ⚠️ EMP_0014: 13KB (consider compaction)
+  ✅ EMP_0015: 2KB
+
+--- 5. Skills Health ---
+  ✅ notify-mason.sh
+
+--- 6. System Resources ---
+  Disk usage: 47%
+  Memory available: 1.9Gi (50% used)
+
+--- 6b. Process Health ---
+  ✅ No zombie processes
+  Top memory consumers:
+    ccd-cli: 343MB (PID 3985)
+    ccd-cli: 316MB (PID 2756)
+    MainThread: 190MB (PID 2062)
+    node: 127MB (PID 1103)
+    searxng worker-: 120MB (PID 2713)
+  Process count check:
+    ⚠️ sshd: 8 instances
+    ⚠️ postgres: 7 instances
+
+--- 7. Task Logs ---
+  Total files: 217
+  Task summaries: 39
+
+=== END REPORT ===
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+no_serviceCookie reminder sent for week 2026-10
+=== MEMORY COMPACTION ===
+Agent: all
+Dry run: false
+Date: 2026-03-15T03:00:01Z
+
+/home/hangn/mason-hub/skills/agent-ops/compact-memory.sh: line 618: syntax error near unexpected token `)'
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0004/config.md
+:bar_chart: 数据健康检查 -- 2026-03-15 21:15 ET
+
+  :white_check_mark: raw_xhs_notes -- 更新于 3d 前，1278 行
+  :white_check_mark: raw_xhs_comments -- 更新于 3d 前，412 行
+  :white_check_mark: raw_xhs_creators -- 更新于 3d 前，23 行
+  :white_check_mark: raw_trendradar_news -- 更新于 3h 前，大小 264K
+  :white_check_mark: raw_trendradar_rss -- 更新于 3h 前，大小 392K
+  :white_check_mark: raw_radar_interactions -- 更新于 1h 前，大小 124K
+  :white_check_mark: raw_srx_sales -- API 可达 (HTTP 200)
+  :warning: raw_scout_intel -- 更新于 2d 前，3 个文件
+  :white_check_mark: raw_xhs_helper_docs -- 更新于 6d 前，5 个文件
+  :x: clean_xhs_notes -- 文件不存在
+  :white_check_mark: clean_scout_intel -- 更新于 5d 前，23 条，大小 16K
+  :x: analysis_xhs_viral -- 文件不存在
+  :x: analysis_xhs_trends -- 文件不存在
+  :x: analysis_xhs_comments -- 文件不存在
+  :fast_forward: analysis_radar_weekly -- stdout 类型，跳过
+  :x: report_strategy_briefing -- 文件不存在
+  :white_check_mark: report_optimization -- 更新于 6d 前，大小 12K
+  :fast_forward: report_api_usage -- Slack 消息类型，跳过
+  :warning: raw_srx_history -- 更新于 4d 前，大小 56K
+
+总结: 10/17 健康，2 警告，5 异常（2 跳过）
+总数据量: 22MB
+
+>>> 发送到 Slack #system-alerts ...
+>>> 已发送
+>>> 自愈检查: 查询 remediation_registry ...
+  📢 已升级 1 项到 Mason (Slack)
+  >>> 升级到 Mason: 1 项
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-16T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-11: 14209202 in /   139011 out | $16.708
+  2026-03-12: 14440017 in /   125145 out | $18.590
+  2026-03-14:  3046805 in /    45199 out | $10.960
+  Total: $46.257
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 7KB
+  ✅ EMP_0001: 6KB
+  ⚠️ EMP_0002: 18KB (consider compaction)
+  ⚠️ EMP_0003: 11KB (consider compaction)
+  ✅ EMP_0004: 6KB
+  ✅ EMP_0005: 5KB
+  ✅ EMP_0006: 4KB
+  ⚠️ EMP_0008: 15KB (consider compaction)
+  ✅ EMP_0009: 4KB
+  ✅ EMP_0010: 4KB
+  ✅ EMP_0011: 0KB
+  ✅ EMP_0012: 4KB
+  ✅ EMP_0013: 0KB
+  ⚠️ EMP_0014: 13KB (consider compaction)
+  ✅ EMP_0015: 2KB
+
+--- 5. Skills Health ---
+  ✅ notify-mason.sh
+
+--- 6. System Resources ---
+  Disk usage: 47%
+  Memory available: 2.0Gi (47% used)
+
+--- 6b. Process Health ---
+  ✅ No zombie processes
+  Top memory consumers:
+    ccd-cli: 284MB (PID 113990)
+    MainThread: 176MB (PID 2062)
+    python3: 147MB (PID 596)
+    searxng worker-: 96MB (PID 2713)
+    celery: 92MB (PID 124680)
+  Process count check:
+    ⚠️ postgres: 7 instances
+    ⚠️ sshd: 5 instances
+
+--- 7. Task Logs ---
+  Total files: 217
+  Task summaries: 39
+
+=== END REPORT ===
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0004/config.md
+:bar_chart: 数据健康检查 -- 2026-03-16 21:15 ET
+
+  :white_check_mark: raw_xhs_notes -- 更新于 4d 前，1278 行
+  :white_check_mark: raw_xhs_comments -- 更新于 4d 前，412 行
+  :white_check_mark: raw_xhs_creators -- 更新于 4d 前，23 行
+  :white_check_mark: raw_trendradar_news -- 更新于 3h 前，大小 256K
+  :white_check_mark: raw_trendradar_rss -- 更新于 3h 前，大小 420K
+  :white_check_mark: raw_radar_interactions -- 更新于 1h 前，大小 136K
+  :white_check_mark: raw_srx_sales -- API 可达 (HTTP 200)
+  :warning: raw_scout_intel -- 更新于 3d 前，3 个文件
+  :white_check_mark: raw_xhs_helper_docs -- 更新于 7d 前，5 个文件
+  :x: clean_xhs_notes -- 文件不存在
+  :white_check_mark: clean_scout_intel -- 更新于 6d 前，23 条，大小 16K
+  :x: analysis_xhs_viral -- 文件不存在
+  :x: analysis_xhs_trends -- 文件不存在
+  :x: analysis_xhs_comments -- 文件不存在
+  :fast_forward: analysis_radar_weekly -- stdout 类型，跳过
+  :x: report_strategy_briefing -- 文件不存在
+  :white_check_mark: report_optimization -- 更新于 7d 前，大小 12K
+  :fast_forward: report_api_usage -- Slack 消息类型，跳过
+  :x: raw_srx_history -- 更新于 5d 前，大小 56K
+
+总结: 10/17 健康，1 警告，6 异常（2 跳过）
+总数据量: 23MB
+
+>>> 发送到 Slack #system-alerts ...
+>>> 已发送
+>>> 自愈检查: 查询 remediation_registry ...
+  📢 已升级 1 项到 Mason (Slack)
+  >>> 升级到 Mason: 1 项
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-17T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-11: 14209202 in /   139011 out | $16.708
+  2026-03-12: 14440017 in /   125145 out | $18.590
+  2026-03-14:  3046805 in /    45199 out | $10.960
+  Total: $46.257
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 7KB
+  ✅ EMP_0001: 6KB
+  ⚠️ EMP_0002: 18KB (consider compaction)
+  ⚠️ EMP_0003: 11KB (consider compaction)
+  ✅ EMP_0004: 6KB
+  ✅ EMP_0005: 5KB
+  ✅ EMP_0006: 4KB
+  ⚠️ EMP_0008: 15KB (consider compaction)
+  ✅ EMP_0009: 4KB
+  ✅ EMP_0010: 4KB
+  ✅ EMP_0011: 0KB
+  ✅ EMP_0012: 4KB
+  ✅ EMP_0013: 0KB
+  ⚠️ EMP_0014: 13KB (consider compaction)
+  ✅ EMP_0015: 2KB
+
+--- 5. Skills Health ---
+  ✅ notify-mason.sh
+
+--- 6. System Resources ---
+  Disk usage: 47%
+  Memory available: 2.0Gi (47% used)
+
+--- 6b. Process Health ---
+  ✅ No zombie processes
+  Top memory consumers:
+    ccd-cli: 322MB (PID 257762)
+    MainThread: 176MB (PID 2062)
+    python3: 146MB (PID 596)
+    searxng worker-: 96MB (PID 2713)
+    celery: 91MB (PID 256914)
+  Process count check:
+    ⚠️ sshd: 8 instances
+    ⚠️ postgres: 7 instances
+
+--- 7. Task Logs ---
+  Total files: 217
+  Task summaries: 39
+
+=== END REPORT ===
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0004/config.md
+:bar_chart: 数据健康检查 -- 2026-03-17 21:15 ET
+
+  :white_check_mark: raw_xhs_notes -- 更新于 5d 前，1278 行
+  :white_check_mark: raw_xhs_comments -- 更新于 5d 前，412 行
+  :white_check_mark: raw_xhs_creators -- 更新于 5d 前，23 行
+  :white_check_mark: raw_trendradar_news -- 更新于 3h 前，大小 260K
+  :white_check_mark: raw_trendradar_rss -- 更新于 3h 前，大小 416K
+  :white_check_mark: raw_radar_interactions -- 更新于 22m 前，大小 152K
+  :white_check_mark: raw_srx_sales -- API 可达 (HTTP 200)
+  :white_check_mark: raw_scout_intel -- 更新于 2h 前，4 个文件
+  :white_check_mark: raw_xhs_helper_docs -- 更新于 8d 前，5 个文件
+  :x: clean_xhs_notes -- 文件不存在
+  :white_check_mark: clean_scout_intel -- 更新于 7d 前，23 条，大小 16K
+  :x: analysis_xhs_viral -- 文件不存在
+  :x: analysis_xhs_trends -- 文件不存在
+  :x: analysis_xhs_comments -- 文件不存在
+  :fast_forward: analysis_radar_weekly -- stdout 类型，跳过
+  :x: report_strategy_briefing -- 文件不存在
+  :white_check_mark: report_optimization -- 更新于 8d 前，大小 12K
+  :fast_forward: report_api_usage -- Slack 消息类型，跳过
+  :x: raw_srx_history -- 更新于 6d 前，大小 56K
+
+总结: 11/17 健康，6 异常（2 跳过）
+总数据量: 24MB
+
+>>> 发送到 Slack #system-alerts ...
+>>> 已发送
+>>> 自愈检查: 查询 remediation_registry ...
+  >>> 无需自愈（所有异常项无注册修复动作或在冷却期）
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-18T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-11: 14209202 in /   139011 out | $16.708
+  2026-03-12: 14440017 in /   125145 out | $18.590
+  2026-03-14:  3046805 in /    45199 out | $10.960
+  Total: $46.257
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 7KB
+  ✅ EMP_0001: 6KB
+  ⚠️ EMP_0002: 18KB (consider compaction)
+  ⚠️ EMP_0003: 11KB (consider compaction)
+  ✅ EMP_0004: 6KB
+  ✅ EMP_0005: 5KB
+  ✅ EMP_0006: 4KB
+  ⚠️ EMP_0008: 15KB (consider compaction)
+  ✅ EMP_0009: 4KB
+  ✅ EMP_0010: 4KB
+  ✅ EMP_0011: 0KB
+  ✅ EMP_0012: 4KB
+  ✅ EMP_0013: 0KB
+  ⚠️ EMP_0014: 13KB (consider compaction)
+  ✅ EMP_0015: 2KB
+
+--- 5. Skills Health ---
+  ✅ notify-mason.sh
+
+--- 6. System Resources ---
+  Disk usage: 50%
+  Memory available: 1.8Gi (52% used)
+
+--- 6b. Process Health ---
+  ✅ No zombie processes
+  Top memory consumers:
+    claude: 487MB (PID 432112)
+    MainThread: 184MB (PID 394177)
+    python3: 143MB (PID 596)
+    searxng worker-: 96MB (PID 2713)
+    celery: 91MB (PID 439288)
+  Process count check:
+    ⚠️ sshd: 12 instances
+    ⚠️ postgres: 7 instances
+
+--- 7. Task Logs ---
+  Total files: 217
+  Task summaries: 39
+
+=== END REPORT ===
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0008/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0004/config.md
+:bar_chart: 数据健康检查 -- 2026-03-18 21:15 ET
+
+  :white_check_mark: raw_xhs_notes -- 更新于 6d 前，1278 行
+  :white_check_mark: raw_xhs_comments -- 更新于 6d 前，412 行
+  :white_check_mark: raw_xhs_creators -- 更新于 6d 前，23 行
+  :white_check_mark: raw_trendradar_news -- 更新于 3h 前，大小 272K
+  :white_check_mark: raw_trendradar_rss -- 更新于 3h 前，大小 332K
+  :white_check_mark: raw_radar_interactions -- 更新于 7h 前，大小 156K
+  :white_check_mark: raw_srx_sales -- API 可达 (HTTP 200)
+  :white_check_mark: raw_scout_intel -- 更新于 1d 前，4 个文件
+  :white_check_mark: raw_xhs_helper_docs -- 更新于 9d 前，5 个文件
+  :x: clean_xhs_notes -- 文件不存在
+  :white_check_mark: clean_scout_intel -- 更新于 8d 前，23 条，大小 16K
+  :x: analysis_xhs_viral -- 文件不存在
+  :x: analysis_xhs_trends -- 文件不存在
+  :x: analysis_xhs_comments -- 文件不存在
+  :fast_forward: analysis_radar_weekly -- stdout 类型，跳过
+  :x: report_strategy_briefing -- 文件不存在
+  :white_check_mark: report_optimization -- 更新于 9d 前，大小 12K
+  :fast_forward: report_api_usage -- Slack 消息类型，跳过
+  :x: raw_srx_history -- 更新于 7d 前，大小 56K
+
+总结: 11/17 健康，6 异常（2 跳过）
+总数据量: 25MB
+
+>>> 发送到 Slack #system-alerts ...
+>>> 已发送
+>>> 自愈检查: 查询 remediation_registry ...
+  >>> 无需自愈（所有异常项无注册修复动作或在冷却期）
+=== AGENT STATUS REPORT ===
+Generated: 2026-03-19T01:30:01Z
+
+--- 1. Agent Activity (24h) ---
+  No agent activity in past 24h
+
+--- 2. Recent Failures (7d) ---
+  No failures in past 7 days ✅
+
+--- 3. Token Usage (7d) ---
+  2026-03-12: 11720761 in /   100619 out | $14.878
+  2026-03-14:  3046805 in /    45199 out | $10.960
+  Total: $25.838
+
+--- 4. Memory Files ---
+  ✅ EMP_0000: 7KB
+  ✅ EMP_0001: 6KB
+  ⚠️ EMP_0002: 18KB (consider compaction)
+  ⚠️ EMP_0003: 11KB (consider compaction)
+  ✅ EMP_0004: 6KB
+  ✅ EMP_0005: 5KB
+  ✅ EMP_0006: 4KB
+  ⚠️ EMP_0008: 15KB (consider compaction)
+  ✅ EMP_0009: 4KB
+  ✅ EMP_0010: 4KB
+  ✅ EMP_0011: 0KB
+  ✅ EMP_0012: 4KB
+  ✅ EMP_0013: 0KB
+  ⚠️ EMP_0014: 13KB (consider compaction)
+  ✅ EMP_0015: 2KB
+
+--- 5. Skills Health ---
+  ✅ notify-mason.sh
+
+--- 6. System Resources ---
+  Disk usage: 50%
+  Memory available: 1.8Gi (52% used)
+
+--- 6b. Process Health ---
+  ✅ No zombie processes
+  Top memory consumers:
+    claude: 538MB (PID 573556)
+    python3: 143MB (PID 596)
+    MainThread: 136MB (PID 541834)
+    searxng worker-: 96MB (PID 542920)
+    celery: 92MB (PID 574811)
+  Process count check:
+    ⚠️ postgres: 8 instances
+
+--- 7. Task Logs ---
+  Total files: 217
+  Task summaries: 39
+
+=== END REPORT ===
+错误: 找不到 agent 目录或配置文件: /home/hangn/mason-hub/agents/EMP_0001/config.md

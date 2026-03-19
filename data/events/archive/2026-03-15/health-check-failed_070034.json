@@ -1,0 +1,13 @@
+{
+  "event": "health-check-failed",
+  "source": "health-check-lite",
+  "timestamp": "2026-03-15T07:00:33+00:00",
+  "status": "warning",
+  "level": 2,
+  "data": {
+    "alerts": [
+      "aliyun_ssh:failed"
+    ],
+    "summary": "\u963f\u91cc\u4e91 SSH \u4e0d\u901a; "
+  }
+}

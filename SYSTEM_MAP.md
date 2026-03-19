@@ -1,6 +1,6 @@
 # System Map — 受力分析
 
-> 最后更新: 2026-03-14 23:45 ET (EMP_0000 架构变更更新)
+> 最后更新: 2026-03-19 22:15 ET (/standup 增量更新)
 > 更新权: Agent 自动更新可推断字段，耦合关系变更需 Mason 确认
 > 所有 Agent session 启动时读取此文件 + MASON_AUTHORITY.md
 
@@ -8,9 +8,9 @@
 
 ## 全局状态
 
-**Agent OS v2 基础设施落地** — 16 EMP 完成 v2 四文件迁移 + 通信协议栈建立（8 种消息类型 + inbox 机制 + 权限矩阵 + 异常处理）+ 首次真实业务场景 multi-agent 端到端跑通（EMP_0001→0010→0001→0000，零人工介入）。四支柱差距仍在（Planning 10%/Reflection 15%）。Dispatcher 处于 /pause 状态。
+**Agent OS v2 基础设施落地** — 16 EMP 完成 v2 四文件迁移 + 通信协议栈建立（8 种消息类型 + inbox 机制 + 权限矩阵 + 异常处理）+ 首次真实业务场景 multi-agent 端到端跑通（EMP_0001→0010→0001→0000，零人工介入）。四支柱差距仍在（Planning 10%/Reflection 15%）。Dispatcher 处于 /pause 状态（自 3/13，已 6 天）。**注意**: 3/14 后系统无自动运行，EMP_0002 连续 20 次 skill 自建任务全部 empty_output 失败（烧 $10.96），需排查 run-agent.sh 输出捕获问题。
 
-当前合力方向: **通信层验证 + claude -p 替换 + Dispatcher 恢复**（基础设施就绪，进入集成验证阶段）
+当前合力方向: **EMP_0002 失败根因排查 + claude -p 替换 + Dispatcher 恢复**（基础设施就绪但执行层有系统性故障）
 
 ---
 
@@ -21,9 +21,10 @@
 状态:    active
 里程碑:  Agent OS v2 六子系统 21/21 + 16 EMP v2 四文件迁移完成 + agent-loader.sh 提取 + 通信协议栈（message_schema 8类型 + inbox + permissions + requires_review + task_failed 决策树 + system-status.sh）+ 首次 multi-agent e2e 跑通（零人工）
 阻力:    内部工程: claude -p 需替换为 Claude API 调用层（嵌套限制）；workflow 文件兼容性待验证
+         内部工程: EMP_0002 empty_output 系统性故障（3/14 连续 20 次失败，$10.96 浪费）— 需排查 run-agent.sh 输出捕获
          设计缺口: 四支柱（Planning/Reflection/Tool Use/Collab）全面不足，run-agent.sh 1300行 God Script 待拆
 耦合:    ↓ 效率影响 → 数据线、内容线、商业线
-上次更新: 2026-03-14
+上次更新: 2026-03-19
 ```
 **解读**: 3/14 完成 Agent OS v2 基础设施三大块——(1) 16 EMP 从单文件 config.md 迁移到 v2 四文件格式（identity/state/soul/tools + memory），agent-loader.sh 从 run-agent.sh 提取适配新结构；(2) 通信协议栈全栈建立，从消息格式到权限控制到异常处理到可观测性；(3) 首次真实业务场景 multi-agent 跑通（素仁轩短视频脚本：EMP_0001 派活→EMP_0010 执行→EMP_0001 验收→EMP_0000 归档，4 条消息完整归档，零人工介入）。下一步：claude -p 替换 + workflow 兼容性验证 + Dispatcher 恢复。
 
@@ -131,17 +132,18 @@
 
 | 优先级 | 行动 | 理由 | Owner |
 |--------|------|------|-------|
-| 1 | claude -p → Claude API 调用层 | claude -p 嵌套限制是 agent 自主执行的硬阻塞，通信层已就绪但执行层受限 | EMP_0002 |
-| 2 | workflow 文件兼容性验证 | v2 迁移后 workflow 四个 grep 命令待跑，确认无断裂 | EMP_0002 |
-| 3 | Dispatcher /pause 解除 | 3/13 起暂停，v2 基础设施+通信层已就绪，应恢复自动派发 | Mason 决定 |
-| 4 | Planning 能力建设 | 让 agent 收到目标自己拆解（decompose.py 接 LLM），四支柱突破点 | EMP_0002 |
-| 5 | run-agent.sh 模块化拆分 | 1300 行 God Script → 子系统模块，降低维护成本和 bug 风险 | EMP_0002 |
-| 6 | 阿里云连通性排查 | 当前 SSH 不通，影响数据同步 | EMP_0004 |
+| 1 | EMP_0002 empty_output 根因排查 | 3/14 连续 20 次失败烧 $10.96，Dispatcher 恢复前必须修 | Mason/EMP_0002 |
+| 2 | claude -p → Claude API 调用层 | claude -p 嵌套限制是 agent 自主执行的硬阻塞 | EMP_0002 |
+| 3 | Dispatcher /pause 解除 | 3/13 起暂停已 6 天，修完 empty_output 后恢复 | Mason 决定 |
+| 4 | workflow 文件兼容性验证 | v2 迁移后 workflow 四个 grep 命令待跑 | EMP_0002 |
+| 5 | Planning 能力建设 | decompose.py 接 LLM，四支柱突破点 | EMP_0002 |
+| 6 | run-agent.sh 模块化拆分 | 1300 行 God Script → 子系统模块 | EMP_0002 |
 
 **不推荐现在做的**:
 - 商业运营线任何事 → 全是外部依赖
 - CosyVoice 调参 → 内容线优先级低于自治线
 - 方案 C 升级（API 网关）→ 数据总量未触发 50MB 阈值
+- 恢复 Dispatcher 之前不要恢复 → 先修 empty_output bug，否则继续烧钱
 
 ---
 

@@ -1200,3 +1200,79 @@
 [2026-03-12 22:37:39] 检测到文件变化: MODIFY
 [2026-03-12 22:37:41] 无新事件
 [2026-03-12 22:37:41] 处理完成
+[2026-03-14 22:16:42] Event watcher 启动，监听 /home/hangn/mason-hub/data/events/queue.jsonl
+[2026-03-14 22:22:05] Event watcher 启动，监听 /home/hangn/mason-hub/data/events/queue.jsonl
+[2026-03-15 00:20:26] Event watcher 启动，监听 /home/hangn/mason-hub/data/events/queue.jsonl
+[2026-03-15 01:15:29] 检测到文件变化: MODIFY
+[2026-03-15 01:15:30] 发现 15 条新事件 (offset=278)
+[2026-03-15 01:15:30] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: dispatcher-task-start (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: agent-task-started (来源: dispatcher.sh)
+[2026-03-15 01:15:30]   无匹配路由，跳过
+[2026-03-15 01:15:30] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 01:15:30]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 01:15:30] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 01:15:30]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 01:15:30] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 01:15:30]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 01:15:30] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 01:15:30]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 01:15:30] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-15 01:15:30]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 01:15:30] 处理完成
+[2026-03-15 07:00:33] 检测到文件变化: MODIFY
+[2026-03-15 07:00:34] 发现 1 条新事件 (offset=293)
+[2026-03-15 07:00:34] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 07:00:34]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 07:00:34] 处理完成
+[2026-03-15 08:00:42] 检测到文件变化: MODIFY
+[2026-03-15 08:00:43] 发现 1 条新事件 (offset=294)
+[2026-03-15 08:00:43] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 08:00:43]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 08:00:44] 处理完成
+[2026-03-15 15:00:46] 检测到文件变化: MODIFY
+[2026-03-15 15:00:47] 发现 1 条新事件 (offset=295)
+[2026-03-15 15:00:47] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-15 15:00:47]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-15 15:00:47] 处理完成
+[2026-03-16 01:15:29] 检测到文件变化: MODIFY
+[2026-03-16 01:15:30] 发现 1 条新事件 (offset=296)
+[2026-03-16 01:15:30] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-16 01:15:30]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-16 01:15:30] 处理完成
+[2026-03-16 15:00:36] 检测到文件变化: MODIFY
+[2026-03-16 15:00:38] 发现 1 条新事件 (offset=297)
+[2026-03-16 15:00:38] 处理事件: health-check-failed (来源: health-check-lite)
+[2026-03-16 15:00:38]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-16 15:00:38] 处理完成
+[2026-03-17 01:15:28] 检测到文件变化: MODIFY
+[2026-03-17 01:15:29] 发现 1 条新事件 (offset=298)
+[2026-03-17 01:15:29] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-17 01:15:29]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-17 01:15:29] 处理完成
+[2026-03-18 01:15:28] 检测到文件变化: MODIFY
+[2026-03-18 01:15:29] 发现 1 条新事件 (offset=299)
+[2026-03-18 01:15:29] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-18 01:15:29]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-18 01:15:29] 处理完成
+[2026-03-19 01:15:28] 检测到文件变化: MODIFY
+[2026-03-19 01:15:29] 发现 1 条新事件 (offset=300)
+[2026-03-19 01:15:29] 处理事件: health-check-failed (来源: data_health_check.sh)
+[2026-03-19 01:15:29]   SYSTEM_MAP 待更新: 数据线 → blocked
+[2026-03-19 01:15:29] 处理完成

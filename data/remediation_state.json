@@ -8,5 +8,10 @@
     "retries": 0,
     "last_attempt": 1773276690.4316866,
     "last_result": "ok"
+  },
+  "raw_xhs_notes": {
+    "retries": 1,
+    "last_attempt": 1773885989.5220656,
+    "last_result": "failed"
   }
 }

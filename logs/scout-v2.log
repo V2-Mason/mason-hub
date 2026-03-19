@@ -297,3 +297,295 @@
     }
   ]
 }
+23:00:07 [__main__] INFO: ============================================================
+23:00:07 [__main__] INFO: Starting engine: spider
+23:00:07 [__main__] INFO: ============================================================
+23:00:07 [intel.engines.spider] INFO: SpiderEngine: 开始提取话题 (lookback=3 days)
+23:00:07 [intel.engines.spider] INFO: 读取热榜 1798 条, RSS 1427 条
+23:00:07 [intel.engines.spider] INFO: 关注率: high_focus=0, dismissed=2
+23:00:37 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:00:37 [intel.engines.spider] INFO: LLM 提取 18 个关键词
+23:00:37 [intel.engines.spider] INFO: 合并后共 27 个关键词 (固定 10 + LLM 18)
+23:00:37 [intel.engines.spider] INFO: 已写入数据库, week=2026-W12
+23:00:37 [__main__] INFO: Engine spider completed in 30.1s — {'topic_count': 27, 'duration_s': 30.1}
+23:00:37 [__main__] INFO: ============================================================
+23:00:37 [__main__] INFO: Starting engine: query
+23:00:37 [__main__] INFO: ============================================================
+23:00:37 [intel.engines.query] INFO: QueryEngine: processing 27 topics (reflection=True, diversity=True)
+23:00:37 [intel.engines.query] INFO: Searching 'claude code agent' (source=github)
+23:00:38 [intel.engines.query] INFO: Initial search for 'claude code agent': 10 results
+23:00:41 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:00:41 [intel.engines.query] INFO: Reflection for 'claude code agent': sufficient=True, reasoning=The results are highly relevant to 'claude code agent' and cover diverse applications, from developm
+23:00:41 [intel.engines.query] INFO: Searching 'AI agent framework' (source=github)
+23:00:42 [intel.engines.query] INFO: Initial search for 'AI agent framework': 10 results
+23:00:45 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:00:45 [intel.engines.query] INFO: Reflection for 'AI agent framework': sufficient=True, reasoning=The search results are highly relevant to the topic 'AI agent framework' and cover diverse perspecti
+23:00:45 [intel.engines.query] INFO: Searching 'MCP server' (source=github)
+23:00:46 [intel.engines.query] INFO: Initial search for 'MCP server': 10 results
+23:00:49 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:00:49 [intel.engines.query] INFO: Reflection for 'MCP server': sufficient=True, reasoning=The results are relevant to the keyword 'MCP server' and cover diverse applications across different
+23:00:49 [intel.engines.query] INFO: Searching '小红书 运营' (source=web)
+23:00:50 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:00:50 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:00:50 [intel.engines.query] INFO: Initial search for '小红书 运营': 5 results
+23:00:54 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:00:54 [intel.engines.query] INFO: Reflection for '小红书 运营': sufficient=True, reasoning=The search results are highly relevant to the keyword '小红书 运营' and cover diverse aspects of automate
+23:00:54 [intel.engines.query] INFO: Searching '跨境电商 韩国护肤' (source=web)
+23:00:55 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:00:55 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:00:55 [intel.engines.query] INFO: Initial search for '跨境电商 韩国护肤': 0 results
+23:00:55 [intel.engines.query] INFO: Searching 'DTC brand' (source=github)
+23:00:55 [intel.engines.query] INFO: Initial search for 'DTC brand': 5 results
+23:00:58 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:00:58 [intel.engines.query] INFO: Reflection for 'DTC brand': sufficient=True, reasoning=The results are relevant to the DTC brand keyword and cover diverse aspects such as analytics, marke
+23:00:58 [intel.engines.query] INFO: Searching 'content automation' (source=github)
+23:00:59 [intel.engines.query] INFO: Initial search for 'content automation': 10 results
+23:01:02 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:01:02 [intel.engines.query] INFO: Reflection for 'content automation': sufficient=True, reasoning=The results are highly relevant to 'content automation' and cover diverse aspects like YouTube autom
+23:01:02 [intel.engines.query] INFO: Searching 'video generation AI' (source=github)
+23:01:03 [intel.engines.query] INFO: Initial search for 'video generation AI': 10 results
+23:01:06 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:01:06 [intel.engines.query] INFO: Reflection for 'video generation AI': sufficient=False, reasoning=The results are somewhat relevant but heavily skewed towards specific GitHub repositories, many from
+23:01:06 [intel.engines.query] INFO: Refined search for 'video generation AI' → 'video generation AI open source tools'
+23:01:07 [intel.engines.query] INFO: Refined search got 1 results
+23:01:07 [intel.engines.query] INFO: Searching 'social media trend' (source=web)
+23:01:07 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:08 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:08 [intel.engines.query] INFO: Initial search for 'social media trend': 5 results
+23:01:11 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:01:11 [intel.engines.query] INFO: Reflection for 'social media trend': sufficient=False, reasoning=The results are somewhat relevant but lack diversity and depth in covering social media trends, with
+23:01:11 [intel.engines.query] INFO: Refined search for 'social media trend' → 'social media trend analysis tools and algorithms'
+23:01:11 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:12 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:12 [intel.engines.query] INFO: Refined search got 0 results
+23:01:12 [intel.engines.query] INFO: Searching 'GEO generative engine optimization' (source=web)
+23:01:12 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=GEO+generative+engine+optimization+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:12 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:12 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:12 [intel.engines.query] INFO: Initial search for 'GEO generative engine optimization': 0 results
+23:01:12 [intel.engines.query] INFO: Searching 'AI Agent market' (source=web)
+23:01:12 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=AI+Agent+market+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:13 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:13 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:13 [intel.engines.query] INFO: Initial search for 'AI Agent market': 0 results
+23:01:13 [intel.engines.query] INFO: Searching 'LLM coding tools' (source=github)
+23:01:13 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=LLM+coding+tools+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=10
+23:01:13 [intel.engines.query] INFO: Initial search for 'LLM coding tools': 0 results
+23:01:13 [intel.engines.query] INFO: Searching 'Wayland compositor' (source=github)
+23:01:13 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=Wayland+compositor+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=10
+23:01:13 [intel.engines.query] INFO: Initial search for 'Wayland compositor': 0 results
+23:01:13 [intel.engines.query] INFO: Searching '3D printed rocket' (source=web)
+23:01:13 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=3D+printed+rocket+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:13 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:14 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:14 [intel.engines.query] INFO: Initial search for '3D printed rocket': 0 results
+23:01:14 [intel.engines.query] INFO: Searching 'ecommerce supplier disputes' (source=web)
+23:01:14 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=ecommerce+supplier+disputes+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:14 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:14 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:14 [intel.engines.query] INFO: Initial search for 'ecommerce supplier disputes': 0 results
+23:01:14 [intel.engines.query] INFO: Searching 'DTC brand strategies' (source=web)
+23:01:14 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=DTC+brand+strategies+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:15 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:15 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:15 [intel.engines.query] INFO: Initial search for 'DTC brand strategies': 0 results
+23:01:15 [intel.engines.query] INFO: Searching 'content automation tools' (source=github)
+23:01:15 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=content+automation+tools+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=10
+23:01:15 [intel.engines.query] INFO: Initial search for 'content automation tools': 0 results
+23:01:15 [intel.engines.query] INFO: Searching 'social media trends China' (source=web)
+23:01:15 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=social+media+trends+China+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:15 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:16 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:16 [intel.engines.query] INFO: Initial search for 'social media trends China': 0 results
+23:01:16 [intel.engines.query] INFO: Searching 'sovereign office platforms' (source=web)
+23:01:16 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=sovereign+office+platforms+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:16 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:16 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:16 [intel.engines.query] INFO: Initial search for 'sovereign office platforms': 0 results
+23:01:16 [intel.engines.query] INFO: Searching 'Unicode security attacks' (source=github)
+23:01:16 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=Unicode+security+attacks+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=10
+23:01:16 [intel.engines.query] INFO: Initial search for 'Unicode security attacks': 0 results
+23:01:16 [intel.engines.query] INFO: Searching 'hydroponics tech' (source=web)
+23:01:17 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=hydroponics+tech+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:17 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:17 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:17 [intel.engines.query] INFO: Initial search for 'hydroponics tech': 0 results
+23:01:17 [intel.engines.query] INFO: Searching 'China AI hiring trends' (source=web)
+23:01:17 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=China+AI+hiring+trends+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:18 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:18 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:18 [intel.engines.query] INFO: Initial search for 'China AI hiring trends': 0 results
+23:01:18 [intel.engines.query] INFO: Searching 'NVIDIA GTC insights' (source=web)
+23:01:18 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=NVIDIA+GTC+insights+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:18 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:18 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:18 [intel.engines.query] INFO: Initial search for 'NVIDIA GTC insights': 0 results
+23:01:18 [intel.engines.query] INFO: Searching 'rescue certificate scams' (source=web)
+23:01:18 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=rescue+certificate+scams+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:19 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:19 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:19 [intel.engines.query] INFO: Initial search for 'rescue certificate scams': 0 results
+23:01:19 [intel.engines.query] INFO: Searching 'drone pesticide impacts' (source=web)
+23:01:19 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=drone+pesticide+impacts+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:19 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:20 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:20 [intel.engines.query] INFO: Initial search for 'drone pesticide impacts': 0 results
+23:01:20 [intel.engines.query] INFO: Searching 'China commercial property loans' (source=web)
+23:01:20 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=China+commercial+property+loans+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:20 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:20 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:20 [intel.engines.query] INFO: Initial search for 'China commercial property loans': 0 results
+23:01:20 [intel.engines.query] INFO: Searching 'Iran military tech' (source=web)
+23:01:20 [intel.engines.search] WARNING: GitHub search failed: 403 Client Error: rate limit exceeded for url: https://api.github.com/search/repositories?q=Iran+military+tech+created%3A%3E2026-03-10&sort=stars&order=desc&per_page=5
+23:01:21 [intel.engines.search] WARNING: DuckDuckGo instant API returned 202 (bot detection)
+23:01:21 [intel.engines.search] WARNING: DuckDuckGo HTML API returned 202 (bot detection)
+23:01:21 [intel.engines.query] INFO: Initial search for 'Iran military tech': 0 results
+23:01:21 [intel.engines.query] INFO: QueryEngine: collected 65 unique intel items from 27 topics
+23:01:21 [intel.engines.query] INFO: QueryEngine: wrote 65 items to scout.db
+23:01:21 [__main__] INFO: Engine query completed in 43.9s — {'item_count': 65, 'duration_s': 43.9}
+23:01:21 [__main__] INFO: ============================================================
+23:01:21 [__main__] INFO: Starting engine: media
+23:01:21 [__main__] INFO: ============================================================
+23:01:21 [intel.engines.media] INFO: MediaEngine disabled in config. Returning items unchanged.
+23:01:21 [__main__] INFO: Engine media completed in 0.0s — {'enriched_count': 0, 'total': 65, 'duration_s': 0.0}
+23:01:21 [__main__] INFO: ============================================================
+23:01:21 [__main__] INFO: Starting engine: insight
+23:01:21 [__main__] INFO: ============================================================
+23:01:21 [intel.engines.insight] INFO: Reading internal data sources...
+23:01:21 [intel.engines.insight] INFO: XHS: 1278 notes loaded
+23:01:22 [intel.engines.insight] INFO: Sales data loaded
+23:01:22 [intel.engines.insight] INFO: Historical intel: 23 items
+23:01:22 [intel.engines.insight] INFO: Processing batch 1/13 (5 items)...
+23:01:39 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:01:39 [intel.engines.insight] INFO: Processing batch 2/13 (5 items)...
+23:01:55 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:01:55 [intel.engines.insight] INFO: Processing batch 3/13 (5 items)...
+23:02:12 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:02:12 [intel.engines.insight] INFO: Processing batch 4/13 (5 items)...
+23:02:26 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:02:26 [intel.engines.insight] INFO: Processing batch 5/13 (5 items)...
+23:02:41 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:02:41 [intel.engines.insight] INFO: Processing batch 6/13 (5 items)...
+23:02:56 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:02:56 [intel.engines.insight] INFO: Processing batch 7/13 (5 items)...
+23:03:09 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:03:09 [intel.engines.insight] INFO: Processing batch 8/13 (5 items)...
+23:03:24 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:03:24 [intel.engines.insight] INFO: Processing batch 9/13 (5 items)...
+23:03:40 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:03:40 [intel.engines.insight] INFO: Processing batch 10/13 (5 items)...
+23:03:57 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:03:57 [intel.engines.insight] INFO: Processing batch 11/13 (5 items)...
+23:04:14 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:04:14 [intel.engines.insight] INFO: Processing batch 12/13 (5 items)...
+23:04:30 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:04:31 [intel.engines.insight] INFO: Processing batch 13/13 (5 items)...
+23:04:45 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:04:45 [intel.engines.insight] INFO: Enrichment complete: 65 items processed
+23:04:45 [__main__] INFO: Engine insight completed in 204.3s — {'enriched_count': 65, 'total': 65, 'duration_s': 204.3}
+23:04:45 [__main__] INFO: ============================================================
+23:04:45 [__main__] INFO: Starting engine: forum
+23:04:45 [__main__] INFO: ============================================================
+23:04:45 [intel.engines.forum] INFO: ForumEngine: 65 条情报 → 59 个话题
+23:04:52 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:04:52 [intel.engines.forum] INFO: 话题「twostraws/Swift-Concurrency-Ag」(3条): confidence=high
+23:04:58 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:04:58 [intel.engines.forum] INFO: 话题「Browser-Automation-Hub/veeva-v」(2条): confidence=medium
+23:05:03 [httpx] INFO: HTTP Request: POST https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions "HTTP/1.1 200 OK"
+23:05:03 [intel.engines.forum] INFO: 话题「ristponex/free-image-and-video」(4条): confidence=high
+23:05:04 [intel.engines.forum] INFO: ForumEngine: 数据库已更新 65 条
+23:05:04 [intel.engines.forum] INFO: ForumEngine: 验证结果已保存到 /home/hangn/mason-hub/intel/validated/2026-03-17.jsonl
+23:05:04 [__main__] INFO: Engine forum completed in 18.8s — {'validated_count': 65, 'total': 65, 'duration_s': 18.8}
+23:05:04 [__main__] INFO: ============================================================
+23:05:04 [__main__] INFO: Starting engine: report
+23:05:04 [__main__] INFO: ============================================================
+23:05:04 [__main__] INFO: Engine report completed in 0.0s — {'report_path': '/home/hangn/mason-hub/intel/reports/2026-03-17.md', 'item_count': 65, 'duration_s': 0.0}
+23:05:04 [__main__] INFO: ============================================================
+23:05:04 [__main__] INFO: Pipeline completed in 297.2s — 65 items
+23:05:04 [__main__] INFO: ============================================================
+{
+  "status": "completed",
+  "date": "2026-03-17",
+  "run_id": "2026-03-17T23:00:07Z",
+  "total_duration_s": 297.2,
+  "total_items": 65,
+  "report_path": "/home/hangn/mason-hub/intel/reports/2026-03-17.md",
+  "engines": [
+    {
+      "engine": "spider",
+      "status": "success",
+      "started_at": "2026-03-17T23:00:07.150782",
+      "finished_at": "2026-03-17T23:00:37.299160",
+      "output_file": "",
+      "error": "",
+      "metrics": {
+        "topic_count": 27,
+        "duration_s": 30.1
+      }
+    },
+    {
+      "engine": "query",
+      "status": "success",
+      "started_at": "2026-03-17T23:00:37.302082",
+      "finished_at": "2026-03-17T23:01:21.219908",
+      "output_file": "",
+      "error": "",
+      "metrics": {
+        "item_count": 65,
+        "duration_s": 43.9
+      }
+    },
+    {
+      "engine": "media",
+      "status": "success",
+      "started_at": "2026-03-17T23:01:21.220758",
+      "finished_at": "2026-03-17T23:01:21.224827",
+      "output_file": "",
+      "error": "",
+      "metrics": {
+        "enriched_count": 0,
+        "total": 65,
+        "duration_s": 0.0
+      }
+    },
+    {
+      "engine": "insight",
+      "status": "success",
+      "started_at": "2026-03-17T23:01:21.225568",
+      "finished_at": "2026-03-17T23:04:45.525309",
+      "output_file": "",
+      "error": "",
+      "metrics": {
+        "enriched_count": 65,
+        "total": 65,
+        "duration_s": 204.3
+      }
+    },
+    {
+      "engine": "forum",
+      "status": "success",
+      "started_at": "2026-03-17T23:04:45.526195",
+      "finished_at": "2026-03-17T23:05:04.316019",
+      "output_file": "",
+      "error": "",
+      "metrics": {
+        "validated_count": 65,
+        "total": 65,
+        "duration_s": 18.8
+      }
+    },
+    {
+      "engine": "report",
+      "status": "success",
+      "started_at": "2026-03-17T23:05:04.318502",
+      "finished_at": "2026-03-17T23:05:04.337202",
+      "output_file": "",
+      "error": "",
+      "metrics": {
+        "report_path": "/home/hangn/mason-hub/intel/reports/2026-03-17.md",
+        "item_count": 65,
+        "duration_s": 0.0
+      }
+    }
+  ]
+}

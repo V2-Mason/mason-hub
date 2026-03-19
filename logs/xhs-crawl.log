@@ -270,3 +270,91 @@ Notes after: 1278
 New: 52 (10 with detail)
 
 === XHS Crawl Complete ===
+=== XHS Crawl: Task 4 — 趋势发现 ===
+Time: 2026-03-15 18:00 ET
+Account: A
+Keywords (this run): 爆款护肤品,护肤成分趋势,新品护肤
+Full pool: 护肤成分趋势,爆款护肤品,新品护肤
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 1667s (~27min)
+
+Notes before: 1278
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+=== Two-Tier Crawl ===
+Account: A (内容博主号)
+Keywords: ['爆款护肤品', '护肤成分趋势', '新品护肤']
+Pages/keyword: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Browser ready
+
+--- Cookie check ---
+  Cookie EXPIRED: 您当前登录的账号没有权限访问
+
+ABORT: Cookie expired for account A
+=== XHS Crawl: Task 1 — 内容灵感 ===
+Time: 2026-03-16 18:00 ET
+Account: A
+Keywords (this run): 韩国美妆教程,韩国零食,韩国护肤
+Full pool: 韩国护肤,韩国好物,韩国美妆教程,韩国零食,韩国代购
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 2475s (~41min)
+
+Notes before: 1278
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+=== Two-Tier Crawl ===
+Account: A (内容博主号)
+Keywords: ['韩国美妆教程', '韩国零食', '韩国护肤']
+Pages/keyword: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Browser ready
+
+--- Cookie check ---
+  Cookie EXPIRED: 您当前登录的账号没有权限访问
+
+ABORT: Cookie expired for account A
+=== XHS Crawl: Task 2 — 选品情报 ===
+Time: 2026-03-17 18:00 ET
+Account: B
+Keywords (this run): 精华液推荐,防晒推荐
+Full pool: 水乳推荐,精华液推荐,面膜推荐,防晒推荐
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 803s (~13min)
+
+Notes before: 1278
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+ERROR: Account "B" has no cookie
+ERROR: Crawl failed (exit 2)
+=== XHS Crawl: Task 3 — 竞品监控 ===
+Time: 2026-03-18 18:00 ET
+Account: B
+Keywords (this run): ANUA测评,COSRX测评,SOME BY MI测评
+Full pool: COSRX测评,SOME BY MI测评,SKIN1004测评,ANUA测评,ROUND LAB测评,韩国代购店铺,oliveyoung代购,韩国护肤代购
+Pages: 1, Top-N: 10
+Sort: time_descending, Time window: 30d
+
+Random delay: 454s (~7min)
+
+Notes before: 1278
+
+--- Syncing crawl script ---
+
+--- Running two-tier crawl ---
+ERROR: Account "B" has no cookie
+ERROR: Crawl failed (exit 2)

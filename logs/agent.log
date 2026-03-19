@@ -327,3 +327,11 @@ Commit 成功。任务完成。
 {"timestamp":"2026-03-14T06:07:00Z","agent_id":"EMP_0002","task_id":"task_EMP_0002_1773468414","event_type":"info","elapsed_s":1,"message":"Round 1 / 3 started","round":1,"max_rounds":3}
 {"timestamp":"2026-03-14T06:10:03Z","agent_id":"EMP_0002","task_id":"task_EMP_0002_1773468596","event_type":"start","elapsed_s":0,"message":"Task started. Work dir: /home/hangn/mason-hub. Verify: true. Task: 自主任务: 扩展 compact-memory.sh: 加 lesson 质量评分（gap分类/可操作/重复检测）","work_dir":"/home/hangn/mason-hub","has_verify":"true","task_type":"execute","chain_depth":0}
 {"timestamp":"2026-03-14T06:10:03Z","agent_id":"EMP_0002","task_id":"task_EMP_0002_1773468596","event_type":"info","elapsed_s":0,"message":"Round 1 / 3 started","round":1,"max_rounds":3}
+{"timestamp":"2026-03-15T22:27:57Z","agent_id":"xhs-crawler","task_id":"crawl-task-4","event_type":"start","message":"Task 4 (趋势发现), account: A, keywords: 爆款护肤品,护肤成分趋势,新品护肤 "}
+{"timestamp":"2026-03-15T22:28:24Z","agent_id":"xhs-crawler","task_id":"crawl-task-4","event_type":"error","message":"Cookie expired for account A "}
+{"timestamp":"2026-03-16T22:41:26Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"start","message":"Task 1 (内容灵感), account: A, keywords: 韩国美妆教程,韩国零食,韩国护肤 "}
+{"timestamp":"2026-03-16T22:41:49Z","agent_id":"xhs-crawler","task_id":"crawl-task-1","event_type":"error","message":"Cookie expired for account A "}
+{"timestamp":"2026-03-17T22:13:34Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"start","message":"Task 2 (选品情报), account: B, keywords: 精华液推荐,防晒推荐 "}
+{"timestamp":"2026-03-17T22:13:41Z","agent_id":"xhs-crawler","task_id":"crawl-task-2","event_type":"error","message":"Crawl failed (exit 2) "}
+{"timestamp":"2026-03-18T22:07:48Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"start","message":"Task 3 (竞品监控), account: B, keywords: ANUA测评,COSRX测评,SOME BY MI测评 "}
+{"timestamp":"2026-03-18T22:07:55Z","agent_id":"xhs-crawler","task_id":"crawl-task-3","event_type":"error","message":"Crawl failed (exit 2) "}
