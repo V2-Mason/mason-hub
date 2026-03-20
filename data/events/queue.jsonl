@@ -299,3 +299,5 @@
 {"event": "health-check-failed", "source": "data_health_check.sh", "timestamp": "2026-03-17T01:15:28+00:00", "status": "failed", "level": 2, "data": {"ok": 10, "total": 17, "errors": 6}}
 {"event": "health-check-failed", "source": "data_health_check.sh", "timestamp": "2026-03-18T01:15:28+00:00", "status": "failed", "level": 2, "data": {"ok": 11, "total": 17, "errors": 6}}
 {"event": "health-check-failed", "source": "data_health_check.sh", "timestamp": "2026-03-19T01:15:28+00:00", "status": "failed", "level": 2, "data": {"ok": 11, "total": 17, "errors": 6}}
+{"event": "health-check-failed", "source": "data_health_check.sh", "timestamp": "2026-03-20T01:15:28+00:00", "status": "failed", "level": 2, "data": {"ok": 9, "total": 17, "errors": 6}}
+{"event": "health-check-failed", "source": "health-check-lite", "timestamp": "2026-03-20T02:00:43+00:00", "status": "warning", "level": 2, "data": {"alerts": ["aliyun_ssh:failed"], "summary": "阿里云 SSH 不通; "}}
