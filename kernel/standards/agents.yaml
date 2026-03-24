@@ -48,7 +48,7 @@ agents:
 
   - id: EMP_0005
     name: 电商 Dev
-    role: 电商业务开发（/opt/surenxuan/ 专属）
+    role: 电商业务开发（~/surenxuan 开发，/opt/surenxuan 生产）
     domain: ecommerce
     status: active
     can_own_tasks: true

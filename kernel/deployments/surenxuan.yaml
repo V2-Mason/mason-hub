@@ -31,17 +31,14 @@ orchestration_agents:
 code_agents:
   - name: selection_agent
     path: backend/agents/selection_agent.py
-    lines: 753
     trigger: 供货单上传
     capabilities: [翻译, 分类, 价格计算, 规则过滤, 采购单生成]
   - name: content_agent
     path: backend/agents/content_agent.py
-    lines: 682
     trigger: 内容创作/客户跟进
     capabilities: [文案生成, 合规审核, Copilot, 复购推荐]
   - name: data_coo_agent
     path: backend/agents/data_coo_agent.py
-    lines: 493
     trigger: 事件驱动（SALE_RECORDED, INVENTORY_LOW 等）
     capabilities: [库存管理, 客户分级, 采购预警, 报表生成]
 
