@@ -19,7 +19,7 @@
 ## P1 — 本周目标
 
 **Agent OS 补全**
-- [ ] Role/Playbook 增强：EMP_0015 加趋势归因方法论、EMP_0000 加自主度评估方法论
+- [x] Role/Playbook 增强：EMP_0015 加趋势归因方法论、EMP_0000 加自主度评估方法论 — 2026-03-24 已完成
 - [ ] 效率审计自动化 — post-task hook 检测异常消耗，/standup 呈现 efficiency digest
 
 **记忆 v1.5**

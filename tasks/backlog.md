@@ -569,7 +569,7 @@ Phase 3 — 数据 SDK + 扩展:
 待办：
 - [x] 自建 Skill（4 个）：content-performance/cross-correlate/decision-log/pattern-extract — 2026-03-14（EMP_0002）
 - [x] compact-memory.sh 扩展：lesson 质量评分 + 四管分别压缩 — 2026-03-14（EMP_0002）
-- [ ] Role/Playbook 增强（3 个）：EMP_0015 加趋势归因+决策回顾方法论、EMP_0000 加自主度评估方法论
+- [x] Role/Playbook 增强（3 个）：EMP_0015 加趋势归因+决策回顾方法论、EMP_0000 加自主度评估方法论 — 2026-03-24（已存在于 soul.md，EMP_0015 确认）
 - [x] Config 膨胀修复：EMP_0000 5.4K→4.1K + EMP_0008 7.3K→5.0K，操作细节移到 playbook — 2026-03-14（EMP_0002）
 - [x] 铁律执行层：pre-commit hook 硬阻塞 config 膨胀（从 advisory 变 blocking）— 2026-03-14（EMP_0002）
 - [x] 质量框架：decompose.py + critic.py + error-analysis.py + 集成到 run-agent.sh — 2026-03-14（EMP_0002）
