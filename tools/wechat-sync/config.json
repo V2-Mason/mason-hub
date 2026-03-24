@@ -34,6 +34,7 @@
 
   "surenxuan_api": {
     "url": "http://106.14.44.68:8000/api/wechat/daily-report",
-    "comment": "分析结果上传到素仁轩后端"
+    "api_key": "srx-wechat-2026",
+    "comment": "分析结果上传到素仁轩后端，api_key 对应后端 WECHAT_API_KEY"
   }
 }

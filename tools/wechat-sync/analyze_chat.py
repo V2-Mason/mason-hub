@@ -591,15 +591,21 @@ def analyze_image_ocr(image_data, context, api_key):
 # 上传到素仁轩
 # ============================================================
 def upload_to_surenxuan(result):
-    import requests as req
     url = CONFIG.get("surenxuan_api", {}).get("url", "")
+    api_key = CONFIG.get("surenxuan_api", {}).get("api_key", "srx-wechat-2026")
     if not url:
         print("  [跳过] 未配置 surenxuan_api.url")
         return
     try:
-        resp = req.post(url, json=result, timeout=30)
-        data = resp.json()
-        print(f"  上传成功: {data.get('message', '')}")
+        import urllib.request
+        data = json.dumps(result, ensure_ascii=False).encode("utf-8")
+        req = urllib.request.Request(url, data=data, headers={
+            "Content-Type": "application/json",
+            "X-API-Key": api_key,
+        }, method="POST")
+        resp = urllib.request.urlopen(req, timeout=30)
+        resp_data = json.loads(resp.read().decode())
+        print(f"  上传成功: {resp_data.get('message', '')}")
     except Exception as e:
         print(f"  上传失败: {e}")
 
