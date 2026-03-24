@@ -162,27 +162,57 @@ def clean_content(text):
 # 联系人加载
 # ============================================================
 def load_contacts(dec_dir):
-    contacts = {}
+    """Load contacts and build two maps: wxid->name and MD5(wxid)->name.
+    WeChat 4.0 uses MD5(username) as message table name suffix."""
+    import hashlib
+    wxid_to_name = {}   # wxid -> display name
+    hash_to_name = {}   # MD5(wxid) -> display name
+    hash_to_wxid = {}   # MD5(wxid) -> wxid
+
     for db_file in Path(dec_dir).rglob("contact*.db"):
+        if "contact_fts" in str(db_file):
+            continue
         try:
             conn = sqlite3.connect(str(db_file))
-            cur = conn.cursor()
-            tables = [r[0] for r in cur.execute(
-                "SELECT name FROM sqlite_master WHERE type='table'"
-            ).fetchall()]
-            for tbl in tables:
-                cols = [r[1] for r in cur.execute(f"PRAGMA table_info([{tbl}])").fetchall()]
-                name_col = next((c for c in cols if c.lower() in ("username", "usr_name", "username")), None)
-                nick_col = next((c for c in cols if c.lower() in ("nickname", "nick_name", "nickname")), None)
-                if not name_col or not nick_col:
-                    continue
-                for uid, nick in cur.execute(f"SELECT [{name_col}], [{nick_col}] FROM [{tbl}]").fetchall():
-                    if uid and nick:
-                        contacts[uid] = nick
+            # Try WeChat 4.0 format: contact table with username/nick_name/remark
+            try:
+                rows = conn.execute(
+                    "SELECT username, nick_name, remark FROM contact WHERE username != ''"
+                ).fetchall()
+                for uid, nick, remark in rows:
+                    name = remark if remark else nick  # prefer remark
+                    if uid and name:
+                        wxid_to_name[uid] = name
+                        h = hashlib.md5(uid.encode()).hexdigest()
+                        hash_to_name[h] = name
+                        hash_to_wxid[h] = uid
+                    elif uid:  # no name but have wxid (groups etc)
+                        h = hashlib.md5(uid.encode()).hexdigest()
+                        hash_to_wxid[h] = uid
+                        if "@chatroom" in uid:
+                            hash_to_name[h] = f"[群]{uid.split('@')[0]}"
+            except:
+                # Fallback: try older format
+                for tbl in [r[0] for r in conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()]:
+                    cols = [r[1] for r in conn.execute(f"PRAGMA table_info([{tbl}])").fetchall()]
+                    name_col = next((c for c in cols if c.lower() in ("username", "usr_name")), None)
+                    nick_col = next((c for c in cols if c.lower() in ("nickname", "nick_name")), None)
+                    if not name_col or not nick_col:
+                        continue
+                    for uid, nick in conn.execute(f"SELECT [{name_col}], [{nick_col}] FROM [{tbl}]").fetchall():
+                        if uid and nick:
+                            wxid_to_name[uid] = nick
+                            h = hashlib.md5(uid.encode()).hexdigest()
+                            hash_to_name[h] = nick
+                            hash_to_wxid[h] = uid
             conn.close()
         except:
             continue
-    return contacts
+
+    print(f"  已加载 {len(wxid_to_name)} 个联系人 ({len(hash_to_name)} 个有昵称)")
+    return {"wxid": wxid_to_name, "hash": hash_to_name, "hash_to_wxid": hash_to_wxid}
 
 
 # ============================================================
@@ -240,11 +270,31 @@ def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
         print("[错误] 找不到 message 数据库")
         return [], []
 
-    contacts = load_contacts(dec_dir)
+    contact_data = load_contacts(dec_dir)
+    hash_names = contact_data["hash"]     # MD5(wxid) -> name
+    wxid_names = contact_data["wxid"]     # wxid -> name
+    hash_to_wxid = contact_data["hash_to_wxid"]  # MD5 -> wxid
+
+    # Build exclude list
+    excluded = CONFIG.get("excluded_contacts", [])
+    exceptions = CONFIG.get("excluded_exceptions", [])
+
+    def is_excluded(name, wxid):
+        # Check exceptions first (always allow)
+        for ex in exceptions:
+            if ex in (wxid or '') or ex in (name or ''):
+                return False
+        # Check exclusions
+        for exc in excluded:
+            if exc.lower() in (name or '').lower() or exc.lower() in (wxid or '').lower():
+                return True
+        return False
+
     text_messages = []
     image_items = []
     total = 0
     filtered = 0
+    excluded_count = 0
 
     for db_file in msg_files:
         try:
@@ -282,16 +332,21 @@ def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
                 if whitelist and chat_id not in whitelist:
                     continue
 
-                chat_name = contacts.get(chat_id, chat_id)
-                if "@chatroom" in str(chat_id):
-                    chat_name = f"[群]{chat_name}"
+                # Resolve name: try hash map first, then wxid map
+                tbl_hash = tbl.replace("Msg_", "")
+                wxid = hash_to_wxid.get(tbl_hash, chat_id)
+                chat_name = hash_names.get(tbl_hash) or wxid_names.get(chat_id, chat_id)
+                if "@chatroom" in str(wxid):
+                    chat_name = f"[群]{chat_name}" if not chat_name.startswith("[群]") else chat_name
+
+                # Exclude check
+                if is_excluded(chat_name, wxid):
+                    excluded_count += 1
+                    continue
 
                 try:
                     where = f"create_time > {since_ts}" if since_ts > 0 else "1=1"
-                    if images_only:
-                        type_filter = "AND local_type = 3"
-                    else:
-                        type_filter = "AND local_type IN (1, 3)"
+                    type_filter = "AND local_type = 1"  # Text only, no images
 
                     rows = cur.execute(
                         f"SELECT * FROM [{tbl}] WHERE {where} {type_filter} ORDER BY create_time ASC"
@@ -364,7 +419,7 @@ def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
         except Exception as e:
             print(f"  [!!] {db_file.name}: {e}")
 
-    print(f"  扫描: {total} 条 → 文本: {len(text_messages)} 条, 图片: {len(image_items)} 张, 过滤掉: {filtered} 条")
+    print(f"  扫描: {total} 条 → 文本: {len(text_messages)} 条, 过滤掉: {filtered} 条, 排除会话: {excluded_count} 个")
     return text_messages, image_items
 
 
@@ -374,7 +429,9 @@ def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
 def discover_contacts(dec_dir):
     """Scan all conversations, rank by business relevance."""
     print("\n[发现模式] 扫描所有会话，寻找业务相关联系人...")
-    contacts = load_contacts(Path(dec_dir))
+    contact_data = load_contacts(Path(dec_dir))
+    hash_names = contact_data["hash"]
+    wxid_names = contact_data["wxid"]
     keywords = CONFIG.get("product_keywords", []) + CONFIG.get("business_keywords", [])
 
     # Extract ALL text messages (no whitelist, no keyword filter)
@@ -413,7 +470,9 @@ def discover_contacts(dec_dir):
                         chat_id = usr
                         break
 
-                chat_name = contacts.get(chat_id, chat_id)
+                # Resolve name: try hash map first, then wxid map
+                tbl_hash = tbl.replace("Msg_", "")
+                chat_name = hash_names.get(tbl_hash) or wxid_names.get(chat_id, chat_id)
                 chat_stats[chat_id]["name"] = chat_name
 
                 try:
@@ -490,55 +549,177 @@ def get_api_key():
     return key
 
 
+def group_messages_by_contact(messages):
+    """Group messages by contact, sorted by time within each group."""
+    from collections import defaultdict
+    groups = defaultdict(list)
+    for m in messages:
+        groups[m['contact']].append(m)
+    # Sort each group by time
+    for contact in groups:
+        groups[contact].sort(key=lambda x: x.get('ts', 0))
+    return dict(groups)
+
+
+def classify_contact(contact_name):
+    """Classify a contact as our_team / supplier / customer."""
+    our_team = ['mason', 'v²', '许可', '毛青', '妈妈', '五月初九', '素仁轩花花', '素仁轩莹莹', '素仁轩']
+    suppliers = ['泰希希', '清潭泰希希', 'teahee', '珏西', '溯汌', '27846516110']
+    name_lower = contact_name.lower()
+    for kw in our_team:
+        if kw.lower() in name_lower:
+            return 'our_team'
+    for kw in suppliers:
+        if kw.lower() in name_lower:
+            return 'supplier'
+    return 'customer'
+
+
+def merge_orders_24h(orders):
+    """Merge orders for same product + same contact within 24h into one."""
+    if not orders:
+        return orders
+    from datetime import datetime
+    merged = {}
+    for o in orders:
+        # Parse date from time string
+        try:
+            dt = datetime.strptime(o['time'][:10], '%Y-%m-%d')
+            date_key = dt.strftime('%Y-%m-%d')
+        except:
+            date_key = o.get('time', '')[:10]
+        key = f"{date_key}|{o.get('product','')}|{o.get('buyer','')}|{o.get('type','')}"
+        if key in merged:
+            # Merge: take max quantity, sum amount
+            existing = merged[key]
+            if o.get('quantity') and existing.get('quantity'):
+                existing['quantity'] = max(existing['quantity'], o['quantity'])
+            elif o.get('quantity'):
+                existing['quantity'] = o['quantity']
+            if o.get('amount') and existing.get('amount'):
+                existing['amount'] = max(existing['amount'], o['amount'])
+            elif o.get('amount'):
+                existing['amount'] = o['amount']
+        else:
+            merged[key] = dict(o)
+    return list(merged.values())
+
+
 def analyze_batch(messages, api_key):
-    """Send message batch to DeepSeek for structured extraction."""
+    """Group messages by contact, classify relationship, send to DeepSeek per group."""
     import requests as req
 
-    lines = []
-    for m in messages:
-        lines.append(f"[{m['time']}] {m['sender']}: {m['content']}")
+    groups = group_messages_by_contact(messages)
+    all_orders = []
+    all_feedback = []
+    all_signals = []
+    summaries = []
 
-    prompt = """分析以下微信聊天记录，提取三类信息。严格按 JSON 格式输出。
-
-聊天记录：
-""" + "\n".join(lines) + """
-
-请提取：
-1. orders: 订单/交易记录 [{"time":"", "product":"产品名", "quantity":数量, "amount":金额, "buyer":"买家名"}]
-2. feedback: 客户反馈 [{"time":"", "summary":"一句话摘要", "sentiment":"正面/负面/中性", "product":"涉及产品"}]
-3. demand_signals: 需求信号 [{"description":"描述", "count":出现次数, "urgency":"高/中/低"}]
-4. daily_summary: 一句话总结今日经营状况
-
-只输出 JSON，不要其他文字。如果某类无数据就返回空数组。"""
+    product_catalog = """## 产品清单（严格匹配，每个产品单独一条记录）
+1. 彩多乐水煮蛋面膜70ml（简称：水煮蛋/煮蛋面膜）— 进价¥24 零售¥65
+2. 彩多乐玻璃水光霜50ml（简称：水光霜）— 进价¥31 零售¥79
+3. DAERA玳拉康水光防晒液40ml（简称：防晒液/防晒）— 进价¥46 零售¥99
+4. DAERA玳拉康水充肌气垫防晒12g（简称：气垫/回头气垫）— 进价¥65 零售¥139
+5. DAERA玳拉精多参透改善修复精华5g（简称：修复精华/回头霜）— 进价¥65 零售¥139
+6. DAERA玳拉拉焕免洗睡眠面膜50g（简称：睡眠面膜）— 进价¥35 零售¥79
+不在以上清单的产品不算 order，放到 demand_signals。"""
 
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
     model = CONFIG.get("deepseek", {}).get("model", "deepseek-chat")
 
-    try:
-        resp = req.post(
-            "https://api.deepseek.com/v1/chat/completions",
-            headers=headers,
-            json={
-                "model": model,
-                "messages": [
-                    {"role": "system", "content": "你是电商数据提取助手。只输出 JSON。"},
-                    {"role": "user", "content": prompt},
-                ],
-                "temperature": 0.1,
-                "max_tokens": 4000,
-            },
-            timeout=60,
-        )
-        resp.raise_for_status()
-        content = resp.json()["choices"][0]["message"]["content"]
-        json_match = re.search(r'```json\s*(.*?)\s*```', content, re.DOTALL)
-        if json_match:
-            return json.loads(json_match.group(1))
-        return json.loads(content)
-    except Exception as e:
-        print(f"  [错误] DeepSeek: {e}")
-        return {"orders": [], "feedback": [], "demand_signals": [], "daily_summary": f"分析失败: {e}"}
+    for contact, msgs in groups.items():
+        role = classify_contact(contact)
 
+        # Skip our_team internal conversations for orders
+        if role == 'our_team':
+            role_desc = f"这是己方人员「{contact}」的内部对话，不含客户订单。只提取 demand_signals。"
+            order_rule = "orders 必须为空数组（内部对话不产生订单）。"
+        elif role == 'supplier':
+            role_desc = f"这是与供货商「{contact}」的对话。己方人员在向供货商确认采购。"
+            order_rule = "订单 type 必须为 procurement。buyer 填供货商名字。金额用进价计算。"
+        else:
+            role_desc = f"这是与客户「{contact}」的对话。"
+            order_rule = "订单 type 必须为 sale。buyer 填客户名字。金额用零售价计算。"
+
+        # Format messages with dates
+        lines = []
+        current_date = ""
+        for m in msgs:
+            msg_date = m['time'][:10]
+            if msg_date != current_date:
+                current_date = msg_date
+                lines.append(f"\n--- {current_date} ---")
+            lines.append(f"[{m['time'][11:]}] {m['sender']}: {m['content']}")
+
+        role_label = {'our_team': '己方人员', 'supplier': '供货商', 'customer': '客户'}[role]
+        order_type = 'procurement' if role == 'supplier' else 'sale' if role == 'customer' else 'none'
+        chat_text = "\n".join(lines)
+
+        prompt = (
+            product_catalog + "\n\n"
+            "## 对话信息\n"
+            "对方：" + contact + "（" + role_label + "）\n"
+            + role_desc + "\n\n"
+            "## 规则\n"
+            "- product 必须用清单中的完整名，每个产品单独一条\n"
+            "- " + order_rule + "\n"
+            "- 只有明确\"要/买/下单/确认\"才算 order，讨论/询问放 demand_signals\n"
+            "- 同一天、同一产品、同一人的多次确认只算一条 order\n"
+            "- 数量：聊天明确提到就填，否则 null\n"
+            "- 金额：采购用进价x数量，销售用零售价x数量\n\n"
+            "## 聊天记录\n"
+            + chat_text + "\n\n"
+            "## 输出（严格 JSON）\n"
+            '{"orders":[{"date":"YYYY-MM-DD","product":"清单完整名","quantity":null,"amount":null,"buyer":"' + contact + '","type":"' + order_type + '"}],'
+            '"feedback":[{"date":"","summary":"","sentiment":"正面/负面/中性","product":""}],'
+            '"demand_signals":[{"description":"","urgency":"高/中/低"}],'
+            '"summary":"一句话总结此对话"}\n\n'
+            "只输出 JSON。"
+        )
+
+        try:
+            resp = req.post(
+                "https://api.deepseek.com/v1/chat/completions",
+                headers=headers,
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": "你是电商数据提取助手。只输出 JSON。"},
+                        {"role": "user", "content": prompt},
+                    ],
+                    "temperature": 0.1,
+                    "max_tokens": 4000,
+                },
+                timeout=60,
+            )
+            resp.raise_for_status()
+            content = resp.json()["choices"][0]["message"]["content"]
+            json_match = re.search(r'```json\s*(.*?)\s*```', content, re.DOTALL)
+            r = json.loads(json_match.group(1)) if json_match else json.loads(content)
+
+            # Collect results
+            for o in r.get("orders", []):
+                o["time"] = o.get("date", "")
+                all_orders.append(o)
+            all_feedback.extend(r.get("feedback", []))
+            all_signals.extend(r.get("demand_signals", []))
+            if r.get("summary"):
+                summaries.append(f"[{contact}({role})] {r['summary']}")
+
+            print(f"    {contact}({role}): {len(r.get('orders',[]))} orders, {len(r.get('demand_signals',[]))} signals")
+
+        except Exception as e:
+            print(f"    {contact}: DeepSeek error: {e}")
+
+    # Merge orders within 24h
+    all_orders = merge_orders_24h(all_orders)
+
+    return {
+        "orders": all_orders,
+        "feedback": all_feedback,
+        "demand_signals": all_signals,
+        "daily_summary": " | ".join(summaries) if summaries else ""
+    }
 
 def analyze_image_ocr(image_data, context, api_key):
     """Send image to DeepSeek Vision for OCR."""
@@ -663,34 +844,16 @@ def main():
 
     # Analyze text
     if messages and not args.images_only:
-        batch_size = CONFIG.get("deepseek", {}).get("max_messages_per_batch", 50)
-        print(f"\n[2/3] DeepSeek 分析 ({len(messages)} 条, 每批 {batch_size})...")
-        for i in range(0, len(messages), batch_size):
-            batch = messages[i:i + batch_size]
-            print(f"  批次 {i//batch_size + 1}: {len(batch)} 条...")
-            r = analyze_batch(batch, api_key)
-            result["orders"].extend(r.get("orders", []))
-            result["feedback"].extend(r.get("feedback", []))
-            result["demand_signals"].extend(r.get("demand_signals", []))
-            if r.get("daily_summary"):
-                result["daily_summary"] = r["daily_summary"]
+        groups = group_messages_by_contact(messages)
+        print(f"\n[2/3] DeepSeek 分析 ({len(messages)} 条, {len(groups)} 个对话)...")
+        r = analyze_batch(messages, api_key)
+        result["orders"] = r.get("orders", [])
+        result["feedback"] = r.get("feedback", [])
+        result["demand_signals"] = r.get("demand_signals", [])
+        result["daily_summary"] = r.get("daily_summary", "")
 
-    # Analyze images
-    if images:
-        print(f"\n[2b/3] 图片分析 ({len(images)} 张)...")
-        price_items = []
-        for idx, img in enumerate(images[:20]):  # Cap at 20 images
-            print(f"  图片 {idx+1}/{min(len(images), 20)} ({img['contact']})...")
-            r = analyze_image_ocr(img["image_data"], f"来自 {img['contact']}", api_key)
-            if r.get("type") in ("price_list", "order"):
-                for item in r.get("items", []):
-                    price_items.append({"source": img["contact"], "time": img["time"], **item})
-                    if r["type"] == "order":
-                        result["orders"].append({
-                            "time": img["time"], "product": item.get("product", ""),
-                            "quantity": item.get("quantity") or 0,
-                            "amount": item.get("price") or 0, "buyer": img["contact"],
-                        })
+    # Image analysis disabled — text only
+    if False and images:
         if price_items:
             pf = SCRIPT_DIR / f"price_list_{today}.json"
             with open(pf, "w", encoding="utf-8") as f:
