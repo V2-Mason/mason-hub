@@ -223,7 +223,7 @@ P1 — Scout 情报系统重构 (2026-02-28 讨论产出):
 - [-] 每个 cron agent 配对 /skill — run-agent.sh 无法在 Claude Code 内调用 → 已更新 (2026-03-12) Skill 框架已支持，需求已过时
 
 P2 — UX 持续优化:
-- [ ] 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-12 巡检：共 7 条反馈（全部 2026-02-27，status=reviewed），5 条已修复（退货图标/个产品数字/反馈按钮引导/连续反馈/风险跳转），2 条部分改善待深入：① Dashboard/Intelligence 加载速度（骨架屏已加但实际响应仍慢）② Dashboard UI 美观度。无新反馈入库，下次巡检等新反馈产生
+- [ ] 根据 system_feedback 表持续迭代（EMP_0001）— 2026-03-24 巡检：7 条反馈无新增，5 修复/2 待深入（加载速度+UI美观度）均无进展。反馈渠道静默期，下次巡检等新反馈入库或开店运营后触发
 - [x] agent.log 结构化 — 2026-02-28 完成，run-agent.sh 新增 log_structured() JSONL 格式
 - [x] swap 配置评估 — 2026-02-28（同上）
 - [x] 产品去重/合并功能 — 2026-02-28 完成，find-similar API（SequenceMatcher 0.6）+ merge API（9 张关联表）+ 前端 InventoryPage 查找相似 Tab + BatchDetailPage 自动检测警告 badge
