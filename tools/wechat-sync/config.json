@@ -1,0 +1,39 @@
+{
+  "comment": "微信分析配置 — 白名单+关键词+增量",
+
+  "watched_contacts": [
+    {"wxid": "", "role": "supplier", "name": "韩国供货商（待填）"},
+    {"wxid": "", "role": "employee", "name": "岳阳店员（待填）"}
+  ],
+  "watched_groups": [
+    {"wxid": "", "name": "素仁轩VIP群（待填）"}
+  ],
+
+  "product_keywords": [
+    "回头霜", "水煮蛋", "面膜", "精华", "气垫", "卸妆",
+    "DAERA", "CDL", "彩多乐", "玳拉", "豆腐面膜", "水光霜",
+    "加班去红", "阿血喷雾"
+  ],
+  "business_keywords": [
+    "下单", "发货", "到货", "价格", "多少钱", "几个", "几支",
+    "退", "换", "要", "买", "付款", "转账", "收到", "快递",
+    "库存", "还有吗", "缺货", "补货", "进货", "报价", "清单"
+  ],
+
+  "incremental": {
+    "checkpoint_file": "last_analyzed.json",
+    "comment": "记录上次分析到的 create_time，下次只分析新消息"
+  },
+
+  "deepseek": {
+    "model": "deepseek-chat",
+    "vision_model": "deepseek-chat",
+    "max_messages_per_batch": 50,
+    "comment": "vision_model 用于图片 OCR，deepseek-chat 支持图片输入"
+  },
+
+  "surenxuan_api": {
+    "url": "http://106.14.44.68:8000/api/wechat/daily-report",
+    "comment": "分析结果上传到素仁轩后端"
+  }
+}
