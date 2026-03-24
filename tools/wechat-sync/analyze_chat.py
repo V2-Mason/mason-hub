@@ -216,6 +216,137 @@ def load_contacts(dec_dir):
 
 
 # ============================================================
+# 群聊成员加载 — 解决 real_sender_id 映射问题
+# ============================================================
+def load_chatroom_members(dec_dir, debug=False):
+    """Load contact.id → name mapping for resolving real_sender_id in group messages.
+
+    WeChat 4.0 group messages use contact.id (numeric) as real_sender_id.
+    This function builds a global id→name map from the contact database.
+
+    Returns: dict of {contact_id_str: display_name}
+    """
+    dec_dir = Path(dec_dir)
+    id_to_name = {}  # {str(contact.id): display_name}
+
+    # Load from contact database: contact.id → nick_name/remark
+    for db_file in dec_dir.rglob("contact*.db"):
+        if "contact_fts" in str(db_file):
+            continue
+        try:
+            conn = sqlite3.connect(str(db_file))
+            try:
+                rows = conn.execute(
+                    "SELECT id, username, nick_name, remark FROM contact WHERE username != ''"
+                ).fetchall()
+                for cid, wxid, nick, remark in rows:
+                    name = remark if remark else nick
+                    if cid and (name or wxid):
+                        id_to_name[str(cid)] = name or wxid
+            except:
+                pass
+            conn.close()
+        except:
+            continue
+
+    if debug:
+        print(f"  [debug] contact.id → name 映射: {len(id_to_name)} 条")
+        # Show a few samples
+        samples = list(id_to_name.items())[:5]
+        for sid, name in samples:
+            print(f"    id={sid} → {name}")
+
+    print(f"  群聊发言人映射: {len(id_to_name)} 条 (基于 contact.id)")
+    return id_to_name
+
+
+def debug_message_schema(dec_dir):
+    """Dump message table schema and sample group messages for debugging."""
+    dec_dir = Path(dec_dir)
+    msg_dir = dec_dir / "message"
+    msg_files = sorted(msg_dir.glob("message_[0-9]*.db")) if msg_dir.exists() else list(dec_dir.rglob("message_[0-9]*.db"))
+
+    print("\n[DEBUG] 消息数据库 schema 探测")
+    print("=" * 60)
+
+    for db_file in msg_files[:2]:  # Only check first 2 DB files
+        try:
+            conn = sqlite3.connect(str(db_file))
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+
+            tables = [r[0] for r in cur.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'Msg_%'"
+            ).fetchall()]
+
+            if tables:
+                # Show columns of first message table
+                tbl = tables[0]
+                cols = [r[1] for r in cur.execute(f"PRAGMA table_info([{tbl}])").fetchall()]
+                print(f"\n  {db_file.name}/{tbl} 列名:")
+                print(f"    {cols}")
+
+                # Find columns related to sender
+                sender_cols = [c for c in cols if any(kw in c.lower() for kw in ['sender', 'talker', 'real', 'speaker'])]
+                print(f"  可能的发言人列: {sender_cols or '无'}")
+
+                # Show a few sample rows from a group chat table
+                for tbl in tables[:5]:
+                    try:
+                        rows = cur.execute(f"SELECT * FROM [{tbl}] WHERE is_sender = 0 LIMIT 3").fetchall()
+                        if rows:
+                            print(f"\n  {tbl} 样本 (is_sender=0):")
+                            for row in rows:
+                                d = dict(row)
+                                # Print non-blob fields
+                                printable = {k: v for k, v in d.items()
+                                           if not isinstance(v, bytes) and v is not None}
+                                print(f"    {printable}")
+                    except:
+                        continue
+
+            # Also check all tables for anything chatroom-related
+            all_tables = [r[0] for r in cur.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            ).fetchall()]
+            chatroom_tables = [t for t in all_tables if 'chat' in t.lower() or 'room' in t.lower() or 'member' in t.lower()]
+            if chatroom_tables:
+                print(f"\n  {db_file.name} 群聊相关表: {chatroom_tables}")
+
+            conn.close()
+        except Exception as e:
+            print(f"  {db_file.name}: 错误 {e}")
+
+    # Also scan all DBs for chatroom-related tables
+    print(f"\n[DEBUG] 全库扫描群聊相关表...")
+    for db_file in dec_dir.rglob("*.db"):
+        if "_fts" in str(db_file):
+            continue
+        try:
+            conn = sqlite3.connect(str(db_file))
+            all_tables = [r[0] for r in conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            ).fetchall()]
+            relevant = [t for t in all_tables if any(kw in t.lower() for kw in ['chatroom', 'group', 'member', 'room'])]
+            if relevant:
+                print(f"  {db_file.name}: {relevant}")
+                for tbl in relevant:
+                    cols = [r[1] for r in conn.execute(f"PRAGMA table_info([{tbl}])").fetchall()]
+                    print(f"    {tbl}: {cols}")
+                    try:
+                        sample = conn.execute(f"SELECT * FROM [{tbl}] LIMIT 1").fetchone()
+                        if sample:
+                            printable = {c: (v if not isinstance(v, bytes) else f"<blob {len(v)}B>") for c, v in zip(cols, sample)}
+                            print(f"    样本: {printable}")
+                    except:
+                        pass
+            conn.close()
+        except:
+            continue
+    print("=" * 60)
+
+
+# ============================================================
 # Checkpoint (增量)
 # ============================================================
 CHECKPOINT_FILE = SCRIPT_DIR / "last_analyzed.json"
@@ -257,9 +388,10 @@ def should_analyze_text(text):
 # ============================================================
 # 消息提取
 # ============================================================
-def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
+def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False, chatroom_members=None, debug=False):
     """Extract messages from all message DBs with filtering."""
     dec_dir = Path(dec_dir)
+    chatroom_members = chatroom_members or {}
     msg_dir = dec_dir / "message"
     if msg_dir.exists():
         msg_files = sorted(msg_dir.glob("message_[0-9]*.db"))
@@ -357,6 +489,9 @@ def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
                     except:
                         continue
 
+                # Check if this is a group chat
+                is_group = "@chatroom" in str(wxid)
+
                 for row in rows:
                     d = dict(row)
                     total += 1
@@ -392,10 +527,47 @@ def extract_messages(dec_dir, since_ts=0, whitelist=None, images_only=False):
                                     time_str = dt.strftime("%Y-%m-%d %H:%M")
                                 except:
                                     time_str = str(ts)
+
+                                # Resolve sender for group chats
+                                sender = "我" if is_sender else chat_name
+                                if is_group:
+                                    # WeChat 4.0 group messages: non-self messages have
+                                    # "wxid:\nmessage" prefix in content. Parse this first.
+                                    parsed_sender = False
+                                    if content and not is_sender:
+                                        # Match: optional garbage prefix + wxid/username + : + newline + content
+                                        wxid_match = re.match(
+                                            r'^(?:\(/[^\)]*\))?\s*([a-zA-Z0-9_]+):\s*\n(.+)',
+                                            content, re.DOTALL
+                                        )
+                                        if wxid_match:
+                                            msg_wxid = wxid_match.group(1)
+                                            if msg_wxid in wxid_names:
+                                                sender = wxid_names[msg_wxid]
+                                                content = wxid_match.group(2).strip()
+                                                parsed_sender = True
+                                            elif msg_wxid.startswith("wxid_"):
+                                                sender = msg_wxid
+                                                content = wxid_match.group(2).strip()
+                                                parsed_sender = True
+
+                                    if not parsed_sender and not is_sender:
+                                        # Fallback: try real_sender_id → contact.id mapping
+                                        real_sender_id = d.get("real_sender_id")
+                                        if real_sender_id and str(real_sender_id).strip() != "0":
+                                            rid = str(real_sender_id).strip()
+                                            if rid in chatroom_members:
+                                                sender = chatroom_members[rid]
+                                            else:
+                                                sender = f"群成员#{rid}"
+
+                                    if debug and total <= 5:
+                                        print(f"  [debug] 群消息: is_sender={is_sender} sender={sender} parsed={parsed_sender}")
+
                                 text_messages.append({
                                     "time": time_str, "ts": ts,
                                     "wxid": chat_id, "contact": chat_name,
-                                    "sender": "我" if is_sender else chat_name,
+                                    "sender": sender,
                                     "content": content,
                                 })
                             else:
@@ -660,16 +832,20 @@ def analyze_batch(messages, api_key):
             "## 对话信息\n"
             "对方：" + contact + "（" + role_label + "）\n"
             + role_desc + "\n\n"
-            "## 规则\n"
-            "- product 必须用清单中的完整名，每个产品单独一条\n"
+            "## 判定规则（严格执行）\n"
+            "- product 必须用清单中的完整名（含品牌+容量），每个产品单独一条\n"
             "- " + order_rule + "\n"
-            "- 只有明确\"要/买/下单/确认\"才算 order，讨论/询问放 demand_signals\n"
+            "- 【关键】供货商对话只能产生 type=procurement，客户对话只能产生 type=sale\n"
+            "- 采购判定：我方向对方询价/下单/确认进货 → procurement\n"
+            "- 销售判定：对方向我方咨询/下单/确认购买 → sale\n"
+            "- 只有明确\"要/买/下单/确认/拿/发\"才算 order，讨论/询问放 demand_signals\n"
             "- 同一天、同一产品、同一人的多次确认只算一条 order\n"
             "- 数量：聊天明确提到就填，否则 null\n"
-            "- 金额：采购用进价x数量，销售用零售价x数量\n\n"
+            "- 金额：采购用进价x数量，销售用零售价x数量。无法确定填 null\n"
+            "- buyer 字段：采购填供货商名，销售填客户名（不是\"我\"）\n\n"
             "## 聊天记录\n"
             + chat_text + "\n\n"
-            "## 输出（严格 JSON）\n"
+            "## 输出（严格 JSON，不要多余文字）\n"
             '{"orders":[{"date":"YYYY-MM-DD","product":"清单完整名","quantity":null,"amount":null,"buyer":"' + contact + '","type":"' + order_type + '"}],'
             '"feedback":[{"date":"","summary":"","sentiment":"正面/负面/中性","product":""}],'
             '"demand_signals":[{"description":"","urgency":"高/中/低"}],'
@@ -697,16 +873,32 @@ def analyze_batch(messages, api_key):
             json_match = re.search(r'```json\s*(.*?)\s*```', content, re.DOTALL)
             r = json.loads(json_match.group(1)) if json_match else json.loads(content)
 
-            # Collect results
+            # Collect results with type validation
+            valid_orders = 0
+            corrected_orders = 0
             for o in r.get("orders", []):
                 o["time"] = o.get("date", "")
+                # Enforce type based on contact role (override DeepSeek if wrong)
+                expected_type = order_type
+                actual_type = o.get("type", "")
+                if role == 'supplier' and actual_type != 'procurement':
+                    o["type"] = "procurement"
+                    corrected_orders += 1
+                elif role == 'customer' and actual_type != 'sale':
+                    o["type"] = "sale"
+                    corrected_orders += 1
+                elif role == 'our_team':
+                    continue  # Skip orders from internal conversations
+                # Validate product name matches catalog
                 all_orders.append(o)
+                valid_orders += 1
             all_feedback.extend(r.get("feedback", []))
             all_signals.extend(r.get("demand_signals", []))
             if r.get("summary"):
-                summaries.append(f"[{contact}({role})] {r['summary']}")
+                summaries.append(f"[{contact}({role_label})] {r['summary']}")
 
-            print(f"    {contact}({role}): {len(r.get('orders',[]))} orders, {len(r.get('demand_signals',[]))} signals")
+            correction_note = f" (修正{corrected_orders}条type)" if corrected_orders else ""
+            print(f"    {contact}({role_label}): {valid_orders} orders, {len(r.get('demand_signals',[]))} signals{correction_note}")
 
         except Exception as e:
             print(f"    {contact}: DeepSeek error: {e}")
@@ -802,11 +994,15 @@ def main():
     parser.add_argument("--upload", action="store_true", help="分析完自动上传到素仁轩")
     parser.add_argument("--images-only", action="store_true", help="只分析图片")
     parser.add_argument("--days", type=int, default=7, help="分析最近N天（非增量模式）")
+    parser.add_argument("--debug", action="store_true", help="调试模式：输出数据库schema和群聊映射诊断")
     args = parser.parse_args()
 
     print("=" * 55)
-    print("  微信聊天分析 v2 — 素仁轩")
+    print("  微信聊天分析 v3 — 素仁轩")
     print("=" * 55)
+
+    if args.debug:
+        debug_message_schema(args.db)
 
     if args.discover:
         discover_contacts(args.db)
@@ -818,6 +1014,9 @@ def main():
         print(f"  白名单: {len(whitelist)} 个联系人")
     else:
         print("  [注意] 未配置白名单，将分析所有会话（建议先 --discover）")
+
+    # Load chatroom member mappings
+    chatroom_members = load_chatroom_members(args.db, debug=args.debug)
 
     # Checkpoint
     since_ts = load_checkpoint() if args.incremental else 0
@@ -833,6 +1032,8 @@ def main():
         args.db, since_ts=since_ts,
         whitelist=whitelist if whitelist else None,
         images_only=args.images_only,
+        chatroom_members=chatroom_members,
+        debug=args.debug,
     )
 
     if not messages and not images:
@@ -861,8 +1062,11 @@ def main():
             print(f"  进货单: {len(price_items)} 个产品 → {pf}")
 
     # Output
+    sale_count = sum(1 for o in result['orders'] if o.get('type') == 'sale')
+    proc_count = sum(1 for o in result['orders'] if o.get('type') == 'procurement')
     print(f"\n[3/3] 结果")
-    print(f"  订单: {len(result['orders'])}, 反馈: {len(result['feedback'])}, 信号: {len(result['demand_signals'])}")
+    print(f"  订单: {len(result['orders'])} (销售: {sale_count}, 采购: {proc_count})")
+    print(f"  反馈: {len(result['feedback'])}, 信号: {len(result['demand_signals'])}")
     if result["daily_summary"]:
         print(f"  总结: {result['daily_summary']}")
 

@@ -39,6 +39,22 @@ if errorlevel 1 (
 )
 
 echo.
+echo 选择运行模式:
+echo   1. 正常分析 + 上传
+echo   2. 调试模式 (查看数据库结构, 不上传)
+echo.
+set /p MODE="输入 1 或 2 (默认 1): "
+if "%MODE%"=="2" (
+    echo.
+    echo [调试模式] 探测数据库结构...
+    python "%~dp0analyze_chat.py" --db "%DECRYPTED_DIR%" --debug --days 3
+    echo.
+    echo 请将上面的输出截图发给 Mason
+    pause
+    exit /b 0
+)
+
+echo.
 echo [2/3] AI 分析 + 上传素仁轩...
 python "%~dp0analyze_chat.py" --db "%DECRYPTED_DIR%" --incremental --upload
 
