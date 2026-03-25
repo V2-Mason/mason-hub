@@ -1,29 +1,85 @@
-# Connector: socialmesh
-# 多平台社交媒体管理工具
+# Connector: socialmesh2
+# Postiz fork + CoWork Chrome 全渠道社媒发布系统
 
-project: socialmesh
-project_path: /home/hangn/socialmesh
-adapter_path: /home/hangn/socialmesh/.mason/adapter.yaml
+project: socialmesh2
+project_path: /home/hangn/socialmesh2
+github: github.com/V2-Mason/socialmesh2
 
 connection:
   type: api
-  endpoint: http://localhost:8001
-  auth: none  # 本地运行
+  endpoint: https://social.mattera3dprint.com/api
+  auth:
+    type: header
+    header: x-mashub-key
+    key_env: MASHUB_API_KEY  # fc51b80f3da420a87f5247c94aef55e46849c686156b3e7f65f810c8ac68b687
 
 tech_stack:
-  backend: FastAPI + SQLAlchemy + Celery + Redis
-  frontend: React 18 + Vite + Tailwind
-  database: PostgreSQL 16
-  automation: Playwright
+  backend: NestJS (Postiz fork) + PostgreSQL + Redis
+  frontend: React (Vite) + Tailwind
+  publishing: CoWork (Claude Desktop in Chrome)
+  infrastructure: Docker 4 containers + Caddy + GCP
+
+endpoints:
+  # mason-hub 专用端点
+  create_draft:
+    method: POST
+    path: /mashub/draft
+    description: 创建 DRAFT 帖子，Mason 在 UI 审核后改 QUEUE
+    body: |
+      {
+        "posts": [
+          {
+            "integrationId": "cowork-instagram-001",
+            "content": "<p>文案内容</p>",
+            "image": ["https://social.mattera3dprint.com/static/xxx.png"]
+          }
+        ],
+        "date": "2026-03-26T10:00:00Z"
+      }
+  list_integrations:
+    method: GET
+    path: /mashub/integrations
+    description: 返回可用账号列表（id, name, providerIdentifier, profile）
+
+  # CoWork 端点（参考）
+  cowork_queue:
+    method: GET
+    path: /cowork/queue
+    auth_header: x-cowork-key
+  cowork_result:
+    method: POST
+    path: /cowork/result
+    auth_header: x-cowork-key
 
 schema_mappings:
   content:
-    # socialmesh 内部内容数据 → content schema
     field_map:
-      content_id: post_id
-      platform: platform
-      status: status
+      content_id: id
+      platform: integration.providerIdentifier
+      status: state
+      url: releaseURL
+
+integrations:
+  # 当前已注册的账号
+  - id: cowork-instagram-001
+    platform: instagram
+    profile: mason_vsquare
+  - id: cmmydnfzb0001p87assnzxhx6
+    platform: tiktok
+    profile: mattera3dprint
+  - id: cowork-facebook-001
+    platform: facebook
+    profile: mason
+
+post_states:
+  DRAFT: mason-hub 创建，待 Mason 审核
+  QUEUE: Mason 确认，等 cron 触发
+  PENDING_PUBLISH: cron 已触发，等 CoWork 拉取
+  PUBLISHING: CoWork 正在发布
+  PUBLISHED: 发布成功
+  ERROR: 发布失败
 
 notes: |
-  socialmesh 提供多平台内容发布和排期能力。
-  可与 tiktok-viral 的视频生成能力配合使用。
+  V1: 自动发布（IG 已验证）
+  V2: mason-hub → Postiz DRAFT → Mason 审核 → QUEUE → CoWork 发布
+  详细路线图: ~/vault/projects/socialmesh/roadmap.md
