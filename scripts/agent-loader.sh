@@ -8,6 +8,8 @@
 #   update_agent_state <agent_dir> <task_id> <status> [summary] [receiver]
 #   send_message <sender> <receiver> <type> <task_id> <payload> [requires_response] [deadline]
 #   check_inbox <agent_id>
+#   write_shared_lesson <src> <domain> <tags> <sev> <title> <body> [task_id]
+#   load_shared_lessons <agent_id>                # 按 domain+severity 加载相关经验
 #
 # Layer 说明：
 #   0  = identity.md + state.md（T1 轻量任务）
@@ -190,6 +192,191 @@ sys.stderr.write('📬 check_inbox: {} 处理了 {} 条消息（归档到 archiv
 }
 
 # ============================================================
+# write_shared_lesson — 写入共享经验教训到 data/shared_lessons.jsonl
+# ============================================================
+# 用法: write_shared_lesson <source_agent> <domain> <tags_csv> <severity> <title> <body> [task_id]
+# 写入: data/shared_lessons.jsonl（每行一条 JSON 记录）
+# 去重: 按 title 精确匹配，已存在则跳过
+write_shared_lesson() {
+  local source_agent="$1"
+  local domain="$2"
+  local tags_csv="$3"
+  local severity="$4"
+  local title="$5"
+  local body="$6"
+  local task_id="${7:-}"
+
+  local hub_dir="${HUB_DIR:-$HOME/mason-hub}"
+  local lessons_file="$hub_dir/data/shared_lessons.jsonl"
+
+  mkdir -p "$hub_dir/data"
+
+  # 去重：按 title 精确匹配（用 python3 做 JSON 感知搜索）
+  if [ -f "$lessons_file" ]; then
+    local dup_found
+    dup_found=$(python3 -c "
+import sys, json
+target = sys.argv[1]
+lessons_file = sys.argv[2]
+try:
+    with open(lessons_file) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+                if rec.get('title') == target:
+                    print('1')
+                    sys.exit(0)
+            except:
+                pass
+except:
+    pass
+print('0')
+" "$title" "$lessons_file")
+    if [ "$dup_found" = "1" ]; then
+      echo "⚠️  write_shared_lesson: 已存在相同 title，跳过写入: $title" >&2
+      return 0
+    fi
+  fi
+
+  # 生成顺序 ID: LESSON-YYYYMMDD-NNN
+  local date_str
+  date_str=$(date -u +"%Y%m%d")
+  local seq=1
+  if [ -f "$lessons_file" ]; then
+    local count
+    count=$(grep -c "\"LESSON-${date_str}-" "$lessons_file" 2>/dev/null || true)
+    seq=$((count + 1))
+  fi
+  local lesson_id
+  lesson_id=$(printf "LESSON-%s-%03d" "$date_str" "$seq")
+
+  # 生成时间戳
+  local created_at
+  created_at=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+  # 构造 JSON 记录（使用 python3 确保字段安全转义）
+  local record
+  record=$(python3 -c "
+import sys, json
+
+source_agent = sys.argv[1]
+domain       = sys.argv[2]
+tags_csv     = sys.argv[3]
+severity     = sys.argv[4]
+title        = sys.argv[5]
+body         = sys.argv[6]
+task_id_raw  = sys.argv[7]
+lesson_id    = sys.argv[8]
+created_at   = sys.argv[9]
+
+tags = [t.strip() for t in tags_csv.split(',') if t.strip()]
+task_id_val  = task_id_raw if task_id_raw else None
+
+record = {
+    'id':           lesson_id,
+    'source_agent': source_agent,
+    'domain':       domain,
+    'tags':         tags,
+    'severity':     severity,
+    'title':        title,
+    'body':         body,
+    'task_id':      task_id_val,
+    'created_at':   created_at,
+}
+print(json.dumps(record, ensure_ascii=False))
+" "$source_agent" "$domain" "$tags_csv" "$severity" "$title" "$body" "$task_id" "$lesson_id" "$created_at")
+
+  echo "$record" >> "$lessons_file"
+  echo "📝 write_shared_lesson: [$lesson_id] $title → $lessons_file" >&2
+}
+
+# ============================================================
+# load_shared_lessons <agent_id>
+# 读取 data/shared_lessons.jsonl，过滤并输出相关经验到 stdout
+# 过滤规则：
+#   - severity=high → 所有 agent 可见
+#   - 同 domain → 同领域 agent 可见
+#   - 排除 source_agent == agent_id 自己写的
+# ============================================================
+load_shared_lessons() {
+  local agent_id="${1:-}"
+  local hub_dir="${HUB_DIR:-$HOME/mason-hub}"
+  local lessons_file="$hub_dir/data/shared_lessons.jsonl"
+  local agents_yaml="$hub_dir/kernel/standards/agents.yaml"
+
+  [[ -z "$agent_id" ]] && return 0
+  [[ ! -f "$lessons_file" ]] && return 0
+  [[ ! -s "$lessons_file" ]] && return 0
+
+  python3 - "$agent_id" "$lessons_file" "$agents_yaml" << 'PYEOF'
+import sys, json
+
+agent_id   = sys.argv[1]
+lessonfile = sys.argv[2]
+agents_yaml = sys.argv[3]
+
+# --- 从 agents.yaml 提取 agent domain（不依赖 PyYAML）---
+import subprocess, os
+
+agent_domain = ""
+if os.path.isfile(agents_yaml):
+    result = subprocess.run(
+        ['grep', '-A4', f'id: {agent_id}', agents_yaml],
+        capture_output=True, text=True
+    )
+    for line in result.stdout.split('\n'):
+        if 'domain:' in line:
+            agent_domain = line.split('domain:')[1].strip()
+            break
+
+# --- 读取并过滤 lessons ---
+matched = []
+with open(lessonfile, 'r', encoding='utf-8') as f:
+    for raw in f:
+        raw = raw.strip()
+        if not raw:
+            continue
+        try:
+            rec = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+
+        source = rec.get('source_agent', '')
+        severity = rec.get('severity', 'normal')
+        domain = rec.get('domain', '')
+
+        # 排除自己写的
+        if source == agent_id:
+            continue
+
+        # 可见条件：severity=high 或 同 domain
+        visible = (severity == 'high') or (agent_domain and domain == agent_domain)
+        if visible:
+            matched.append(rec)
+
+if not matched:
+    sys.exit(0)
+
+print(f"--- shared_lessons: {len(matched)} 条相关经验 ---")
+print()
+for rec in matched:
+    severity = rec.get('severity', 'normal')
+    tags     = ','.join(rec.get('tags', []))
+    source   = rec.get('source_agent', '?')
+    title    = rec.get('title', '')
+    body     = rec.get('body', '')
+    body_short = (body[:200] + '...') if len(body) > 200 else body
+
+    print(f"[{severity}][{tags}] from {source} - {title}")
+    print(f"  {body_short}")
+    print()
+PYEOF
+}
+
+# ============================================================
 # load_agent_context — 组装 agent 上下文到 stdout
 # ============================================================
 load_agent_context() {
@@ -265,9 +452,21 @@ load_agent_context() {
     fi
   fi
 
-  # --- inbox: 启动时自动检查未读消息 ---
+  # --- agent_id 提取（shared_lessons 和 inbox 共用）---
   local agent_id
   agent_id=$(basename "$agent_dir")
+
+  # --- shared_lessons: 加载跨 agent 共享经验（仅 layer 01）---
+  if [ "$layer" = "01" ]; then
+    local lessons_content
+    lessons_content=$(load_shared_lessons "$agent_id") || true
+    if [ -n "$lessons_content" ]; then
+      echo ""
+      echo "$lessons_content"
+    fi
+  fi
+
+  # --- inbox: 启动时自动检查未读消息 ---
   local inbox_content
   inbox_content=$(check_inbox "$agent_id") || true
   if [ -n "$inbox_content" ]; then
@@ -341,6 +540,20 @@ EOF
       msg_type="task_failed"
     fi
     send_message "$agent_id" "$receiver" "$msg_type" "$task_id" "${summary:-$status}"
+  fi
+
+  # 失败时自动写入 shared_lesson
+  if [ "$status" = "failed" ] && [ -n "$summary" ]; then
+    local domain
+    domain=$(grep -A4 "id: $agent_id" "${hub_dir}/kernel/standards/agents.yaml" 2>/dev/null \
+      | grep "domain:" | head -1 | awk '{print $2}') || domain="unknown"
+    [ -z "$domain" ] && domain="unknown"
+    local short_summary
+    short_summary=$(echo "$summary" | head -c 60)
+    write_shared_lesson "$agent_id" "$domain" "failure,auto" "medium" \
+      "任务 $task_id 失败: $short_summary" \
+      "Agent: $agent_id | 任务: $task_id | 失败摘要: $summary" \
+      "$task_id"
   fi
 }
 

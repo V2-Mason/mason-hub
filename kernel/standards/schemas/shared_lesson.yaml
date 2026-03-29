@@ -1,0 +1,56 @@
+# shared_lesson.yaml — 跨 Agent 共享经验记录格式
+#
+# 写入方: agent-loader.sh write_shared_lesson()
+# 读取方: agent-loader.sh load_shared_lessons()
+# 存储位置: data/shared_lessons.jsonl
+
+fields:
+  id:
+    type: string
+    format: "LESSON-YYYYMMDD-NNN"
+    required: true
+    description: 全局唯一 ID
+
+  source_agent:
+    type: string
+    format: "EMP_XXXX"
+    required: true
+    description: 写入方 agent ID
+
+  domain:
+    type: string
+    enum: [meta, ecommerce, platform, socialmesh, independent]
+    required: true
+    description: 复用 agents.yaml 的 domain 值
+
+  tags:
+    type: array[string]
+    required: true
+    description: 自由标签，3-6 个，用于辅助搜索
+
+  severity:
+    type: string
+    enum: [high, medium, low]
+    required: true
+    description: "high=数据丢失/流程阻断, medium=效率损失, low=最佳实践"
+
+  title:
+    type: string
+    max_length: 80
+    required: true
+    description: 一句话摘要
+
+  body:
+    type: string
+    required: true
+    description: 具体描述 + 建议做法
+
+  task_id:
+    type: string
+    required: false
+    description: 关联的 task_id，可在 audit.jsonl 追溯
+
+  created_at:
+    type: string
+    format: ISO8601
+    required: true

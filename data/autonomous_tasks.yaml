@@ -20,6 +20,8 @@
 #   context_files:   需要注入 context 的文件路径（逗号分隔，替代默认 knowledge 注入）
 #   task_type:       execute（默认，完整注入）| query（轻量，不注入收工/gene）| repair（只注入语义搜索+context_files）
 #   account:         品牌/客户 ID（如 surenxuan），加载 accounts/{id}/ 的 Pipe 2+3 记忆
+#   lesson_on_fail:  true 时，失败自动写入 data/shared_lessons.jsonl（默认 false）
+#   lesson_tags:     预设 tags（逗号分隔），lesson_on_fail=true 时使用
 
 tasks:
   # === 自治线 ===
@@ -32,6 +34,8 @@ tasks:
     task_type: execute
     verify_command: "curl -s -o /dev/null -w '%{http_code}' http://localhost:8888 | grep -q 200"
     max_duration: 600
+    lesson_on_fail: true
+    lesson_tags: "docker,searxng,部署"
 
   - id: agent-four-layer
     agent: agents/EMP_0002/config.md
@@ -71,6 +75,8 @@ tasks:
     verify_command: "cd ~/mason-hub && python3 -m pytest tests/ -q 2>&1 | tail -1 | grep -q 'passed'"
     output_path: "tests/"
     context_files: "skills/xhs/_xhs_analyze_compare.py"
+    lesson_on_fail: true
+    lesson_tags: "测试,pytest,回归"
 
   - id: health-fix
     agent: agents/EMP_0014/config.md
@@ -84,6 +90,8 @@ tasks:
     task_type: lightweight
     verify_command: "bash data/pipelines/data_health_check.sh 2>&1 | grep -c FAIL | grep -q '^0$'"
     context_files: "data/data_catalog.yaml,data/pipelines/data_health_check.sh"
+    lesson_on_fail: true
+    lesson_tags: "数据,健康检查,pipeline"
 
   # === 内容线 ===
   - id: socialmesh-content-status
@@ -128,6 +136,8 @@ tasks:
     priority: P1
     task_type: execute
     verify_command: "crontab -l 2>/dev/null | grep -q 'intel.engines.pipeline'"
+    lesson_on_fail: true
+    lesson_tags: "cron,scout,调度"
 
   - id: emp0006-update
     agent: agents/EMP_0002/config.md
