@@ -1,0 +1,25 @@
+# 先试为敬 — Account 定义
+id: tried-it-first
+name: 先试为敬
+name_en: Tried It First
+status: planning
+owner: mason
+domain: content-creator
+
+# 定位
+positioning: AI时代的试毒官，帮普通人判断"跟你有什么关系"
+format: 5分钟固定，不出镜，半佛模式（旁白+图片流+文字卡）
+
+# 平台矩阵
+platforms:
+  primary: [bilibili]       # 中文主平台
+  international: [youtube]  # 英文版（AI配音）
+
+# 设计文档
+design_doc: docs/superpowers/specs/2026-03-28-tried-it-first-design.md
+
+# 服务此 account 的 agent
+agents:
+  - EMP_0001  # PM
+  - EMP_0008  # Content-Ops PM
+  - EMP_0010  # Content Creator

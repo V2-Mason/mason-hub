@@ -1,0 +1,25 @@
+# Mason's Growth Memo — Account 定义
+id: growth-memo
+name: Mason的成长备忘录
+name_en: Mason's Growth Memo
+status: planning
+owner: mason
+domain: content-creator
+
+# 定位
+positioning: "如果我可以，那你也可以"，边学边教的学长型，不贩卖焦虑
+format: 重型精品（B/C板块）+ 中型填频率（A板块），M面罩不露脸
+
+# 平台矩阵
+platforms:
+  video: [bilibili, weixin-video, youtube]  # 视频线
+  text: [xhs, x]                             # 图文线
+
+# 设计文档
+design_doc: docs/superpowers/specs/2026-03-27-mason-growth-memo-design.md
+
+# 服务此 account 的 agent
+agents:
+  - EMP_0001  # PM
+  - EMP_0008  # Content-Ops PM
+  - EMP_0010  # Content Creator

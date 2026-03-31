@@ -3,12 +3,30 @@ id: surenxuan
 name: 素仁轩
 status: active
 owner: mason
-domain: ecommerce
-project_path: domains/ecommerce/projects/srx
+domain: social-commerce  # 已更新(2026-03-26): ecommerce → social-commerce（买手模式）
 
-slack_channels:
-  business: C0AGXNH7F6J
-  alerts: C0AGXNH7F6J
+# XHS 双号布局
+xhs_accounts:
+  buyer:
+    name: 毛毛姐的生活日记  # 妈妈的买手号（70后生活分享人设）
+    role: 内容创作 + 买手带货
+    operator: mason + 妈妈（出镜）
+    capabilities:
+      - 发布内容（每天1条）
+      - 开橱窗挂自己产品
+      - 帮其他品牌带货赚佣金
+  enterprise:
+    name: 素仁轩  # 企业号（个体户营业执照认证）
+    role: 品牌阵地 + 达人分销
+    operator: mason
+    capabilities:
+      - 挂产品（货盘方）
+      - 招募其他买手/博主带货
+      - 达人合作管理
+
+# 私域
+wechat:
+  private_domain: true  # 微信私域（高客单价/复购）
 
 # 服务此 account 的 agent
 agents:
@@ -17,5 +35,5 @@ agents:
   - EMP_0005  # Dev
   - EMP_0008  # Content-Ops PM
   - EMP_0010  # Content Creator
-  - EMP_0013  # 店铺运营（待激活）
+  - EMP_0013  # 运营（私域+达人合作管理）
   - EMP_0015  # 数据分析师
