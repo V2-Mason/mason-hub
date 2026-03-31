@@ -24,6 +24,9 @@ PLATFORM_PAGES = {
     'douyin': 'https://greenvideo.cc/douyin',
     'ins': 'https://greenvideo.cc/ins',
     'tiktok': 'https://greenvideo.cc/tiktok',
+    'bilibili': 'https://greenvideo.cc/bilibili',
+    'youtube': 'https://greenvideo.cc/youtube',
+    'weibo': 'https://greenvideo.cc/weibo',
 }
 
 
@@ -38,6 +41,12 @@ def detect_platform(url):
         return 'ins'
     if 'tiktok' in domain:
         return 'tiktok'
+    if 'bilibili' in domain or 'b23.tv' in domain:
+        return 'bilibili'
+    if 'youtube' in domain or 'youtu.be' in domain:
+        return 'youtube'
+    if 'weibo' in domain:
+        return 'weibo'
     return None
 
 
@@ -96,12 +105,31 @@ def extract_video_info(source_url, platform):
 
     video_url = None
     cover_url = None
+    best_quality = 0
     for item in info.get('videoItemVoList', []):
         if item.get('fileType') == 'video' and item.get('canDownload'):
             url = item.get('baseUrl', '')
             if url.startswith('http'):
-                video_url = url
-                break
+                # 选最高分辨率：优先用 quality/height/width 字段判断
+                raw_q = item.get('quality', 0) or item.get('height', 0) or item.get('width', 0)
+                try:
+                    q = int(raw_q) if raw_q else 0
+                except (ValueError, TypeError):
+                    q = 0
+                # 如果没有 quality 字段，用 URL 中的线索或文件大小
+                if not q:
+                    desc = item.get('qualityDesc', '') or item.get('desc', '')
+                    if '1080' in desc or '1080' in url:
+                        q = 1080
+                    elif '720' in desc or '720' in url:
+                        q = 720
+                    elif '480' in desc or '480' in url:
+                        q = 480
+                    else:
+                        q = 1  # unknown, lowest priority
+                if q > best_quality:
+                    best_quality = q
+                    video_url = url
         elif item.get('fileType') == 'image':
             cover_url = item.get('baseUrl', '')
 
@@ -150,7 +178,7 @@ def make_filename(source_url, platform, title=''):
 def main():
     parser = argparse.ArgumentParser(description='Download social media videos via greenvideo.cc')
     parser.add_argument('url', help='Source video URL')
-    parser.add_argument('--platform', choices=['xhs', 'douyin', 'ins', 'tiktok'],
+    parser.add_argument('--platform', choices=['xhs', 'douyin', 'ins', 'tiktok', 'bilibili', 'youtube', 'weibo'],
                         help='Platform (auto-detected if not specified)')
     parser.add_argument('--output-dir', default='.', help='Output directory')
     parser.add_argument('--output', help='Output filename')

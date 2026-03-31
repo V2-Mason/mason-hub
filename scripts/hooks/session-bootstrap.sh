@@ -1,16 +1,43 @@
 #!/bin/bash
-# session-bootstrap.sh — Interactive session 启动时注入轻量系统状态
+# session-bootstrap.sh — Interactive session 启动时注入轻量系统状态 + vault feedback
 #
 # 只在 interactive mode 下执行（不是 run-agent.sh 触发的 agent session）
 # stdout 会被 Claude Code 自动注入到上下文
 
-HUB_DIR="$HOME/mason-hub"
+HUB_DIR="$HOME/projects/mason-hub"
+VAULT_DIR="$HOME/vault"
 
 # Agent session 由 run-agent.sh 管理，跳过
 if [ -n "${AGENT_SESSION:-}" ] || [ -n "${CLAUDECODE:-}" ]; then
   exit 0
 fi
 
+# ========== VAULT FEEDBACK 注入（最重要，放最前面）==========
+FEEDBACK_DIR="$VAULT_DIR/_claude/feedback"
+if [ -d "$FEEDBACK_DIR" ]; then
+  echo "## Vault Feedback Rules (auto-injected)"
+  echo ""
+  for f in "$FEEDBACK_DIR"/*.md; do
+    [ -f "$f" ] || continue
+    # 跳过 frontmatter，只输出正文
+    awk 'BEGIN{skip=0} /^---$/{skip++; next} skip>=2{print}' "$f"
+    echo ""
+  done
+  echo "---"
+  echo ""
+fi
+
+# ========== Session INDEX 注入 ==========
+SESSION_INDEX="$VAULT_DIR/_claude/session/INDEX.md"
+if [ -f "$SESSION_INDEX" ]; then
+  echo "## Session INDEX (auto-injected)"
+  cat "$SESSION_INDEX"
+  echo ""
+  echo "---"
+  echo ""
+fi
+
+# ========== 系统快照 ==========
 echo "## 系统快照 ($(TZ=America/New_York date '+%Y-%m-%d %H:%M ET'))"
 echo ""
 

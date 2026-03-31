@@ -2,12 +2,12 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup",
+        "matcher": "startup|compact",
         "hooks": [
           {
             "type": "command",
-            "command": "bash /home/hangn/mason-hub/scripts/hooks/session-bootstrap.sh",
-            "timeout": 5
+            "command": "bash ~/projects/mason-hub/scripts/hooks/session-bootstrap.sh",
+            "timeout": 15
           }
         ]
       }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /home/hangn/mason-hub/scripts/hooks/guardrail.sh",
+            "command": "bash ~/projects/mason-hub/scripts/hooks/guardrail.sh",
             "timeout": 5
           }
         ]
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /home/hangn/mason-hub/scripts/hooks/format-validator.sh",
+            "command": "bash ~/projects/mason-hub/scripts/hooks/format-validator.sh",
             "timeout": 10
           }
         ]
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /home/hangn/mason-hub/scripts/hooks/pre-compact.sh",
+            "command": "bash ~/projects/mason-hub/scripts/hooks/pre-compact.sh",
             "timeout": 30
           }
         ]

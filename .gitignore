@@ -32,3 +32,26 @@ tools/trendradar-config/reports/
 # Git worktrees (agent 分支工作目录)
 .worktrees/
 credentials/
+
+# 素材/资产（二进制大文件不入 git）
+**/assets/**/*.png
+**/assets/**/*.jpg
+**/assets/**/*.jpeg
+**/assets/**/*.mp4
+**/assets/**/*.mov
+**/assets/**/*.wav
+**/assets/**/*.mp3
+**/assets/**/*.webm
+**/assets/**/*.gif
+**/assets/**/*.pak
+
+# assets 下的 node_modules 和构建产物
+**/assets/**/node_modules/
+**/assets/**/.next/
+**/assets/**/dist/
+**/assets/**/build/
+
+# package-lock（可重建）
+**/package-lock.json
+
+# 保留 assets 下的 md/yaml/json 配置文件（不在此忽略）
