@@ -37,7 +37,7 @@ const ANIM = {
   sceneChangeFrame: 135,     // 场景切换帧 (~4.5s)
   invertStart: 195,          // 反转开始帧
   invertEnd: 240,            // 反转结束帧
-  fadeStart: 250,            // 淡出开始帧
+  fadeStart: 268,            // 淡出开始帧 (最后几帧才淡出)
   fadeEnd: 270,              // 淡出结束帧
 };
 
