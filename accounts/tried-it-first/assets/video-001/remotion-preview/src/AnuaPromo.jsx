@@ -207,6 +207,7 @@ const Card3 = ({ pos, index, frame, w, h, fadeOut }) => {
         overflow: "hidden",
         opacity: 1 - fadeOut,
         boxShadow: "0 6px 25px rgba(0,0,0,0.12)",
+        border: "1px solid rgba(0,0,0,0.08)",
       }}
     >
       <Deco type={decoType} frame={frame} index={index} accent={product.accent} cW={cW} />
