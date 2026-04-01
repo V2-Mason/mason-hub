@@ -12,11 +12,11 @@ import {
 // === 动画参数 (autoresearch 调优区) ===
 const ANIM = {
   // 入场
-  staggerDelay: 8,           // 每张卡片错开帧数
-  springDamping: 8,          // 弹性阻尼 (越小越弹)
-  springStiffness: 160,      // 弹性刚度
-  springMass: 0.6,           // 弹性质量
-  entranceFromY: 200,        // 入场起始Y偏移 (短距离，快速入场)
+  staggerDelay: 3,           // 每张卡片错开帧数 (几乎同时)
+  springDamping: 15,         // 弹性阻尼 (平稳快速到位)
+  springStiffness: 200,      // 弹性刚度
+  springMass: 0.4,           // 弹性质量
+  entranceFromY: 80,         // 入场起始Y偏移 (极短，frame 0 即可见)
 
   // 悬浮呼吸
   floatAmplitude: 10,        // 悬浮Y振幅
@@ -161,8 +161,8 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
   });
 
   const translateY = interpolate(entrance, [0, 1], [ANIM.entranceFromY, 0]);
-  const scaleIn = interpolate(entrance, [0, 1], [0.85, 1]);
-  const opacityIn = interpolate(entrance, [0, 1], [0, 1]);
+  const scaleIn = interpolate(entrance, [0, 1], [0.95, 1]);
+  const opacityIn = interpolate(entrance, [0, 1], [0.8, 1]);
 
   // --- 单卡聚焦 (仅在 sceneChangeFrame 之后生效) ---
   let focusOpacity = 1;
