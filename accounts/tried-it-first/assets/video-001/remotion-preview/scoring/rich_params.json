@@ -1,0 +1,2082 @@
+{
+  "metadata": {
+    "total_scenes": 24,
+    "remotion_fps": 30,
+    "remotion_duration": 270,
+    "transition_frame": 123
+  },
+  "background_color": "#ffffff",
+  "scenes": [
+    {
+      "scene_index": 0,
+      "start_frame": 0,
+      "end_frame": 0,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "blue",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "center",
+          "background_type": "gradient",
+          "background_color_name": "orange",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "right",
+          "background_type": "solid_color",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2082,
+          "y_norm": 0.5007,
+          "w_norm": 0.277,
+          "h_norm": 0.8667,
+          "color": "#438caf"
+        },
+        {
+          "x_norm": 0.5023,
+          "y_norm": 0.5007,
+          "w_norm": 0.2859,
+          "h_norm": 0.8694,
+          "color": "#d69f36"
+        },
+        {
+          "x_norm": 0.7914,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8722,
+          "color": "#fdfdfd"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 0,
+          "colors": [
+            "#438caf",
+            "#d69f36",
+            "#fdfdfd"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "shadows on cards"
+    },
+    {
+      "scene_index": 1,
+      "start_frame": 8,
+      "end_frame": 8,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "blue",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_blue",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "It's Amazing? Yeah?",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "New Sneakers.",
+              "position": "bottom",
+              "size": "large"
+            },
+            {
+              "text_hint": "Low",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "light_grey",
+          "decoration_type": "wavy_pattern",
+          "decoration_color": "yellow_and_black",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "Absolutely new",
+              "position": "top",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "image_collage",
+          "background_color_name": "light_green",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_green",
+          "layout_type": "grid_2x2",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2078,
+          "y_norm": 0.4986,
+          "w_norm": 0.2773,
+          "h_norm": 0.8688,
+          "color": "#4b8eaf"
+        },
+        {
+          "x_norm": 0.5,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8694,
+          "color": "#bfae9b"
+        },
+        {
+          "x_norm": 0.791,
+          "y_norm": 0.5,
+          "w_norm": 0.2793,
+          "h_norm": 0.8715,
+          "color": "#626a61"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 8,
+          "colors": [
+            "#4b8eaf",
+            "#bfae9b",
+            "#626a61"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "none"
+    },
+    {
+      "scene_index": 2,
+      "start_frame": 16,
+      "end_frame": 16,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "blue",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": "top_right",
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "It's Amazing? Yeah?",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "185$",
+              "position": "top_right",
+              "size": "medium"
+            },
+            {
+              "text_hint": "156$ With the sale",
+              "position": "top_right",
+              "size": "medium"
+            },
+            {
+              "text_hint": "New Sneakers. Low price!",
+              "position": "bottom",
+              "size": "large"
+            },
+            {
+              "text_hint": "buy it now with a low price! Promocode: Motioncanyon is available for a few days",
+              "position": "bottom",
+              "size": "small"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "light_grey",
+          "decoration_type": "mixed",
+          "decoration_color": "yellow",
+          "layout_type": "single_product_center",
+          "has_price_tag": true,
+          "price_tag_position": "top_left",
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "185$",
+              "position": "top_left",
+              "size": "medium"
+            },
+            {
+              "text_hint": "Absolutely new product. This awesome sneakers available now!",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "buy it now with a big sale. It's amazing, yeah?",
+              "position": "bottom",
+              "size": "small"
+            },
+            {
+              "text_hint": "Swipe Up",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "pattern",
+          "background_color_name": "greenish_grey",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_green",
+          "layout_type": "image_collage",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom_right",
+              "size": "medium"
+            },
+            {
+              "text_hint": "135$",
+              "position": "bottom_right",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2105,
+          "y_norm": 0.4993,
+          "w_norm": 0.282,
+          "h_norm": 0.8667,
+          "color": "#4f90af"
+        },
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5007,
+          "w_norm": 0.2785,
+          "h_norm": 0.8708,
+          "color": "#beab91"
+        },
+        {
+          "x_norm": 0.7918,
+          "y_norm": 0.4938,
+          "w_norm": 0.2809,
+          "h_norm": 0.8806,
+          "color": "#bdc3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 16,
+          "colors": [
+            "#4f90af",
+            "#beab91",
+            "#bdc3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "none"
+    },
+    {
+      "scene_index": 3,
+      "start_frame": 25,
+      "end_frame": 41,
+      "duration_frames": 16,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "blue",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_blue",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": "top_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "185$",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "156$ With the sale",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "It's Amazing? Yeah?",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "New Sneakers. Low price!",
+              "position": "bottom",
+              "size": "large"
+            },
+            {
+              "text_hint": "buy it now with a low price! Promocode: Motioncanyon is available for a few days",
+              "position": "bottom",
+              "size": "small"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "black",
+          "decoration_type": "mixed",
+          "decoration_color": "red",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": null,
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "185$",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "Absolutely new product. This awesome sneakers available now!",
+              "position": "center",
+              "size": "medium"
+            },
+            {
+              "text_hint": "buy it now with a big sale. It's amazing, yeah?",
+              "position": "bottom",
+              "size": "small"
+            },
+            {
+              "text_hint": "Swipe Up",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "image_collage",
+          "background_color_name": "light_green",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_green",
+          "layout_type": "grid_2x2",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            },
+            {
+              "text_hint": "135$",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2074,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8694,
+          "color": "#4f8faf"
+        },
+        {
+          "x_norm": 0.4961,
+          "y_norm": 0.5,
+          "w_norm": 0.2891,
+          "h_norm": 0.8715,
+          "color": "#4d1324"
+        },
+        {
+          "x_norm": 0.7914,
+          "y_norm": 0.5007,
+          "w_norm": 0.2801,
+          "h_norm": 0.8757,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 25,
+          "colors": [
+            "#4f8faf",
+            "#4d1324",
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 33,
+          "colors": [
+            "#d58883",
+            "#421523",
+            "#cbcdb2"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 41,
+          "colors": [
+            "#b4b6bf",
+            "#bfba81",
+            "#eeca4b"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "slight card shadows, subtle white particles in background"
+    },
+    {
+      "scene_index": 4,
+      "start_frame": 49,
+      "end_frame": 57,
+      "duration_frames": 8,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "light_grey",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "It's Amazing?",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "Yeah",
+              "position": "center",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "gradient",
+          "background_color_name": "silver_grey",
+          "decoration_type": "mixed",
+          "decoration_color": "yellow",
+          "layout_type": "single_product_center",
+          "has_price_tag": true,
+          "price_tag_position": "top_right",
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "185$",
+              "position": "top",
+              "size": "large"
+            },
+            {
+              "text_hint": "Absolutely new product. This awesome sneakers available now!",
+              "position": "center",
+              "size": "small"
+            },
+            {
+              "text_hint": "buy it now with a big sale. It's amazing, yeah?",
+              "position": "bottom",
+              "size": "small"
+            },
+            {
+              "text_hint": "Swipe Up",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "solid_color",
+          "background_color_name": "yellow",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "SWIPE UP TO BUY!",
+              "position": "center",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.209,
+          "y_norm": 0.5,
+          "w_norm": 0.2801,
+          "h_norm": 0.8688,
+          "color": "#bab8c0"
+        },
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2797,
+          "h_norm": 0.8722,
+          "color": "#bfba81"
+        },
+        {
+          "x_norm": 0.7914,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8681,
+          "color": "#eeca4b"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 49,
+          "colors": [
+            "#bab8c0",
+            "#bfba81",
+            "#eeca4b"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 57,
+          "colors": [
+            "#bab8c0",
+            "#c0bb82",
+            "#eeca4b"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "none"
+    },
+    {
+      "scene_index": 5,
+      "start_frame": 65,
+      "end_frame": 65,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "faint white text",
+              "position": "center",
+              "size": "small"
+            },
+            {
+              "text_hint": "faint white text",
+              "position": "center",
+              "size": "small"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "image_collage",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "full_bleed",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "right",
+          "background_type": "solid_color",
+          "background_color_name": "light_gray",
+          "decoration_type": "mixed",
+          "decoration_color": "peach",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2078,
+          "y_norm": 0.4979,
+          "w_norm": 0.2809,
+          "h_norm": 0.8736,
+          "color": "#fefefe"
+        },
+        {
+          "x_norm": 0.5,
+          "y_norm": 0.5042,
+          "w_norm": 0.2789,
+          "h_norm": 0.8972,
+          "color": "#e8e8e7"
+        },
+        {
+          "x_norm": 0.791,
+          "y_norm": 0.4986,
+          "w_norm": 0.282,
+          "h_norm": 0.8715,
+          "color": "#dcdbda"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 65,
+          "colors": [
+            "#fefefe",
+            "#e8e8e7",
+            "#dcdbda"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "cards have subtle shadows, indicating depth; faint cursor icon on bottom left"
+    },
+    {
+      "scene_index": 6,
+      "start_frame": 74,
+      "end_frame": 74,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "image_collage",
+          "background_color_name": "peach, dark_teal, brown",
+          "decoration_type": "text_pattern",
+          "decoration_color": "white",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Cool Sneakers! Amazing Design.",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "Beautiful Designed Absolutely New Sneakers.",
+              "position": "center",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "teal",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "right",
+          "background_type": "image_collage",
+          "background_color_name": "white, peach, dark_red",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "AMAZING DESIGNED SNEAKERS.",
+              "position": "right_vertical",
+              "size": "large"
+            },
+            {
+              "text_hint": "Absolutely new sneakers with the best price in the market!",
+              "position": "bottom",
+              "size": "small"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2082,
+          "y_norm": 0.4986,
+          "w_norm": 0.2797,
+          "h_norm": 0.8701,
+          "color": "#e6d4cd"
+        },
+        {
+          "x_norm": 0.4992,
+          "y_norm": 0.5007,
+          "w_norm": 0.2785,
+          "h_norm": 0.8729,
+          "color": "#6cc4ad"
+        },
+        {
+          "x_norm": 0.791,
+          "y_norm": 0.4986,
+          "w_norm": 0.2836,
+          "h_norm": 0.8701,
+          "color": "#dccbc5"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 74,
+          "colors": [
+            "#e6d4cd",
+            "#6cc4ad",
+            "#dccbc5"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "none"
+    },
+    {
+      "scene_index": 7,
+      "start_frame": 82,
+      "end_frame": 82,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "peach",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_grey",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "teal",
+          "decoration_type": "mixed",
+          "decoration_color": "dark_blue,dark_grey,red,beige",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "NEW SNEAKERS.",
+              "position": "top",
+              "size": "large"
+            },
+            {
+              "text_hint": "Absolutely new sneakers with the best price in the market!",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "image_collage",
+          "background_color_name": "mixed_brown_peach_grey",
+          "decoration_type": "mixed",
+          "decoration_color": "light_peach,white",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "NEW PROJ",
+              "position": "top_left",
+              "size": "medium"
+            },
+            {
+              "text_hint": "AMAZING DESIGNED SNEAKERS.",
+              "position": "right",
+              "size": "large"
+            },
+            {
+              "text_hint": "Absolutely new sneakers with the best price in the market!",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2082,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8681,
+          "color": "#eab29f"
+        },
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8688,
+          "color": "#3a516b"
+        },
+        {
+          "x_norm": 0.7898,
+          "y_norm": 0.4986,
+          "w_norm": 0.2824,
+          "h_norm": 0.8715,
+          "color": "#ddc9c1"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 82,
+          "colors": [
+            "#eab29f",
+            "#3a516b",
+            "#ddc9c1"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "cards_have_subtle_shadows"
+    },
+    {
+      "scene_index": 8,
+      "start_frame": 90,
+      "end_frame": 90,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "image_collage",
+          "background_color_name": "mixed",
+          "decoration_type": "pattern",
+          "decoration_color": "white",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Cool Sneakers! Amazing Design",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "Beautiful Designed Absolute New Sneakers",
+              "position": "center",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "grey",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "right",
+          "background_type": "solid_color",
+          "background_color_name": "peach",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2082,
+          "y_norm": 0.5,
+          "w_norm": 0.2805,
+          "h_norm": 0.8722,
+          "color": "#e6d3cc"
+        },
+        {
+          "x_norm": 0.5,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8681,
+          "color": "#999797"
+        },
+        {
+          "x_norm": 0.7918,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8701,
+          "color": "#eaad9f"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 90,
+          "colors": [
+            "#e6d3cc",
+            "#999797",
+            "#eaad9f"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle card shadows"
+    },
+    {
+      "scene_index": 9,
+      "start_frame": 98,
+      "end_frame": 106,
+      "duration_frames": 8,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "steel_blue",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "light_gray",
+          "decoration_type": "mixed",
+          "decoration_color": "red, black, white",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "by Motion Canyon",
+              "position": "top",
+              "size": "small"
+            },
+            {
+              "text_hint": "With love",
+              "position": "top",
+              "size": "small"
+            },
+            {
+              "text_hint": "Amazing",
+              "position": "bottom",
+              "size": "large"
+            },
+            {
+              "text_hint": "Designer.",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "solid_color",
+          "background_color_name": "mint_green",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2094,
+          "y_norm": 0.5,
+          "w_norm": 0.2773,
+          "h_norm": 0.8708,
+          "color": "#395a70"
+        },
+        {
+          "x_norm": 0.5012,
+          "y_norm": 0.4993,
+          "w_norm": 0.2816,
+          "h_norm": 0.8694,
+          "color": "#a4a1a2"
+        },
+        {
+          "x_norm": 0.7875,
+          "y_norm": 0.5,
+          "w_norm": 0.2863,
+          "h_norm": 0.8681,
+          "color": "#90c8ad"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 98,
+          "colors": [
+            "#395a70",
+            "#a4a1a2",
+            "#90c8ad"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 106,
+          "colors": [
+            "#921e28",
+            "#ffffff",
+            "#c25d0f"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle card shadows, rounded card corners"
+    },
+    {
+      "scene_index": 10,
+      "start_frame": 115,
+      "end_frame": 115,
+      "duration_frames": 0,
+      "scene_type": "three_cards_side_by_side",
+      "num_cards": 3,
+      "cards_semantic": [
+        {
+          "position": "left",
+          "background_type": "solid_color",
+          "background_color_name": "orange",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "ONLY FOR SALE",
+              "position": "top",
+              "size": "small"
+            },
+            {
+              "text_hint": "ONLY FOR SALE",
+              "position": "bottom",
+              "size": "small"
+            }
+          ]
+        },
+        {
+          "position": "center",
+          "background_type": "solid_color",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "full_bleed",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "Swipe Up",
+              "position": "center",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "right",
+          "background_type": "solid_color",
+          "background_color_name": "orange",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "full_bleed",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": true,
+          "text_blocks": [
+            {
+              "text_hint": "Swipe Up",
+              "position": "center",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.2098,
+          "y_norm": 0.4993,
+          "w_norm": 0.2836,
+          "h_norm": 0.8694,
+          "color": "#c28447"
+        },
+        {
+          "x_norm": 0.5,
+          "y_norm": 0.5007,
+          "w_norm": 0.2789,
+          "h_norm": 0.8694,
+          "color": "#ffffff"
+        },
+        {
+          "x_norm": 0.7914,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8646,
+          "color": "#cf600b"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 115,
+          "colors": [
+            "#c28447",
+            "#ffffff",
+            "#cf600b"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle shadows under cards"
+    },
+    {
+      "scene_index": 11,
+      "start_frame": 123,
+      "end_frame": 123,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "gradient",
+          "background_color_name": "gold_gradient",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.5039,
+          "y_norm": 0.4993,
+          "w_norm": 0.2867,
+          "h_norm": 0.8701,
+          "color": "#d69f36"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 123,
+          "colors": [
+            "#d69f36"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle card shadow, faint particle effects on background"
+    },
+    {
+      "scene_index": 12,
+      "start_frame": 131,
+      "end_frame": 164,
+      "duration_frames": 33,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "silver_grey",
+          "decoration_type": "mixed",
+          "decoration_color": "yellow_gold_black_and_white",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "Absolutely new",
+              "position": "top",
+              "size": "medium"
+            },
+            {
+              "text_hint": "product",
+              "position": "top",
+              "size": "small"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "center",
+              "size": "small"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.4993,
+          "w_norm": 0.2797,
+          "h_norm": 0.8708,
+          "color": "#bfae9a"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 131,
+          "colors": [
+            "#bfae9a"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 139,
+          "colors": [
+            "#beab91"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 147,
+          "colors": [
+            "#4d1323"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 155,
+          "colors": [
+            "#421522"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 164,
+          "colors": [
+            "#bfba81"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle film grain/particles"
+    },
+    {
+      "scene_index": 13,
+      "start_frame": 172,
+      "end_frame": 172,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4988,
+          "y_norm": 0.5,
+          "w_norm": 0.2812,
+          "h_norm": 0.8688,
+          "color": "#fdfdfd"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 172,
+          "colors": [
+            "#fdfdfd"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle card shadow, faint particle effects"
+    },
+    {
+      "scene_index": 14,
+      "start_frame": 180,
+      "end_frame": 180,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 6,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "pattern",
+          "background_color_name": "pale_green",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_green",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "dark_gray",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "single",
+          "background_type": "image_collage",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "full_bleed",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "single",
+          "background_type": "pattern",
+          "background_color_name": "pale_green",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_green",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "single",
+          "background_type": "pattern",
+          "background_color_name": "light_gray",
+          "decoration_type": "none",
+          "decoration_color": "dark_gray",
+          "layout_type": "product_with_text",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "center",
+              "size": "medium"
+            }
+          ]
+        },
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "dark_gray",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4934,
+          "y_norm": 0.5007,
+          "w_norm": 0.2914,
+          "h_norm": 0.8708,
+          "color": "#bac1b9"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 180,
+          "colors": [
+            "#bac1b9"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "faint particle effects"
+    },
+    {
+      "scene_index": 15,
+      "start_frame": 188,
+      "end_frame": 188,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "image_collage",
+          "background_color_name": "mixed",
+          "decoration_type": "chevron",
+          "decoration_color": "dark_green",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            },
+            {
+              "text_hint": "135$",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.5,
+          "y_norm": 0.5083,
+          "w_norm": 0.2789,
+          "h_norm": 0.8875,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 188,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle particle effects"
+    },
+    {
+      "scene_index": 16,
+      "start_frame": 196,
+      "end_frame": 196,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "mixed",
+          "background_color_name": "light_green_dark_gray_white",
+          "decoration_type": "mixed",
+          "decoration_color": "dark_green_light_gray",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 196,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle white particle effects"
+    },
+    {
+      "scene_index": 17,
+      "start_frame": 205,
+      "end_frame": 205,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "mixed",
+          "background_color_name": "light_green_dark_grey_white",
+          "decoration_type": "chevron",
+          "decoration_color": "dark_green",
+          "layout_type": "mixed",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "large"
+            },
+            {
+              "text_hint": "135$",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 205,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "particle effects"
+    },
+    {
+      "scene_index": 18,
+      "start_frame": 213,
+      "end_frame": 213,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "image_collage",
+          "background_color_name": "mixed_colors",
+          "decoration_type": "mixed",
+          "decoration_color": "mixed_colors",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 213,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle grey particles scattered"
+    },
+    {
+      "scene_index": 19,
+      "start_frame": 221,
+      "end_frame": 221,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "image_collage",
+          "background_color_name": "dark_gray",
+          "decoration_type": "dot_grid",
+          "decoration_color": "dark_green",
+          "layout_type": "image_collage",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 221,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "faint particle effects"
+    },
+    {
+      "scene_index": 20,
+      "start_frame": 229,
+      "end_frame": 229,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "image_collage",
+          "background_color_name": "mixed",
+          "decoration_type": "chevron",
+          "decoration_color": "dark_green",
+          "layout_type": "product_with_text",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec4bd"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 229,
+          "colors": [
+            "#bec4bd"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle particle effect with small grey dots"
+    },
+    {
+      "scene_index": 21,
+      "start_frame": 237,
+      "end_frame": 237,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "image_collage",
+          "background_color_name": "various",
+          "decoration_type": "mixed",
+          "decoration_color": "white",
+          "layout_type": "full_bleed",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5042,
+          "w_norm": 0.2809,
+          "h_norm": 0.8778,
+          "color": "#bec3bc"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 237,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "small, faint dark particles scattered across the background"
+    },
+    {
+      "scene_index": 22,
+      "start_frame": 245,
+      "end_frame": 245,
+      "duration_frames": 0,
+      "scene_type": "single_card_centered",
+      "num_cards": 6,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "pattern",
+          "background_color_name": "sage_green",
+          "decoration_type": "chevron",
+          "decoration_color": "dark_green",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "dark_grey",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "full_bleed",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "white",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "image_collage",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "single",
+          "background_type": "pattern",
+          "background_color_name": "sage_green",
+          "decoration_type": "chevron",
+          "decoration_color": "dark_green",
+          "layout_type": "single_product_center",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": []
+        },
+        {
+          "position": "single",
+          "background_type": "pattern",
+          "background_color_name": "transparent_placeholder",
+          "decoration_type": "dot_grid",
+          "decoration_color": "grey",
+          "layout_type": "full_bleed",
+          "has_price_tag": false,
+          "price_tag_position": null,
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "center",
+              "size": "large"
+            }
+          ]
+        },
+        {
+          "position": "single",
+          "background_type": "solid_color",
+          "background_color_name": "dark_grey",
+          "decoration_type": "none",
+          "decoration_color": "none",
+          "layout_type": "plain_no_content",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "135$",
+              "position": "center",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec4bd"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 245,
+          "colors": [
+            "#bec4bd"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "subtle grey particles"
+    },
+    {
+      "scene_index": 23,
+      "start_frame": 254,
+      "end_frame": 262,
+      "duration_frames": 8,
+      "scene_type": "single_card_centered",
+      "num_cards": 1,
+      "cards_semantic": [
+        {
+          "position": "single",
+          "background_type": "mixed",
+          "background_color_name": "mixed_tones",
+          "decoration_type": "mixed",
+          "decoration_color": "mixed_colors",
+          "layout_type": "mixed",
+          "has_price_tag": true,
+          "price_tag_position": "bottom_right",
+          "has_cta": false,
+          "text_blocks": [
+            {
+              "text_hint": "New Product Promo Stories By Motion Canyon",
+              "position": "center",
+              "size": "large"
+            },
+            {
+              "text_hint": "NEW NEW NEW",
+              "position": "bottom",
+              "size": "medium"
+            },
+            {
+              "text_hint": "135$",
+              "position": "bottom",
+              "size": "large"
+            }
+          ]
+        }
+      ],
+      "cards_opencv": [
+        {
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2809,
+          "h_norm": 0.8701,
+          "color": "#bec4bd"
+        }
+      ],
+      "color_keyframes": [
+        {
+          "frame": 254,
+          "colors": [
+            "#bec4bd"
+          ],
+          "background": "#ffffff"
+        },
+        {
+          "frame": 262,
+          "colors": [
+            "#bec3bc"
+          ],
+          "background": "#ffffff"
+        }
+      ],
+      "notable_effects": "faint particle overlay"
+    }
+  ]
+}
