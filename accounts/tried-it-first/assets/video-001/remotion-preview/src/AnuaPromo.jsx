@@ -161,6 +161,7 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
   // --- 单卡聚焦 (仅在 sceneChangeFrame 之后生效) ---
   let focusOpacity = 1;
   let focusScale = 1;
+  let focusTranslateX = 0;
   if (frame >= ANIM.sceneChangeFrame) {
     const focusIdx = frame < ANIM.sceneChangeFrame + 60 ? 1 : 2;
     const t = interpolate(
@@ -173,6 +174,9 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
       focusOpacity = 1 - t;
     } else {
       focusScale = 1 + t * 0.35;
+      // 居中：index 0 向右移，index 2 向左移，index 1 不动
+      const centerOffset = index === 0 ? 450 : index === 2 ? -450 : 0;
+      focusTranslateX = t * centerOffset;
     }
   }
 
@@ -264,6 +268,7 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
     <div
       style={{
         transform: [
+          `translateX(${focusTranslateX}px)`,
           `translateY(${translateY + floatY}px)`,
           `rotate(${rotation}deg)`,
           `scale(${scaleIn * focusScale})`,
