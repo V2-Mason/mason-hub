@@ -50,10 +50,10 @@ const PRODUCTS = [
     price: 25,
     salePrice: 18,
     img: staticFile("anua-cards/anua-toner.png"),
-    bg: "#E88B7A",         // 珊瑚粉
-    bgAlt: "#FF7D7D",      // 变色后
+    bg: "#5B8FB9",         // 蓝色 (匹配原片)
+    bgAlt: "#E8B4A0",      // 变色后 浅珊瑚
     accent: "#333333",
-    glowColor: "rgba(255, 130, 130, 0.6)",
+    glowColor: "rgba(91, 143, 185, 0.4)",
   },
   {
     name: "Soothing\nAmpoule",
@@ -62,10 +62,10 @@ const PRODUCTS = [
     price: 22,
     salePrice: null,
     img: staticFile("anua-cards/anua-ampoule.png"),
-    bg: "#111111",         // 黑
-    bgAlt: "#1a1a2e",      // 变色后
+    bg: "#D4A843",         // 金橙色 (匹配原片)
+    bgAlt: "#2D6B5A",      // 变色后 深绿
     accent: "#FF3E3E",
-    glowColor: "rgba(255, 200, 50, 0.6)",
+    glowColor: "rgba(212, 168, 67, 0.4)",
   },
   {
     name: "Dark Spot\nCorrecting\nSerum",
@@ -74,10 +74,10 @@ const PRODUCTS = [
     price: 24,
     salePrice: null,
     img: staticFile("anua-cards/anua-serum.png"),
-    bg: "#CD3F3F",         // 红
-    bgAlt: "#E4FF1A",      // 变色后 荧光绿
-    accent: "#F2C94C",
-    glowColor: "rgba(255, 80, 120, 0.5)",
+    bg: "#F5F5F0",         // 白色 (匹配原片)
+    bgAlt: "#3A6B5E",      // 变色后 深绿
+    accent: "#333333",
+    glowColor: "rgba(100, 100, 100, 0.3)",
   },
 ];
 
