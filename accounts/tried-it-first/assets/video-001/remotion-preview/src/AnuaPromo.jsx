@@ -16,7 +16,7 @@ const ANIM = {
   springDamping: 8,          // 弹性阻尼 (越小越弹)
   springStiffness: 160,      // 弹性刚度
   springMass: 0.6,           // 弹性质量
-  entranceFromY: 900,        // 入场起始Y偏移
+  entranceFromY: 200,        // 入场起始Y偏移 (短距离，快速入场)
 
   // 悬浮呼吸
   floatAmplitude: 10,        // 悬浮Y振幅
@@ -161,7 +161,7 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
   });
 
   const translateY = interpolate(entrance, [0, 1], [ANIM.entranceFromY, 0]);
-  const scaleIn = interpolate(entrance, [0, 1], [0.4, 1]);
+  const scaleIn = interpolate(entrance, [0, 1], [0.85, 1]);
   const opacityIn = interpolate(entrance, [0, 1], [0, 1]);
 
   // --- 单卡聚焦 (仅在 sceneChangeFrame 之后生效) ---
