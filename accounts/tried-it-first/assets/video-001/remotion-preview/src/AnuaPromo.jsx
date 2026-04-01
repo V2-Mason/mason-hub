@@ -164,25 +164,6 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
   const scaleIn = interpolate(entrance, [0, 1], [0.4, 1]);
   const opacityIn = interpolate(entrance, [0, 1], [0, 1]);
 
-  // --- 单卡聚焦模式 (轮播) ---
-  // 原片 150帧后切换为单卡特写：中间卡片放大居中，左右淡出
-  const focusIndex = frame < ANIM.sceneChangeFrame + 60 ? 1 : 2; // 先聚焦中间，后聚焦右边
-  const isFocused = index === focusIndex;
-  const focusProgress = frame > ANIM.sceneChangeFrame
-    ? interpolate(frame, [ANIM.sceneChangeFrame, ANIM.sceneChangeFrame + 20], [0, 1], {
-        extrapolateLeft: "clamp",
-        extrapolateRight: "clamp",
-      })
-    : 0;
-
-  // 非聚焦卡片淡出 + 缩小
-  const focusOpacity = focusProgress > 0 && !isFocused
-    ? interpolate(focusProgress, [0, 1], [1, 0])
-    : 1;
-  const focusScale = focusProgress > 0 && isFocused
-    ? interpolate(focusProgress, [0, 1], [1, 1.3])
-    : 1;
-
   // --- 悬浮 ---
   const floatY =
     frame > ANIM.entranceEnd
@@ -273,9 +254,9 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
         transform: [
           `translateY(${translateY + floatY}px)`,
           `rotate(${rotation}deg)`,
-          `scale(${scaleIn * focusScale})`,
+          `scale(${scaleIn})`,
         ].join(" "),
-        opacity: opacityIn * focusOpacity,
+        opacity: opacityIn,
         filter: `drop-shadow(0 0 ${glow}px ${product.glowColor})`,
       }}
     >
