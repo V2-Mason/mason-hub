@@ -86,10 +86,10 @@ export const AnuaPromo = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // 背景色 — 原片是白色/浅色背景
-  const bgLightness = interpolate(frame, [0, 270], [95, 90], {
-    extrapolateRight: "clamp",
-  });
+  // 背景色 — 前半段白色，单卡聚焦后变深
+  const bgLightness = frame < ANIM.sceneChangeFrame
+    ? interpolate(frame, [0, ANIM.sceneChangeFrame], [95, 92], { extrapolateRight: "clamp" })
+    : interpolate(frame, [ANIM.sceneChangeFrame, ANIM.sceneChangeFrame + 20], [92, 15], { extrapolateRight: "clamp" });
   const bgHueShift = frame > ANIM.invertStart
     ? interpolate(frame, [ANIM.invertStart, ANIM.invertEnd], [0, 60], {
         extrapolateRight: "clamp",
@@ -120,13 +120,14 @@ export const AnuaPromo = () => {
         opacity: fadeOut,
       }}
     >
-      {/* 背景动态点阵 (Motion Tile) */}
+      {/* 背景动态点阵 — 前半段暗点，后半段亮点(白色粒子) */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.05) 1.5px, transparent 0)",
+          backgroundImage: frame < ANIM.sceneChangeFrame
+            ? "radial-gradient(rgba(0,0,0,0.04) 1.5px, transparent 0)"
+            : "radial-gradient(rgba(255,255,255,0.15) 1.5px, transparent 0)",
           backgroundSize: "24px 24px",
           backgroundPosition: `${frame * 0.8}px ${frame * 1.2}px`,
           pointerEvents: "none",
