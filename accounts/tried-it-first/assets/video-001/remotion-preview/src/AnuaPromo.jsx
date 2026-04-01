@@ -86,12 +86,12 @@ export const AnuaPromo = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // 背景色相渐变
-  const bgHue = interpolate(frame, [0, 270], [210, 240], {
+  // 背景色 — 原片是白色/浅色背景
+  const bgLightness = interpolate(frame, [0, 270], [95, 90], {
     extrapolateRight: "clamp",
   });
   const bgHueShift = frame > ANIM.invertStart
-    ? interpolate(frame, [ANIM.invertStart, ANIM.invertEnd], [0, 120], {
+    ? interpolate(frame, [ANIM.invertStart, ANIM.invertEnd], [0, 60], {
         extrapolateRight: "clamp",
       })
     : 0;
@@ -111,7 +111,7 @@ export const AnuaPromo = () => {
   return (
     <AbsoluteFill
       style={{
-        background: `hsl(${bgHue + bgHueShift}, 12%, 15%)`,
+        background: `hsl(${0 + bgHueShift}, 5%, ${bgLightness}%)`,
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
