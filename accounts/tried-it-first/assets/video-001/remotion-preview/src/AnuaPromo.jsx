@@ -109,7 +109,7 @@ export const AnuaPromo = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
-        gap: 30,
+        gap: 15,
         filter: isInverted ? "invert(1)" : "none",
         opacity: fadeOut,
       }}
