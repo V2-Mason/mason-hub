@@ -1,0 +1,214 @@
+{
+  "frames": [
+    {
+      "remotion_frame": 0,
+      "reference": "correct-frame-01.jpg",
+      "phase": "pre-entrance",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 3,
+        "cards": [
+          {
+            "x": 533,
+            "y": 721,
+            "w": 709,
+            "h": 1248,
+            "color": "#438caf"
+          },
+          {
+            "x": 1286,
+            "y": 721,
+            "w": 732,
+            "h": 1252,
+            "color": "#d69f36"
+          },
+          {
+            "x": 2026,
+            "y": 720,
+            "w": 714,
+            "h": 1256,
+            "color": "#fdfdfd"
+          }
+        ]
+      }
+    },
+    {
+      "remotion_frame": 16,
+      "reference": "correct-frame-03.jpg",
+      "phase": "entrance-mid",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 3,
+        "cards": [
+          {
+            "x": 539,
+            "y": 719,
+            "w": 722,
+            "h": 1248,
+            "color": "#4f90af"
+          },
+          {
+            "x": 1279,
+            "y": 721,
+            "w": 713,
+            "h": 1254,
+            "color": "#beab91"
+          },
+          {
+            "x": 2027,
+            "y": 711,
+            "w": 719,
+            "h": 1268,
+            "color": "#bdc3bc"
+          }
+        ]
+      }
+    },
+    {
+      "remotion_frame": 30,
+      "reference": "correct-frame-04.jpg",
+      "phase": "entrance-complete",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 3,
+        "cards": [
+          {
+            "x": 531,
+            "y": 720,
+            "w": 713,
+            "h": 1252,
+            "color": "#4f8faf"
+          },
+          {
+            "x": 1270,
+            "y": 720,
+            "w": 740,
+            "h": 1255,
+            "color": "#4d1324"
+          },
+          {
+            "x": 2026,
+            "y": 721,
+            "w": 717,
+            "h": 1261,
+            "color": "#bdc3bc"
+          }
+        ]
+      }
+    },
+    {
+      "remotion_frame": 90,
+      "reference": "correct-frame-11.jpg",
+      "phase": "float-glow",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 3,
+        "cards": [
+          {
+            "x": 533,
+            "y": 720,
+            "w": 713,
+            "h": 1250,
+            "color": "#eab29f"
+          },
+          {
+            "x": 1279,
+            "y": 720,
+            "w": 714,
+            "h": 1251,
+            "color": "#3a516b"
+          },
+          {
+            "x": 2022,
+            "y": 718,
+            "w": 723,
+            "h": 1255,
+            "color": "#ddc9c1"
+          }
+        ]
+      }
+    },
+    {
+      "remotion_frame": 150,
+      "reference": "correct-frame-19.jpg",
+      "phase": "pulse-start",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 1,
+        "cards": [
+          {
+            "x": 1268,
+            "y": 720,
+            "w": 743,
+            "h": 1256,
+            "color": "#4d1324"
+          }
+        ]
+      }
+    },
+    {
+      "remotion_frame": 210,
+      "reference": "correct-frame-26.jpg",
+      "phase": "color-shift",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 1,
+        "cards": [
+          {
+            "x": 1279,
+            "y": 720,
+            "w": 719,
+            "h": 1253,
+            "color": "#bec3bc"
+          }
+        ]
+      }
+    },
+    {
+      "remotion_frame": 260,
+      "reference": "correct-frame-32.jpg",
+      "phase": "fade-out",
+      "opencv": {
+        "image_size": {
+          "w": 2560,
+          "h": 1440
+        },
+        "background_color": "#ffffff",
+        "num_cards": 1,
+        "cards": [
+          {
+            "x": 1279,
+            "y": 720,
+            "w": 719,
+            "h": 1253,
+            "color": "#60685f"
+          }
+        ]
+      }
+    }
+  ]
+}
