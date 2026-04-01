@@ -189,7 +189,7 @@ const Card3 = ({ pos, index, frame, w, h, fadeOut }) => {
   // 内容出现/消失过渡
   const contentFadeIn = showContent
     ? interpolate(frame, [scene.start, scene.start + 6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
-    : interpolate(frame, [scene.start, scene.start + 3], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+    : 0; // 无内容场景直接隐藏
 
   const floatY = Math.sin(frame / 20 + index * 2) * 4;
   const productRot = Math.sin(frame / 25 + index) * 3;
