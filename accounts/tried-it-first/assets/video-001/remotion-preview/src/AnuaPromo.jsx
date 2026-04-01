@@ -28,8 +28,8 @@ const ANIM = {
   rotationFreq: 30,          // 旋转频率
 
   // 发光
-  glowMin: 8,                // 最小发光半径
-  glowMax: 25,               // 最大发光半径
+  glowMin: 3,                // 最小发光半径 (更柔和)
+  glowMax: 12,               // 最大发光半径 (更柔和)
   glowFreq: 14,              // 发光呼吸频率
 
   // 时间轴关键帧
