@@ -50,7 +50,7 @@ const COLOR_TIMELINE = {
     { f: 164, c: "#7b7268" }, { f: 172, c: "#fdfdfd" }, { f: 180, c: "#bac1b9" },
     { f: 188, c: "#bec3bc" }, { f: 196, c: "#bec3bc" }, { f: 205, c: "#bec3bc" },
     { f: 213, c: "#bec3bc" }, { f: 221, c: "#bec3bc" }, { f: 237, c: "#bec3bc" },
-    { f: 254, c: "#bec4bd" }, { f: 262, c: "#bec3bc" },
+    { f: 245, c: "#bec4bd" }, { f: 254, c: "#bec3bc" }, { f: 260, c: "#bec3bc" }, { f: 262, c: "#bec3bc" },
   ],
 };
 
