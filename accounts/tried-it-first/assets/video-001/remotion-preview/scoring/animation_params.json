@@ -1,0 +1,475 @@
+{
+  "metadata": {
+    "source_frames": 33,
+    "remotion_fps": 30,
+    "remotion_duration": 270
+  },
+  "background_color": "#ffffff",
+  "scene_change": {
+    "last_3card_frame": 115,
+    "first_1card_frame": 123,
+    "transition_frame": 119
+  },
+  "three_card_phase": {
+    "frame_range": [
+      0,
+      119
+    ],
+    "cards": {
+      "left": [
+        {
+          "frame": 0,
+          "x_norm": 0.2082,
+          "y_norm": 0.5007,
+          "w_norm": 0.277,
+          "h_norm": 0.8667,
+          "color": "#438caf"
+        },
+        {
+          "frame": 8,
+          "x_norm": 0.2078,
+          "y_norm": 0.4986,
+          "w_norm": 0.2773,
+          "h_norm": 0.8688,
+          "color": "#4b8eaf"
+        },
+        {
+          "frame": 16,
+          "x_norm": 0.2105,
+          "y_norm": 0.4993,
+          "w_norm": 0.282,
+          "h_norm": 0.8667,
+          "color": "#4f90af"
+        },
+        {
+          "frame": 25,
+          "x_norm": 0.2074,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8694,
+          "color": "#4f8faf"
+        },
+        {
+          "frame": 33,
+          "x_norm": 0.2086,
+          "y_norm": 0.5,
+          "w_norm": 0.2793,
+          "h_norm": 0.8688,
+          "color": "#d58883"
+        },
+        {
+          "frame": 41,
+          "x_norm": 0.2082,
+          "y_norm": 0.5,
+          "w_norm": 0.2793,
+          "h_norm": 0.8694,
+          "color": "#b4b6bf"
+        },
+        {
+          "frame": 49,
+          "x_norm": 0.209,
+          "y_norm": 0.5,
+          "w_norm": 0.2801,
+          "h_norm": 0.8688,
+          "color": "#bab8c0"
+        },
+        {
+          "frame": 65,
+          "x_norm": 0.2078,
+          "y_norm": 0.4979,
+          "w_norm": 0.2809,
+          "h_norm": 0.8736,
+          "color": "#fefefe"
+        },
+        {
+          "frame": 74,
+          "x_norm": 0.2082,
+          "y_norm": 0.4986,
+          "w_norm": 0.2797,
+          "h_norm": 0.8701,
+          "color": "#e6d4cd"
+        },
+        {
+          "frame": 82,
+          "x_norm": 0.2082,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8681,
+          "color": "#eab29f"
+        },
+        {
+          "frame": 90,
+          "x_norm": 0.2082,
+          "y_norm": 0.5,
+          "w_norm": 0.2805,
+          "h_norm": 0.8722,
+          "color": "#e6d3cc"
+        },
+        {
+          "frame": 98,
+          "x_norm": 0.2094,
+          "y_norm": 0.5,
+          "w_norm": 0.2773,
+          "h_norm": 0.8708,
+          "color": "#395a70"
+        },
+        {
+          "frame": 106,
+          "x_norm": 0.2082,
+          "y_norm": 0.5,
+          "w_norm": 0.2746,
+          "h_norm": 0.8722,
+          "color": "#921e28"
+        },
+        {
+          "frame": 115,
+          "x_norm": 0.2098,
+          "y_norm": 0.4993,
+          "w_norm": 0.2836,
+          "h_norm": 0.8694,
+          "color": "#c28447"
+        }
+      ],
+      "center": [
+        {
+          "frame": 0,
+          "x_norm": 0.5023,
+          "y_norm": 0.5007,
+          "w_norm": 0.2859,
+          "h_norm": 0.8694,
+          "color": "#d69f36"
+        },
+        {
+          "frame": 8,
+          "x_norm": 0.5,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8694,
+          "color": "#bfae9b"
+        },
+        {
+          "frame": 16,
+          "x_norm": 0.4996,
+          "y_norm": 0.5007,
+          "w_norm": 0.2785,
+          "h_norm": 0.8708,
+          "color": "#beab91"
+        },
+        {
+          "frame": 25,
+          "x_norm": 0.4961,
+          "y_norm": 0.5,
+          "w_norm": 0.2891,
+          "h_norm": 0.8715,
+          "color": "#4d1324"
+        },
+        {
+          "frame": 33,
+          "x_norm": 0.5,
+          "y_norm": 0.5007,
+          "w_norm": 0.2809,
+          "h_norm": 0.8736,
+          "color": "#421523"
+        },
+        {
+          "frame": 41,
+          "x_norm": 0.4992,
+          "y_norm": 0.4979,
+          "w_norm": 0.2805,
+          "h_norm": 0.8729,
+          "color": "#bfba81"
+        },
+        {
+          "frame": 57,
+          "x_norm": 0.4953,
+          "y_norm": 0.5007,
+          "w_norm": 0.2879,
+          "h_norm": 0.8694,
+          "color": "#c0bb82"
+        },
+        {
+          "frame": 65,
+          "x_norm": 0.5,
+          "y_norm": 0.5042,
+          "w_norm": 0.2789,
+          "h_norm": 0.8972,
+          "color": "#e8e8e7"
+        },
+        {
+          "frame": 74,
+          "x_norm": 0.4992,
+          "y_norm": 0.5007,
+          "w_norm": 0.2785,
+          "h_norm": 0.8729,
+          "color": "#6cc4ad"
+        },
+        {
+          "frame": 82,
+          "x_norm": 0.4996,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8688,
+          "color": "#3a516b"
+        },
+        {
+          "frame": 90,
+          "x_norm": 0.5,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8681,
+          "color": "#999797"
+        },
+        {
+          "frame": 98,
+          "x_norm": 0.5012,
+          "y_norm": 0.4993,
+          "w_norm": 0.2816,
+          "h_norm": 0.8694,
+          "color": "#a4a1a2"
+        },
+        {
+          "frame": 106,
+          "x_norm": 0.5,
+          "y_norm": 0.4951,
+          "w_norm": 0.2789,
+          "h_norm": 0.8819,
+          "color": "#ffffff"
+        },
+        {
+          "frame": 115,
+          "x_norm": 0.5,
+          "y_norm": 0.5007,
+          "w_norm": 0.2789,
+          "h_norm": 0.8694,
+          "color": "#ffffff"
+        }
+      ],
+      "right": [
+        {
+          "frame": 0,
+          "x_norm": 0.7914,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8722,
+          "color": "#fdfdfd"
+        },
+        {
+          "frame": 8,
+          "x_norm": 0.791,
+          "y_norm": 0.5,
+          "w_norm": 0.2793,
+          "h_norm": 0.8715,
+          "color": "#626a61"
+        },
+        {
+          "frame": 16,
+          "x_norm": 0.7918,
+          "y_norm": 0.4938,
+          "w_norm": 0.2809,
+          "h_norm": 0.8806,
+          "color": "#bdc3bc"
+        },
+        {
+          "frame": 25,
+          "x_norm": 0.7914,
+          "y_norm": 0.5007,
+          "w_norm": 0.2801,
+          "h_norm": 0.8757,
+          "color": "#bec3bc"
+        },
+        {
+          "frame": 33,
+          "x_norm": 0.7914,
+          "y_norm": 0.5014,
+          "w_norm": 0.2801,
+          "h_norm": 0.8722,
+          "color": "#cbcdb2"
+        },
+        {
+          "frame": 41,
+          "x_norm": 0.7914,
+          "y_norm": 0.5007,
+          "w_norm": 0.2797,
+          "h_norm": 0.8729,
+          "color": "#eeca4b"
+        },
+        {
+          "frame": 65,
+          "x_norm": 0.791,
+          "y_norm": 0.4986,
+          "w_norm": 0.282,
+          "h_norm": 0.8715,
+          "color": "#dcdbda"
+        },
+        {
+          "frame": 74,
+          "x_norm": 0.791,
+          "y_norm": 0.4986,
+          "w_norm": 0.2836,
+          "h_norm": 0.8701,
+          "color": "#dccbc5"
+        },
+        {
+          "frame": 82,
+          "x_norm": 0.7898,
+          "y_norm": 0.4986,
+          "w_norm": 0.2824,
+          "h_norm": 0.8715,
+          "color": "#ddc9c1"
+        },
+        {
+          "frame": 90,
+          "x_norm": 0.7918,
+          "y_norm": 0.5,
+          "w_norm": 0.2789,
+          "h_norm": 0.8701,
+          "color": "#eaad9f"
+        },
+        {
+          "frame": 98,
+          "x_norm": 0.7875,
+          "y_norm": 0.5,
+          "w_norm": 0.2863,
+          "h_norm": 0.8681,
+          "color": "#90c8ad"
+        },
+        {
+          "frame": 106,
+          "x_norm": 0.7918,
+          "y_norm": 0.4993,
+          "w_norm": 0.2773,
+          "h_norm": 0.866,
+          "color": "#c25d0f"
+        },
+        {
+          "frame": 115,
+          "x_norm": 0.7914,
+          "y_norm": 0.5,
+          "w_norm": 0.2785,
+          "h_norm": 0.8646,
+          "color": "#cf600b"
+        }
+      ]
+    }
+  },
+  "single_card_phase": {
+    "frame_range": [
+      119,
+      270
+    ],
+    "keyframes": [
+      {
+        "frame": 123,
+        "x_norm": 0.5039,
+        "y_norm": 0.4993,
+        "w_norm": 0.2867,
+        "h_norm": 0.8701,
+        "color": "#d69f36"
+      },
+      {
+        "frame": 131,
+        "x_norm": 0.4996,
+        "y_norm": 0.4993,
+        "w_norm": 0.2797,
+        "h_norm": 0.8708,
+        "color": "#bfae9a"
+      },
+      {
+        "frame": 139,
+        "x_norm": 0.5,
+        "y_norm": 0.4993,
+        "w_norm": 0.2789,
+        "h_norm": 0.8715,
+        "color": "#beab91"
+      },
+      {
+        "frame": 147,
+        "x_norm": 0.4953,
+        "y_norm": 0.5,
+        "w_norm": 0.2902,
+        "h_norm": 0.8722,
+        "color": "#4d1323"
+      },
+      {
+        "frame": 155,
+        "x_norm": 0.5,
+        "y_norm": 0.4993,
+        "w_norm": 0.2805,
+        "h_norm": 0.8715,
+        "color": "#421522"
+      },
+      {
+        "frame": 164,
+        "x_norm": 0.5,
+        "y_norm": 0.4965,
+        "w_norm": 0.2789,
+        "h_norm": 0.8792,
+        "color": "#bfba81"
+      },
+      {
+        "frame": 172,
+        "x_norm": 0.4988,
+        "y_norm": 0.5,
+        "w_norm": 0.2812,
+        "h_norm": 0.8688,
+        "color": "#fdfdfd"
+      },
+      {
+        "frame": 180,
+        "x_norm": 0.4934,
+        "y_norm": 0.5007,
+        "w_norm": 0.2914,
+        "h_norm": 0.8708,
+        "color": "#bac1b9"
+      },
+      {
+        "frame": 188,
+        "x_norm": 0.5,
+        "y_norm": 0.5083,
+        "w_norm": 0.2789,
+        "h_norm": 0.8875,
+        "color": "#bec3bc"
+      },
+      {
+        "frame": 196,
+        "x_norm": 0.4996,
+        "y_norm": 0.5,
+        "w_norm": 0.2809,
+        "h_norm": 0.8701,
+        "color": "#bec3bc"
+      },
+      {
+        "frame": 229,
+        "x_norm": 0.4996,
+        "y_norm": 0.5,
+        "w_norm": 0.2809,
+        "h_norm": 0.8701,
+        "color": "#bec4bd"
+      },
+      {
+        "frame": 237,
+        "x_norm": 0.4996,
+        "y_norm": 0.5042,
+        "w_norm": 0.2809,
+        "h_norm": 0.8778,
+        "color": "#bec3bc"
+      },
+      {
+        "frame": 245,
+        "x_norm": 0.4996,
+        "y_norm": 0.5,
+        "w_norm": 0.2809,
+        "h_norm": 0.8701,
+        "color": "#bec4bd"
+      },
+      {
+        "frame": 262,
+        "x_norm": 0.4996,
+        "y_norm": 0.5,
+        "w_norm": 0.2809,
+        "h_norm": 0.8701,
+        "color": "#bec3bc"
+      }
+    ]
+  }
+}

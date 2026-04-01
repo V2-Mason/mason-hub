@@ -3,45 +3,68 @@ import {
   AbsoluteFill,
   Img,
   interpolate,
-  spring,
   useCurrentFrame,
   useVideoConfig,
   staticFile,
 } from "remotion";
 
-// === 动画参数 (autoresearch 调优区) ===
-const ANIM = {
-  // 入场
-  staggerDelay: 3,           // 每张卡片错开帧数 (几乎同时)
-  springDamping: 15,         // 弹性阻尼 (平稳快速到位)
-  springStiffness: 200,      // 弹性刚度
-  springMass: 0.4,           // 弹性质量
-  entranceFromY: 0,          // 无Y偏移 — 卡片从frame 0就在最终位置
+// === 从 animation_params.json 提取的精确参数 ===
+// 所有数值由 OpenCV 从 33 张参考帧测量得出，非手调
 
-  // 悬浮呼吸
-  floatAmplitude: 10,        // 悬浮Y振幅
-  floatFreq: 18,             // 悬浮频率 (越大越慢)
-  floatPhaseOffset: 2.1,     // 每张卡片相位偏移
+const SCENE_CHANGE = 119; // 三卡→单卡转场帧 (精确测量)
+const BG_COLOR = "#ffffff";
 
-  // 微旋转
-  rotationAmplitude: 2.0,    // 旋转振幅(度)
-  rotationFreq: 30,          // 旋转频率
-
-  // 发光
-  glowMin: 8,                // 最小发光半径
-  glowMax: 25,               // 最大发光半径
-  glowFreq: 14,              // 发光呼吸频率
-
-  // 时间轴关键帧
-  entranceEnd: 30,           // 入场完成帧
-  sceneChangeFrame: 135,     // 场景切换帧 (~4.5s)
-  invertStart: 195,          // 反转开始帧
-  invertEnd: 240,            // 反转结束帧
-  fadeStart: 268,            // 淡出开始帧 (最后几帧才淡出)
-  fadeEnd: 270,              // 淡出结束帧
+// 三卡阶段：每张卡的颜色关键帧 (从参考帧测量)
+const CARD_COLOR_KEYFRAMES = {
+  left: [
+    { f: 0, color: "#438caf" },
+    { f: 25, color: "#4f8faf" },
+    { f: 41, color: "#448eaf" },
+    { f: 65, color: "#c0917a" },
+    { f: 82, color: "#eab29f" },
+    { f: 98, color: "#dca48b" },
+    { f: 115, color: "#c28447" },
+  ],
+  center: [
+    { f: 0, color: "#d69f36" },
+    { f: 25, color: "#4d1324" },
+    { f: 49, color: "#413729" },
+    { f: 65, color: "#3a516b" },
+    { f: 82, color: "#3a516b" },
+    { f: 98, color: "#b8752a" },
+    { f: 115, color: "#ffffff" },
+  ],
+  right: [
+    { f: 0, color: "#fdfdfd" },
+    { f: 25, color: "#bdc3bc" },
+    { f: 49, color: "#737f74" },
+    { f: 65, color: "#ddc9c1" },
+    { f: 82, color: "#ddc9c1" },
+    { f: 98, color: "#8e9a89" },
+    { f: 115, color: "#cf600b" },
+  ],
 };
 
-// === 产品数据 ===
+// 单卡阶段颜色关键帧
+const SINGLE_CARD_COLORS = [
+  { f: 123, color: "#d69f36" },
+  { f: 139, color: "#151519" },
+  { f: 155, color: "#131517" },
+  { f: 180, color: "#b5b08f" },
+  { f: 205, color: "#bec3bc" },
+  { f: 237, color: "#bdc2bc" },
+  { f: 262, color: "#bec3bc" },
+];
+
+// 卡片布局参数 (归一化到画面比例)
+const CARD_LAYOUT = {
+  left:   { x: 0.208, y: 0.500, w: 0.279, h: 0.869 },
+  center: { x: 0.500, y: 0.500, w: 0.281, h: 0.873 },
+  right:  { x: 0.791, y: 0.500, w: 0.280, h: 0.871 },
+  single: { x: 0.500, y: 0.500, w: 0.281, h: 0.870 },
+};
+
+// 产品数据
 const PRODUCTS = [
   {
     name: "ANUA Toner\nK-Beauty",
@@ -50,10 +73,7 @@ const PRODUCTS = [
     price: 25,
     salePrice: 18,
     img: staticFile("anua-cards/anua-toner.png"),
-    bg: "#E8B4A0",         // 浅桃色 (匹配原片 float-glow 阶段)
-    bgAlt: "#4A8B6E",      // 绿色 (匹配原片 color-shift 阶段)
     accent: "#333333",
-    glowColor: "rgba(255, 130, 130, 0.6)",
   },
   {
     name: "Soothing\nAmpoule",
@@ -62,10 +82,7 @@ const PRODUCTS = [
     price: 22,
     salePrice: null,
     img: staticFile("anua-cards/anua-ampoule.png"),
-    bg: "#1a1a1a",         // 黑 (匹配原片中间卡)
-    bgAlt: "#2D5A4E",      // 深绿 (匹配原片 color-shift 阶段)
     accent: "#FF3E3E",
-    glowColor: "rgba(255, 200, 50, 0.6)",
   },
   {
     name: "Dark Spot\nCorrecting\nSerum",
@@ -74,267 +91,148 @@ const PRODUCTS = [
     price: 24,
     salePrice: null,
     img: staticFile("anua-cards/anua-serum.png"),
-    bg: "#F5F0E8",         // 白/米色 (匹配原片右卡)
-    bgAlt: "#3D7A5E",      // 绿色 (匹配原片 color-shift 阶段)
-    accent: "#F2C94C",
-    glowColor: "rgba(255, 80, 120, 0.5)",
+    accent: "#333333",
   },
 ];
+
+// === 工具函数 ===
+
+function hexToRgb(hex) {
+  const h = hex.replace("#", "");
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + [r, g, b].map((v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, "0")).join("");
+}
+
+function interpolateColor(frame, keyframes) {
+  if (keyframes.length === 0) return "#000000";
+  if (frame <= keyframes[0].f) return keyframes[0].color;
+  if (frame >= keyframes[keyframes.length - 1].f) return keyframes[keyframes.length - 1].color;
+
+  for (let i = 0; i < keyframes.length - 1; i++) {
+    if (frame >= keyframes[i].f && frame <= keyframes[i + 1].f) {
+      const t = (frame - keyframes[i].f) / (keyframes[i + 1].f - keyframes[i].f);
+      const [r1, g1, b1] = hexToRgb(keyframes[i].color);
+      const [r2, g2, b2] = hexToRgb(keyframes[i + 1].color);
+      return rgbToHex(r1 + (r2 - r1) * t, g1 + (g2 - g1) * t, b1 + (b2 - b1) * t);
+    }
+  }
+  return keyframes[keyframes.length - 1].color;
+}
 
 // === 主组件 ===
 export const AnuaPromo = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width, height } = useVideoConfig();
 
-  // 背景色 — 原片是白色/浅色背景
-  const bgLightness = interpolate(frame, [0, 270], [95, 90], {
-    extrapolateRight: "clamp",
-  });
-  // 背景保持白色，不做 hue shift（参考帧全程白色背景）
-  const bgHueShift = 0;
+  const isThreeCard = frame < SCENE_CHANGE;
 
-  // 颜色反转：仅在极短窗口内做微闪烁，不改变背景明度
-  const isInverted = false;
-
-  // 淡出
-  const fadeOut = interpolate(frame, [ANIM.fadeStart, ANIM.fadeEnd], [1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  // 转场过渡 (10帧过渡)
+  const transitionT = interpolate(
+    frame,
+    [SCENE_CHANGE - 5, SCENE_CHANGE + 5],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
 
   return (
-    <AbsoluteFill
-      style={{
-        background: `hsl(${0 + bgHueShift}, 5%, ${bgLightness}%)`,
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row",
-        gap: 30,
-        filter: isInverted ? "invert(1)" : "none",
-        opacity: fadeOut,
-      }}
-    >
-      {/* 背景动态点阵 (Motion Tile) */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.05) 1.5px, transparent 0)",
-          backgroundSize: "24px 24px",
-          backgroundPosition: `${frame * 0.8}px ${frame * 1.2}px`,
-          pointerEvents: "none",
-        }}
-      />
+    <AbsoluteFill style={{ background: BG_COLOR }}>
+      {/* 三卡模式 */}
+      {frame < SCENE_CHANGE + 10 &&
+        ["left", "center", "right"].map((pos, i) => (
+          <ThreeCardItem
+            key={pos}
+            position={pos}
+            product={PRODUCTS[i]}
+            index={i}
+            frame={frame}
+            width={width}
+            height={height}
+            fadeOut={transitionT}
+            isTransitioning={!isThreeCard}
+          />
+        ))}
 
-      {PRODUCTS.map((product, i) => (
-        <CardRebuilt
-          key={i}
-          product={product}
-          index={i}
+      {/* 单卡模式 */}
+      {frame >= SCENE_CHANGE - 5 && (
+        <SingleCardItem
           frame={frame}
-          fps={fps}
+          width={width}
+          height={height}
+          fadeIn={transitionT}
+          products={PRODUCTS}
         />
-      ))}
+      )}
     </AbsoluteFill>
   );
 };
 
-// === 单张卡片 (代码重建) ===
-const CardRebuilt = ({ product, index, frame, fps }) => {
-  // --- 入场动画 ---
-  const delay = index * ANIM.staggerDelay;
-  const entrance = spring({
-    frame: Math.max(0, frame - delay),
-    fps,
-    config: {
-      damping: ANIM.springDamping,
-      stiffness: ANIM.springStiffness,
-      mass: ANIM.springMass,
-    },
+// === 三卡阶段的单张卡 ===
+const ThreeCardItem = ({ position, product, index, frame, width, height, fadeOut, isTransitioning }) => {
+  const layout = CARD_LAYOUT[position];
+  const colorKfs = CARD_COLOR_KEYFRAMES[position];
+
+  const cardW = layout.w * width;
+  const cardH = layout.h * height;
+  const cardX = layout.x * width - cardW / 2;
+  const cardY = layout.y * height - cardH / 2;
+
+  const bgColor = interpolateColor(frame, colorKfs);
+
+  // 内容在 frame 5 后逐渐出现
+  const contentOpacity = interpolate(frame, [3, 15], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
   });
 
-  const translateY = interpolate(entrance, [0, 1], [ANIM.entranceFromY, 0]);
-  const scaleIn = interpolate(entrance, [0, 1], [0.95, 1]);
-  const opacityIn = interpolate(entrance, [0, 1], [1, 1]);
+  // 微悬浮
+  const floatY = Math.sin(frame / 20 + index * 2) * 5;
 
-  // --- 单卡聚焦 (仅在 sceneChangeFrame 之后生效) ---
-  let focusOpacity = 1;
-  let focusScale = 1;
-  let focusTranslateX = 0;
-  if (frame >= ANIM.sceneChangeFrame) {
-    const focusIdx = frame < ANIM.sceneChangeFrame + 60 ? 1 : 2;
-    const t = interpolate(
-      frame,
-      [ANIM.sceneChangeFrame, ANIM.sceneChangeFrame + 15],
-      [0, 1],
-      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-    );
-    if (index !== focusIdx) {
-      focusOpacity = 1 - t;
-    } else {
-      focusScale = 1 + t * 0.35;
-      // 居中：index 0 向右移，index 2 向左移，index 1 不动
-      const centerOffset = index === 0 ? 450 : index === 2 ? -450 : 0;
-      focusTranslateX = t * centerOffset;
-    }
-  }
-
-  // --- 悬浮 ---
-  const floatY =
-    frame > ANIM.entranceEnd
-      ? Math.sin((frame - ANIM.entranceEnd) / ANIM.floatFreq + index * ANIM.floatPhaseOffset) *
-        ANIM.floatAmplitude
-      : 0;
-
-  // --- 微旋转 ---
-  const rotation =
-    frame > ANIM.entranceEnd
-      ? Math.sin((frame - ANIM.entranceEnd) / ANIM.rotationFreq + index * 1.5) *
-        ANIM.rotationAmplitude
-      : 0;
-
-  // --- 发光呼吸 ---
-  const glow =
-    frame > 50
-      ? interpolate(
-          Math.sin(frame / ANIM.glowFreq + index),
-          [-1, 1],
-          [ANIM.glowMin, ANIM.glowMax]
-        )
-      : 0;
-
-  // --- 背景色变化 (Hue/Saturation 效果) ---
-  const colorProgress =
-    frame > ANIM.invertStart
-      ? interpolate(frame, [ANIM.invertStart, ANIM.invertEnd], [0, 1], {
-          extrapolateRight: "clamp",
-        })
-      : 0;
-
-  // --- 价格数字变化 (Numbers 效果) ---
-  const priceAnimated =
-    frame > ANIM.sceneChangeFrame
-      ? product.price + Math.floor(
-          interpolate(frame, [ANIM.sceneChangeFrame, ANIM.sceneChangeFrame + 30], [0, 8], {
-            extrapolateRight: "clamp",
-          })
-        )
-      : product.price;
-
-  const salePriceAnimated =
-    product.salePrice && frame > ANIM.sceneChangeFrame
-      ? product.salePrice + Math.floor(
-          interpolate(frame, [ANIM.sceneChangeFrame, ANIM.sceneChangeFrame + 30], [0, 6], {
-            extrapolateRight: "clamp",
-          })
-        )
-      : product.salePrice;
-
-  // --- 产品图悬浮 ---
-  const productFloatY =
-    frame > ANIM.entranceEnd
-      ? Math.sin((frame - ANIM.entranceEnd) / 12 + index * 0.8) * 8
-      : 0;
-
-  const productRotation =
-    frame > ANIM.entranceEnd
-      ? Math.sin((frame - ANIM.entranceEnd) / 20 + index) * 5
-      : 0;
-
-  // --- 文字弹出 (逐行 stagger) ---
-  const textDelay = delay + 15;
-  const textEntrance = spring({
-    frame: Math.max(0, frame - textDelay),
-    fps,
-    config: { damping: 10, stiffness: 100, mass: 0.5 },
-  });
-  const textY = interpolate(textEntrance, [0, 1], [60, 0]);
-  const textOpacity = interpolate(textEntrance, [0, 1], [0, 1]);
-
-  // --- 价格标签弹出 ---
-  const priceDelay = delay + 22;
-  const priceEntrance = spring({
-    frame: Math.max(0, frame - priceDelay),
-    fps,
-    config: { damping: 8, stiffness: 200, mass: 0.4 },
-  });
-  const priceScale = interpolate(priceEntrance, [0, 1], [0, 1]);
-
-  // 选择当前背景色
-  const bgColor = colorProgress > 0.5 ? product.bgAlt : product.bg;
+  // 产品图微旋转
+  const productRotation = Math.sin(frame / 25 + index) * 3;
 
   return (
     <div
       style={{
-        transform: [
-          `translateX(${focusTranslateX}px)`,
-          `translateY(${translateY + floatY}px)`,
-          `rotate(${rotation}deg)`,
-          `scale(${scaleIn * focusScale})`,
-        ].join(" "),
-        opacity: opacityIn * focusOpacity,
-        filter: `drop-shadow(0 0 ${glow}px ${product.glowColor})`,
+        position: "absolute",
+        left: cardX,
+        top: cardY + floatY,
+        width: cardW,
+        height: cardH,
+        borderRadius: 12,
+        backgroundColor: bgColor,
+        overflow: "hidden",
+        opacity: isTransitioning ? 1 - fadeOut : 1,
+        boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
       }}
     >
-      <div
-        style={{
-          width: 420,
-          height: 750,
-          borderRadius: 14,
-          backgroundColor: bgColor,
-          position: "relative",
-          overflow: "hidden",
-          boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
-        }}
-      >
-        {/* 装饰条纹 */}
-        <DecoStripes index={index} frame={frame} accent={product.accent} />
+      {/* 装饰条纹 */}
+      <DecoStripes index={index} frame={frame} accent={product.accent} cardW={cardW} />
 
+      {/* 内容层 — frame 5 后出现 */}
+      <div style={{ opacity: contentOpacity, position: "relative", width: "100%", height: "100%" }}>
         {/* 价格标签 */}
         <div
           style={{
             position: "absolute",
-            top: 18,
-            right: 16,
-            transform: `scale(${priceScale})`,
-            transformOrigin: "top right",
+            top: "3%",
+            right: "4%",
+            background: product.accent,
+            color: "white",
+            padding: "4px 12px",
+            borderRadius: 6,
+            fontFamily: "Arial, sans-serif",
+            fontWeight: 900,
+            fontSize: cardW * 0.065,
             zIndex: 10,
           }}
         >
-          <div
-            style={{
-              background: product.accent,
-              color: "white",
-              padding: "6px 14px",
-              borderRadius: 6,
-              fontFamily: "Arial, sans-serif",
-              fontWeight: 900,
-              fontSize: 28,
-              textAlign: "center",
-              boxShadow: `0 0 15px ${product.accent}66`,
-            }}
-          >
-            {priceAnimated}$
-          </div>
-          {salePriceAnimated && (
-            <div
-              style={{
-                background: "#222",
-                color: "white",
-                padding: "3px 10px",
-                borderRadius: 4,
-                fontFamily: "Arial, sans-serif",
-                fontWeight: 700,
-                fontSize: 16,
-                marginTop: 4,
-                textAlign: "center",
-              }}
-            >
-              <span style={{ textDecoration: "line-through", opacity: 0.7 }}>
-                {salePriceAnimated}$
-              </span>{" "}
-              <span style={{ fontSize: 11 }}>sale</span>
+          {product.price}$
+          {product.salePrice && (
+            <div style={{ fontSize: cardW * 0.035, opacity: 0.8 }}>
+              <span style={{ textDecoration: "line-through" }}>{product.salePrice}$</span> sale
             </div>
           )}
         </div>
@@ -343,17 +241,15 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
         <div
           style={{
             position: "absolute",
-            top: index === 1 ? 70 : 90,
-            left: 20,
-            right: 20,
+            top: "12%",
+            left: "5%",
+            right: "5%",
             color: index === 1 ? "#ccc" : "#333",
             fontFamily: "Arial, sans-serif",
-            fontSize: 14,
+            fontSize: cardW * 0.035,
             fontWeight: 600,
             fontStyle: "italic",
             whiteSpace: "pre-line",
-            opacity: textOpacity,
-            transform: `translateY(${textY * 0.5}px)`,
           }}
         >
           {product.tagline}
@@ -363,19 +259,19 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
         <div
           style={{
             position: "absolute",
-            top: "50%",
+            top: "28%",
             left: "50%",
-            transform: `translate(-50%, -55%) translateY(${productFloatY}px) rotate(${productRotation}deg)`,
+            transform: `translateX(-50%) rotate(${productRotation}deg)`,
             zIndex: 5,
           }}
         >
           <Img
             src={product.img}
             style={{
-              width: 220,
-              height: 220,
+              width: cardW * 0.55,
+              height: cardW * 0.55,
               objectFit: "contain",
-              filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.2))",
+              filter: "drop-shadow(0 6px 15px rgba(0,0,0,0.15))",
             }}
           />
         </div>
@@ -384,17 +280,15 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
         <div
           style={{
             position: "absolute",
-            bottom: 80,
-            left: 20,
-            right: 20,
+            bottom: "15%",
+            left: "5%",
+            right: "5%",
             color: index === 1 ? "white" : "#1a1a1a",
             fontFamily: "Arial Black, Arial, sans-serif",
-            fontSize: 26,
+            fontSize: cardW * 0.065,
             fontWeight: 900,
             lineHeight: 1.1,
             whiteSpace: "pre-line",
-            opacity: textOpacity,
-            transform: `translateY(${textY}px)`,
           }}
         >
           {product.name}
@@ -404,36 +298,33 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
         <div
           style={{
             position: "absolute",
-            bottom: 24,
-            left: 20,
-            right: 20,
+            bottom: "4%",
+            left: "5%",
+            right: "5%",
             color: index === 1 ? "#aaa" : "#555",
             fontFamily: "Arial, sans-serif",
-            fontSize: 12,
+            fontSize: cardW * 0.03,
             lineHeight: 1.4,
             whiteSpace: "pre-line",
-            opacity: textOpacity,
-            transform: `translateY(${textY * 0.8}px)`,
           }}
         >
           {product.subtitle}
         </div>
 
-        {/* 中间卡片底部 CTA */}
+        {/* 中间卡底部 CTA */}
         {index === 1 && (
           <div
             style={{
               position: "absolute",
-              bottom: 20,
+              bottom: "3%",
               left: 0,
               right: 0,
               textAlign: "center",
               color: "white",
               fontFamily: "Georgia, serif",
-              fontSize: 28,
+              fontSize: cardW * 0.06,
               fontWeight: 700,
               fontStyle: "italic",
-              opacity: textOpacity,
             }}
           >
             Swipe Up
@@ -444,13 +335,162 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
   );
 };
 
+// === 单卡阶段 ===
+const SingleCardItem = ({ frame, width, height, fadeIn, products }) => {
+  const layout = CARD_LAYOUT.single;
+  const cardW = layout.w * width;
+  const cardH = layout.h * height;
+  const cardX = layout.x * width - cardW / 2;
+  const cardY = layout.y * height - cardH / 2;
+
+  const bgColor = interpolateColor(frame, SINGLE_CARD_COLORS);
+
+  // 选择显示哪个产品 (中间卡先，然后右卡)
+  const productIndex = frame < 180 ? 1 : 2;
+  const product = products[productIndex];
+
+  // 产品图微动
+  const floatY = Math.sin(frame / 15) * 6;
+  const rotation = Math.sin(frame / 20) * 4;
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: cardX,
+        top: cardY,
+        width: cardW,
+        height: cardH,
+        borderRadius: 12,
+        backgroundColor: bgColor,
+        overflow: "hidden",
+        opacity: fadeIn,
+        boxShadow: "0 10px 40px rgba(0,0,0,0.2)",
+      }}
+    >
+      {/* 装饰 */}
+      <DecoStripes index={productIndex} frame={frame} accent={product.accent} cardW={cardW} />
+
+      {/* 价格 */}
+      <div
+        style={{
+          position: "absolute",
+          top: "3%",
+          right: "4%",
+          background: product.accent,
+          color: "white",
+          padding: "6px 16px",
+          borderRadius: 8,
+          fontFamily: "Arial, sans-serif",
+          fontWeight: 900,
+          fontSize: cardW * 0.08,
+          zIndex: 10,
+        }}
+      >
+        {product.price + Math.floor(interpolate(frame, [SCENE_CHANGE, SCENE_CHANGE + 30], [0, 8], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }))}$
+      </div>
+
+      {/* Tagline */}
+      <div
+        style={{
+          position: "absolute",
+          top: "12%",
+          left: "5%",
+          right: "35%",
+          color: productIndex === 1 ? "#ccc" : "#333",
+          fontFamily: "Arial, sans-serif",
+          fontSize: cardW * 0.04,
+          fontWeight: 600,
+          fontStyle: "italic",
+          whiteSpace: "pre-line",
+        }}
+      >
+        {product.tagline}
+      </div>
+
+      {/* 产品图 */}
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          left: "50%",
+          transform: `translateX(-50%) translateY(${floatY}px) rotate(${rotation}deg)`,
+          zIndex: 5,
+        }}
+      >
+        <Img
+          src={product.img}
+          style={{
+            width: cardW * 0.6,
+            height: cardW * 0.6,
+            objectFit: "contain",
+            filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.2))",
+          }}
+        />
+      </div>
+
+      {/* 名称 */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "15%",
+          left: "5%",
+          right: "5%",
+          color: productIndex === 1 ? "white" : "#1a1a1a",
+          fontFamily: "Arial Black, Arial, sans-serif",
+          fontSize: cardW * 0.075,
+          fontWeight: 900,
+          lineHeight: 1.1,
+          whiteSpace: "pre-line",
+        }}
+      >
+        {product.name}
+      </div>
+
+      {/* 底部 */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "3%",
+          left: "5%",
+          right: "5%",
+          color: productIndex === 1 ? "#aaa" : "#555",
+          fontFamily: "Arial, sans-serif",
+          fontSize: cardW * 0.035,
+          whiteSpace: "pre-line",
+        }}
+      >
+        {product.subtitle}
+      </div>
+
+      {productIndex === 1 && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "2%",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            color: "white",
+            fontFamily: "Georgia, serif",
+            fontSize: cardW * 0.065,
+            fontWeight: 700,
+            fontStyle: "italic",
+          }}
+        >
+          Swipe Up
+        </div>
+      )}
+    </div>
+  );
+};
+
 // === 装饰条纹 ===
-const DecoStripes = ({ index, frame, accent }) => {
+const DecoStripes = ({ index, frame, accent, cardW }) => {
   const speed = 1.5;
   const offset = frame * speed;
 
   if (index === 0) {
-    // 左卡: 对角斜线装饰
     return (
       <>
         {[0, 1, 2].map((i) => (
@@ -458,37 +498,22 @@ const DecoStripes = ({ index, frame, accent }) => {
             key={i}
             style={{
               position: "absolute",
-              top: 10 + i * 22,
-              right: -10,
-              width: 60,
+              top: "2%" + i * 4 + "%",
+              right: "-2%",
+              width: cardW * 0.15,
               height: 4,
               backgroundColor: accent,
-              transform: `rotate(-30deg) translateX(${Math.sin((frame + i * 20) / 15) * 8}px)`,
+              transform: `rotate(-30deg) translateX(${Math.sin((frame + i * 20) / 15) * 6}px)`,
               opacity: 0.7,
               borderRadius: 2,
             }}
           />
         ))}
-        {/* 底部散点装饰 */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            width: 140,
-            height: 120,
-            backgroundImage: `radial-gradient(${accent}33 2px, transparent 0)`,
-            backgroundSize: "12px 12px",
-            backgroundPosition: `${offset}px ${offset * 0.5}px`,
-            opacity: 0.5,
-          }}
-        />
       </>
     );
   }
 
   if (index === 1) {
-    // 中卡: 红色对角线
     return (
       <>
         {[0, 1, 2, 3].map((i) => (
@@ -496,27 +521,12 @@ const DecoStripes = ({ index, frame, accent }) => {
             key={i}
             style={{
               position: "absolute",
-              top: 6 + i * 16,
-              left: -5,
-              width: 50,
+              top: `${2 + i * 3}%`,
+              left: "-1%",
+              width: cardW * 0.12,
               height: 3,
               backgroundColor: accent,
-              transform: `rotate(-25deg) translateX(${Math.sin((frame + i * 15) / 12) * 6}px)`,
-              borderRadius: 2,
-            }}
-          />
-        ))}
-        {[0, 1, 2, 3].map((i) => (
-          <div
-            key={`r${i}`}
-            style={{
-              position: "absolute",
-              bottom: 70 + i * 16,
-              right: -5,
-              width: 50,
-              height: 3,
-              backgroundColor: accent,
-              transform: `rotate(-25deg) translateX(${Math.sin((frame + i * 15) / 12) * -6}px)`,
+              transform: `rotate(-25deg) translateX(${Math.sin((frame + i * 15) / 12) * 5}px)`,
               borderRadius: 2,
             }}
           />
@@ -525,22 +535,18 @@ const DecoStripes = ({ index, frame, accent }) => {
     );
   }
 
-  // 右卡: 点阵背景滚动
   return (
     <div
       style={{
         position: "absolute",
         inset: 0,
         backgroundImage: `
-          linear-gradient(45deg, ${accent}22 25%, transparent 25%),
-          linear-gradient(-45deg, ${accent}22 25%, transparent 25%),
-          linear-gradient(45deg, transparent 75%, ${accent}22 75%),
-          linear-gradient(-45deg, transparent 75%, ${accent}22 75%)
+          linear-gradient(45deg, ${accent}15 25%, transparent 25%),
+          linear-gradient(-45deg, ${accent}15 25%, transparent 25%)
         `,
-        backgroundSize: "20px 20px",
-        backgroundPosition: `0 0, 0 10px, 10px -10px, -10px 0px`,
-        opacity: 0.3,
-        transform: `translateY(${offset * 0.5}px)`,
+        backgroundSize: "16px 16px",
+        opacity: 0.4,
+        transform: `translateY(${offset * 0.3}px)`,
       }}
     />
   );
