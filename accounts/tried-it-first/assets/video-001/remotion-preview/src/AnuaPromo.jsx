@@ -164,6 +164,24 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
   const scaleIn = interpolate(entrance, [0, 1], [0.4, 1]);
   const opacityIn = interpolate(entrance, [0, 1], [0, 1]);
 
+  // --- 单卡聚焦 (仅在 sceneChangeFrame 之后生效) ---
+  let focusOpacity = 1;
+  let focusScale = 1;
+  if (frame >= ANIM.sceneChangeFrame) {
+    const focusIdx = frame < ANIM.sceneChangeFrame + 60 ? 1 : 2;
+    const t = interpolate(
+      frame,
+      [ANIM.sceneChangeFrame, ANIM.sceneChangeFrame + 15],
+      [0, 1],
+      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+    );
+    if (index !== focusIdx) {
+      focusOpacity = 1 - t;
+    } else {
+      focusScale = 1 + t * 0.35;
+    }
+  }
+
   // --- 悬浮 ---
   const floatY =
     frame > ANIM.entranceEnd
@@ -254,9 +272,9 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
         transform: [
           `translateY(${translateY + floatY}px)`,
           `rotate(${rotation}deg)`,
-          `scale(${scaleIn})`,
+          `scale(${scaleIn * focusScale})`,
         ].join(" "),
-        opacity: opacityIn,
+        opacity: opacityIn * focusOpacity,
         filter: `drop-shadow(0 0 ${glow}px ${product.glowColor})`,
       }}
     >
