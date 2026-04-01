@@ -3,10 +3,19 @@ import { Video001 } from "./Video001.jsx";
 import { Video002 } from "./Video002.jsx";
 import { ScrollingWallDemo } from "./ScrollingWallDemo.jsx";
 import { OrbitDemo } from "./OrbitDemo.jsx";
+import { AnuaPromo } from "./AnuaPromo.jsx";
 
 export const RemotionRoot = () => {
   return (
     <>
+      <Composition
+        id="Anua-Promo-3Cards"
+        component={AnuaPromo}
+        durationInFrames={30 * 9}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
       <Composition
         id="Orbit-Lottie"
         component={OrbitDemo}

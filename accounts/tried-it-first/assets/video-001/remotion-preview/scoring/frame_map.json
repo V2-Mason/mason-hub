@@ -1,0 +1,12 @@
+{
+  "reference_dir": "C:/Users/hangn/projects/mason-hub/accounts/surenxuan/content/anua-promo/source/original-frames",
+  "pairs": [
+    { "remotion_frame": 0,   "reference": "correct-frame-01.jpg", "phase": "pre-entrance" },
+    { "remotion_frame": 16,  "reference": "correct-frame-03.jpg", "phase": "entrance-mid" },
+    { "remotion_frame": 30,  "reference": "correct-frame-04.jpg", "phase": "entrance-complete" },
+    { "remotion_frame": 90,  "reference": "correct-frame-11.jpg", "phase": "float-glow" },
+    { "remotion_frame": 150, "reference": "correct-frame-19.jpg", "phase": "pulse-start" },
+    { "remotion_frame": 210, "reference": "correct-frame-26.jpg", "phase": "color-shift" },
+    { "remotion_frame": 260, "reference": "correct-frame-32.jpg", "phase": "fade-out" }
+  ]
+}
