@@ -173,7 +173,7 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
     if (index !== focusIdx) {
       focusOpacity = 1 - t;
     } else {
-      focusScale = 1 + t * 0.2;
+      focusScale = 1 + t * 0.35;
       // 居中：index 0 向右移，index 2 向左移，index 1 不动
       const centerOffset = index === 0 ? 450 : index === 2 ? -450 : 0;
       focusTranslateX = t * centerOffset;
@@ -279,8 +279,8 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
     >
       <div
         style={{
-          width: 450,
-          height: 800,
+          width: 420,
+          height: 750,
           borderRadius: 14,
           backgroundColor: bgColor,
           position: "relative",
