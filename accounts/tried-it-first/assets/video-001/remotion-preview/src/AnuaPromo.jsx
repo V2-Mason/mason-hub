@@ -12,11 +12,11 @@ import {
 // === 动画参数 (autoresearch 调优区) ===
 const ANIM = {
   // 入场
-  staggerDelay: 2,           // 每张卡片错开帧数 (几乎同时入场)
-  springDamping: 14,         // 弹性阻尼 (更平稳，少弹跳)
-  springStiffness: 200,      // 弹性刚度 (更快到位)
-  springMass: 0.5,           // 弹性质量
-  entranceFromY: 600,        // 入场起始Y偏移 (更短距离)
+  staggerDelay: 8,           // 每张卡片错开帧数
+  springDamping: 8,          // 弹性阻尼 (越小越弹)
+  springStiffness: 160,      // 弹性刚度
+  springMass: 0.6,           // 弹性质量
+  entranceFromY: 900,        // 入场起始Y偏移
 
   // 悬浮呼吸
   floatAmplitude: 10,        // 悬浮Y振幅
@@ -24,8 +24,8 @@ const ANIM = {
   floatPhaseOffset: 2.1,     // 每张卡片相位偏移
 
   // 微旋转
-  rotationAmplitude: 0.5,    // 旋转振幅(度) — 原片几乎无旋转
-  rotationFreq: 40,          // 旋转频率
+  rotationAmplitude: 2.0,    // 旋转振幅(度)
+  rotationFreq: 30,          // 旋转频率
 
   // 发光
   glowMin: 8,                // 最小发光半径
