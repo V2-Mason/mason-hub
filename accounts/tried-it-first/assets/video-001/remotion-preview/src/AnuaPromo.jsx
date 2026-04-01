@@ -274,8 +274,8 @@ const CardRebuilt = ({ product, index, frame, fps }) => {
     >
       <div
         style={{
-          width: 320,
-          height: 580,
+          width: 420,
+          height: 750,
           borderRadius: 14,
           backgroundColor: bgColor,
           position: "relative",
