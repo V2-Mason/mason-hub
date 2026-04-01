@@ -50,8 +50,8 @@ const PRODUCTS = [
     price: 25,
     salePrice: 18,
     img: staticFile("anua-cards/anua-toner.png"),
-    bg: "#E8B4A0",         // 浅桃色 (匹配原片 float-glow 阶段)
-    bgAlt: "#4A8B6E",      // 绿色 (匹配原片 color-shift 阶段)
+    bg: "#438caf",         // 蓝色 (匹配原片 pre-entrance)
+    bgAlt: "#eab29f",      // 桃色 (匹配原片 float-glow 阶段)
     accent: "#333333",
     glowColor: "rgba(255, 130, 130, 0.6)",
   },
@@ -62,8 +62,8 @@ const PRODUCTS = [
     price: 22,
     salePrice: null,
     img: staticFile("anua-cards/anua-ampoule.png"),
-    bg: "#1a1a1a",         // 黑 (匹配原片中间卡)
-    bgAlt: "#2D5A4E",      // 深绿 (匹配原片 color-shift 阶段)
+    bg: "#d69f36",         // 金色 (匹配原片 pre-entrance 中间卡)
+    bgAlt: "#3a516b",      // 深蓝 (匹配原片 float-glow 阶段)
     accent: "#FF3E3E",
     glowColor: "rgba(255, 200, 50, 0.6)",
   },
