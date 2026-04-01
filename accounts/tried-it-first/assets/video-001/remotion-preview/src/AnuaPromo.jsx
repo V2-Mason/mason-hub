@@ -90,17 +90,11 @@ export const AnuaPromo = () => {
   const bgLightness = interpolate(frame, [0, 270], [95, 90], {
     extrapolateRight: "clamp",
   });
-  const bgHueShift = frame > ANIM.invertStart
-    ? interpolate(frame, [ANIM.invertStart, ANIM.invertEnd], [0, 60], {
-        extrapolateRight: "clamp",
-      })
-    : 0;
+  // 背景保持白色，不做 hue shift（参考帧全程白色背景）
+  const bgHueShift = 0;
 
-  // 颜色反转闪烁
-  const isInverted =
-    frame > ANIM.invertStart &&
-    frame < ANIM.invertEnd &&
-    frame % 10 < 4;
+  // 颜色反转：仅在极短窗口内做微闪烁，不改变背景明度
+  const isInverted = false;
 
   // 淡出
   const fadeOut = interpolate(frame, [ANIM.fadeStart, ANIM.fadeEnd], [1, 0], {
