@@ -110,21 +110,7 @@ const PlaceholderImage = ({ scale = 1, clipCircle = false, opacity = 1 }) => (
       position: "absolute", inset: 0,
       backgroundColor: COLORS.placeholder,
     }} />
-    {/* PLACEHOLDER 文字铺满 */}
-    <div style={{
-      position: "absolute", inset: 0,
-      display: "flex", alignItems: "center", justifyContent: "center",
-      transform: "rotate(-44deg) scale(3.07)",
-      opacity: 0.15,
-    }}>
-      <div style={{
-        fontFamily: "Arial", fontSize: 12, color: "#222",
-        whiteSpace: "nowrap", letterSpacing: 0,
-        overflow: "hidden",
-      }}>
-        {"PLACEHOLDER ".repeat(100)}
-      </div>
-    </div>
+    {/* PLACEHOLDER 文字已移除 — 以后替换为实际图片/视频 */}
   </div>
 );
 
