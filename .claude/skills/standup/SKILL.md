@@ -73,6 +73,13 @@ cd ~/surenxuan && git status --short | head -5
 - 更新"上次更新"时间戳
 - **不要重写整个文件**，只改变化的部分
 
+## 3b. 每日 Routine 完成情况
+
+检查昨日 routine 是否完成：
+- **growth-feed**: 昨天 `~/.growth/records/` 中是否有记录 → ✅ / ✗
+- **aigc-collect**: 昨天 `~/vault/references/aigc-inspiration/` 中是否有文件 → ✅ / ✗
+- 连续漏 2 天以上时，加提醒："growth-feed 已连续 N 天未执行"
+
 ## 4. 今日待办
 - 读取 tasks/backlog.md，列出所有未完成的 P0/P1 任务
 - 按优先级排序（P0 > P1 > P2）
@@ -157,6 +164,10 @@ Git：mason-hub clean | surenxuan clean
 今日待办：
   P1: ...
   P2: ...
+
+🔄 每日 Routine：
+  [ ] 早上：/growth-feed（2 条 insight）  昨日：✅/✗
+  [ ] 傍晚：/aigc-collect（1 条收藏）    昨日：✅/✗
 
 🔧 Gateway 变更: 无代码变更 / 已提交 X 个文件 → EMP_XXXX
 
