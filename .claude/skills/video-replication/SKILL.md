@@ -77,6 +77,8 @@ npx remotion still src/index.jsx <CompositionId> --frame=17 --output=output/fram
 | 3 | 缩放链 | 每个 scale 只在一处应用。外层 CSS transform 会传递给子元素，不要在 fontSize 上重复 |
 | 4 | frame matte 裁剪 | 被 shape matte 裁剪的文字层必须套 overflow:hidden 容器 |
 | 5 | Alpha Inverted | SVG mask 在 Remotion 不可靠，用替代方案（直接着色或 Canvas） |
+| 6 | Precomp 硬边界 | 每个代表 AE precomp 的 wrapper div 必须加 `clipPath: "inset(0)"`，模拟 precomp 固定尺寸裁剪。详见 [[ae-track-matte-precomp-bounds]] |
+| 7 | SplitMatte 完成后定位 | t >= 1 时不能返回裸 fragment，必须用 `position: absolute` 容器包裹，否则掉入 flex flow 失去 z-stacking |
 
 ## 已知限制
 

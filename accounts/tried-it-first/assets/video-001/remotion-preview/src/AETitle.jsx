@@ -73,9 +73,9 @@ const SplitMatte = ({ children, frame, startFrame, duration, topStartY, bottomSt
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
-  // 动画完成后直接渲染，不拆两半（避免 children 里的 SVG mask id 冲突）
+  // 动画完成后直接渲染，用 absolute 定位保持覆盖（不拆两半）
   if (t >= 1) {
-    return <>{children}</>;
+    return <div style={{ position: "absolute", left: 0, top: 0, width: 1920, height: 1080 }}>{children}</div>;
   }
 
   // 上半内容 Y 偏移
@@ -85,14 +85,14 @@ const SplitMatte = ({ children, frame, startFrame, duration, topStartY, bottomSt
 
   return (
     <>
-      {/* 上半遮罩 — clip 属性强制裁剪 transform 缩放后的溢出 */}
-      <div style={{ position: "absolute", left: 0, top: 0, width: 1920, height: 540, overflow: "hidden", clip: "rect(0, 1920px, 540px, 0)" }}>
+      {/* 上半遮罩 */}
+      <div style={{ position: "absolute", left: 0, top: 0, width: 1920, height: 540, overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: topOffset, width: 1920, height: 1080 }}>
           {children}
         </div>
       </div>
       {/* 下半遮罩 */}
-      <div style={{ position: "absolute", left: 0, top: 540, width: 1920, height: 540, overflow: "hidden", clip: "rect(0, 1920px, 540px, 0)" }}>
+      <div style={{ position: "absolute", left: 0, top: 540, width: 1920, height: 540, overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: botOffset - 540, width: 1920, height: 1080 }}>
           {children}
         </div>
@@ -270,8 +270,8 @@ export const AETitle = () => {
           easeTop={EASE.split2}
           easeBot={EASE.split2}
         >
-          <div style={{ position: "relative", width: 1920, height: 1080 }}>
-            {/* ── 3D 相机容器 ── */}
+          <div style={{ position: "relative", width: 1920, height: 1080, clipPath: "inset(0)" }}>
+            {/* ── 3D 相机容器 (clipPath 模拟 AE precomp 1920x1080 硬边界) ── */}
             <div style={{
               position: "absolute", left: "50%", top: "50%",
               transform: `translate(-50%, -50%) scale(${camScale})`,
