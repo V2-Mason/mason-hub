@@ -297,11 +297,13 @@ export const AETitle = () => {
               <PlaceholderImage scale={1.16 * placeZScale} clipCircle />
 
               {/* ── TEXT_02_comp (z=-500, scale=50%) ── */}
+              {/* 3D 透视必须动态算: 0.5 * zoom/(zoom-500-camPosZ) / camScale */}
+              {/* camPosZ 来自 Camera position 的 Z，camScale = zoom/(zoom-camPosZ) */}
+              {/* 简化: 0.5 * (zoom-camPosZ)/(zoom-500-camPosZ) ，其中 camPosZ 对应变量里的 camZ 来源 */}
               {showFramedText && (
                 <div style={{
                   position: "absolute", left: "50%", top: "50%",
-                  // z=-500 的透视缩放 + 自身 scale=50%
-                  transform: `translate(-50%, -50%) scale(${0.5 * (zoom / (zoom + 500))})`,
+                  transform: `translate(-50%, -50%) scale(${0.5 * (zoom - camZ) / (zoom - 500 - camZ)})`,
                   width: 1920, height: 1080,
                 }}>
                   {/* frame: 矩形框 scale=58%, frameSize=[100,100] */}
