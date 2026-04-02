@@ -56,3 +56,27 @@ credentials/
 
 # 保留 assets 下的 md/yaml/json 配置文件（不在此忽略）
 autoresearch-results.tsv
+
+# IDE 配置
+.vscode/
+.claude/settings.local.json
+
+# 视频/音频/图片产出（output 目录）
+**/output/**/*.mp4
+**/output/**/*.mp3
+**/output/**/*.png
+**/output/**/*.jpg
+
+# Envato/素材参考帧
+**/source/original-frames/
+**/source/**/*.jpg
+**/source/**/*.png
+
+# 内容产出大文件（不在 assets 下的）
+**/content/**/*.mp4
+**/content/**/*.mp3
+**/content/**/*.wav
+**/content/**/*.jpg
+**/content/**/*.png
+**/content/**/*.jpeg
+**/content/**/temp/
