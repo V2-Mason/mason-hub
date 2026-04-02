@@ -241,10 +241,10 @@ export const AETitle = () => {
           frame={u1F}
           startFrame={0}
           duration={15}
-          topStartY={273}    // 从 y=273 滑到 y=540
-          bottomStartY={799} // 从 y=799 滑到 y=540
-          easeTop={EASE.splitTop}
-          easeBot={EASE.splitBot}
+          topStartY={799}    // matte[3] Y≈0 (TOP region) → content[4] starts at y=799
+          bottomStartY={273} // matte[1] Y≈1080 (BOTTOM region) → content[2] starts at y=273
+          easeTop={EASE.splitBot}
+          easeBot={EASE.splitTop}
         >
           {/* TEXT_01_comp 内容: TEXT_01 作为 Matte + BG + PLACEHOLDER_01 */}
           <AbsoluteFill>
@@ -277,8 +277,8 @@ export const AETitle = () => {
           frame={u2F}
           startFrame={0}
           duration={19}
-          topStartY={-5}     // 上半从 y=-5 滑到 y=540
-          bottomStartY={1083} // 下半从 y=1083 滑到 y=540
+          topStartY={1083}   // matte[1] Y≈0 (TOP region) → content[2] starts at y=1083
+          bottomStartY={-5}  // matte[3] Y≈1080 (BOTTOM region) → content[4] starts at y=-5
           easeTop={EASE.split2}
           easeBot={EASE.split2}
         >

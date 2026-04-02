@@ -372,8 +372,8 @@ const Comp_unit_02 = ({ parentFrame = 0 }) => {
         frame={frame}
         startFrame={0}
         endFrame={19}
-        topStartY={-5}
-        bottomStartY={1083}
+        topStartY={1083}
+        bottomStartY={-5}
         topEase={bez(0.529, 0.529, 0.107, 0.107)}
         botEase={bez(0.529, 0.529, 0.107, 0.107)}
       >
@@ -458,10 +458,10 @@ const Comp_unit_01 = ({ parentFrame = 0 }) => {
         frame={frame}
         startFrame={0}
         endFrame={15}
-        topStartY={273}
-        bottomStartY={799}
-        topEase={bez(0.386, 0.386, 0.097, 0.097)}
-        botEase={bez(0.386, 0.386, 0.082, 0.082)}
+        topStartY={799}
+        bottomStartY={273}
+        topEase={bez(0.386, 0.386, 0.082, 0.082)}
+        botEase={bez(0.386, 0.386, 0.097, 0.097)}
       >
         <Comp_TEXT_01_comp parentFrame={frame} />
       </SplitMatte>

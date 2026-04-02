@@ -548,16 +548,20 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp, mattePairs, 
 
     let topLayer = null, botLayer = null;
     for (const gl of group) {
-      const posKfs = gl.transform && gl.transform.Position && gl.transform.Position.keyframes;
-      if (!posKfs || posKfs.length < 2) continue;
-      const startY = posKfs[0].value[1];
-      const endY = posKfs[posKfs.length - 1].value[1];
-      // startY < endY → slides down (top half content starts above center)
-      // startY > endY → slides up (bottom half content starts below center)
-      if (startY < endY) {
-        topLayer = gl; // slides from low Y → center → top half
-      } else {
-        botLayer = gl; // slides from high Y → center → bottom half
+      // Use the MATTE layer's Y position to determine display region, not the content layer's Y.
+      // In AE Track Matte, the matte's position defines the visible area:
+      //   matte Y < 540 (≈0)    → TOP region
+      //   matte Y >= 540 (≈1080) → BOTTOM region
+      const matteLayer = mattePairs.get(gl);
+      const matteY = matteLayer && matteLayer.transform && matteLayer.transform.Position
+        ? matteLayer.transform.Position.value[1]
+        : null;
+      if (matteY !== null) {
+        if (matteY < 540) {
+          topLayer = gl; // matte defines top region → this content fills top half
+        } else {
+          botLayer = gl; // matte defines bottom region → this content fills bottom half
+        }
       }
     }
 
