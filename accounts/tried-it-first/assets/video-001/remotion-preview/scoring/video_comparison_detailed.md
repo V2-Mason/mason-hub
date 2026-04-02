@@ -1,310 +1,455 @@
+Here's a detailed analysis and breakdown of the differences between the original After Effects template and your Remotion code replica.
+
+### 1. Structure of the Original 10s Clip Scene-by-Scene
+
+The original video follows a clear progression, always displaying three vertical cards side-by-side after the initial logo reveal. There is no "single card" mode.
+
+*   **0:00 - 0:01 (Frames 0-28): Logo Reveal**
+    *   A minimalist "MOTIONCANYON" logo appears centered on a white background.
+*   **0:01 - 0:02 (Frames 29-45): Cards Enter**
+    *   Three empty, rounded-corner rectangles (light blue, orange-yellow, white) slide in from the left and right, settling into a side-by-side arrangement.
+*   **0:02 - 0:03 (Frames 46-75): Content Set 1 Enters**
+    *   Product images (sneakers), text, and decorative elements for the first set of promotions animate into each card.
+*   **0:03 - 0:06 (Frames 76-210): Content Set 1 Static Display**
+    *   The first set of content is displayed statically. Price tags slide in with a subtle animation around 0:03-0:04 (frames 76-90).
+*   **0:06 - 0:07 (Frames 210-225): Transition to Content Set 2**
+    *   A rapid, intense full-screen white flash occurs (peaking around 0:07, frame 213).
+    *   During the flash, the old content slides out quickly, and new content (different sneakers) slides in.
+    *   Card background colors also change: Left card to pink, Middle card to black, Right card to yellow.
+*   **0:07 - 0:09 (Frames 225-285): Content Set 2 Static Display**
+    *   The second set of content is displayed statically.
+*   **0:09 - 0:10 (Frames 285-300): Exit**
+    *   The three cards slide off-screen, and the "MOTIONCANYON" logo reappears, fading back in before the video ends.
+
+### 2. Animation Differences
+
 ---
-DIFFERENCE #1: Initial card appearance scale and timing
-TIMESTAMP_ORIGINAL: 00:01.000-00:01.400
-TIMESTAMP_REPLICA: 00:00.000-00:00.500
-WHAT_ORIGINAL_DOES: Three cards simultaneously scale up from approximately 90% to 100% of their final size, with a distinct overshoot to about 102% before settling. The animation is quick and has a spring-like ease-out.
-WHAT_REPLICA_DOES: Three cards scale up from 0% to 100% of their final size. There is no noticeable overshoot. The cards appear with a slight staggered delay from left to right. The animation is an ease-in-out curve.
-PARAMETERS_TO_CHANGE:
-  - property: scale
-    current_value: [0, 1]
-    target_value: [0.9, 1.02, 1] (with overshoot)
-    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275) or spring
-    duration_ms: 400
-  - property: delay
-    current_value: [0, 100, 200] (staggered)
-    target_value: 0 (simultaneous)
+DIFFERENCE #1: Logo Position
+TIMESTAMP_ORIGINAL: 0:00-0:01
+TIMESTAMP_REPLICA: 0:00-0:01
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: "MOTIONCANYON" logo is vertically centered on the screen.
+WHAT_REPLICA_DOES: "MOTIONCANYON" logo is positioned significantly higher than center.
+REMOTION_FIX:
+  - component: LogoContainer
+    property: transformY (or top CSS property)
+    current_value: (approximately -0.2 screen height from center)
+    target_value: 0 (for vertical center)
     easing: linear
-    duration_ms: 0
+    frame_range: 0-28, 285-300
 
 ---
-DIFFERENCE #2: Product image entrance (Card 1)
-TIMESTAMP_ORIGINAL: 00:01.600-00:02.000
-TIMESTAMP_REPLICA: 00:00.500-00:00.800
-WHAT_ORIGINAL_DOES: The shoe image slides in from the top-left, moving from approximately -20% of its width/height from its final position. It scales up from about 80% to 100% and rotates by about 10 degrees clockwise, then settles with a slight bounce/overshoot.
-WHAT_REPLICA_DOES: The product image scales up from 0% to 100% from its center. There is no sliding, no rotation, and a basic ease-out scaling.
-PARAMETERS_TO_CHANGE:
-  - property: transform
-    current_value: scale(0) -> scale(1)
-    target_value: translateX(-20%) translateY(-20%) rotate(10deg) scale(0.8) -> translateX(0) translateY(0) rotate(0deg) scale(1.05) -> scale(1)
-    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275) or spring for scale, ease-out for position/rotation
-    duration_ms: 400
-
----
-DIFFERENCE #3: "It's Amazing? Yeah!" text and arrow appearance (Card 1)
-TIMESTAMP_ORIGINAL: 00:01.800-00:02.300
-TIMESTAMP_REPLICA: 00:00.600-00:00.800
-WHAT_ORIGINAL_DOES: The text "It's Amazing? Yeah!" fades in from 0% to 100% opacity, scales up from 80% to 100%. An animated arrow then appears below it, sliding up and pointing towards the shoe, with a slight continuous pulse. The text and arrow then move slightly down together by about 5% of the text's height.
-WHAT_REPLICA_DOES: The text "Try It. Love It." scales in from 0% to 100% opacity. There is no distinct arrow animation, no fade, and no subsequent movement.
-PARAMETERS_TO_CHANGE:
-  - property: opacity
-    current_value: [0, 1] (implicit scale-in)
-    target_value: [0, 1] (explicit fade)
-    easing: ease-in
-    duration_ms: 200
-  - property: scale
-    current_value: [0, 1]
-    target_value: [0.8, 1]
-    easing: ease-out
-    duration_ms: 200
-  - property: arrow_element_visibility
-    current_value: none
-    target_value: visible
-    easing: N/A
-    duration_ms: N/A
-  - property: arrow_translateY
-    current_value: N/A (none)
-    target_value: [100%, 0%] (slide up), then loop [0%, 5%, 0%] (pulse)
-    easing: ease-out (initial), ease-in-out (loop)
-    duration_ms: 200 (initial), ~1000 (loop)
-  - property: text_arrow_translateY
-    current_value: 0
-    target_value: +5% (relative to text block height)
-    easing: ease-out
-    duration_ms: 300
-
----
-DIFFERENCE #4: Main title text animation (Card 1: "New Sneakers. Low Price!")
-TIMESTAMP_ORIGINAL: 00:02.200-00:02.500
-TIMESTAMP_REPLICA: 00:00.800-00:01.000
-WHAT_ORIGINAL_DOES: The title text appears line by line, sliding up from below its final position by about 10% of its height, with a slight bounce and staggered timing (approx. 50ms delay per line).
-WHAT_REPLICA_DOES: The title text "ANUA Toner K-Beauty" appears as a single block, scaling up from 0% to 100% opacity. There is no distinct line-by-line slide-up or bounce.
-PARAMETERS_TO_CHANGE:
-  - property: translateY (per line)
-    current_value: 0
-    target_value: [10%, 0%]
-    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275) (bounce)
-    duration_ms: 300 (per line)
-  - property: opacity (per line)
-    current_value: [0, 1] (as one block)
-    target_value: [0, 1]
-    easing: ease-in-out
-    duration_ms: 300
-  - property: delay (per line)
-    current_value: 0
-    target_value: 50ms (staggered)
+DIFFERENCE #2: Logo Scale/Size
+TIMESTAMP_ORIGINAL: 0:00-0:01
+TIMESTAMP_REPLICA: 0:00-0:01
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: "MOTIONCANYON" logo is larger and more prominent.
+WHAT_REPLICA_DOES: "MOTIONCANYON" logo appears smaller and less visually impactful.
+REMOTION_FIX:
+  - component: LogoText
+    property: fontSize (or scale)
+    current_value: (e.g., 24px or scale 0.8)
+    target_value: (e.g., 36px or scale 1.2) - requires visual adjustment
     easing: linear
-    duration_ms: 0
+    frame_range: 0-28, 285-300
 
 ---
-DIFFERENCE #5: Price tag appearance and strike-through animation (Card 1)
-TIMESTAMP_ORIGINAL: 00:03.000-00:03.400
-TIMESTAMP_REPLICA: 00:01.500-00:01.800
-WHAT_ORIGINAL_DOES: The original price (185$) slides in from the top-right corner by about 10% of its width. Then the discounted price (156$) slides in from the top-right below it. A red strike-through line animates from left to right over the original price *after* it has settled. The "With Sale" text also fades in.
-WHAT_REPLICA_DOES: The original price (25$) slides in from top right. The discounted price (18$) appears below it, not sliding. The strike-through line appears instantly over the original price. No "With Sale" text.
-PARAMETERS_TO_CHANGE:
-  - property: translateX (for 185$/25$)
-    current_value: 0
-    target_value: +10% (relative to price width)
-    easing: ease-out
-    duration_ms: 150
-  - property: translateX (for 156$/18$)
-    current_value: 0 (appears, not slides)
-    target_value: +10% (relative to price width)
-    easing: ease-out
-    duration_ms: 150
-  - property: strike_through_width
-    current_value: 100% (instant)
-    target_value: [0%, 100%] (animated)
-    easing: ease-in-out
-    duration_ms: 100 (after price settles)
-  - property: "With Sale" text_opacity
-    current_value: none
-    target_value: [0, 1]
+DIFFERENCE #3: Initial Card Entry Animation (Easing & Speed)
+TIMESTAMP_ORIGINAL: 0:01-0:02 (Frames 29-45)
+TIMESTAMP_REPLICA: 0:01-0:02 (Frames 30-48)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Cards slide in from the sides with a smooth, slightly elastic overshoot, feeling fluid and controlled.
+WHAT_REPLICA_DOES: Cards spring in using `mass=0.7/damping=20/stiffness=100`, resulting in a more pronounced and slightly stiff bounce.
+REMOTION_FIX:
+  - component: CardWrapper (or individual Card components)
+    property: transformX (for slide) and spring parameters
+    current_value: spring(mass=0.7, damping=20, stiffness=100)
+    target_value: spring(mass=0.9, damping=15, stiffness=90) - A slightly higher mass and lower stiffness/damping for a smoother, less aggressive overshoot.
+    easing: spring(mass=0.9, damping=15, stiffness=90)
+    frame_range: 30-48
+
+---
+DIFFERENCE #4: Card Corners (Border Radius)
+TIMESTAMP_ORIGINAL: 0:01 onwards
+TIMESTAMP_REPLICA: 0:01 onwards
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: Cards have a noticeably softer, larger border-radius.
+WHAT_REPLICA_DOES: Cards use `borderRadius=18px`, which appears slightly too sharp.
+REMOTION_FIX:
+  - component: CardContainer
+    property: borderRadius
+    current_value: 18px
+    target_value: 28px (estimate, needs visual verification)
     easing: linear
-    duration_ms: 100
+    frame_range: 30-300
 
 ---
-DIFFERENCE #6: Background pattern and frame appearance (Card 2)
-TIMESTAMP_ORIGINAL: 00:01.600-00:02.500
-TIMESTAMP_REPLICA: 00:00.500-00:01.000
-WHAT_ORIGINAL_DOES: A complex wave-like background pattern appears with a subtle scale and fade from 90% to 100%. Simultaneously, a square frame with "NEW NEW NEW" text around the product animates in by drawing its lines (top, then right, then bottom, then left) and fading in.
-WHAT_REPLICA_DOES: No wave-like pattern. A static square white background appears behind the product. No "NEW NEW NEW" text around the product or frame drawing animation.
-PARAMETERS_TO_CHANGE:
-  - property: background_pattern_opacity
-    current_value: none
-    target_value: [0, 1]
-    easing: ease-out
-    duration_ms: 500
-  - property: background_pattern_scale
-    current_value: none
-    target_value: [0.9, 1]
-    easing: ease-out
-    duration_ms: 500
-  - property: frame_line_draw_animation
-    current_value: none
-    target_value: width/height [0, 100%] for each border segment
+DIFFERENCE #5: Card Shadows
+TIMESTAMP_ORIGINAL: 0:02 onwards
+TIMESTAMP_REPLICA: 0:01 onwards (shadow fade 48-58)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Cards cast a very subtle, diffused, multi-layered shadow that creates depth without being stark. It blends into the background.
+WHAT_REPLICA_DOES: The "diffused dual-layer shadows" are too dark, too defined, and extend too far, making them appear heavier and less subtle than the original.
+REMOTION_FIX:
+  - component: CardContainer
+    property: boxShadow
+    current_value: (example: `0px 10px 30px rgba(0,0,0,0.2), 0px 4px 10px rgba(0,0,0,0.1)`)
+    target_value: `0px 8px 25px rgba(0,0,0,0.1), 0px 3px 8px rgba(0,0,0,0.05)` - Reduce opacity, blur, and spread significantly.
     easing: linear
-    duration_ms: 600 (staggered by 150ms per line)
-  - property: "NEW NEW NEW" text_in_frame_opacity
-    current_value: none
-    target_value: [0, 1]
+    frame_range: 48-300
+
+---
+DIFFERENCE #6: Content Entry Animation (Rotation & Overshoot)
+TIMESTAMP_ORIGINAL: 0:02-0:03 (Frames 46-75)
+TIMESTAMP_REPLICA: 0:02-0:03 (Frames 60-75)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Content elements (images, text) scale and fade in with subtle position adjustments and very minimal rotation, giving a gentle, elastic pop.
+WHAT_REPLICA_DOES: Content elements spring in with `mass=0.7/damping=12/stiffness=170` and a noticeable `+20deg` rotation. The rotation is too prominent and the spring feels a bit too sharp/fast for the original's gentle feel.
+REMOTION_FIX:
+  - component: ProductImage / Text components
+    property: transform (scale, translateY, rotate), spring parameters
+    current_value: rotate(20deg), spring(mass=0.7, damping=12, stiffness=170)
+    target_value: rotate(5deg), spring(mass=1.0, damping=15, stiffness=100) - Reduce rotation, use a softer spring for position/scale.
+    easing: spring(mass=1.0, damping=15, stiffness=100)
+    frame_range: 60-75
+
+---
+DIFFERENCE #7: Card 1 (Left) - Background Color (Content Set 1)
+TIMESTAMP_ORIGINAL: 0:02-0:06 (Frames 46-210)
+TIMESTAMP_REPLICA: 0:02-0:06 (Frames 45-210)
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: Left card background is a light, desaturated sky blue (e.g., `#ADD8E6`).
+WHAT_REPLICA_DOES: Left card background is a more vibrant, slightly darker blue (e.g., `#66B2DE`).
+REMOTION_FIX:
+  - component: Card1Background
+    property: backgroundColor
+    current_value: #66B2DE
+    target_value: #ADD8E6 (estimate, needs visual matching)
     easing: linear
-    duration_ms: 200
+    frame_range: 45-210
 
 ---
-DIFFERENCE #7: "Swipe Up" text and arrow animation (Card 2)
-TIMESTAMP_ORIGINAL: 00:03.500-00:03.800
-TIMESTAMP_REPLICA: 00:02.000-00:02.200
-WHAT_ORIGINAL_DOES: The "Swipe Up" text scales up slightly from 90% to 100% and fades in, accompanied by an animated arrow icon sliding up from below it. The arrow continues to gently animate (pulse or float up and down by about 5% of its height).
-WHAT_REPLICA_DOES: The "Swipe Up" text scales in from 0% to 100%. No arrow animation or subsequent gentle animation.
-PARAMETERS_TO_CHANGE:
-  - property: scale
-    current_value: [0, 1]
-    target_value: [0.9, 1]
-    easing: ease-out
-    duration_ms: 300
-  - property: opacity
-    current_value: 1 (implicit)
-    target_value: [0, 1]
-    easing: ease-in
-    duration_ms: 300
-  - property: arrow_icon_visibility
-    current_value: none
-    target_value: visible
-    easing: N/A
-    duration_ms: N/A
-  - property: arrow_translateY
-    current_value: N/A (none)
-    target_value: [100%, 0%] (slide up), then loop [0%, -5%, 0%] (pulse/float)
-    easing: ease-out (initial), ease-in-out (loop)
-    duration_ms: 300 (initial), ~1000 (loop)
+DIFFERENCE #8: Card 2 (Middle) - Background Color (Content Set 1)
+TIMESTAMP_ORIGINAL: 0:02-0:06 (Frames 46-210)
+TIMESTAMP_REPLICA: 0:02-0:06 (Frames 45-210)
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: Middle card background is a muted, warm orange-yellow (e.g., `#EBAA62`).
+WHAT_REPLICA_DOES: Middle card background is a brighter, more saturated orange-yellow (e.g., `#FFCC66`).
+REMOTION_FIX:
+  - component: Card2Background
+    property: backgroundColor
+    current_value: #FFCC66
+    target_value: #EBAA62 (estimate, needs visual matching)
+    easing: linear
+    frame_range: 45-210
 
 ---
-DIFFERENCE #8: Grid background and multiple product images (Card 3)
-TIMESTAMP_ORIGINAL: 00:01.600-00:02.800
-TIMESTAMP_REPLICA: 00:00.500-00:01.500
-WHAT_ORIGINAL_DOES: A background grid pattern appears, filling the space with a subtle scale and fade. Several small additional product images appear within the grid cells with staggered fades and slight scale animations (from 80% to 100%). The main text "New Product Promo Stories" animates in.
-WHAT_REPLICA_DOES: A static grey grid background is present. No additional product images appear within the grid. The text "NEW NEW NEW" appears, not "New Product Promo Stories".
-PARAMETERS_TO_CHANGE:
-  - property: grid_pattern_opacity
-    current_value: 1 (static)
-    target_value: [0, 1]
-    easing: ease-out
-    duration_ms: 400
-  - property: grid_pattern_scale
-    current_value: 1 (static)
-    target_value: [0.9, 1]
-    easing: ease-out
-    duration_ms: 400
-  - property: additional_product_images_visibility
-    current_value: none
-    target_value: visible
-    easing: N/A
-    duration_ms: N/A
-  - property: additional_product_images_opacity_scale
-    current_value: N/A (none)
-    target_value: opacity [0, 1], scale [0.8, 1], staggered appearance (e.g., 100ms delay per image)
+DIFFERENCE #9: Product Image - Composition & Shadow (Card 1 Content Set 1)
+TIMESTAMP_ORIGINAL: 0:02-0:06 (Frames 46-210)
+TIMESTAMP_REPLICA: 0:02-0:06 (Frames 60-210)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: The left card features *two* overlapping sneakers, angled to the right, with a subtle grounding shadow.
+WHAT_REPLICA_DOES: The left card features a *single* sneaker, angled to the bottom-left, and appears to lack a distinct shadow, making it float. This is a content image mismatch.
+REMOTION_FIX:
+  - component: Card1ProductImage
+    property: src (image asset), transform (position, rotation), boxShadow
+    current_value: (single sneaker image, current position/rotation, no distinct shadow)
+    target_value: Replace with the correct image asset of two overlapping sneakers. Adjust position/rotation to match. Add a subtle `box-shadow` to ground the image.
+    easing: linear
+    frame_range: 60-210
+
+---
+DIFFERENCE #10: Card 1 Text Layout & Font (Content Set 1)
+TIMESTAMP_ORIGINAL: 0:02-0:06 (Frames 46-210)
+TIMESTAMP_REPLICA: 0:02-0:06 (Frames 60-210)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Text uses a modern, slightly condensed sans-serif (not Montserrat). "New Sneakers. Low price!" fits on one line. Overall text layout is tight and readable.
+WHAT_REPLICA_DOES: Uses Montserrat font. "New Sneakers. Low price!" breaks into two lines. Font sizes, weights, and line heights generally differ from the original's aesthetic.
+REMOTION_FIX:
+  - component: Card1Text components
+    property: fontFamily, fontSize, fontWeight, lineHeight, whiteSpace (for line breaks)
+    current_value: Montserrat, current sizes/weights/line heights
+    target_value: Replace `fontFamily` with a font visually closer to original (e.g., 'Avenir Next Condensed', 'Proxima Nova', or similar). Adjust `fontSize`, `fontWeight`, `lineHeight` to ensure single-line text and match visual density.
+    easing: linear
+    frame_range: 60-210
+
+---
+DIFFERENCE #11: Card 2 (Middle) Product Background Pattern (Content Set 1)
+TIMESTAMP_ORIGINAL: 0:02-0:06 (Frames 46-210)
+TIMESTAMP_REPLICA: 0:02-0:06 (Frames 60-210)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: The square background behind the middle sneaker has a faint, subtle wavy pattern and a thin, understated border.
+WHAT_REPLICA_DOES: The square background has a much more prominent, blocky internal pattern and a strong, repeating "NEW NEW NEW" text border, making it much busier.
+REMOTION_FIX:
+  - component: Card2ProductBackgroundShape
+    property: backgroundPattern, borderPattern (SVG or CSS)
+    current_value: (prominent blocky pattern, strong "NEW NEW NEW" border)
+    target_value: Replace background pattern with a faint wavy texture. Reduce opacity and scale of the "NEW NEW NEW" border significantly, making it almost a ghosted texture.
+    easing: linear
+    frame_range: 60-210
+
+---
+DIFFERENCE #12: Card 3 (Right) Grid Background Pattern (Content Set 1)
+TIMESTAMP_ORIGINAL: 0:02-0:06 (Frames 46-210)
+TIMESTAMP_REPLICA: 0:02-0:06 (Frames 60-210)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: The right card's background is a very subtle, light dot or circle pattern.
+WHAT_REPLICA_DOES: The right card uses a strong, dark geometric grid background pattern, which is too busy and visually distinct from the original.
+REMOTION_FIX:
+  - component: Card3Background
+    property: backgroundImage (CSS background-image with SVG or URL)
+    current_value: geometric grid pattern
+    target_value: Replace with a subtle, light dot or small circle pattern.
+    easing: linear
+    frame_range: 60-210
+
+---
+DIFFERENCE #13: Price Tag Entry Animation
+TIMESTAMP_ORIGINAL: 0:03-0:04 (Frames 76-90)
+TIMESTAMP_REPLICA: 0:03-0:04 (Frames 75-90)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Price tags slide down from the top with a smooth, slightly elastic (gentle bounce) ease-out, settling quickly.
+WHAT_REPLICA_DOES: Price tags are "delayed 15 frames after content, with spring bounce." The bounce is quite pronounced and less elegant than the original's subtle movement. They also seem to just appear rather than slide from off-screen.
+REMOTION_FIX:
+  - component: PriceTag
+    property: transformY (position), spring parameters
+    current_value: spring(mass=0.7, damping=12, stiffness=170) (assuming shared content spring)
+    target_value: `translateY` from -30px to 0px using `spring(mass=0.8, damping=18, stiffness=90)` for a softer, more controlled descent with minimal bounce.
+    easing: spring(mass=0.8, damping=18, stiffness=90)
+    frame_range: 75-90 (adjust delay if needed)
+
+---
+DIFFERENCE #14: Transition White Flash (Duration & Intensity)
+TIMESTAMP_ORIGINAL: 0:06-0:07 (Frames 210-213)
+TIMESTAMP_REPLICA: 0:07 (Frames 210-216, description says 15 frames 205-220)
+SEVERITY: critical
+WHAT_ORIGINAL_DOES: A very rapid, intense, full-screen white flash, almost instantaneous (approx. 3-5 frames at peak brightness), with a sharp, jarring effect.
+WHAT_REPLICA_DOES: The replica video shows a longer, softer fade-in/fade-out of white (approx. 15 frames, 205-220, as per one description), which is less intense and lacks the sudden punch of the original.
+REMOTION_FIX:
+  - component: FlashOverlay (full screen white layer)
+    property: opacity, duration
+    current_value: animates opacity over ~15 frames (205-220)
+    target_value: Animate opacity over 6-8 frames. Rapidly animate to full opacity (1.0) in 2 frames, hold for 1-2 frames, then rapidly fade out. Example: `keyframes({ 0: 0, 2: 1, 3: 1, 6: 0 })`
+    easing: `cubic-bezier(0.1, 0.9, 0.9, 0.1)` (or similar fast in/out)
+    frame_range: 210-216
+
+---
+DIFFERENCE #15: Card Scale Pulse during Flash
+TIMESTAMP_ORIGINAL: 0:06-0:07 (Frames 210-213)
+TIMESTAMP_REPLICA: 0:07 (Frames 210-216)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: During the flash, the cards briefly scale down slightly (approx 1.0 -> 0.98 -> 1.0) then back up, adding a subtle "pop" effect.
+WHAT_REPLICA_DOES: The replica video shows no noticeable card scale pulse during the flash, despite one description mentioning it.
+REMOTION_FIX:
+  - component: CardContainer (parent for all cards)
+    property: transform (scale)
+    current_value: static scale 1.0
+    target_value: `keyframes({ 0: 1.0, 1: 0.98, 2: 0.98, 3: 1.0 })` synchronized with the peak of the flash.
     easing: ease-in-out
-    duration_ms: 300
-  - property: main_text_content
-    current_value: "NEW NEW NEW"
-    target_value: "New Product Promo Stories By Motion Canyon"
-    easing: N/A (content change)
-    duration_ms: N/A
-  - property: main_text_animation
-    current_value: scale-in (as block)
-    target_value: text appears line by line, sliding up similar to diff #4.
-    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275)
-    duration_ms: 500
+    frame_range: 210-213
 
 ---
-DIFFERENCE #9: Card 1 background color change animation and product swap
-TIMESTAMP_ORIGINAL: 00:06.000-00:06.500
-TIMESTAMP_REPLICA: 00:03.000-00:03.500
-WHAT_ORIGINAL_DOES: The background color smoothly transitions from blue (`#3C8CE1`) to pink/red (`#D6386C`). Simultaneously, the old sneakers rapidly scale down from 100% to 50% and rotate out by 45 degrees, then disappear. The new pink/white sneakers scale up from small (e.g., 50%), rotate from -45 degrees to 0 degrees, and exhibit a distinct bounce/overshoot (e.g., scale to 110% then 100%) as they appear.
-WHAT_REPLICA_DOES: The background color smoothly transitions from light brown/pink (`#E8D4CC`) to dark red (`#B32C3A`). The old product fades out (opacity 1 to 0) and the new product fades in (opacity 0 to 1). There is no scaling, rotation, or bounce for the product swap. The starting and ending background colors are also different.
-PARAMETERS_TO_CHANGE:
-  - property: background_color
-    current_value: #E8D4CC -> #B32C3A
-    target_value: #3C8CE1 -> #D6386C
-    easing: ease-in-out
-    duration_ms: 500
-  - property: old_product_transform
-    current_value: opacity [1, 0]
-    target_value: scale(1) rotate(0deg) -> scale(0.5) rotate(45deg) opacity(0)
-    easing: ease-in
-    duration_ms: 100
-  - property: new_product_transform
-    current_value: opacity [0, 1]
-    target_value: scale(0.5) rotate(-45deg) opacity(0) -> scale(1.1) rotate(0deg) opacity(1) -> scale(1) rotate(0deg) opacity(1)
-    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275) or spring
-    duration_ms: 400
+DIFFERENCE #16: Old Content Exit Animation (Rotation & Speed)
+TIMESTAMP_ORIGINAL: 0:06-0:07 (Frames 210-213)
+TIMESTAMP_REPLICA: 0:07 (Frames 210-213)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Old content slides out quickly and mostly vertically, with minimal or no noticeable rotation, disappearing cleanly during the flash peak.
+WHAT_REPLICA_DOES: Old content slides UP (-100px) and rotates (-20deg) with a "fast ease-in exit". The rotation is too pronounced and the exit feels slightly too slow, lingering.
+REMOTION_FIX:
+  - component: OldContentGroup (for each card)
+    property: transform (translateY, rotate)
+    current_value: translateY(-100px), rotate(-20deg)
+    target_value: translateY(-60px), rotate(-10deg) - Less vertical travel and less rotation. Make the exit extremely fast, almost instant, fully complete before the flash peak subsides.
+    easing: `cubic-bezier(0.8, 0.1, 1, 0.5)` (very fast ease-out)
+    frame_range: 210-212
 
 ---
-DIFFERENCE #10: Card 2 background color change and pattern/highlight additions
-TIMESTAMP_ORIGINAL: 00:06.000-00:06.800
-TIMESTAMP_REPLICA: 00:03.000-00:03.500
-WHAT_ORIGINAL_DOES: The background color transitions from brown/gold (`#C4955F`) to black (`#1A1A1A`). Simultaneously, red diagonal lines slide in from the top left and bottom right corners, and a yellow wave pattern with "NEW NEW NEW" text animates in, covering part of the background, scaling up from the center. The price "185$" gets a yellow highlight bar that slides in from the left behind it.
-WHAT_REPLICA_DOES: The background color transitions from light brown (`#D6C4AD`) to teal (`#376E6A`), then to black (`#171717`). No diagonal lines, no yellow wave pattern, no price highlight. The product fades in/out.
-PARAMETERS_TO_CHANGE:
-  - property: background_color
-    current_value: #D6C4AD -> #376E6A -> #171717
-    target_value: #C4955F -> #1A1A1A
-    easing: ease-in-out
-    duration_ms: 500
-  - property: red_diagonal_lines_visibility_transform
-    current_value: none
-    target_value: visible, translateX/Y animation from off-screen
-    easing: ease-out
-    duration_ms: 400
-  - property: yellow_wave_pattern_visibility_transform
-    current_value: none
-    target_value: visible, scale up from center, opacity [0, 1]
-    easing: ease-out
-    duration_ms: 400
-  - property: price_highlight_bar_visibility_width
-    current_value: none
-    target_value: visible, width [0, 100%] (sliding in from left)
-    easing: ease-out
-    duration_ms: 200
+DIFFERENCE #17: New Content Entry Animation (Rotation & Speed)
+TIMESTAMP_ORIGINAL: 0:07 (Frames 213-225)
+TIMESTAMP_REPLICA: 0:07-0:08 (Frames 213-225)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: New content slides in smoothly from above, settling into place with minimal or no noticeable rotation, after the flash has peaked. The entry feels elegant and not overly floaty.
+WHAT_REPLICA_DOES: New content slides DOWN (+100px→0) and rotates (+20deg→0) with a "decelerating ease-out entry". The rotation is too pronounced, and the animation feels a bit too slow/floaty.
+REMOTION_FIX:
+  - component: NewContentGroup (for each card)
+    property: transform (translateY, rotate)
+    current_value: translateY(+100px), rotate(+20deg)
+    target_value: translateY(+60px), rotate(+10deg) - Less vertical travel and less rotation. Make the entry snappier and less lingering.
+    easing: `cubic-bezier(0.1, 0.9, 0.3, 1)` (faster ease-out)
+    frame_range: 213-220
 
 ---
-DIFFERENCE #11: Card 3 background change and product swap
-TIMESTAMP_ORIGINAL: 00:06.000-00:06.800
-TIMESTAMP_REPLICA: 00:03.000-00:03.500
-WHAT_ORIGINAL_DOES: The background transitions from a light grey grid to a split background: a yellow block (`#FFD700`) on top (covering about 60% height), and a white block (`#FFFFFF`) on the bottom. The grid pattern fades out. The "NEW NEW NEW" text changes color. Old shoes disappear, new shoes appear with bounce/rotation similar to Card 1's product swap. The smaller shoes in the grid also swap or disappear.
-WHAT_REPLICA_DOES: The background color transitions from light grey (`#E5E5E5`) to dark green (`#3F583F`). The grid pattern remains static. The "NEW NEW NEW" text changes color. Old product fades out, new product fades in without rotation or bounce.
-PARAMETERS_TO_CHANGE:
-  - property: background_type
-    current_value: solid color transition
-    target_value: split background (top color: #FFD700, bottom color: #FFFFFF) with animated transition
-    easing: ease-in-out
-    duration_ms: 500
-  - property: grid_pattern_opacity
-    current_value: 1 (static)
-    target_value: [1, 0] (fade out)
-    easing: ease-out
-    duration_ms: 300
-  - property: new_product_transform
-    current_value: opacity [0, 1]
-    target_value: scale(0.5) rotate(-45deg) opacity(0) -> scale(1.1) rotate(0deg) opacity(1) -> scale(1) rotate(0deg) opacity(1)
-    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275) or spring
-    duration_ms: 400
+DIFFERENCE #18: Card 1 (Left) - Background Color (Content Set 2)
+TIMESTAMP_ORIGINAL: 0:07-0:09 (Frames 213-285)
+TIMESTAMP_REPLICA: 0:07-0:09 (Frames 213-285)
+SEVERITY: critical
+WHAT_ORIGINAL_DOES: Left card background changes from blue to a soft, desaturated pink (e.g., `#F2D2D7`) instantly at the flash peak.
+WHAT_REPLICA_DOES: Left card background remains the initial blue, it does not change color for Content Set 2.
+REMOTION_FIX:
+  - component: Card1Background
+    property: backgroundColor
+    current_value: #ADD8E6 (or whatever the initial blue is)
+    target_value: #F2D2D7 (estimate, needs visual matching)
+    easing: linear (instant switch)
+    frame_range: 213-285
 
 ---
-DIFFERENCE #12: Card 3 small product images swap/update
-TIMESTAMP_ORIGINAL: 00:06.500-00:07.500
-TIMESTAMP_REPLICA: 00:03.000-00:03.500
-WHAT_ORIGINAL_DOES: The smaller product images within the grid (bottom half of the card) are replaced. The green shoe disappears with a fade/scale out, then a white shoe appears, then a blue shoe appears in sequence, each with a small scale (from 80% to 100%) and fade in/out animation.
-WHAT_REPLICA_DOES: There are no smaller product images in the replica to swap or update.
-PARAMETERS_TO_CHANGE:
-  - property: additional_product_images_visibility
-    current_value: none
-    target_value: visible (new elements)
-    easing: N/A
-    duration_ms: N/A
-  - property: additional_product_images_transform
-    current_value: N/A (none)
-    target_value: opacity [0, 1] & scale [0.8, 1] for new images, opacity [1, 0] & scale [1, 0.8] for old images, staggered appearance.
-    easing: ease-in-out
-    duration_ms: 200 (per image, staggered by 150ms)
+DIFFERENCE #19: Card 3 (Right) - Background Color (Content Set 2)
+TIMESTAMP_ORIGINAL: 0:07-0:09 (Frames 213-285)
+TIMESTAMP_REPLICA: 0:07-0:09 (Frames 213-285)
+SEVERITY: critical
+WHAT_ORIGINAL_DOES: Right card background changes from white to a vibrant yellow (e.g., `#FFCC00`) instantly at the flash peak.
+WHAT_REPLICA_DOES: Right card background remains white, it does not change color for Content Set 2.
+REMOTION_FIX:
+  - component: Card3Background
+    property: backgroundColor
+    current_value: #FFFFFF
+    target_value: #FFCC00 (estimate, needs visual matching)
+    easing: linear (instant switch)
+    frame_range: 213-285
+
+---
+DIFFERENCE #20: Product Images (Content Set 2)
+TIMESTAMP_ORIGINAL: 0:07-0:09 (Frames 213-285)
+TIMESTAMP_REPLICA: 0:07-0:09 (Frames 213-285)
+SEVERITY: critical
+WHAT_ORIGINAL_DOES: Displays new sneaker product images for Content Set 2 (e.g., pink/white sneakers on left, black/red on middle, white/yellow on right).
+WHAT_REPLICA_DOES: Displays skincare product images, which is a complete content mismatch with the original video.
+REMOTION_FIX:
+  - component: ProductImage components for Content Set 2
+    property: src (image source)
+    current_value: (skincare product images)
+    target_value: Use the correct sneaker product images as seen in the original video.
+    easing: linear
+    frame_range: 213-285
+
+---
+DIFFERENCE #21: Card 1 Text Layout & Content (Content Set 2)
+TIMESTAMP_ORIGINAL: 0:07-0:09 (Frames 213-285)
+TIMESTAMP_REPLICA: 0:07-0:09 (Frames 213-285)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: Text content is updated for new sneakers, maintaining the original's font style and layout.
+WHAT_REPLICA_DOES: Displays skincare product names and descriptions, inheriting the Montserrat font and layout issues from Content Set 1.
+REMOTION_FIX:
+  - component: Card1Text components (Content Set 2)
+    property: text content, fontFamily, fontSize, fontWeight, lineHeight, positioning
+    current_value: (skincare content, Montserrat, current layout)
+    target_value: Replace content with original sneaker text. Apply recommended font and layout fixes from `DIFFERENCE #10`.
+    easing: linear
+    frame_range: 213-285
+
+---
+DIFFERENCE #22: Card 2 (Middle) Product Background Pattern (Content Set 2)
+TIMESTAMP_ORIGINAL: 0:07-0:09 (Frames 213-285)
+TIMESTAMP_REPLICA: 0:07-0:09 (Frames 213-285)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: The black/red sneaker sits on a dynamic, red background element with horizontal lines, resembling a soundwave or scanline pattern.
+WHAT_REPLICA_DOES: The middle card's background behind the product is black with a strong yellow "NEW NEW NEW" pattern and yellow accent lines, a significant mismatch in color and pattern.
+REMOTION_FIX:
+  - component: Card2ProductBackgroundShape (Content Set 2)
+    property: backgroundColor, pattern, accent colors
+    current_value: black background, yellow "NEW NEW NEW" pattern, yellow accents
+    target_value: Replace with a red background (`#E63C42` estimate), and a horizontal line/wave pattern similar to the original. Remove or heavily subdue the "NEW NEW NEW" border and yellow accents.
+    easing: linear
+    frame_range: 213-285
+
+---
+DIFFERENCE #23: Card 3 (Right) Grid Background Pattern (Content Set 2)
+TIMESTAMP_ORIGINAL: 0:07-0:09 (Frames 213-285)
+TIMESTAMP_REPLICA: 0:07-0:09 (Frames 213-285)
+SEVERITY: major
+WHAT_ORIGINAL_DOES: The right card's background for Content Set 2 is the subtle dot/circle pattern, now on a yellow background.
+WHAT_REPLICA_DOES: The replica's right card (Content Set 2) still uses the strong geometric grid pattern on a white background, which is incorrect.
+REMOTION_FIX:
+  - component: Card3Background (Content Set 2)
+    property: backgroundImage (pattern)
+    current_value: geometric grid pattern
+    target_value: Replace with a subtle, light dot or small circle pattern.
+    easing: linear
+    frame_range: 213-285
+
+---
+DIFFERENCE #24: "NEW NEW NEW" Labels (General)
+TIMESTAMP_ORIGINAL: 0:02-0:09
+TIMESTAMP_REPLICA: 0:02-0:09
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: "NEW NEW NEW" labels (e.g., on Card 3, middle card border) are present but are smaller and less visually dominant.
+WHAT_REPLICA_DOES: "NEW NEW NEW" labels are larger, bolder, and their "staggered scale pop" animation makes them more prominent than in the original.
+REMOTION_FIX:
+  - component: NewLabel / CardProductBackgroundShape
+    property: fontSize, fontWeight, scale (animation parameters), opacity (for "NEW NEW NEW" border patterns)
+    current_value: (current scale animation and font styles)
+    target_value: Reduce font size and weight. Make scale animation more subtle (e.g., scale 1.0 -> 1.02 -> 1.0) or use a gentle fade. For border patterns, reduce opacity significantly.
+    easing: linear (or very subtle scale animation)
+    frame_range: 60-210, 213-285
+
+---
+DIFFERENCE #25: Card Exit Animation (Easing & Speed)
+TIMESTAMP_ORIGINAL: 0:09-0:10 (Frames 285-300)
+TIMESTAMP_REPLICA: 0:09-0:10 (Frames 285-300)
+SEVERITY: minor
+WHAT_ORIGINAL_DOES: Cards slide off screen smoothly and gracefully, mirroring their entry.
+WHAT_REPLICA_DOES: Cards exit, likely using the reverse of their initial spring animation, which might be slightly too bouncy.
+REMOTION_FIX:
+  - component: CardWrapper (or individual Card components)
+    property: transformX (for slide) and spring parameters
+    current_value: (likely reverse of initial spring)
+    target_value: spring(mass=0.9, damping=15, stiffness=90) - Apply the same improved spring for a smoother, less bouncy exit.
+    easing: spring(mass=0.9, damping=15, stiffness=90)
+    frame_range: 285-300
 
 ---
 
-**TOP 5 FIXES RANKED BY VISUAL IMPACT:**
+### Structural Issues (things fundamentally wrong with the code architecture):
 
-1.  **Card 1/2/3 Product image entrance (Affects DIFFERENCE #2 and partially #9, #11):** The dynamic sliding, rotating, and bouncing entrance/exit of the main product image in the original template is far more engaging and professional than the replica's simple scaling or fading. This directly impacts the primary focal point of each card.
-2.  **Card 2 Background pattern and frame appearance (DIFFERENCE #6):** The animated square frame and wave background pattern in the original add significant visual depth, texture, and a high-quality feel that is entirely missing from the replica's static, plain background.
-3.  **Card 1/2/3 Product swap animation (DIFFERENCE #9, DIFFERENCE #11):** The original's transition, where the old product visibly scales down, rotates out, and the new product bounces and rotates into place, is a highly fluid and visually appealing update. The replica's abrupt fade-out/fade-in looks flat by comparison.
-4.  **Card 1/2/3 Background color/pattern changes (DIFFERENCE #9, #10, #11):** The precise color palette, the multi-step color transitions (e.g., Card 2's brown to black), and the introduction of new animated graphical elements (diagonal lines, wave patterns, split backgrounds) in the original template significantly enhance the visual dynamism and polish of the card updates. The replica's simpler, often single-step color changes are less sophisticated.
-5.  **Main title text animation (DIFFERENCE #4, DIFFERENCE #8):** The original's line-by-line slide-up with a subtle bounce for the main product titles makes the text appear in a very elegant and readable manner. The replica's instant or simple scale-in of the entire text block feels much less polished and lacks the subtle "pop" of the original.
+1.  **Content Management/Assets:** The most critical structural issue is the complete mismatch of product images and text content in the second half of the video (Content Set 2). The replica uses skincare products where the original uses sneakers. This indicates that content assets and the logic for switching them are either incorrect or hardcoded for the wrong product type.
+2.  **Dynamic Background Colors:** The background colors for the left and right cards are static throughout the replica, while the original dynamically changes them during the transition to Content Set 2. This suggests a lack of dynamic styling logic for these elements.
+3.  **Flash Implementation Discrepancy:** The replica's internal description for the flash (`6-frame white flash... + card scale pulse`) contradicts the actual video output (`15-frame white flash... NO card pulse`). This indicates a potential mismatch between planned features and implementation, or an outdated description.
+
+### TOP 5 PARAMETER FIXES (ranked by visual impact, with exact values)
+
+1.  **Card Background Colors for Content Set 2 (CRITICAL):**
+    *   **Left Card:** Instant `backgroundColor` switch from `#ADD8E6` (or initial blue) to `#F2D2D7` (soft pink) at `frame 213`.
+    *   **Right Card:** Instant `backgroundColor` switch from `#FFFFFF` (white) to `#FFCC00` (vibrant yellow) at `frame 213`.
+    *   *Impact:* Corrects the most obvious visual discrepancy in the second half of the video.
+
+2.  **Product Images for Content Set 2 (CRITICAL):**
+    *   Replace all current skincare product `src` (image source) values with the corresponding sneaker image paths from the original video.
+    *   *Impact:* Fixes the fundamental content mismatch, aligning the replica's product category with the original.
+
+3.  **Transition White Flash (CRITICAL):**
+    *   Component: `FlashOverlay`
+    *   Property: `opacity` animation and `duration`
+    *   Target Value: `keyframes({ 0: 0, 2: 1, 3: 1, 6: 0 })`
+    *   Easing: `cubic-bezier(0.1, 0.9, 0.9, 0.1)` (or similar fast in/out)
+    *   Frame Range: `210-216`
+    *   *Impact:* Makes the transition significantly more impactful and true to the original's sharp visual effect.
+
+4.  **Content Entry/Exit Animations (MAJOR):**
+    *   Component: `ProductImage` / `Text components` (for content entry)
+    *   Property: `transform` (rotate), `spring` parameters
+    *   Target Value: `rotate(5deg)`, `spring(mass=1.0, damping=15, stiffness=100)` for entry.
+    *   Component: `OldContentGroup` / `NewContentGroup` (for content exit/entry during flash)
+    *   Property: `transform` (translateY, rotate)
+    *   Target Value:
+        *   Exit: `translateY(-60px)`, `rotate(-10deg)`, `easing: cubic-bezier(0.8, 0.1, 1, 0.5)`
+        *   Entry: `translateY(+60px)`, `rotate(+10deg)`, `easing: cubic-bezier(0.1, 0.9, 0.3, 1)`
+    *   *Impact:* Reduces exaggerated rotations and makes content transitions feel smoother and more integrated, less floaty/stiff.
+
+5.  **Card Shadows (MAJOR):**
+    *   Component: `CardContainer`
+    *   Property: `boxShadow`
+    *   Target Value: `0px 8px 25px rgba(0,0,0,0.1), 0px 3px 8px rgba(0,0,0,0.05)`
+    *   *Impact:* Makes the cards appear more subtly integrated into the scene, matching the original's polished look.
+
+### OVERALL SCORE (0-100):
+
+*   **Layout fidelity (card count, positions, sizes): 20/25**
+    *   The basic 3-card structure and overall relative sizing are good. However, specific element placement within cards, text layouts due to font choice, and slight discrepancies in card border-radius detract.
+*   **Color & visual fidelity (backgrounds, card colors, gradients): 10/25**
+    *   Initial card colors are too saturated. The complete failure to change left/right card backgrounds for the second content set, along with incorrect product images and background patterns, is a major drawback. Logo size/position is off.
+*   **Motion & timing (easing, duration, keyframes, transitions): 15/25**
+    *   General animation presence is there, but the precise feel (easing, bounce intensity, rotation magnitude, flash duration) often misses the mark. The flash transition is especially poor.
+*   **Effects & polish (decorations, text, overlays): 10/25**
+    *   Font choice and text layout are visibly different. Decorative elements (arrows, "NEW" labels, product background patterns) often differ significantly in style and subtlety. Shadows are too heavy.
+*   **Total: 55/100**
