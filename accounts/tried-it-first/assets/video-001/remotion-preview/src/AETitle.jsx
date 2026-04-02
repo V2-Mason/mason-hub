@@ -306,63 +306,78 @@ export const AETitle = () => {
                   transform: `translate(-50%, -50%) scale(${0.5 * (zoom - camZ) / (zoom - 500 - camZ)})`,
                   width: 1920, height: 1080,
                 }}>
-                  {/* frame: 矩形框 scale=58%, frameSize=[100,100] */}
+                  {/* frame: 矩形框 scale=58%, 原始顶点 [-652.83,-203.774] to [660.377,200] */}
                   <FrameRect scaleX={58} scaleY={58} color={COLORS.textLight} />
 
-                  {/* TEXT_02 "FRESH" — 被 frame 遮罩裁剪 */}
+                  {/* 文字裁剪容器 — 与 FrameRect 同尺寸，文字只在框内可见 */}
                   <div style={{
-                    position: "absolute", left: 0, top: freshY - 540,
-                    width: 1920, height: 1080,
-                    display: "flex", alignItems: "center", justifyContent: "center",
+                    position: "absolute", left: "50%", top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: (652.83 + 660.377) * 0.58,
+                    height: (203.774 + 200) * 0.58,
+                    overflow: "hidden",
                   }}>
+                    {/* TEXT_02 "FRESH" — 相对于裁剪框定位 */}
                     <div style={{
-                      fontFamily: FONT, fontWeight: 800,
-                      fontSize: 120, // AE 原始大小，外层 scale 会缩放
-                      color: COLORS.textLight,
-                      letterSpacing: "-0.07em",
-                      textTransform: "uppercase",
+                      position: "absolute",
+                      left: -(1920 - (652.83 + 660.377) * 0.58) / 2,
+                      top: freshY - 540 - (540 - (203.774 + 200) * 0.58 / 2),
+                      width: 1920, height: 1080,
+                      display: "flex", alignItems: "center", justifyContent: "center",
                     }}>
-                      {TEXTS.fresh}
+                      <div style={{
+                        fontFamily: FONT, fontWeight: 800,
+                        fontSize: 120,
+                        color: COLORS.textLight,
+                        letterSpacing: "-0.07em",
+                        textTransform: "uppercase",
+                      }}>
+                        {TEXTS.fresh}
+                      </div>
                     </div>
+
+                    {/* TEXT_03 "&SMART" */}
+                    {showSmart && (
+                      <div style={{
+                        position: "absolute",
+                        left: -(1920 - (652.83 + 660.377) * 0.58) / 2,
+                        top: smartY - 540 - (540 - (203.774 + 200) * 0.58 / 2),
+                        width: 1920, height: 1080,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                      }}>
+                        <div style={{
+                          fontFamily: FONT, fontWeight: 800,
+                          fontSize: 120,
+                          color: COLORS.textLight,
+                          letterSpacing: "-0.07em",
+                          textTransform: "uppercase",
+                        }}>
+                          {TEXTS.smart}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* TEXT_04 "TITLES" */}
+                    {showTitles && (
+                      <div style={{
+                        position: "absolute",
+                        left: -(1920 - (652.83 + 660.377) * 0.58) / 2,
+                        top: titlesY - 540 - (540 - (203.774 + 200) * 0.58 / 2),
+                        width: 1920, height: 1080,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                      }}>
+                        <div style={{
+                          fontFamily: FONT, fontWeight: 800,
+                          fontSize: 120,
+                          color: COLORS.textLight,
+                          letterSpacing: "-0.07em",
+                          textTransform: "uppercase",
+                        }}>
+                          {TEXTS.titles}
+                        </div>
+                      </div>
+                    )}
                   </div>
-
-                  {/* TEXT_03 "&SMART" — parent=TEXT_02, y = freshY - 216 */}
-                  {showSmart && (
-                    <div style={{
-                      position: "absolute", left: 0, top: smartY - 540,
-                      width: 1920, height: 1080,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <div style={{
-                        fontFamily: FONT, fontWeight: 800,
-                        fontSize: 120, // AE 原始大小，外层 scale 会缩放
-                        color: COLORS.textLight,
-                        letterSpacing: "-0.07em",
-                        textTransform: "uppercase",
-                      }}>
-                        {TEXTS.smart}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* TEXT_04 "TITLES" — f59-f74 */}
-                  {showTitles && (
-                    <div style={{
-                      position: "absolute", left: 0, top: titlesY - 540,
-                      width: 1920, height: 1080,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <div style={{
-                        fontFamily: FONT, fontWeight: 800,
-                        fontSize: 120, // AE 原始大小，外层 scale 会缩放
-                        color: COLORS.textLight,
-                        letterSpacing: "-0.07em",
-                        textTransform: "uppercase",
-                      }}>
-                        {TEXTS.titles}
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
 
