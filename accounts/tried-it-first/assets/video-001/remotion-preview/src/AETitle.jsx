@@ -73,6 +73,11 @@ const SplitMatte = ({ children, frame, startFrame, duration, topStartY, bottomSt
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
+  // 动画完成后直接渲染，不拆两半（避免 children 里的 SVG mask id 冲突）
+  if (t >= 1) {
+    return <>{children}</>;
+  }
+
   // 上半内容 Y 偏移
   const topOffset = interpolate(t, [0, 1], [topStartY - 540, 0], { easing: easeTop });
   // 下半内容 Y 偏移
@@ -80,14 +85,14 @@ const SplitMatte = ({ children, frame, startFrame, duration, topStartY, bottomSt
 
   return (
     <>
-      {/* 上半遮罩 — Matte at y=0.062, 覆盖顶部 540px */}
-      <div style={{ position: "absolute", left: 0, top: 0, width: 1920, height: 540, overflow: "hidden" }}>
+      {/* 上半遮罩 — clip 属性强制裁剪 transform 缩放后的溢出 */}
+      <div style={{ position: "absolute", left: 0, top: 0, width: 1920, height: 540, overflow: "hidden", clip: "rect(0, 1920px, 540px, 0)" }}>
         <div style={{ position: "absolute", left: 0, top: topOffset, width: 1920, height: 1080 }}>
           {children}
         </div>
       </div>
-      {/* 下半遮罩 — Matte at y=1079.75, 覆盖底部 540px */}
-      <div style={{ position: "absolute", left: 0, top: 540, width: 1920, height: 540, overflow: "hidden" }}>
+      {/* 下半遮罩 */}
+      <div style={{ position: "absolute", left: 0, top: 540, width: 1920, height: 540, overflow: "hidden", clip: "rect(0, 1920px, 540px, 0)" }}>
         <div style={{ position: "absolute", left: 0, top: botOffset - 540, width: 1920, height: 1080 }}>
           {children}
         </div>
@@ -233,35 +238,24 @@ export const AETitle = () => {
           easeTop={EASE.splitBot}
           easeBot={EASE.splitTop}
         >
-          {/* TEXT_01_comp: PLACEHOLDER_01 + BG(白色) alpha-inverted by TEXT_01 */}
-          {/* 效果：白色覆盖全屏，文字形状处挖空露出绿色占位图 */}
-          <AbsoluteFill>
-            {/* 底层：绿色占位图 */}
-            <PlaceholderImage />
-            {/* 上层：白色 BG，文字区域用 SVG mask 挖空 */}
-            <svg width="1920" height="1080" style={{ position: "absolute", inset: 0 }}>
-              <defs>
-                <mask id="cleanTextMask">
-                  {/* 白色 = 可见区域 */}
-                  <rect width="1920" height="1080" fill="white" />
-                  {/* 黑色文字 = 挖空区域 */}
-                  <text
-                    x="960" y="540"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontFamily={FONT}
-                    fontWeight="800"
-                    fontSize="340"
-                    letterSpacing="-0.07em"
-                    fill="black"
-                  >
-                    {TEXTS.clean}
-                  </text>
-                </mask>
-              </defs>
-              <rect width="1920" height="1080" fill={COLORS.bg} mask="url(#cleanTextMask)" />
-            </svg>
-          </AbsoluteFill>
+          {/* TEXT_01_comp: 白底 + 绿色 CLEAN 文字 */}
+          {/* 原版 AE 是白色 BG alpha-inverted by TEXT_01 + 绿色 placeholder 底 */}
+          {/* 简化实现：直接白底 + 绿色文字（视觉等效，占位图替换时改为 background-image） */}
+          <div style={{ position: "relative", width: 1920, height: 1080, backgroundColor: COLORS.bg }}>
+            <div style={{
+              position: "absolute", left: "50%", top: "50%",
+              transform: "translate(-50%, -50%)",
+              fontFamily: FONT, fontWeight: 800,
+              fontSize: 340,
+              color: COLORS.placeholder,
+              letterSpacing: "-0.07em",
+              textTransform: "uppercase",
+              whiteSpace: "nowrap",
+              userSelect: "none",
+            }}>
+              {TEXTS.clean}
+            </div>
+          </div>
         </SplitMatte>
       )}
 
@@ -276,7 +270,7 @@ export const AETitle = () => {
           easeTop={EASE.split2}
           easeBot={EASE.split2}
         >
-          <AbsoluteFill>
+          <div style={{ position: "relative", width: 1920, height: 1080 }}>
             {/* ── 3D 相机容器 ── */}
             <div style={{
               position: "absolute", left: "50%", top: "50%",
@@ -421,7 +415,7 @@ export const AETitle = () => {
                 </div>
               )}
             </div>
-          </AbsoluteFill>
+          </div>
         </SplitMatte>
       )}
     </AbsoluteFill>
