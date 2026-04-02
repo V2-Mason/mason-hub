@@ -53,7 +53,7 @@
   },
   // precomp only:
   "sourceCompId": string,
-  "stretch": number,  // percentage, 100 = normal
+  "stretch": number,  // percentage (111.11 means 1.1111x slower). Convert: multiplier = stretch / 100
   // matte:
   "trackMatteType": 5013 | 5014,  // Alpha | Alpha Inverted
   // text:
@@ -71,7 +71,7 @@
   "keyframes": [{
     "frame": number,
     "value": number | number[],
-    "cubicBezier": [[x1, x1, x2, x2]],  // per-dimension
+    "cubicBezier": [[x1, y1, x2, y2]],  // per-dimension, nested array (one [4] per dimension)
     "interpIn": "bezier" | "linear" | "hold",
     "interpOut": "bezier" | "linear" | "hold"
   }]
@@ -82,7 +82,7 @@
 
 ### 1. Comp → React 组件
 
-每个 comp 生成一个函数组件：
+每个 comp 生成一个函数组件。命名规则：comp name 中非字母数字字符替换为 `_`，连续 `_` 合并，首字母大写。例如 `"Title_01 (fast typography)"` → `Comp_Title_01_fast_typography`。
 
 ```jsx
 const Comp_unit_01 = ({ parentFrame }) => {
@@ -127,14 +127,25 @@ localFrame = (parentFrame - inFrame) / (stretch / 100)
 
 ### 5. 3D 相机透视
 
-找到 Camera layer，提取 Position.Z 关键帧，生成透视缩放：
+找到 Camera layer，提取 Position.Z 关键帧，生成透视缩放。Camera 的 camScale 作为全局透视包裹容器。
+
+但个别 3D layer 有自己的 Z Position 动画（如 Title_01 中 PLACEHOLDER_02 的 Z 轨道），需要单独计算该层的 zScale = `zoom / (zoom - layerZ)`，与 camScale 独立。
 
 ```jsx
+// 全局相机
 const camZ = interpolate(frame, [...], [...], {...});
-const zoom = 1866.667;  // from comp FOV or Camera zoom
+const zoom = 1866.667;  // from Camera zoom property
 const camScale = zoom / (zoom - camZ);
-// 包裹所有 3D layers
+
+// 有自身 Z 动画的层单独算
+const placeZ = interpolate(frame, [...], [...], {...});
+const placeZScale = zoom / (zoom - placeZ);
+
 <div style={{ transform: `scale(${camScale})` }}>
+  {/* 大部分 3D layers 只受 camScale */}
+  {/* 有 Z 动画的层额外乘 zScale */}
+  <div style={{ transform: `scale(${placeZScale})` }}>...</div>
+</div>
 ```
 
 ### 6. Track Matte
@@ -142,16 +153,24 @@ const camScale = zoom / (zoom - camZ);
 `trackMatteType: 5013` (Alpha) — 当前层被上一层的形状裁剪
 `trackMatteType: 5014` (Alpha Inverted) — 反向裁剪
 
-生成策略：matte 层转为 CSS `clipPath` 或 `overflow: hidden` 容器包裹被遮罩层。
+V1 策略（hardcoded for Title_01）：Track Matte 的 CSS 实现方式无法从 JSON 数据自动推导，因为 matte 形状可能是任意路径。V1 对 Title_01 中出现的三种 matte 模式做 pattern matching：
 
-对 Title_01 的具体情况：
-- unit_01 的分屏 matte → 两个 `overflow: hidden` 的 div (上半/下半)
-- TEXT_02_comp 的 frame matte → `overflow: hidden` 矩形容器
-- White Solid 的 Alpha Inverted → 白色 div 叠在上面
+1. **分屏 matte**（matte 层 Position.Y 接近 0 或 1080）→ 两个 `overflow: hidden` 的 div (上半/下半)，Y 偏移做动画
+2. **矩形框 matte**（matte 层是 shape layer 且名含 "frame"）→ `overflow: hidden` 矩形容器
+3. **Alpha Inverted（5014）**→ 白色 div 叠在上面
+
+未来通用版需要用 Canvas mask 或 SVG clipPath 实现任意 matte 形状。
 
 ### 7. 文字层
 
-读 `textContent`，生成 `<div>` + font style。字号从 effects 或 textDocument 提取。
+读 `textContent`，生成 `<div>` + font style。
+
+字号来源优先级：
+1. `layer.textDocument.fontSize`（如果导出脚本包含）
+2. 从 `AETitle.jsx` 手写版中已知的映射 hardcode（TEXT_01=587, TEXT_02/03/04=120）
+3. 默认 100px fallback
+
+V1 采用方案 2（hardcode），因为当前导出脚本的 textDocument 信息不完整。
 
 ### 8. 固态层
 
@@ -162,7 +181,7 @@ const camScale = zoom / (zoom - camZ);
 - Effects（颜色控制、阴影等）— 大部分是视觉微调
 - Shape layer 的复杂路径（frame 矩形用硬编码近似）
 - Masks
-- 混合模式 (blendMode)
+- 混合模式 (blendMode) — 例外：`mixBlendMode: "difference"` 用于 CLEAN 文字镂空效果，在生成代码中 hardcode 此特例
 - 空间贝塞尔 (spatialIn/Out) — 影响运动路径曲线，视觉差异小
 
 ## 文件位置
@@ -185,5 +204,5 @@ node tools/ae-to-remotion.mjs path/to/ae_full_export.json src/AETitleGenerated.j
 
 1. 脚本读取 `ae_full_export.json`，无报错输出 `AETitleGenerated.jsx`
 2. 生成的文件可直接被 Remotion 渲染（`npx remotion render RemotionRoot AETitleGenerated`）
-3. 渲染结果与手写 `AETitle.jsx` 目测一致（分屏动画、文字出现时序、3D 推进、收尾动画）
+3. 渲染结果与手写 `AETitle.jsx` 目测一致（分屏动画、文字出现时序、3D 推进、收尾动画）。容忍范围：动画时序和主要元素位置匹配，颜色/字号/细微视觉差异（如缺少 effects 的阴影）可接受
 4. 生成的代码可读 — 有注释标注每个 comp/layer 名称
