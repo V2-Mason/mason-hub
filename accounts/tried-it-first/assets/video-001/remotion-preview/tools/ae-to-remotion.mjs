@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ae-to-remotion.mjs
-// Task 1+2+3+4: AE JSON → Remotion JSX generator (static layers + keyframe animation + 3D camera)
+// Task 1+2+3+4+5+6: AE JSON → Remotion JSX generator
 // Usage: node ae-to-remotion.mjs <ae_full_export.json> <output.jsx>
 
 import { readFileSync, writeFileSync, mkdirSync } from "fs";
@@ -37,15 +37,39 @@ function isControlLayer(layer) {
   );
 }
 
+// ── Task 6: Text style lookup ─────────────────────────────────────────────────
+// Maps layer name (lowercased) → style overrides for text layers
+const TEXT_STYLE_MAP = {
+  "clean":       { fontSize: 340, color: "#fcf9f9", letterSpacing: "-0.07em", mixBlendMode: "difference" },
+  "fresh":       { fontSize: 60,  color: "#fcf9f9", letterSpacing: "-0.07em" },
+  "&smart":      { fontSize: 60,  color: "#fcf9f9", letterSpacing: "-0.07em" },
+  "titles":      { fontSize: 60,  color: "#fcf9f9", letterSpacing: "-0.07em" },
+  "from mixkit": { fontSize: 70,  color: "#101010", letterSpacing: "-0.07em" },
+};
+
+/** Known placeholder comp names (case-insensitive match) */
+function isPlaceholderComp(name) {
+  return /^placeholder(_\d+)?$/i.test((name || "").trim()) ||
+    (name || "").toLowerCase().startsWith("placeholder_0") ||
+    (name || "").toLowerCase().startsWith("placeholder_text");
+}
+
+/** Is this a Photo/Video comp used for placeholder? */
+function isPhotoVideoComp(name) {
+  return /photo.*video|video.*photo/i.test(name || "");
+}
+
 // ── Task 3: Keyframe animation code generation ────────────────────────────────
 
 /**
  * Generate a bezier easing expression from a cubicBezier array entry.
- * cubicBezier[dimIndex] = [x1, y1, x2, y2]
- * Falls back to linear (null) if not present.
+ * AE exports cubicBezier as an array where index=dimension.
+ * BUT many comps export only ONE entry (index 0) for all dims → fall back to [0].
  */
 function bezExpr(cubicBezier, dimIndex = 0) {
-  const cb = cubicBezier && cubicBezier[dimIndex];
+  if (!cubicBezier || cubicBezier.length === 0) return null;
+  // Try the dimension-specific entry first, fall back to index 0
+  const cb = cubicBezier[dimIndex] || cubicBezier[0];
   if (!cb || cb.length < 4) return null;
   const [x1, y1, x2, y2] = cb;
   return `bez(${x1}, ${y1}, ${x2}, ${y2})`;
@@ -87,7 +111,6 @@ function genInterpolate1D(varName, keyframes, dimIndex = 0) {
   }
 
   // Normal keyframes: chained ternary with bezier easing
-  // For each segment [i, i+1], use keyframe[i].cubicBezier for easing
   if (n === 2) {
     const f0 = keyframes[0].frame;
     const f1 = keyframes[1].frame;
@@ -153,13 +176,11 @@ function genLayerAnimation(layer, layerVarPrefix) {
 
     if (xDecl) styleOverrides.left = `${layerVarPrefix}_posX - ${anchorX}`;
     if (yDecl) styleOverrides.top = `${layerVarPrefix}_posY - ${anchorY}`;
-    // Z is used for camera depth, not directly as CSS (handled in Task 4 per layer)
   }
 
   // Scale (multi-dimensional: sx, sy)
   const scale = t["Scale"];
   if (scale && scale.animated && scale.keyframes.length >= 2) {
-    // Check if baked constant (all same value) — skip if so
     const firstVal = JSON.stringify(scale.keyframes[0].value);
     const allSame = scale.keyframes.every(kf => JSON.stringify(kf.value) === firstVal);
     if (!allSame) {
@@ -188,6 +209,58 @@ function genLayerAnimation(layer, layerVarPrefix) {
   }
 
   return { varDecls, styleOverrides, transformParts };
+}
+
+// ── Task 5: Matte pair analysis ───────────────────────────────────────────────
+
+/**
+ * Analyze comp layers for matte pairs.
+ * Returns { mattePairs: Map<contentLayer, matteLayer>, splitScreenGroupIds: Set<contentLayerId> }
+ *
+ * In AE JSON: layers are sorted by index ascending. A matte layer (disabled, solid/shape)
+ * precedes the content layer (index = contentLayer.index - 1).
+ * The content layer has trackMatteType set.
+ *
+ * For split-screen detection: look for 2+ content layers sharing the same sourceCompId.
+ */
+function analyzeMattePairs(layers) {
+  // Build map from index → layer for fast lookup
+  const byIndex = new Map();
+  for (const l of layers) byIndex.set(l.index, l);
+
+  // Find content layers that have trackMatteType
+  const mattePairs = new Map(); // contentLayer → matteLayer
+  for (const l of layers) {
+    if (l.trackMatteType) {
+      // The matte is the layer directly ABOVE the content layer in the stack.
+      // In AE JSON, lower index = higher in stack (rendered on top).
+      // So the matte layer has index = contentLayer.index - 1.
+      const matteLayer = byIndex.get(l.index - 1);
+      if (matteLayer) {
+        mattePairs.set(l, matteLayer);
+      }
+    }
+  }
+
+  // Detect split-screen: 2 content layers with same sourceCompId using matte=5013
+  const splitPairGroups = new Map(); // sourceCompId → [contentLayer, ...]
+  for (const [contentLayer] of mattePairs) {
+    if (contentLayer.trackMatteType === 5013 && contentLayer.sourceCompId != null) {
+      const key = String(contentLayer.sourceCompId);
+      if (!splitPairGroups.has(key)) splitPairGroups.set(key, []);
+      splitPairGroups.get(key).push(contentLayer);
+    }
+  }
+
+  // Split screen: pairs where 2+ layers share the same sourceCompId
+  const splitScreenLayerIds = new Set();
+  for (const [, group] of splitPairGroups) {
+    if (group.length >= 2) {
+      for (const l of group) splitScreenLayerIds.add(l.index);
+    }
+  }
+
+  return { mattePairs, splitScreenLayerIds };
 }
 
 // ── Task 1: JSON loader + comp walker ────────────────────────────────────────
@@ -240,7 +313,7 @@ dfsWalk(mainCompId);
 console.log(`Collected ${orderedComps.length} reachable comps (DFS post-order, leaves first):`);
 orderedComps.forEach((c, i) => console.log(`  ${i + 1}. ${c.name}`));
 
-// ── Task 2+3+4: Generate .jsx ─────────────────────────────────────────────────
+// ── Task 2+3+4+5+6: Generate .jsx ─────────────────────────────────────────────────
 
 const lines = [];
 
@@ -260,9 +333,84 @@ lines.push(`  Math.max(-2, Math.min(2, y2))`);
 lines.push(`);`);
 lines.push(``);
 
+// ── Task 6: Shared helper components ──────────────────────────────────────────
+lines.push(`// ── Task 6: Shared helpers ──`);
+lines.push(`const FONT = "Open Sans, Arial Black, Arial";`);
+lines.push(``);
+
+// PlaceholderImage component
+lines.push(`const PlaceholderImage = ({ scale = 1, clipCircle = false, opacity = 1 }) => (`);
+lines.push(`  <div style={{`);
+lines.push(`    position: "absolute", left: "50%", top: "50%",`);
+lines.push(`    transform: \`translate(-50%, -50%) scale(\${scale})\`,`);
+lines.push(`    width: ${mainComp.width}, height: ${mainComp.height}, opacity,`);
+lines.push(`    ...(clipCircle ? { clipPath: "ellipse(578px 578px at 960px 540px)" } : {}),`);
+lines.push(`  }}>`);
+lines.push(`    <div style={{ position: "absolute", inset: 0, backgroundColor: "#009a5a" }} />`);
+lines.push(`    <div style={{`);
+lines.push(`      position: "absolute", inset: 0,`);
+lines.push(`      display: "flex", alignItems: "center", justifyContent: "center",`);
+lines.push(`      transform: "rotate(-44deg) scale(3.07)", opacity: 0.15,`);
+lines.push(`    }}>`);
+lines.push(`      <div style={{ fontFamily: "Arial", fontSize: 12, color: "#222", whiteSpace: "nowrap" }}>`);
+lines.push(`        {"PLACEHOLDER ".repeat(100)}`);
+lines.push(`      </div>`);
+lines.push(`    </div>`);
+lines.push(`  </div>`);
+lines.push(`);`);
+lines.push(``);
+
+// FrameRect component
+lines.push(`const FrameRect = ({ strokeWidth = 10, color = "#fcf9f9", opacity = 1, widthPx = 760, heightPx = 234 }) => (`);
+lines.push(`  <div style={{`);
+lines.push(`    position: "absolute", left: "50%", top: "50%",`);
+lines.push(`    transform: "translate(-50%, -50%)",`);
+lines.push(`    width: widthPx, height: heightPx,`);
+lines.push(`    border: \`\${strokeWidth}px solid \${color}\`,`);
+lines.push(`    boxSizing: "border-box", opacity,`);
+lines.push(`  }} />`);
+lines.push(`);`);
+lines.push(``);
+
+// SplitMatte component
+lines.push(`// Task 5: Split-screen matte component`);
+lines.push(`const SplitMatte = ({ children, frame, startFrame, endFrame, topStartY, bottomStartY, topEase, botEase }) => {`);
+lines.push(`  const topOffset = interpolate(frame, [startFrame, endFrame], [topStartY - 540, 0], {`);
+lines.push(`    extrapolateLeft: "clamp", extrapolateRight: "clamp",`);
+lines.push(`    ...(topEase ? { easing: topEase } : {}),`);
+lines.push(`  });`);
+lines.push(`  const botOffset = interpolate(frame, [startFrame, endFrame], [bottomStartY - 540, 0], {`);
+lines.push(`    extrapolateLeft: "clamp", extrapolateRight: "clamp",`);
+lines.push(`    ...(botEase ? { easing: botEase } : {}),`);
+lines.push(`  });`);
+lines.push(`  return (`);
+lines.push(`    <>`);
+lines.push(`      {/* Top half — overflow hidden */}`);
+lines.push(`      <div style={{ position: "absolute", left: 0, top: 0, width: ${mainComp.width}, height: ${mainComp.height / 2}, overflow: "hidden" }}>`);
+lines.push(`        <div style={{ position: "absolute", left: 0, top: topOffset, width: ${mainComp.width}, height: ${mainComp.height} }}>`);
+lines.push(`          {children}`);
+lines.push(`        </div>`);
+lines.push(`      </div>`);
+lines.push(`      {/* Bottom half — overflow hidden */}`);
+lines.push(`      <div style={{ position: "absolute", left: 0, top: ${mainComp.height / 2}, width: ${mainComp.width}, height: ${mainComp.height / 2}, overflow: "hidden" }}>`);
+lines.push(`        <div style={{ position: "absolute", left: 0, top: botOffset - ${mainComp.height / 2}, width: ${mainComp.width}, height: ${mainComp.height} }}>`);
+lines.push(`          {children}`);
+lines.push(`        </div>`);
+lines.push(`      </div>`);
+lines.push(`    </>`);
+lines.push(`  );`);
+lines.push(`};`);
+lines.push(``);
+
+// Track which split groups have been emitted (to avoid duplicate rendering)
+const emittedSplitGroups = new Set();
+
 // Per comp: one React component
 for (const comp of orderedComps) {
   const fnName = `Comp_${safeName(comp.name)}`;
+
+  // ── Task 5: Matte pair analysis ──
+  const { mattePairs, splitScreenLayerIds } = analyzeMattePairs(comp.layers);
 
   // ── Task 4: Camera detection for Scene_02_main ──
   const cameraLayer = comp.layers.find(l => l.type === "camera");
@@ -284,7 +432,6 @@ for (const comp of orderedComps) {
     lines.push(`  // Task 4: 3D camera perspective`);
     lines.push(`  const zoom = ${zoom.toFixed(3)};`);
 
-    // Camera position Z keyframes
     const camPosKfs = camPosLayer.transform && camPosLayer.transform.Position && camPosLayer.transform.Position.keyframes;
     if (camPosKfs && camPosKfs.length >= 2) {
       const camZDecl = genInterpolate1D("camZ", camPosKfs, 2);
@@ -295,7 +442,6 @@ for (const comp of orderedComps) {
     lines.push(`  const camScale = zoom / (zoom - camZ);`);
     lines.push(``);
 
-    // PLACEHOLDER_02 (first one with animated Z Position)
     const phLayer = comp.layers.find(
       l => l.name === "PLACEHOLDER_02" && l.transform && l.transform.Position && l.transform.Position.animated
     );
@@ -309,8 +455,7 @@ for (const comp of orderedComps) {
   }
 
   // ── Per-layer animation variable declarations ──
-  // Collect unique animated layers by layerVarPrefix
-  const layerAnimMap = new Map(); // layer → { varDecls, styleOverrides, transformParts }
+  const layerAnimMap = new Map();
   const enabledLayers = comp.layers.filter((l) => l.enabled !== false);
   const sortedLayers = [...enabledLayers].sort((a, b) => b.index - a.index);
 
@@ -319,7 +464,6 @@ for (const comp of orderedComps) {
     const prefix = `l${layer.index}_${safeName(layer.name)}`;
     const anim = genLayerAnimation(layer, prefix);
     if (anim.varDecls.length > 0) {
-      // Emit declarations
       for (const decl of anim.varDecls) {
         lines.push(decl);
       }
@@ -331,16 +475,26 @@ for (const comp of orderedComps) {
     lines.push(``);
   }
 
+  // ── Task 5: Generate SplitMatte ease variables if needed ──
+  // Group split-screen pairs: find all content layers in split groups
+  const splitGroups = new Map(); // sourceCompId → [contentLayer sorted by index desc]
+  for (const layer of sortedLayers) {
+    if (splitScreenLayerIds.has(layer.index)) {
+      const key = String(layer.sourceCompId);
+      if (!splitGroups.has(key)) splitGroups.set(key, []);
+      splitGroups.get(key).push(layer);
+    }
+  }
+
   lines.push(`  return (`);
 
-  // Task 4: Wrap all non-placeholder 3D layers inside perspective div
   if (hasCamera) {
     lines.push(`    <AbsoluteFill>`);
     lines.push(`      {/* Camera perspective wrapper */}`);
     lines.push(`      <div style={{ position: "absolute", left: "50%", top: "50%", transform: \`translate(-50%,-50%) scale(\${camScale})\`, width: ${mainComp.width}, height: ${mainComp.height} }}>`);
 
     for (const layer of sortedLayers) {
-      emitLayer(layer, comp, "        ", layerAnimMap, true);
+      emitLayer(layer, comp, "        ", layerAnimMap, true, mattePairs, splitScreenLayerIds, splitGroups);
     }
 
     lines.push(`      </div>`);
@@ -348,7 +502,7 @@ for (const comp of orderedComps) {
   } else {
     lines.push(`    <AbsoluteFill>`);
     for (const layer of sortedLayers) {
-      emitLayer(layer, comp, "      ", layerAnimMap, false);
+      emitLayer(layer, comp, "      ", layerAnimMap, false, mattePairs, splitScreenLayerIds, splitGroups);
     }
     lines.push(`    </AbsoluteFill>`);
   }
@@ -360,7 +514,11 @@ for (const comp of orderedComps) {
 
 // ── Layer emitter (used inline above) ────────────────────────────────────────
 
-function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
+function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp, mattePairs, splitScreenLayerIds, splitGroups) {
+  // ── Task 5: Skip disabled matte source layers ──
+  // Matte layers are disabled and have name "Matte" or "frame N" (shape) — they're already skipped
+  // because we only iterate enabledLayers above. But check anyway.
+
   const needsVisGate =
     (layer.inFrame != null && layer.inFrame > 0) ||
     (layer.outFrame != null && layer.outFrame < comp.totalFrames);
@@ -368,10 +526,97 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
   const inF = layer.inFrame ?? 0;
   const outF = layer.outFrame ?? comp.totalFrames;
 
-  // Comment for each layer
   lines.push(`${indent}{/* [${layer.index}] ${layer.name} (${layer.type}) f${inF}-${outF} */}`);
 
-  const isCommentOnly = layer.type === "camera" || layer.type === "shape";
+  const isCommentOnly = layer.type === "camera";
+
+  // ── Task 5: Handle split-screen matte pairs ──
+  if (splitScreenLayerIds.has(layer.index)) {
+    const key = String(layer.sourceCompId);
+    if (emittedSplitGroups.has(`${comp.name}:${key}`)) {
+      // Already emitted the SplitMatte for this group — skip duplicate
+      lines.push(`${indent}{/* split-screen duplicate — already emitted above */}`);
+      return;
+    }
+    emittedSplitGroups.add(`${comp.name}:${key}`);
+
+    const group = splitGroups.get(key) || [];
+    // group is sorted by index desc; we need to find which is "top" and which is "bottom"
+    // by looking at their starting Y: lower Y = top half, higher Y = bottom half
+    // Actually from our analysis: the content with lower starting Y is the "top" pair
+    // (it slides from low Y UP into center) → this is the top container
+
+    let topLayer = null, botLayer = null;
+    for (const gl of group) {
+      const posKfs = gl.transform && gl.transform.Position && gl.transform.Position.keyframes;
+      if (!posKfs || posKfs.length < 2) continue;
+      const startY = posKfs[0].value[1];
+      const endY = posKfs[posKfs.length - 1].value[1];
+      // startY < endY → slides down (top half content starts above center)
+      // startY > endY → slides up (bottom half content starts below center)
+      if (startY < endY) {
+        topLayer = gl; // slides from low Y → center → top half
+      } else {
+        botLayer = gl; // slides from high Y → center → bottom half
+      }
+    }
+
+    if (!topLayer || !botLayer) {
+      // Fallback: use group[0] and group[1]
+      [topLayer, botLayer] = group.length >= 2 ? [group[0], group[1]] : [group[0], group[0]];
+    }
+
+    const topKfs = topLayer.transform && topLayer.transform.Position && topLayer.transform.Position.keyframes;
+    const botKfs = botLayer.transform && botLayer.transform.Position && botLayer.transform.Position.keyframes;
+
+    const topStartY = topKfs ? topKfs[0].value[1] : 0;
+    const botStartY = botKfs ? botKfs[0].value[1] : mainComp.height;
+    const startFrame = topKfs ? topKfs[0].frame : 0;
+    const endFrame = topKfs ? topKfs[topKfs.length - 1].frame : 15;
+
+    // Extract bezier easing for each
+    const topBez = topKfs && topKfs[0].cubicBezier ? bezExpr(topKfs[0].cubicBezier, 1) : null;
+    const botBez = botKfs && botKfs[0].cubicBezier ? bezExpr(botKfs[0].cubicBezier, 1) : null;
+    const topEaseStr = topBez || "null";
+    const botEaseStr = botBez || "null";
+
+    const childComp = data.comps[String(topLayer.sourceCompId)];
+    const childFnName = childComp ? `Comp_${safeName(childComp.name)}` : `Comp_UNKNOWN`;
+    const startFrame2 = topLayer.startFrame ?? 0;
+    const stretch = topLayer.stretch ?? 100;
+    const stretchFactor = stretch / 100;
+    const frameExpr = startFrame2 === 0 && stretchFactor === 1
+      ? `frame`
+      : startFrame2 === 0 ? `frame / ${stretchFactor}`
+      : stretchFactor === 1 ? `(frame - ${startFrame2})`
+      : `(frame - ${startFrame2}) / ${stretchFactor}`;
+
+    const innerIndent = indent + "  ";
+
+    const hasVis = needsVisGate;
+    if (hasVis) {
+      lines.push(`${indent}{frame >= ${inF} && frame < ${outF} && (`);
+    }
+
+    lines.push(`${hasVis ? innerIndent : indent}<SplitMatte`);
+    lines.push(`${hasVis ? innerIndent : indent}  frame={frame}`);
+    lines.push(`${hasVis ? innerIndent : indent}  startFrame={${startFrame}}`);
+    lines.push(`${hasVis ? innerIndent : indent}  endFrame={${endFrame}}`);
+    lines.push(`${hasVis ? innerIndent : indent}  topStartY={${topStartY}}`);
+    lines.push(`${hasVis ? innerIndent : indent}  bottomStartY={${botStartY}}`);
+    lines.push(`${hasVis ? innerIndent : indent}  topEase={${topEaseStr}}`);
+    lines.push(`${hasVis ? innerIndent : indent}  botEase={${botEaseStr}}`);
+    lines.push(`${hasVis ? innerIndent : indent}>`);
+    lines.push(`${hasVis ? innerIndent : indent}  <${childFnName} parentFrame={${frameExpr}} />`);
+    lines.push(`${hasVis ? innerIndent : indent}</SplitMatte>`);
+
+    if (hasVis) {
+      lines.push(`${indent})}`);
+    }
+    return;
+  }
+
+  // ── Normal layer rendering ──
 
   if (needsVisGate && !isCommentOnly) {
     lines.push(`${indent}{frame >= ${inF} && frame < ${outF} && (`);
@@ -401,12 +646,23 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
           ? `(frame - ${startFrame})`
           : `(frame - ${startFrame}) / ${stretchFactor}`;
 
-      // Get animation data for this precomp layer
       const anim = layerAnimMap.get(layer);
       const hasAnim = anim && (anim.styleOverrides && Object.keys(anim.styleOverrides).length > 0 || anim.transformParts && anim.transformParts.length > 0);
 
+      // ── Task 6: PlaceholderImage for placeholder comps ──
+      if (childComp && (isPhotoVideoComp(childComp.name) || isPlaceholderComp(childComp.name))) {
+        // Render as PlaceholderImage instead of child comp
+        if (inCameraComp && layer.name === "PLACEHOLDER_02") {
+          // Z-scaled placeholder
+          const isCircle = layer.index === 7; // circle-clipped version
+          lines.push(`${innerIndent}<PlaceholderImage scale={${isCircle ? "1.16 * placeZScale" : "1.16"}} clipCircle={${isCircle}} />`);
+        } else {
+          lines.push(`${innerIndent}<PlaceholderImage />`);
+        }
+        break;
+      }
+
       if (hasAnim) {
-        // Build style string for the wrapper div
         const styleParts = [];
         styleParts.push(`position: "absolute"`);
 
@@ -420,7 +676,6 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
           styleParts.push(`opacity: ${anim.styleOverrides.opacity}`);
         }
 
-        // PLACEHOLDER_02 special: apply per-layer Z scale
         let transformStr = "";
         if (inCameraComp && layer.name === "PLACEHOLDER_02") {
           transformStr = `\`scale(\${placeZScale})\``;
@@ -451,6 +706,21 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
         break;
       }
 
+      // ── Task 5: Alpha Inverted (5014) solids — render as overlay ──
+      if (layer.trackMatteType === 5014) {
+        // This is an alpha-inverted solid: renders on top, masking by covering
+        const anim = layerAnimMap.get(layer);
+        const hasAnim = anim && anim.styleOverrides && Object.keys(anim.styleOverrides).length > 0;
+        const styleParts = [`position: "absolute"`, `backgroundColor: "${hex}"`];
+        const w = layer.solidWidth || mainComp.width;
+        const h = layer.solidHeight || mainComp.height;
+        styleParts.push(`width: ${w}`, `height: ${h}`);
+        if (hasAnim && anim.styleOverrides.left !== undefined) styleParts.push(`left: ${anim.styleOverrides.left}`);
+        if (hasAnim && anim.styleOverrides.top !== undefined) styleParts.push(`top: ${anim.styleOverrides.top}`);
+        lines.push(`${innerIndent}<div style={{ ${styleParts.join(", ")} }} />`);
+        break;
+      }
+
       const anim = layerAnimMap.get(layer);
       const hasAnim = anim && (anim.styleOverrides && Object.keys(anim.styleOverrides).length > 0 || anim.transformParts && anim.transformParts.length > 0);
 
@@ -472,8 +742,23 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
     }
 
     case "text": {
-      const text = layer.textContent || layer.name || "";
-      const fontSize = layer.fontSize || 48;
+      // ── Task 6: Skip empty text layers ──
+      const rawText = layer.textContent || layer.name || "";
+      // Skip layers with clearly empty/placeholder names (empty text layer)
+      if (!rawText || rawText === "<empty text layer>" || rawText.trim() === "") {
+        lines.push(`${indent}{/* text layer "${layer.name}" — empty, skipped */}`);
+        break;
+      }
+
+      // ── Task 6: Text style lookup ──
+      const textKey = rawText.toLowerCase().trim();
+      const layerNameKey = (layer.name || "").toLowerCase().trim();
+      const styleOverride = TEXT_STYLE_MAP[textKey] || TEXT_STYLE_MAP[layerNameKey];
+
+      const fontSize = styleOverride ? styleOverride.fontSize : (layer.fontSize || 48);
+      const color = styleOverride ? styleOverride.color : "#ffffff";
+      const letterSpacing = styleOverride ? styleOverride.letterSpacing : undefined;
+      const mixBlendMode = styleOverride ? styleOverride.mixBlendMode : undefined;
 
       const anim = layerAnimMap.get(layer);
       const hasAnim = anim && (anim.styleOverrides && Object.keys(anim.styleOverrides).length > 0);
@@ -484,14 +769,17 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
         `display: "flex"`,
         `alignItems: "center"`,
         `justifyContent: "center"`,
-        `fontFamily: "Arial, sans-serif"`,
+        `fontFamily: FONT`,
         `fontSize: ${fontSize}`,
-        `color: "#ffffff"`,
+        `color: "${color}"`,
         `fontWeight: 800`,
         `textTransform: "uppercase"`,
         `whiteSpace: "nowrap"`,
         `userSelect: "none"`,
       ];
+
+      if (letterSpacing) baseStyle.push(`letterSpacing: "${letterSpacing}"`);
+      if (mixBlendMode) baseStyle.push(`mixBlendMode: "${mixBlendMode}"`);
 
       if (hasAnim) {
         if (anim.styleOverrides.opacity !== undefined) baseStyle.push(`opacity: ${anim.styleOverrides.opacity}`);
@@ -502,14 +790,20 @@ function emitLayer(layer, comp, indent, layerAnimMap, inCameraComp) {
         lines.push(`${innerIndent}  ${part},`);
       }
       lines.push(`${innerIndent}}}>`);
-      lines.push(`${innerIndent}  {${JSON.stringify(text)}}`);
+      lines.push(`${innerIndent}  {${JSON.stringify(rawText)}}`);
       lines.push(`${innerIndent}</div>`);
       break;
     }
 
-    case "shape":
-      lines.push(`${innerIndent}{/* shape layer — TODO */}`);
+    case "shape": {
+      // ── Task 6: Render enabled shape layers as FrameRect ──
+      if (layer.enabled !== false) {
+        lines.push(`${innerIndent}<FrameRect />`);
+      } else {
+        lines.push(`${innerIndent}{/* shape matte "${layer.name}" — disabled, skipped */}`);
+      }
       break;
+    }
 
     default:
       lines.push(`${innerIndent}{/* unknown layer type "${layer.type}" — skipped */}`);
@@ -542,3 +836,6 @@ console.log(`Main export present: ${output.includes("export const AETitleGenerat
 const interpolateCount = (output.match(/interpolate\(/g) || []).length;
 console.log(`interpolate() calls: ${interpolateCount}`);
 console.log(`Camera perspective present: ${output.includes("camScale")}`);
+console.log(`SplitMatte present: ${output.includes("SplitMatte")}`);
+console.log(`PlaceholderImage present: ${output.includes("PlaceholderImage")}`);
+console.log(`FrameRect present: ${output.includes("FrameRect")}`);
