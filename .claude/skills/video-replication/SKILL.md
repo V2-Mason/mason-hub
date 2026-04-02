@@ -1,87 +1,114 @@
 ---
 name: video-replication
-description: AE/视频模板复刻到 Remotion 的标准化流程。触发词：'复刻视频'、'replicate video'、'视频模板'、'remotion 复刻'
+description: Use when replicating AE video templates to Remotion — AE export, JSON translation, frame-by-frame verification with autoresearch iteration loop
 ---
 
-# 视频特效复刻工作流（路线 C）
+# AE → Remotion 视频特效复刻
 
-> AE 导出 JSON → 逐层翻译 → Remotion 渲染
+## Overview
+
+将 After Effects 模板精确复刻为 Remotion 代码。核心方法：AE 导出结构化 JSON → 逐层翻译为 JSX → 以 AE 原片为 ground truth 自动迭代至视觉一致。
+
+## When to Use
+
+- Mason 说"复刻视频"、"replicate video"、"视频模板"、"remotion 复刻"
+- 需要将 AE 模板转为可编程、可参数化的 Remotion 组件
+- 有 AE 原片 MP4 作为参考目标
+
+**不适用：** 从零创作动画（不需要 AE 参考）、纯剪辑拼接（用 ffmpeg）
+
+## Core Pattern
+
+```
+AE 模板 → export_ae_full.jsx → JSON → 翻译(手写/codegen) → Remotion 渲染
+                                                                    ↓
+                                                          autoresearch 循环
+                                                          (对比参考帧 → 修代码 → 重渲染)
+```
 
 ## 流程
 
 ### Phase 1: AE 导出
 
-1. 在 AE 中打开模板项目
-2. **File → Scripts → Run Script File** → 选择 `export_ae_full.jsx`（桌面）
-3. 脚本自动导出 `ae_full_export.json` 到桌面
-4. 把 JSON 复制到项目目录备用
+1. AE 中 **File → Scripts → Run Script File** → `export_ae_full.jsx`
+2. 输出 `ae_full_export.json` 到桌面
+3. 复制到项目目录
 
 > `export_ae_full.jsx` 位置：`C:/Users/hangn/OneDrive/Desktop/export_ae_full.jsx`
 > 输出格式：AE Full Export 2.0（含 baked expressions、cubicBezier、FOV）
 
-### Phase 2: 分析 JSON 结构
+### Phase 2: 分析 JSON
 
 ```bash
-# 查看 comp 树和层级
-python -c "
-import json
-with open('ae_full_export.json') as f:
-    d = json.load(f)
-for cid, comp in d['comps'].items():
-    print(f'{comp[\"name\"]}: {len(comp[\"layers\"])} layers')
-"
+python "${CLAUDE_SKILL_DIR}/scripts/ae-summary.py" ae_full_export.json
 ```
 
-逐 comp 检查：
-- 哪些层有动画（`animated: true`）
-- 哪些层有 Track Matte（`trackMatteType`）
-- 有没有 3D camera（`type: "camera"`）
-- 有没有时间拉伸（`stretch != 100`）
+逐 comp 检查：animated layers、Track Matte、3D camera、时间拉伸
 
 ### Phase 3: 翻译
 
-两种方式：
-- **手写翻译**：逐层读 JSON，手写 Remotion 代码（适合复杂/需要微调的模板）
-- **代码生成器**：`node tools/ae-to-remotion.mjs input.json output.jsx`（适合结构清晰的模板）
+| 方式 | 适用场景 |
+|------|---------|
+| 手写 | 复杂/需微调的模板 |
+| codegen | 结构清晰的模板（`node tools/ae-to-remotion.mjs input.json output.jsx`） |
 
-> 代码生成器位置：`accounts/tried-it-first/assets/video-001/remotion-preview/tools/ae-to-remotion.mjs`
-
-### Phase 4: 渲染 + 对比
+### Phase 4: 渲染
 
 ```bash
-cd accounts/tried-it-first/assets/video-001/remotion-preview
 npx remotion render src/index.jsx <CompositionId> --output=output/result.mp4
 ```
 
-### Phase 5: 逐帧验证
+### Phase 5: 自动迭代验证（autoresearch）
 
-按优先级检查：
-1. **时序** — 每个元素出现/消失的帧数
-2. **方向** — 动画方向（上下/左右/缩放）
-3. **比例** — 文字/框架/图片的相对大小
-4. **缓动** — 运动曲线是否接近
+用 AE 原片作为 ground truth，自动循环修复：
 
-渲染单帧对比：
 ```bash
-npx remotion still src/index.jsx <CompositionId> --frame=17 --output=output/frames/f17.png
+# 1. 提取参考帧
+python "${CLAUDE_SKILL_DIR}/scripts/extract-frames.py" reference.mp4 --out ref-frames/ --fps 29.97
+
+# 2. 提取 Remotion 渲染帧
+python "${CLAUDE_SKILL_DIR}/scripts/extract-frames.py" output/result.mp4 --out render-frames/ --fps 29.97
+
+# 3. 逐帧对比，输出差异最大的帧
+python "${CLAUDE_SKILL_DIR}/scripts/compare-frames.py" ref-frames/ render-frames/
 ```
 
-## 翻译检查清单
+**autoresearch 配置：**
+- **Metric**: 逐帧 SSIM 均值（目标 > 0.95）
+- **Verify**: 渲染 → 提取帧 → SSIM 对比
+- **Modify**: 读 AE JSON 定位差异帧的层/属性 → 修改 JSX
+- **Direction**: maximize SSIM
 
-每次翻译时必须逐项检查：
+手动验证退回条件：SSIM > 0.95 但视觉上仍有违和感（缓动曲线、微妙时序）
+
+## Quick Reference — 翻译检查清单
 
 | # | 检查项 | 规则 |
 |---|--------|------|
-| 1 | Track Matte 配对 | 用 matte 层的 Position.Y 决定显示区域（Y<540=上半），不看 content 的 Y |
-| 2 | 3D 透视 | 有 Z 偏移的层 + 移动 camera = 动态公式 `zoom/(zoom+layerZ-camPosZ)` |
-| 3 | 缩放链 | 每个 scale 只在一处应用。外层 CSS transform 会传递给子元素，不要在 fontSize 上重复 |
-| 4 | frame matte 裁剪 | 被 shape matte 裁剪的文字层必须套 overflow:hidden 容器 |
-| 5 | Alpha Inverted | SVG mask 在 Remotion 不可靠，用替代方案（直接着色或 Canvas） |
-| 6 | Precomp 硬边界 | 每个代表 AE precomp 的 wrapper div 必须加 `clipPath: "inset(0)"`，模拟 precomp 固定尺寸裁剪。详见 [[ae-track-matte-precomp-bounds]] |
-| 7 | SplitMatte 完成后定位 | t >= 1 时不能返回裸 fragment，必须用 `position: absolute` 容器包裹，否则掉入 flex flow 失去 z-stacking |
+| 1 | Track Matte 配对 | matte 层 Position.Y 决定区域（Y<540=上半），不看 content 的 Y |
+| 2 | 3D 透视 | Z 偏移 + 移动 camera = `zoom/(zoom+layerZ-camPosZ)` |
+| 3 | 缩放链 | scale 只在一处应用，CSS transform 传递给子元素，不在 fontSize 重复 |
+| 4 | frame matte 裁剪 | 被 shape matte 裁剪的文字 → `overflow:hidden` 容器 |
+| 5 | Alpha Inverted | SVG mask 在 Remotion 不可靠，用直接着色或 Canvas |
+| 6 | Precomp 硬边界 | precomp wrapper div 必须 `clipPath: "inset(0)"`，模拟 AE 固定尺寸裁剪 |
+| 7 | SplitMatte 完成后 | t>=1 时用 `position: absolute` 包裹，不能返回裸 fragment |
 
-## 已知限制
+## Common Mistakes
 
-- `overflow: hidden` 无法裁剪 `transform: scale()` 放大后的 absolute 子元素（Chromium 行为）
-- cubicBezier 导出格式 `[x,x,y,y]` 不是直接的 CSS bezier，speed=0 时转为 `bez(outX, 0, inX, 1)`
-- SVG `<mask>` 和 CSS `mask-image` 在 Remotion headless 渲染中不工作
+| 问题 | 根因 | 修法 |
+|------|------|------|
+| 绿色/内容铺满整屏 | 缺少 precomp 硬边界，camScale 溢出 | wrapper div 加 `clipPath: "inset(0)"` |
+| 分屏完成后画面跳动 | SplitMatte 返回裸 fragment 进入 flex flow | t>=1 时 `position: absolute` 包裹 |
+| 文字大小不对 | CSS transform scale 传递 + fontSize 重复缩放 | scale 只在一处应用 |
+| overflow:hidden 不裁剪 | Chromium 不裁剪 transform:scale 子元素 | 用 `clipPath: "inset(0)"` 替代 |
+| SVG mask 渲染空白 | Remotion headless 不支持 SVG mask/mask-image | 直接着色或 Canvas |
+| bezier 缓动不对 | cubicBezier `[x,x,y,y]` 不是 CSS 格式 | speed=0 时转 `bez(outX, 0, inX, 1)` |
+
+## 文件说明
+
+| 路径 | 用途 |
+|------|------|
+| `scripts/ae-summary.py` | 解析 AE JSON，输出 comp 树 + 层级 + matte/camera/动画标记 |
+| `scripts/extract-frames.py` | ffmpeg 提取视频帧到目录 |
+| `scripts/compare-frames.py` | SSIM 逐帧对比，输出差异报告 |
+| `reference/ae-json-format.md` | AE Full Export 2.0 JSON 格式文档 |

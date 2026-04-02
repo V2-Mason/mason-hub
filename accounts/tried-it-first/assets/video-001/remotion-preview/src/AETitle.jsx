@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing } from "remotion";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing, Video, staticFile } from "remotion";
 
 // ====================================================================
 // AE → Remotion 精确翻译
@@ -101,7 +101,7 @@ const SplitMatte = ({ children, frame, startFrame, duration, topStartY, bottomSt
   );
 };
 
-// ── 占位图组件 (绿色圆形 + PLACEHOLDER 文字) ──
+// ── 视频背景组件（替换原 placeholder 绿色） ──
 const PlaceholderImage = ({ scale = 1, clipCircle = false, opacity = 1 }) => (
   <div style={{
     position: "absolute", left: "50%", top: "50%",
@@ -111,12 +111,11 @@ const PlaceholderImage = ({ scale = 1, clipCircle = false, opacity = 1 }) => (
       clipPath: "ellipse(578px 578px at 960px 540px)",
     } : {}),
   }}>
-    {/* 绿色底 */}
-    <div style={{
-      position: "absolute", inset: 0,
-      backgroundColor: COLORS.placeholder,
-    }} />
-    {/* PLACEHOLDER 文字已移除 — 以后替换为实际图片/视频 */}
+    <Video
+      src={staticFile("15604877.mp4")}
+      style={{ position: "absolute", inset: 0, width: 1920, height: 1080, objectFit: "cover" }}
+      muted
+    />
   </div>
 );
 
