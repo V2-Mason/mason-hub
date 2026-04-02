@@ -315,7 +315,7 @@ export const AETitle = () => {
                   }}>
                     <div style={{
                       fontFamily: FONT, fontWeight: 800,
-                      fontSize: 60, // 120 * 0.5
+                      fontSize: 120, // AE 原始大小，外层 scale 会缩放
                       color: COLORS.textLight,
                       letterSpacing: "-0.07em",
                       textTransform: "uppercase",
@@ -333,7 +333,7 @@ export const AETitle = () => {
                     }}>
                       <div style={{
                         fontFamily: FONT, fontWeight: 800,
-                        fontSize: 60,
+                        fontSize: 120, // AE 原始大小，外层 scale 会缩放
                         color: COLORS.textLight,
                         letterSpacing: "-0.07em",
                         textTransform: "uppercase",
@@ -352,7 +352,7 @@ export const AETitle = () => {
                     }}>
                       <div style={{
                         fontFamily: FONT, fontWeight: 800,
-                        fontSize: 60,
+                        fontSize: 120, // AE 原始大小，外层 scale 会缩放
                         color: COLORS.textLight,
                         letterSpacing: "-0.07em",
                         textTransform: "uppercase",
@@ -399,7 +399,7 @@ export const AETitle = () => {
                   {/* "from Mixkit" 文字 — 深色 */}
                   <div style={{
                     fontFamily: FONT, fontWeight: 800,
-                    fontSize: 70, // 120 * 0.58
+                    fontSize: 120, // AE 原始大小，外层 scale(0.81) 会缩放
                     color: COLORS.textDark,
                     letterSpacing: "-0.07em",
                     whiteSpace: "nowrap",
