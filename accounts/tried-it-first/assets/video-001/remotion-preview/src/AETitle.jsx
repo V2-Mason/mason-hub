@@ -17,31 +17,31 @@ const bez = (x1, y1, x2, y2) => Easing.bezier(
   Math.max(-2, Math.min(2, y2))
 );
 
-// 常用缓动（从 Lottie JSON 的 bezier 参数）
+// 缓动曲线 — 直接使用 ae_full_export.json 的 cubicBezier [x1, y1, x2, y2]
 const EASE = {
-  // unit_01 分屏: i(0.097,1) o(0.386,0) / i(0.082,1) o(0.386,0)
-  splitTop: bez(0.386, 0, 0.097, 1),
-  splitBot: bez(0.386, 0, 0.082, 1),
-  // unit_02 分屏: i(0.107,1) o(0.529,0)
-  split2: bez(0.529, 0, 0.107, 1),
-  // 3D 相机 push: i(0.295,1) o(0.375,0)
-  camPush: bez(0.375, 0, 0.295, 1),
-  // 3D 相机 settle: i(0.481,1) o(0.735,0)
-  camSettle: bez(0.735, 0, 0.481, 1),
-  // TEXT_02 滑下: i(0.311,1) o(0.524,0)
-  textSlide: bez(0.524, 0, 0.311, 1),
-  // TEXT_02 第二段: i(0.471,1) o(0.5,0)
-  textSlide2: bez(0.5, 0, 0.471, 1),
-  // TEXT_04 弹入: i(0.081,1) o(0.333,0)
-  textPop: bez(0.333, 0, 0.081, 1),
-  // TEXT_05 滑入: i(0.716,1) o(0.259,1)
-  text5Slide: bez(0.259, 1, 0.716, 1),
-  // White solid 擦入: i(0.168,1) o(0.333,0)
-  wipeIn: bez(0.333, 0, 0.168, 1),
-  // Placeholder Z: i(0.369,1) o(0.597,0)
-  placeZ: bez(0.597, 0, 0.369, 1),
-  // from Mixkit 文字: i(0.578,1) o(0.243,1)
-  mixkitText: bez(0.243, 1, 0.578, 1),
+  // unit_01 分屏: content[2] Y:273→540 / content[4] Y:799→540
+  splitTop: bez(0.386, 0.386, 0.097, 0.097),  // content[2]
+  splitBot: bez(0.386, 0.386, 0.082, 0.082),  // content[4]
+  // unit_02 分屏: Scene_02_main Y:1083→540 / Y:-5→540
+  split2: bez(0.529, 0.529, 0.107, 0.107),
+  // 3D 相机 push: Camera position f17→f35
+  camPush: bez(0.375, 0.375, 0.295, 0.295),
+  // 3D 相机 settle: Camera position f35→f45
+  camSettle: bez(0.735, 0.735, 0.481, 0.481),
+  // TEXT_02 滑下: fresh f39→f49
+  textSlide: bez(0.524, 0.524, 0.311, 0.311),
+  // TEXT_02 第二段: fresh f56→f63
+  textSlide2: bez(0.5, 0.5, 0.471, 0.471),
+  // TEXT_04 弹入: titles f59→f68
+  textPop: bez(0.333, 0.333, 0.081, 0.081),
+  // TEXT_05 comp 滑入: f74→f89
+  text5Slide: bez(0.351, 0.351, 0.716, 0.716),
+  // White solid 擦入: f71→f77
+  wipeIn: bez(0.333, 0.333, 0.168, 0.168),
+  // Placeholder Z: f17→f35
+  placeZ: bez(0.597, 0.597, 0.369, 0.369),
+  // from Mixkit 文字内部位移: f0→f20 in TEXT_05
+  mixkitText: bez(0.813, 0.813, 0.578, 0.578),
 };
 
 // 文字内容（从 Lottie JSON chars + 结构文件）
