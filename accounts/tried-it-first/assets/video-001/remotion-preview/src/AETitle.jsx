@@ -232,27 +232,34 @@ export const AETitle = () => {
           easeTop={EASE.splitBot}
           easeBot={EASE.splitTop}
         >
-          {/* TEXT_01_comp 内容: TEXT_01 作为 Matte + BG + PLACEHOLDER_01 */}
+          {/* TEXT_01_comp: PLACEHOLDER_01 + BG(白色) alpha-inverted by TEXT_01 */}
+          {/* 效果：白色覆盖全屏，文字形状处挖空露出绿色占位图 */}
           <AbsoluteFill>
-            {/* PLACEHOLDER_01 背景 */}
+            {/* 底层：绿色占位图 */}
             <PlaceholderImage />
-            {/* BG (白色，被 TEXT_01 遮罩裁剪 — 文字镂空效果) */}
-            {/* TEXT_01 "CLEAN" 字体 587px, 白色 */}
-            <div style={{
-              position: "absolute", left: "50%", top: "50%",
-              transform: "translate(-50%, -50%)",
-              fontFamily: FONT, fontWeight: 800,
-              fontSize: 340, // 587 * 0.58 ≈ 340
-              color: COLORS.textLight,
-              letterSpacing: "-0.07em",
-              textTransform: "uppercase",
-              whiteSpace: "nowrap",
-              userSelect: "none",
-              // 混合模式模拟文字遮罩: 文字区域显示占位图，其余白色
-              mixBlendMode: "difference",
-            }}>
-              {TEXTS.clean}
-            </div>
+            {/* 上层：白色 BG，文字区域用 SVG mask 挖空 */}
+            <svg width="1920" height="1080" style={{ position: "absolute", inset: 0 }}>
+              <defs>
+                <mask id="cleanTextMask">
+                  {/* 白色 = 可见区域 */}
+                  <rect width="1920" height="1080" fill="white" />
+                  {/* 黑色文字 = 挖空区域 */}
+                  <text
+                    x="960" y="540"
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontFamily={FONT}
+                    fontWeight="800"
+                    fontSize="340"
+                    letterSpacing="-0.07em"
+                    fill="black"
+                  >
+                    {TEXTS.clean}
+                  </text>
+                </mask>
+              </defs>
+              <rect width="1920" height="1080" fill={COLORS.bg} mask="url(#cleanTextMask)" />
+            </svg>
           </AbsoluteFill>
         </SplitMatte>
       )}
