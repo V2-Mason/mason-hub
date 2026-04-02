@@ -8,6 +8,7 @@ import { AnuaPromo } from "./AnuaPromo.jsx";
 import { AnuaV2 } from "./anua-v2/index.jsx";
 import { LottieTest } from "./LottieTest.jsx";
 import { AETitle } from "./AETitle.jsx";
+import { AETitleGenerated } from "./AETitleGenerated.jsx";
 
 const V2_PROPS = { durationInFrames: 30 * 9, fps: 30, width: 1920, height: 1080 };
 
@@ -33,6 +34,7 @@ export const RemotionRoot = () => {
       <Composition id="Lottie-Test" component={LottieTest} durationInFrames={150} fps={30} width={1920} height={1080} />
       {/* === AE 精确翻译 === */}
       <Composition id="AE-Title" component={AETitle} durationInFrames={150} fps={30} width={1920} height={1080} />
+      <Composition id="AE-Title-Generated" component={AETitleGenerated} durationInFrames={150} fps={30} width={1920} height={1080} />
       <Composition
         id="Orbit-Lottie"
         component={OrbitDemo}
