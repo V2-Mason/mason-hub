@@ -36,6 +36,18 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/projects/mason-hub/scripts/hooks/research-pipeline-guard.sh",
+            "timeout": 5,
+            "statusMessage": "检查调研管线..."
+          }
+        ]
+      }
+    ],
     "PreCompact": [
       {
         "hooks": [
