@@ -1,1 +1,4402 @@
-[]
+[
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for email-patrol-mcp",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for email-patrol-mcp",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for email-patrol-mcp",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-ubfzwayaupychs4ldi4h2q@mail.anthropic.com",
+    "subject": "[action needed] Your Claude API access is turned off",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "A credit on us, plus discounts on extra usage",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "news@m.elements.envato.com",
+    "subject": "Create smarter, not harder with AI",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "mail@e.adobe.com",
+    "subject": "Get started with your Creative Cloud apps today",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "Skip rebuilds, guardrails, better CLI",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "You're getting through your platform usage fast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "You're getting through your platform usage fast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@mail.artlist.io",
+    "subject": "Get every leading AI model in one place",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "Prepaid usage exceeded: Good job putting Apify to work!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "You're getting through your platform usage fast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@mail.motionarray.com",
+    "subject": "VVick, get everything you need to create eye-catching content",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.pencil.dev",
+    "subject": "New Pencil.dev Look, Slides Mode, Revamped Styleguides and more",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "do-not-reply@account.envato.com",
+    "subject": "Verify your email",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@mail.artlist.io",
+    "subject": "VVick, subscribe today for 2 extra months FREE",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "education@figma.com",
+    "subject": "Sign up for Figma Education",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "security@facebookmail.com",
+    "subject": "Action needed on your Facebook account",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "pixabay@community.pixabay.com",
+    "subject": "Don't miss out on awesome features!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "announcements@figma.com",
+    "subject": "Ready to jam?",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@mail.motionarray.com",
+    "subject": "VVick, welcome to Motion Array!",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "news@m.elements.envato.com",
+    "subject": "Welcome to Envato, VVick 🎉",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "mail@e.adobe.com",
+    "subject": "Welcome to your Creative Cloud membership",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "message@adobe.com",
+    "subject": "Creative Cloud: Please verify your email address",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "store@adobe.com",
+    "subject": "Thanks for your purchase!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@mail.artlist.io",
+    "subject": "VVick, here’s how to find exactly what you need",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Get your flowers blooming 🌸",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "payments-noreply@google.com",
+    "subject": "Google: We've received your payment for 8238-8863-6520",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "payments-noreply@google.com",
+    "subject": "Google Workspace: Your invoice is available for vvickford@gmail.com",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "news@m.elements.envato.com",
+    "subject": "Still looking for Video Templates, VVick?",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "news@m.elements.envato.com",
+    "subject": "Welcome to Envato, VVick!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "do-not-reply@account.envato.com",
+    "subject": "Your Envato and Google accounts are now connected",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "do-not-reply@account.envato.com",
+    "subject": "Welcome to Envato",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleaistudio-noreply@google.com",
+    "subject": "[Action Required] Review your Google AI Studio usage tier status to avoid service disruption in Apr 2026",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@mail.artlist.io",
+    "subject": "Welcome to Artlist",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@news.termius.com",
+    "subject": "Termius March News: Post-quantum cryptography",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "🏆 To Succeed, You'll Need to Publish 8 Episodes",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@m1.jitter.video",
+    "subject": "Welcome to Jitter! Let's get you started.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "🔌 OpenClaw gets Apify, improved mcpc, scrape with plain English 🗣️",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "announcements@figma.com",
+    "subject": "Ready to level up?",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "2 weeks until tax deadline, VVick ⏰",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "pixabay@community.pixabay.com",
+    "subject": "👋Welcome to Pixabay! Let's get you started.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@priority.facebookmail.com",
+    "subject": "See 12 updates: about Daily Troll Videos and others",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "🎧 Let's Get Your Show on Spotify & Apple Podcasts Today!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.shopify.com",
+    "subject": "Starting March 30: New team roles and store management",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "system@notice.aliyun.com",
+    "subject": "阿里云备案订单处理通知",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "announcements@figma.com",
+    "subject": "Welcome to Figma! Let's get you set up.",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "care@em.feedly.com",
+    "subject": "Filter out even more noise in your news feeds with Pro+",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "It’s brunch season, VVick 🎉",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "New: Let Claude Code keep working while you’re away",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "admin@mail.capcut.com",
+    "subject": "Invite your team to this teamspace at CapCut!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "verify@service.bilibili.com",
+    "subject": "【哔哩哔哩】账号安全中心-绑定手机",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "verify@service.bilibili.com",
+    "subject": "哔哩哔哩】账号安全中心-改密操作提醒",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "verify@service.bilibili.com",
+    "subject": "【哔哩哔哩】账号安全中心-绑定邮箱验证",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "➡️ Here's How to Upload and Publish Your First Episode",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "One-click CDN, Railway x Stripe Projects, HA Postgres",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] Claude is requesting updated permissions",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "⏺️ How to Record & Edit Your First Podcast Episode",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@notify.docker.com",
+    "subject": "[Docker] You + Docker = Ready for Action",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@notify.docker.com",
+    "subject": "[Docker] Complete your account creation – one-time verification code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A third-party GitHub Application has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Mason, try creating a channel in Slack",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@slack.com",
+    "subject": "Your trial of Slack’s Pro plan has ended",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "🍋 From film-first branding to Sprite’s refreshing refresh",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@statuspage.io",
+    "subject": "[Claude status] Confirm your subscription",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@github.com",
+    "subject": "Important Update to GitHub Copilot Interaction Data Usage Policy",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@comms.runwayml.com",
+    "subject": "One week left to enter Runway's Big Ad Contest",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[V2-Mason/socialmesh2] Run failed: Build Production Image - main (5713386)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[V2-Mason/socialmesh2] Run failed: Build - main (5713386)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[V2-Mason/socialmesh2] Run failed: Build - main (f34add7)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[V2-Mason/socialmesh2] Run failed: Build - main (86d8fb0)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[V2-Mason/socialmesh2] Run failed: Build Production Image - main (f34add7)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[V2-Mason/socialmesh2] Run failed: Build Production Image - main (86d8fb0)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business login alerts",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "💡 How to Come Up with Podcast Episode Ideas",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@slack.com",
+    "subject": "You've got 8 unread messages",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "care@em.feedly.com",
+    "subject": "Lesson 3: Save your favorite articles to Boards",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@priority.facebookmail.com",
+    "subject": "You have 1 notification about Jeanette",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Keep it all organized in channels",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@slack.com",
+    "subject": "You have 3 more days to access Slack’s premium features",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleone-noreply@google.com",
+    "subject": "Save 16% by switching to an annual plan",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "🤔 Choosing the Right Format for Your Podcast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "Start building your own Actors",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "care@em.feedly.com",
+    "subject": "Lesson 2: Simplify your feed and organize your sources",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[WhiteBatMetro/EVMRefund-74346] Unclaimed ETH fees refund found: 0.4982 ETH available to refund (Discussion #4)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleplay-noreply@google.com",
+    "subject": "Your Google Play Order Receipt from Mar 21, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "New dashboard layout, DNS management, queries for all databases, smart diagnosis",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@community.apify.com",
+    "subject": "New Home Depot Reviews Scraper on Apify — Ratings, Filters & Full Review Data",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "See the best seafood in every state 🌊",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@facebookmail.com",
+    "subject": "Confirm your business email",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@business-updates.facebook.com",
+    "subject": "Your Meta funds receipt (Account ID: 1007983518568186)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@facebookmail.com",
+    "subject": "Confirm your business email",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "⚠️ Your Podcast’s Branding Matters - Here’s How to Get It Right",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "security@facebookmail.com",
+    "subject": "Did you just log in near Havertown on a new device?",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Run multiple tasks at once with Cowork",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@dev.tiktok.com",
+    "subject": "Your app status update",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "security@facebookmail.com",
+    "subject": "Did you just log in near Havertown on a new device?",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@developers.facebook.com",
+    "subject": "Getting Started with Marketing API",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@notifications.tiktok.com",
+    "subject": "TikTok Business Center Approved",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements+acct_1hnrvlcjopsrzqsd@stripe.com",
+    "subject": "Your receipt from Railway Corporation #2407-0322",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_SOURCE"
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business login alerts",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply-invoice@commercial.tiktok.com",
+    "subject": "TikTok For Business Invoice # BDTTUSA20261425149",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "ads-account-noreply@google.com",
+    "subject": "Your manager account’s (Mason Xu) linking invitation was accepted\r\n",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@facebookmail.com",
+    "subject": "Confirm your business email",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "ads-account-noreply@google.com",
+    "subject": "Your manager account (Mason Xu) sent an account linking invitation",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "ads-account-noreply@google.com",
+    "subject": "Get started with your Google Ads manager account, (Mason Xu)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "Control your Actors via API",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@facebookmail.com",
+    "subject": "Welcome to Facebook",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "registration@facebookmail.com",
+    "subject": "86952 is your confirmation code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@slack.com",
+    "subject": "You've got 3 unread messages",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "🎙️ How to Choose the Perfect Podcast Name",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "care@em.feedly.com",
+    "subject": "Lesson 1: Bring your favorite content to Feedly",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@slack.com",
+    "subject": "Mason HQ's free trial of Slack Pro ends in 7 days",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "🐄 Protein branding, but make it quiet",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@comms.runwayml.com",
+    "subject": "Two weeks. One ad. Up to $100k in prizes.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleaistudio-noreply@google.com",
+    "subject": "[Billing Update] Gemini API usage tier updates and billing caps starting Apr 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "🎙️ How to Narrow Down Your Topic: The Key to Growing Your Podcast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "How to start a conversation in Slack",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@github.com",
+    "subject": "[TrapMillipedeStart/CIawEcosystem-1764124] OpenClaw GitHub Contributors Distribution: 5002 $CLAW Confirmed (Discussion #4)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "care@em.feedly.com",
+    "subject": "A quick hello",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "You're getting through your platform usage fast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "You're getting through your platform usage fast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "You're getting through your platform usage fast",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Where to go green ☘️",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Let Cowork do something real for you",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "care@em.feedly.com",
+    "subject": "👋 Welcome to Feedly",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "success@podcasters.rss.com",
+    "subject": "🎙️ Welcome to RSS.com! Let’s Get Your Podcast Started",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mail.rss.com",
+    "subject": "Your RSS.com validation code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "Integrate Actors into your workflows",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@e.godaddy.com",
+    "subject": "Your March account summary is ready for review! Stay up to date.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Banh mi, oh my!",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "billing@apify.com",
+    "subject": "Apify invoice #202603141316 payment successful",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "Platform usage exceeded",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@apify.com",
+    "subject": "👋 Welcome to Apify!",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "One-click highly available Postgres, Buckets in CLI",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@research.anthropic.com",
+    "subject": "We'd love your take on the Claude desktop app",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Integrate your favorite tools with Cowork",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Need help getting started in Slack?",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@dev.tiktok.com",
+    "subject": "Stay Compliant with TikTok’s Batch Compliance API",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "🌐 Inside the next wave of global design studios",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2666-9043-4776",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-qbayhawts8czezwjqpwm0g@mail.anthropic.com",
+    "subject": "[action needed] Your Claude API access is turned off",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "feedback@slack.com",
+    "subject": "[Slack] Notification about invalidated webhook URLs",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "feedback@slack.com",
+    "subject": "[Slack] Notification about invalidated webhook URLs",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2260-1049-3282",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-_ppx1cskoehld3so2dbwpw@mail.anthropic.com",
+    "subject": "[action needed] Your Claude API access is turned off",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "Pro tip: Evernote shortcuts",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@termius.com",
+    "subject": "[Action Required] Your Termius trial has ended",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2688-8944-3977",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleaistudio-noreply@google.com",
+    "subject": "[Gemini API] Build multimodal RAG with new Gemini Embedding",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Railway usage alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Your guide to getting started in Slack",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "cloudplatform-noreply@google.com",
+    "subject": "[Action Advised] Review Google Cloud credential security best practices",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "Make collaboration effortless",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "cloudquota@google.com",
+    "subject": "[#3f46d081421f416590] Quota Increase Request [ref:qJMzoW+xnhGVfucy6WQhPPwj:ref]",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "cloudquota@google.com",
+    "subject": "[#3f46d081421f416590] Quota Increase Request [ref:qJMzoW+xnhGVfucy6WQhPPwj:ref]",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "We’re spilling the (matcha) tea",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@termius.com",
+    "subject": "Your Termius Trial Expires Soon",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "cloudquota@google.com",
+    "subject": "[#9e46b2937d874f3398] Quota Increase Request [ref:zd3UJn1uKzhI4qBv3uKvWRbS:ref]",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "cloudquota@google.com",
+    "subject": "[#9e46b2937d874f3398] Quota Increase Request [ref:zd3UJn1uKzhI4qBv3uKvWRbS:ref]",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "payments-noreply@google.com",
+    "subject": "Google: We've received your payment for 8238-8863-6520",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2227-7810-5623",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "Buy Domains on Railway, New Layout, AI Agent Panel",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "info@admin.manus.im",
+    "subject": "Manus Year One: Our First Annual Letter",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@slack.com",
+    "subject": "You've got 3 unread messages",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Invite your team to Slack today!",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "Everything you need to plan your day, in one app",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "👩‍💻The job title holding designers back",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mdreader.bener.cc",
+    "subject": "Confirm your Markdown Reader account",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Level up your lunch break 🍴",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Your teammates are missing out",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "Make Evernote yours",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@learn.termius.com",
+    "subject": "Unlock more with your extra week of Termius",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "AI-powered productivity is here",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.slackhq.com",
+    "subject": "Mason, invite your team to Slack",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "6 ways you can capture content in Evernote",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@updates.evernote.com",
+    "subject": "Welcome to Evernote",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.evernote.com",
+    "subject": "Your transcription is waiting for you",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "payments-noreply@google.com",
+    "subject": "Google Workspace: Your invoice is available for vvickford@gmail.com",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Celebrate Women’s History Month 🎉",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "teamzoom@zoom.us",
+    "subject": "Explore advanced features for enhanced collaboration.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Ramen in San Francisco worth raving about 🍜",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "account02@xiaohongshu.com",
+    "subject": "小红书后台管理系统账号开通",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] Claude is requesting updated permissions",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "payments-noreply@google.com",
+    "subject": "Google: We've received your payment for 8238-8863-6520",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "Smart Diagnosis, IPv6 Support,  Agent Skill 2.0",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements+acct_1s46sebjososgwel@stripe.com",
+    "subject": "Your receipt from X Developer Platform #2821-7932",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_SOURCE"
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A new public key was added to V2-Mason/surenxuan",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "teamzoom@zoom.us",
+    "subject": "Master your meetings with Zoom recordings today!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2617-3367-2066",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Spring break plans still TBD?",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-gsn2mjtaff7jaczfwltrka@mail.anthropic.com",
+    "subject": "[action needed] Your Claude API access is turned off",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Tips to get the most out of Claude Code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "system@notice.aliyun.com",
+    "subject": "阿里云备案《初审未通过》通知",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "🌱 Sustainability that’s more than just a color palette",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "team@learn.termius.com",
+    "subject": "Welcome to Termius",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "teamzoom@zoom.us",
+    "subject": "This is how you work collaboratively with Zoom.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@slack.com",
+    "subject": "Mason HQ has started a free trial of Slack Pro",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2746-3685-6390",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "store+92272525614@t.shopifyemail.com",
+    "subject": "680547 is your code",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-ed5g7gxxuufxcms6t5imgzwc@slack.com",
+    "subject": "Mason HQ on Slack: New Account Details",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A new SSH authentication public key was added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "feedback@slack.com",
+    "subject": "Slack account sign in from a new device",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "system@notice.aliyun.com",
+    "subject": "域名邮箱验证通知",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A personal access token (classic) has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.pencil.dev",
+    "subject": "Introducing Pencil SWARM mode - Autonomous Design Agency",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Ship your first major feature with Claude Code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@comms.runwayml.com",
+    "subject": "Kling 3.0 and more are now Available in Runway",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Welcome to Claude Code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "updates@e.stripe.com",
+    "subject": "Test your checkout",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "teamzoom@zoom.us",
+    "subject": "Ready, Set, Zoom! Let’s get started.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleaistudio-noreply@google.com",
+    "subject": "Hi Vvick, welcome to Google AI Studio",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Pucker up—it’s Margarita Day! 🍋‍🟩",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "10 Outrageous Restaurants List 🍽️",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleplay-noreply@google.com",
+    "subject": "Your Google Play Order Receipt from Feb 21, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "DDoS protection, Railway domains, better canvas state",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "New in Claude Code: Sonnet 4.6, desktop app upgrades, and more",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.pencil.dev",
+    "subject": "Pencil.dev: 100,000 users, Windows app, Design with Codex, Figma import",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements+acct_1hnrvlcjopsrzqsd@stripe.com",
+    "subject": "Your receipt from Railway Corporation #2586-7042",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_SOURCE"
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "⛷️ The Winter (design) Olympics",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleone-updates-noreply@google.com",
+    "subject": "Your month with Google One",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@e.godaddy.com",
+    "subject": "Important: We've updated our terms.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements+acct_1nsd1ak1qybhggdp@stripe.com",
+    "subject": "Your receipt from Meshy #2502-0512",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_SOURCE"
+  },
+  {
+    "sender": "no-reply@news.meshy.ai",
+    "subject": "Thanks for staying with Meshy — Your Loyalty Credits are here",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@e.godaddy.com",
+    "subject": "Your February account summary is ready for review! Stay up to date.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Get more from Claude with these power moves (5/5)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "Chat with your Canvas, DB Metrics, Network flows",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "For the last minute daters ❤️",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "You have codespaces that are about to be deleted",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@comms.runwayml.com",
+    "subject": "Early bird pricing ends soon: secure your seat",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@dev.tiktok.com",
+    "subject": "Stay Compliant with TikTok’s Batch Compliance API",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@news.railway.app",
+    "subject": "Deploy to Railway with Claude, Codex, Cursor, and more",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "🧼 💧 Fabulosa’s bold rebrand for TikTok",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok for Business Verification help",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@notifications.tiktok.com",
+    "subject": "TikTok Business Center Approved",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "info@naics.com",
+    "subject": "Your NAICS Association order from February 12, 2026 is complete",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "info@naics.com",
+    "subject": "Your NAICS Association order has been received!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mail.authorize.net",
+    "subject": "Transaction Receipt from NAICS Association, LLC for $9.95 (USD)",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@ads-service.tiktok.com",
+    "subject": "TikTok Ads Verification Code",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Find things to do in San Francisco. 🥾",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Using Claude for your everyday life (4/5)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@dribbble.com",
+    "subject": "Expert design services available for purchase now ⚡",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Start Collecting Referral Credits",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "info@admin.manus.im",
+    "subject": "Your Manus Subscription Has Expired",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@manus.im",
+    "subject": "Re: My billing cycle is on the 7th each month. I did downgraded before ...",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@manus.im",
+    "subject": "Re: refund",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "rachel@manus-93df2ee58c37.intercom-mail.com",
+    "subject": "Re: refund",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements+acct_1r15xbhkfkp4fcs9@stripe.com",
+    "subject": "Your refund from Manus AI #3008-3553",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_SOURCE"
+  },
+  {
+    "sender": "support@manus.im",
+    "subject": "Re: refund",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "rachel@manus-93df2ee58c37.intercom-mail.com",
+    "subject": "Re: refund",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@manus.im",
+    "subject": "Re: refund",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "rachel@manus-93df2ee58c37.intercom-mail.com",
+    "subject": "Re: refund",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for generous-laughter",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for modest-compassion",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for generous-laughter",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for modest-compassion",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "Build failed for modest-compassion",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A first-party GitHub OAuth application has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "hello@notify.railway.app",
+    "subject": "All aboard! Welcome to Railway!",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A third-party GitHub Application has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.pencil.dev",
+    "subject": "Your Activation Code",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "GitHub Copilot: What’s in your free plan 🤖",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "Check out some of our most popular designers 🔥",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@google.com",
+    "subject": "✅ Vvick, finish setting up your Apple iPhone device with the latest Google apps",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Bring your ideas to life with Artifacts (3/5)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@n.dribbble.com",
+    "subject": "Discover the world’s top designers 👀",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@mail.anthropic.com",
+    "subject": "Re: Cancel my redemption",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Find your next perfect meal with Yelp 🙌",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2333-0130-3763",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@mail.anthropic.com",
+    "subject": "Re: Cancel my redemption",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2157-8652-4199",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-2ueo6c3ih7d-vfvfazdszq@mail.anthropic.com",
+    "subject": "Mason sent you a gift: Claude Pro",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2108-6393-8107",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@mail.anthropic.com",
+    "subject": "Your receipt from Anthropic, PBC #2950-3074-5198",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply-nct-az7bbal219b9zu9vug@mail.anthropic.com",
+    "subject": "Welcome to the Pro plan",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleplay-noreply@google.com",
+    "subject": "Updates to how privacy settings work on Play",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "5 ways Claude can work with you (2/5)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Remember to set up your business email",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace@google.com",
+    "subject": "[Reminder] Your Google Workspace free trial is ending",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "💸✨ Save up to 25% with an eRank Annual Plan",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "The secret to your first \"aha moment\" with Claude (1/5)",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@dev.tiktok.com",
+    "subject": "Your Application to Commercial Content API is Approved!",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Google Workspace billing for vvickford@gmail.com starts tomorrow",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mail.manus.im",
+    "subject": "VVick Ford has invited you to visit chowbus-route-planner",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] Please verify your device",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@mail.yelp.com",
+    "subject": "Welcome to Yelp, VVick ✨",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@email.claude.com",
+    "subject": "Welcome to Claude — let’s get started",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Your recommendations: Save time with AI in Google Workspace",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "payments-noreply@google.com",
+    "subject": "Google Workspace: Your invoice is available for mattera3dprint.com",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "🤫 What Top Sellers don’t want you to know",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Explore your Google Workspace trial for mattera3dprint.com",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Get a custom business email as part of your Workspace plan",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "updates@e.stripe.com",
+    "subject": "Connect your tools to Stripe with the App Marketplace",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] Please verify your device",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "🛍️🔍 Are shoppers finding your listings? Now you’ll know.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "calendar-noreply@google.com",
+    "subject": "Google Calendar now shows events from Gmail",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "reserve-noreply@google.com",
+    "subject": "Your reservation at Gabriel Kreuther is confirmed",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "The ultimate guide to gifting",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "Deals, delivered! ✨📬✨",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Your recommendations: Easily stay in sync with your team",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@squarespace.com",
+    "subject": "WHOIS Contact Message: mattera3dprint.com",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googlecloud@google.com",
+    "subject": "Upskill and succeed with Google Cloud",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Your recommendations: Tools designed to keep you in the flow",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notification@tripo3d.ai",
+    "subject": "⏰ Last 3 Days! Upgrade to Annual & Get a Free 3D Model + Win Grand Rewards",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "💾🔖 Save and organize your best keywords",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "Get fantastic picks (just for you!) in the app",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleone-noreply@google.com",
+    "subject": "VVick, you’ve got storage to share 🎉",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "📲 Etsy’s better with the app!",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googlecloud@google.com",
+    "subject": "Explore the power of AI with Vertex AI",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleone-noreply@google.com",
+    "subject": "Save 16% by switching to an annual plan",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googlecloud@google.com",
+    "subject": "Launch and learn with interactive, prebuilt solutions",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Your recommendations: Get more from Google Workspace",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "Learn from the best 🎓⭐",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "google-gemini-noreply@google.com",
+    "subject": "Hey VVick, welcome to Gemini",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "Find what you love, faster",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleone-updates-noreply@google.com",
+    "subject": "Storage tips from Google One",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "Etsy makes gifting easy!",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@reddit.zendesk.com",
+    "subject": "[Reddit Support] Re: Your request sent to Reddit Support",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@google.com",
+    "subject": "VVick, review your Google Account settings",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@streamlit.io",
+    "subject": "Complete code challenge",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "drive-shares-noreply@google.com",
+    "subject": "You’ve been added to the shared drive Market Intelligence Data",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A new public key was added to V2-Mason/3d-printing-dashboard",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "2-Step Verification turned on",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googlecloud@google.com",
+    "subject": "You have upgraded to a paid Google Cloud account",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Welcome to Google Workspace",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@squarespace.com",
+    "subject": "[Action Required] Verify your Squarespace domain contact",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "You've successfully purchased mattera3dprint.com",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace@google.com",
+    "subject": "Your Google Workspace billing information was received",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "Want more traffic? 🚀 Start with better keywords. 🔑",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@news.meshy.ai",
+    "subject": "📢 Meshy 6 is Here: Smoother, Sharper & More Accurate",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "4 great ways to make it perfectly personalized",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "google-gemini-noreply@google.com",
+    "subject": "You’re now using Gemini on web",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "streamlitcommunity@snowflake.com",
+    "subject": "Deploying apps with Streamlit Community Cloud  🚀",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@comms.runwayml.com",
+    "subject": "Available now: Gen-4.5 Image to Video",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@redditmail.com",
+    "subject": "Havertown locals, dive into discussions in r/Delco and r/montco.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "All set! Thanks for adding vvickford@gmail.com billing information for Google Workspace Business Plus",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "workspace-noreply@google.com",
+    "subject": "Welcome to Google Workspace",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleone-noreply@google.com",
+    "subject": "Welcome to Google One, VVick",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googleplay-noreply@google.com",
+    "subject": "Your Google Play Order Receipt from Jan 21, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "googlecloud@google.com",
+    "subject": "Welcome to your Google Cloud Free Trial",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "quality@account.g2.com",
+    "subject": "Approved: Your G2 Review of Meshy",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A third-party GitHub Application has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] Sudo email verification code",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "⚡ Quick fixes. 📈 Big results.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A new public key was added to V2-Mason/3d-printing-dashboard",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A previously authorized third-party OAuth application has been granted additional scopes",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A personal access token (classic) has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A fine-grained personal access token has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@github.com",
+    "subject": "[GitHub] A third-party OAuth application has been added to your account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "looker-studio-noreply@google.com",
+    "subject": "Welcome to Looker Studio",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@redditmail.com",
+    "subject": "People in r/apple are discussing Consumer Electronics. Join the conversation.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@dev.tiktok.com",
+    "subject": "TikTok Account Verification",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@reddit.zendesk.com",
+    "subject": "API Access Request Submission",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@redditmail.com",
+    "subject": "Your Reddit developer account has been created!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "👋 Welcome to Etsy!",
+    "tier": "BLACK",
+    "action": "proposed_delete",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "email@email.etsy.com",
+    "subject": "Welcome",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "support@erank.com",
+    "subject": "✅ Your eRank account is created",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@account.g2.com",
+    "subject": "G2 Email Verification",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@news.meshy.ai",
+    "subject": "Write G2 Review and Claim Your 1000 Credits!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@stripe.com",
+    "subject": "Activate your Stripe account to start accepting payments",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_HIT"
+  },
+  {
+    "sender": "notifications@stripe.com",
+    "subject": "Continue setting up your Stripe account",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_HIT"
+  },
+  {
+    "sender": "notifications@stripe.com",
+    "subject": "Follow these steps to get up and running on Stripe",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_HIT"
+  },
+  {
+    "sender": "csat@godaddy.com",
+    "subject": "Share your thoughts with our Domain Broker Service team.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "donotreply@godaddy.com",
+    "subject": "Refund for order: 3993079134R",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mail.manus.im",
+    "subject": "Your Manus T-shirt is ready",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "domainbrokerservice@a.godaddy.com",
+    "subject": "MATTERA.COM - Domain Broker Service [ACTION REQUIRED]",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "donotreply@e.godaddy.com",
+    "subject": "Your recent purchase is waiting for you.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "donotreply@godaddy.com",
+    "subject": "Account Alert: Your settings were updated.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "donotreply@godaddy.com",
+    "subject": "VVick, your order confirmation is inside.",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@runwayml.com",
+    "subject": "Your receipt from Runway AI, Inc. #2857-8582",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements@runwayml.com",
+    "subject": "Your receipt from Runway AI, Inc. #2097-0908",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@sketchfab.com",
+    "subject": "Welcome to Sketchfab!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "help@acct.epicgames.com",
+    "subject": "Epic Games - Email Verification",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "help@acct.epicgames.com",
+    "subject": "Epic Games - Email Verification",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@stripe.com",
+    "subject": "Verify your email",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_HIT"
+  },
+  {
+    "sender": "notifications@stripe.com",
+    "subject": "Set up your Stripe account",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_HIT"
+  },
+  {
+    "sender": "googlepay-noreply@google.com",
+    "subject": "VVick, you added a new card to your Google Account",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "invoice+statements+acct_1nsd1ak1qybhggdp@stripe.com",
+    "subject": "Your receipt from Meshy #2001-3332",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": "WATCHLIST_SOURCE"
+  },
+  {
+    "sender": "no-reply@news.meshy.ai",
+    "subject": "Discover Meshy's game-changing features and make the most use of them today!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@news.meshy.ai",
+    "subject": "Welcome to the #1 AI 3D model generator for creators!",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "Your 25-Minute Workout Plan - January 09, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "【每周】采购清单与菜谱安排 - 2026年01月08日当周",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "🍽️ 晚餐时间到啦 - 2026年01月08日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "💪 今日运动提醒 - 2026年01月08日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "💪 Your 25-Minute Energizing Workout - January 08, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "【每周】采购清单与菜谱安排 - 2026年01月07日当周",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "🍽️ 晚餐时间到啦 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "💪 今日运动提醒 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "【每周】采购清单与菜谱安排 - 2026年01月07日当周",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "🍽️ 晚餐时间到啦 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "💪 今日运动提醒 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Recovery email verified for your Google Account",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "【每周】采购清单与菜谱安排 - 2026年01月07日当周",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "🍽️ 晚餐时间到啦 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "💪 今日运动提醒 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "🍽️ 晚餐时间到啦 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "💪 今日运动提醒 - 2026年01月07日",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "Test Email",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "测试邮件 - AI任务系统",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "[Daily] Morning Workout Plan - January 7, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "测试运动提醒",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mail.manus.im",
+    "subject": "Welcome to Manus Pro — You’re ready to get things done",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "noreply@mail.manus.im",
+    "subject": "Upgraded Manus sites - More AI & Scalable Hosting",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "[Daily] Morning Workout Plan - January 06, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "info@news.manus.im",
+    "subject": "Meet Manus Slides: Presentations Made Effortless",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "[Daily] Morning Workout Plan - January 05, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "【每周】采购清单与菜谱安排 - 2026年1月4日当周（简洁版）",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "【每周】采购清单与菜谱安排 - 2026年1月4日当周",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "vvickford@gmail.com",
+    "subject": "[Weekly] Grocery List & Budget Review - Week of January 04, 2026",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@google.com",
+    "subject": "✅ Vvick, finish setting up your iPhone device with the latest Google apps",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@e.link.com",
+    "subject": "Welcome to Link",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "notifications@link.com",
+    "subject": "Verify your email",
+    "tier": "RED",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "info@news.manus.im",
+    "subject": "Your Manus Journey Begins Now",
+    "tier": "YELLOW",
+    "action": "pending_approval",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  },
+  {
+    "sender": "no-reply@accounts.google.com",
+    "subject": "Security alert",
+    "tier": "GREEN",
+    "action": "proposed_archive",
+    "mason_decision": null,
+    "confidence": 0.85,
+    "timestamp": "2026-04-05T08:00:00+08:00",
+    "watchlist": null
+  }
+]
