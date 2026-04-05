@@ -1,0 +1,94 @@
+last_updated: '2026-04-05'
+work_mode: cc-native
+lines:
+  data:
+    status: active
+    since: '2026-03-12'
+    milestone: 17/17 health check green, SDK v0.1, Scout v2 running
+    blockers: []
+    next_action: XHS main pipeline unification
+    next_action_since: '2026-03-12'
+  content:
+    status: waiting
+    since: '2026-03-10'
+    milestone: SocialMesh basic features complete
+    blockers:
+    - type: external
+      desc: CosyVoice TTS naturalness
+    - type: external
+      desc: Waiting for reliable XHS trend data from data line
+    next_action: null
+    next_action_since: null
+  commerce:
+    status: waiting
+    since: '2026-03-10'
+    milestone: Code prep only (signature module, API framework)
+    blockers:
+    - type: external
+      desc: Brand authorization (DAERA/CDL)
+    - type: external
+      desc: XHS enterprise account (requires business license)
+    - type: external
+      desc: XHS developer account (platform approval cycle)
+    next_action: null
+    next_action_since: null
+agents:
+  platform-dev:
+    model: opus
+    last_used: null
+    task_count: 0
+  biz-dev:
+    model: sonnet
+    last_used: null
+    task_count: 0
+  data-engineer:
+    model: haiku
+    last_used: null
+    task_count: 0
+  content-dev:
+    model: sonnet
+    last_used: null
+    task_count: 0
+triggers:
+  email-patrol:
+    status: active
+    schedule: daily 13:00 UTC
+    last_success: null
+  unit-tests:
+    status: active
+    schedule: daily 06:17 UTC
+    last_success: null
+  scout-v2:
+    status: active
+    schedule: Tue/Fri 23:00 UTC (GCP crontab)
+    last_success: null
+gcp_crons:
+  active_count: 17
+  archived_count: 14
+  key_jobs:
+  - data_health_check (daily 01:15 UTC)
+  - Scout v2 pipeline (Tue/Fri 23:00 UTC)
+  - XHS crawl (5 tasks, weekly cycle)
+  - TrendRadar (4x/day)
+  - GCS backup (daily 04:00 UTC)
+  - surenxuan health/monitor/report/tunnel (5 jobs)
+waiting_for:
+- id: brand_auth
+  desc: Brand authorization from DAERA/CDL
+  waiting_on: Mason's supplier contacts
+  unlocks: XHS store application
+  since: '2026-03-01'
+- id: xhs_enterprise
+  desc: XHS enterprise account
+  waiting_on: Mason (business license required)
+  unlocks: Store operations
+  since: '2026-03-01'
+- id: xhs_dev_account
+  desc: XHS developer account
+  waiting_on: Platform approval (depends on enterprise account)
+  unlocks: API integration
+  since: '2026-03-01'
+rules:
+  stale_threshold_days: 7
+  blocker_review_days: 14
+  trigger_failure_alert: true

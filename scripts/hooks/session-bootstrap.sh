@@ -41,71 +41,46 @@ fi
 echo "## 系统快照 ($(TZ=America/New_York date '+%Y-%m-%d %H:%M ET'))"
 echo ""
 
-# 1. 当前系统焦点（SYSTEM_MAP 前几行）
-if [ -f "$HUB_DIR/SYSTEM_MAP.md" ]; then
-  # 提取全局状态段落
-  state=$(sed -n '/^## 全局状态/,/^##/p' "$HUB_DIR/SYSTEM_MAP.md" | head -5 | tail -3)
-  if [ -n "$state" ]; then
-    echo "**系统焦点**: $state"
-    echo ""
-  fi
-fi
-
-# 2. 能力线一行状态（名称+状态）
-if [ -f "$HUB_DIR/SYSTEM_MAP.md" ]; then
-  echo "**能力线**:"
-  grep -B5 "^状态:" "$HUB_DIR/SYSTEM_MAP.md" | grep -E "^###|^状态:" | paste - - 2>/dev/null | \
-    sed 's/### [0-9]*\. /  /; s/\t/ → /' | head -5
-  echo ""
-fi
-
-# 3. Dispatcher 状态
-if [ -f "$HUB_DIR/scripts/dispatcher_pause" ]; then
-  echo "**Dispatcher**: ⏸️ PAUSED"
-else
-  echo "**Dispatcher**: ▶️ active"
-fi
-
-# 4. 今日 agent 活动摘要
-DAILY_FILE="$HUB_DIR/memory/daily/$(date +%Y-%m-%d).md"
-if [ -f "$DAILY_FILE" ]; then
-  count=$(grep -c "^|" "$DAILY_FILE" 2>/dev/null || echo 0)
-  count=$((count - 1))  # 减去表头
-  if [ "$count" -gt 0 ]; then
-    echo "**今日 agent 活动**: ${count} 条"
-  fi
-fi
-
-# 5. 最近 3 个 session（让 Claude 知道最近在做什么）
-echo ""
-echo "**最近 session**:"
-find "$HUB_DIR/agents"/*/memory/sessions -name "*.md" -type f 2>/dev/null | \
-  xargs ls -t 2>/dev/null | head -3 | while read -r f; do
-    agent=$(echo "$f" | grep -oP 'EMP_\d+')
-    task=$(grep "^- 任务：" "$f" 2>/dev/null | head -1 | sed 's/^- 任务：//' | head -c 60)
-    status=$(grep "^status:" "$f" 2>/dev/null | head -1 | sed 's/^status: //')
-    if [ -n "$task" ]; then
-      echo "  - $agent: $task ($status)"
+# 1. System state from YAML (machine-readable)
+STATE_FILE="$HUB_DIR/system-state.yaml"
+if [ -f "$STATE_FILE" ]; then
+  echo "**Capability Lines**:"
+  # Extract line statuses using grep (no python dependency)
+  for line in data content commerce; do
+    status=$(grep -A1 "^  $line:" "$STATE_FILE" | grep "status:" | head -1 | sed 's/.*status: //')
+    action=$(grep -A6 "^  $line:" "$STATE_FILE" | grep "next_action:" | head -1 | sed 's/.*next_action: //')
+    if [ -n "$status" ]; then
+      echo "  $line: $status $([ "$action" != "null" ] && [ -n "$action" ] && echo "-> $action")"
     fi
   done
-
-# 6. v2 路线图进度
-PROGRESS_FILE="$HUB_DIR/data/v2-progress.yaml"
-if [ -f "$PROGRESS_FILE" ]; then
   echo ""
-  echo "**v2 路线图进度**:"
-  # 提取下一个 pending session
-  next_session=$(grep -B1 "status: pending" "$PROGRESS_FILE" | grep "S[0-9]:" | head -1 | tr -d ' :')
-  completed=$(grep "status: done" "$PROGRESS_FILE" 2>/dev/null | grep -c "done" || echo 0)
-  total=$(grep -E "^\s+- id:" "$PROGRESS_FILE" 2>/dev/null | wc -l || echo 0)
-  if [ -n "$next_session" ]; then
-    content=$(grep -A2 "$next_session:" "$PROGRESS_FILE" | grep "content:" | sed 's/.*content: "//' | tr -d '"')
-    echo "  下一步: $next_session — $content"
-    echo "  进度: ${completed}/${total} 交付物完成"
-    echo "  路线图: docs/plans/2026-03-14-agent-os-v2-90-percent.md"
+
+  # Stale action check
+  echo "**Alerts**:"
+  python3 "$HUB_DIR/scripts/update-system-state.py" 2>/dev/null | grep -E '^\s+[!?]' | head -5
+  if [ $? -ne 0 ]; then
+    echo "  (none)"
   fi
+  echo ""
 fi
+
+# 3. CC Native Agents
+AGENTS_DIR="$HUB_DIR/.claude/agents"
+if [ -d "$AGENTS_DIR" ]; then
+  echo "**CC Agents**:"
+  for f in "$AGENTS_DIR"/*.md; do
+    [ -f "$f" ] || continue
+    name=$(basename "$f" .md)
+    desc=$(grep "^description:" "$f" | head -1 | sed 's/^description: *"//;s/"$//')
+    echo "  - $name: $desc"
+  done
+  echo ""
+fi
+
+# 4. 最近 5 个 commits（让 Claude 知道最近在做什么）
+echo "**最近工作**:"
+git -C "$HUB_DIR" log --oneline -5 2>/dev/null | sed 's/^/  /'
 
 echo ""
 echo "---"
-echo "提示: 读 \`tasks/backlog.md\` 看完整待办，读 \`SYSTEM_MAP.md\` 看详细状态"
+echo "提示: 读 \`tasks/NOW.md\` 看待办 | \`system-state.yaml\` 看状态 | \`SYSTEM_MAP.md\` 看架构概览"

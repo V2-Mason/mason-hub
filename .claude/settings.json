@@ -48,6 +48,17 @@
         ]
       }
     ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd ~/projects/mason-hub && python3 scripts/update-system-state.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PreCompact": [
       {
         "hooks": [
