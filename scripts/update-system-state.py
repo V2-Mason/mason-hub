@@ -103,6 +103,26 @@ def check_stale_blockers(state: dict) -> list:
     return alerts
 
 
+def check_learning_weave(state: dict) -> str | None:
+    """Check if learning weave is overdue."""
+    rules = state.get("rules", {})
+    interval = rules.get("learning_weave_interval_days", 30)
+    last = rules.get("learning_weave_last")
+
+    if not last:
+        return f"Learning weave: never run. Run /learning-weave"
+
+    try:
+        last_date = date.fromisoformat(last)
+        days = (date.today() - last_date).days
+        if days > interval:
+            return f"Learning weave: {days} days since last run (threshold: {interval}). Run /learning-weave"
+    except ValueError:
+        pass
+
+    return None
+
+
 def update_agent_usage(state: dict, changes: dict):
     """If agent definition files were touched, note it."""
     if changes["areas"]["agents"]:
@@ -130,6 +150,7 @@ def main():
     # Check for stale items
     stale_actions = check_stale_actions(state)
     stale_blockers = check_stale_blockers(state)
+    weave_overdue = check_learning_weave(state)
 
     # Save updated state
     save_state(state)
@@ -144,6 +165,9 @@ def main():
         print("STALE BLOCKERS (review needed):")
         for b in stale_blockers:
             print(f"  ? {b}")
+
+    if weave_overdue:
+        print(f"  ~ {weave_overdue}")
 
     file_count = len(changes["files"])
     active_areas = [k for k, v in changes["areas"].items() if v]

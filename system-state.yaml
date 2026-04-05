@@ -92,3 +92,5 @@ rules:
   stale_threshold_days: 7
   blocker_review_days: 14
   trigger_failure_alert: true
+  learning_weave_interval_days: 30
+  learning_weave_last: null
