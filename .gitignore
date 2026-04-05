@@ -208,3 +208,4 @@ skills/*/
 **/content/**/*.png
 **/content/**/*.jpeg
 **/content/**/temp/
+tools/email-patrol/email_patrol_mcp.egg-info/
