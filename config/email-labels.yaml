@@ -1,0 +1,27 @@
+# Email Patrol Label Taxonomy
+# These labels are created in Gmail and applied during classification
+
+labels:
+  - name: "patrol/needs-action"
+    color: red
+    tier: RED
+
+  - name: "patrol/worth-reading"
+    color: yellow
+    tier: YELLOW
+
+  - name: "patrol/archived"
+    color: green
+    tier: GREEN
+
+  - name: "patrol/deleted"
+    color: gray
+    tier: BLACK
+
+  - name: "patrol/unsubscribed"
+    color: blue
+    tier: BLUE
+
+  - name: "patrol/watchlist-hit"
+    color: orange
+    tier: WATCHLIST

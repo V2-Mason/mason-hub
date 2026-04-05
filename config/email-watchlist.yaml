@@ -1,0 +1,16 @@
+# Email Patrol Watchlist
+# Sender + keyword match = forced human review
+# Sender match without keyword = normal classification (tagged as watchlist source)
+
+watchlist:
+  - sender: "*@tiktokshop.com"
+    keywords: ["new seller", "incentive", "promotion program"]
+    action: must_read
+
+  - sender: "*@etsy.com"
+    keywords: ["API", "approved", "key", "developer"]
+    action: must_read
+
+  - sender: "*@stripe.com"
+    keywords: ["payout", "dispute", "account"]
+    action: must_read
