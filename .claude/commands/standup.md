@@ -10,10 +10,16 @@
    cd ~/mason-hub && .venv/bin/python3 tools/trendradar-config/trend_report.py
    ```
    直接将输出嵌入晨会报告。如果脚本报错或无输出，显示"趋势热榜：数据不可用"
-7. 汇总为晨会报告，包含：
+7. Email Patrol — 检查是否有新的巡查报告或直接运行巡查：
+   - 先检查 data/patrol-logs/ 是否有今天的报告（YYYY-MM-DD-patrol.md）
+   - 如果有：读取并展示 dashboard 摘要（待处理项数、批量操作数）
+   - 如果没有：运行 /email-patrol 执行今日巡查
+   - 展示格式按 skills/email-patrol.md 中定义的 dashboard 格式
+8. 汇总为晨会报告，包含：
    - 昨日完成的工作
    - 系统健康状态
    - 今日待办（从 backlog 提取）
-   - 趋势热榜（第 6 步的结果，放在 Scout 情报摘要之后）
+   - Email Patrol 摘要（第 7 步的结果）
+   - 趋势热榜（第 6 步的结果）
    - 风险和阻塞项
-8. 发送摘要到 Slack #system-alerts
+9. 发送摘要到 Slack #system-alerts
