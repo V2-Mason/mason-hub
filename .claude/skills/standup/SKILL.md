@@ -32,7 +32,6 @@ Mason 的晨间一屏总览：昨天做了什么，今天要做什么。
 
 - 读 `tasks/NOW.md`，列出所有未完成任务
 - 按优先级排序 (P0 > P1 > P2)
-- 如果有 Email Patrol 报告 (`data/patrol-logs/YYYY-MM-DD-patrol.md`)，末尾加一行摘要（几封待处理）
 
 ## 4. 执行转化率 (一行)
 
@@ -66,3 +65,11 @@ Routine:
 ```
 
 不超过 20 行。不检查服务器、不更新 SYSTEM_MAP、不追踪成本。
+
+## 5. Email Patrol (standup 输出后自动执行)
+
+standup 总览输出完毕后，立即执行 email patrol:
+- 读 `skills/email-patrol.md` 中的完整巡逻流程
+- 使用 email-patrol MCP 工具扫描 inbox
+- 按 email-patrol skill 定义的分类、处理、报告流程执行
+- 如果 MCP 工具不可用（token 过期、server 挂了），报告错误并跳过，不阻塞 standup

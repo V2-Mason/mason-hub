@@ -23,11 +23,11 @@ Lens 模式 (读 config 切视角): EMP_0000/0001/0003/0008/0012/0015
 
 | Trigger | 频率 | 状态 |
 |---------|------|------|
-| Email Patrol | 每日 13:00 UTC | active |
+| Email Patrol | -- | 已迁入 /standup (RemoteTrigger 无法加载 MCP) |
 | AIGC Reminder | 每日 22:00 UTC | active |
 | Unit Tests | 每日 06:17 UTC | active |
 
-限额 3/3。Scout v2 需手动 /scout 或替换 AIGC Reminder。
+限额 2/3 已用。Email Patrol 改为 /standup 手动触发。空出 1 个名额可用。
 
 ## 能力线状态
 
