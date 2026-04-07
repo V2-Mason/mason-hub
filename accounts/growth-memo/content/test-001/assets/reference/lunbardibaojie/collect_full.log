@@ -218,3 +218,720 @@
 12:55:20 [DEBUG] Processing segment at 00:28.960
 12:55:32 [DEBUG] Processing segment at 00:57.460
 12:55:44 [DEBUG] Processing segment at 01:19.820
+12:55:54 [DEBUG] Processing segment at 01:37.140
+12:56:06 [DEBUG] Processing segment at 02:03.460
+12:56:18 [DEBUG] Processing segment at 02:33.100
+12:56:30 [DEBUG] Processing segment at 02:55.400
+12:56:43 [DEBUG] Processing segment at 03:18.900
+12:56:55 [DEBUG] Processing segment at 03:45.920
+12:57:07 [DEBUG] Processing segment at 04:14.280
+12:57:19 [DEBUG] Processing segment at 04:41.880
+12:57:31 [DEBUG] Processing segment at 05:05.200
+12:57:45 [DEBUG] Processing segment at 05:30.920
+12:57:58 [DEBUG] Processing segment at 05:59.900
+12:58:11 [DEBUG] Processing segment at 06:29.800
+12:58:22 [DEBUG] Processing segment at 06:49.900
+12:58:32 [DEBUG] Processing segment at 07:08.000
+12:58:45 [DEBUG] Processing segment at 07:36.180
+12:58:58 [DEBUG] Processing segment at 08:04.640
+12:59:10 [DEBUG] Processing segment at 08:22.820
+12:59:21 [DEBUG] Processing segment at 08:48.320
+12:59:33 [DEBUG] Processing segment at 09:14.220
+12:59:44 [DEBUG] Processing segment at 09:40.920
+12:59:55 [DEBUG] Processing segment at 10:04.720
+13:00:08 [DEBUG] Processing segment at 10:31.800
+13:00:17 [INFO] [5/27] OK BV1a51NB7E6r (311s, RTF 0.475)
+13:00:17 [INFO] [6/27] BV1dmTXz1EDA...
+13:00:17 [INFO] Processing audio with duration 03:25.520
+13:00:18 [INFO] VAD filter removed 00:00.352 of audio
+13:00:18 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:15.664], [00:16.016 -> 02:33.280], [02:33.280 -> 03:25.520]
+13:00:18 [DEBUG] Processing segment at 00:00.000
+13:00:31 [DEBUG] Processing segment at 00:26.040
+13:00:45 [DEBUG] Processing segment at 00:55.260
+13:01:00 [DEBUG] Processing segment at 01:24.440
+13:01:15 [DEBUG] Processing segment at 01:50.980
+13:01:29 [DEBUG] Processing segment at 02:15.800
+13:01:44 [DEBUG] Processing segment at 02:41.720
+13:01:59 [DEBUG] Processing segment at 03:06.240
+13:02:11 [INFO] [6/27] OK BV1dmTXz1EDA (114s, RTF 0.556)
+13:02:11 [INFO] [7/27] BV1EFeJz9Ehs...
+13:02:12 [INFO] Processing audio with duration 11:25.221
+13:02:13 [INFO] VAD filter removed 00:09.813 of audio
+13:02:13 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:04.048], [00:05.072 -> 00:12.720], [00:12.720 -> 00:18.576], [00:18.608 -> 00:27.040], [00:27.040 -> 00:38.928], [00:38.992 -> 00:44.528], [00:44.528 -> 00:51.056], [00:51.376 -> 00:57.904], [00:57.904 -> 01:00.816], [01:00.816 -> 01:12.832], [01:12.832 -> 01:31.456], [01:31.456 -> 01:40.416], [01:40.416 -> 01:56.432], [01:56.464 -> 02:00.656], [02:00.656 -> 02:07.056], [02:07.056 -> 02:18.576], [02:18.704 -> 02:23.136], [02:23.136 -> 02:38.992], [02:38.992 -> 02:43.760], [02:43.760 -> 03:03.312], [03:03.376 -> 03:08.384], [03:08.384 -> 03:15.952], [03:18.896 -> 03:21.952], [03:21.952 -> 03:37.712], [03:37.712 -> 03:52.112], [03:54.480 -> 04:09.552], [04:09.552 -> 04:25.152], [04:25.152 -> 04:28.720], [04:28.720 -> 04:37.648], [04:37.648 -> 05:04.768], [05:04.768 -> 05:12.496], [05:12.560 -> 05:27.856], [05:27.856 -> 05:32.608], [05:32.608 -> 05:35.920], [05:36.144 -> 05:56.832], [05:56.832 -> 06:04.400], [06:04.400 -> 06:08.560], [06:08.976 -> 06:13.296], [06:13.360 -> 06:21.296], [06:21.360 -> 06:27.904], [06:27.904 -> 06:31.744], [06:31.744 -> 06:45.184], [06:45.184 -> 07:04.400], [07:04.400 -> 07:31.552], [07:31.552 -> 07:39.968], [07:39.968 -> 07:45.312], [07:45.312 -> 08:19.856], [08:19.856 -> 08:29.664], [08:29.664 -> 08:37.424], [08:37.424 -> 08:43.520], [08:43.520 -> 08:55.696], [08:55.696 -> 09:01.888], [09:01.888 -> 09:04.592], [09:05.936 -> 09:24.960], [09:24.960 -> 09:54.944], [09:54.944 -> 10:48.976], [10:49.136 -> 10:55.504], [10:55.504 -> 11:10.272], [11:10.272 -> 11:14.624], [11:14.624 -> 11:20.032], [11:20.032 -> 11:24.720]
+13:02:13 [DEBUG] Processing segment at 00:00.000
+13:02:24 [DEBUG] Processing segment at 00:29.460
+13:02:36 [DEBUG] Processing segment at 00:59.080
+13:02:47 [DEBUG] Processing segment at 01:17.520
+13:02:57 [DEBUG] Processing segment at 01:35.940
+13:03:10 [DEBUG] Processing segment at 02:05.240
+13:03:23 [DEBUG] Processing segment at 02:34.500
+13:03:34 [DEBUG] Processing segment at 02:53.880
+13:03:43 [DEBUG] Processing segment at 03:06.380
+13:03:53 [DEBUG] Processing segment at 03:21.340
+13:04:05 [DEBUG] Processing segment at 03:50.540
+13:04:17 [DEBUG] Processing segment at 04:20.000
+13:04:27 [DEBUG] Processing segment at 04:38.640
+13:04:38 [DEBUG] Processing segment at 04:57.240
+13:04:50 [DEBUG] Processing segment at 05:20.320
+13:05:02 [DEBUG] Processing segment at 05:48.880
+13:05:15 [DEBUG] Processing segment at 06:18.040
+13:05:27 [DEBUG] Processing segment at 06:46.560
+13:05:38 [DEBUG] Processing segment at 07:08.260
+13:05:49 [DEBUG] Processing segment at 07:30.640
+13:06:01 [DEBUG] Processing segment at 07:57.600
+13:06:15 [DEBUG] Processing segment at 08:27.560
+13:06:26 [DEBUG] Processing segment at 08:47.440
+13:06:36 [DEBUG] Processing segment at 09:08.040
+13:06:48 [DEBUG] Processing segment at 09:37.440
+13:07:00 [DEBUG] Processing segment at 10:05.320
+13:07:11 [DEBUG] Processing segment at 10:21.400
+13:07:21 [DEBUG] Processing segment at 10:39.240
+13:07:31 [DEBUG] Processing segment at 10:55.400
+13:07:42 [INFO] [7/27] OK BV1EFeJz9Ehs (331s, RTF 0.483)
+13:07:42 [INFO] [8/27] BV1ETzsBAEyU...
+13:07:42 [INFO] Processing audio with duration 09:49.578
+13:07:43 [INFO] VAD filter removed 00:02.202 of audio
+13:07:43 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 07:40.752], [07:40.912 -> 09:47.536]
+13:07:43 [DEBUG] Processing segment at 00:00.000
+13:07:57 [DEBUG] Processing segment at 00:26.640
+13:08:11 [DEBUG] Processing segment at 00:53.900
+13:08:25 [DEBUG] Processing segment at 01:21.020
+13:08:40 [DEBUG] Processing segment at 01:45.900
+13:08:55 [DEBUG] Processing segment at 02:14.420
+13:09:09 [DEBUG] Processing segment at 02:43.700
+13:09:24 [DEBUG] Processing segment at 03:10.840
+13:09:38 [DEBUG] Processing segment at 03:36.580
+13:09:53 [DEBUG] Processing segment at 04:02.200
+13:10:07 [DEBUG] Processing segment at 04:26.920
+13:10:22 [DEBUG] Processing segment at 04:52.420
+13:10:37 [DEBUG] Processing segment at 05:18.820
+13:10:51 [DEBUG] Processing segment at 05:45.020
+13:11:06 [DEBUG] Processing segment at 06:11.540
+13:11:20 [DEBUG] Processing segment at 06:41.540
+13:11:34 [DEBUG] Processing segment at 07:05.600
+13:11:49 [DEBUG] Processing segment at 07:35.600
+13:12:03 [DEBUG] Processing segment at 08:01.700
+13:12:17 [DEBUG] Processing segment at 08:26.740
+13:12:31 [DEBUG] Processing segment at 08:52.040
+13:12:46 [DEBUG] Processing segment at 09:17.660
+13:13:00 [DEBUG] Processing segment at 09:44.560
+13:13:09 [INFO] [8/27] OK BV1ETzsBAEyU (327s, RTF 0.555)
+13:13:09 [INFO] [9/27] BV1FyvaBjEBF...
+13:13:09 [INFO] Processing audio with duration 11:00.050
+13:13:10 [INFO] VAD filter removed 00:01.570 of audio
+13:13:10 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:13.488], [00:13.488 -> 00:37.904], [00:37.904 -> 04:09.808], [04:09.808 -> 07:04.048], [07:04.080 -> 08:18.176], [08:18.176 -> 10:52.560], [10:52.688 -> 10:58.640]
+13:13:10 [DEBUG] Processing segment at 00:00.000
+13:13:22 [DEBUG] Processing segment at 00:29.880
+13:13:35 [DEBUG] Processing segment at 00:58.360
+13:13:46 [DEBUG] Processing segment at 01:17.200
+13:13:57 [DEBUG] Processing segment at 01:35.000
+13:14:10 [DEBUG] Processing segment at 02:03.280
+13:14:24 [DEBUG] Processing segment at 02:32.280
+13:14:36 [DEBUG] Processing segment at 02:57.160
+13:14:48 [DEBUG] Processing segment at 03:18.320
+13:15:01 [DEBUG] Processing segment at 03:46.240
+13:15:14 [DEBUG] Processing segment at 04:15.760
+13:15:24 [DEBUG] Processing segment at 04:33.340
+13:15:35 [DEBUG] Processing segment at 04:50.620
+13:15:47 [DEBUG] Processing segment at 05:17.320
+13:16:00 [DEBUG] Processing segment at 05:47.120
+13:16:13 [DEBUG] Processing segment at 06:16.320
+13:16:24 [DEBUG] Processing segment at 06:32.960
+13:16:35 [DEBUG] Processing segment at 06:56.400
+13:16:48 [DEBUG] Processing segment at 07:25.340
+13:17:00 [DEBUG] Processing segment at 07:55.180
+13:17:13 [DEBUG] Processing segment at 08:21.780
+13:17:24 [DEBUG] Processing segment at 08:41.780
+13:17:36 [DEBUG] Processing segment at 09:07.380
+13:17:49 [DEBUG] Processing segment at 09:36.720
+13:18:02 [DEBUG] Processing segment at 10:05.720
+13:18:15 [DEBUG] Processing segment at 10:33.260
+13:18:25 [DEBUG] Processing segment at 10:50.140
+13:18:34 [INFO] [9/27] OK BV1FyvaBjEBF (326s, RTF 0.493)
+13:18:34 [INFO] [10/27] BV1hfkrBGEu6...
+13:18:35 [INFO] Processing audio with duration 09:04.369
+13:18:36 [INFO] VAD filter removed 00:00.865 of audio
+13:18:36 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 01:44.048], [01:44.048 -> 04:31.472], [04:31.472 -> 08:26.560], [08:26.560 -> 08:30.384], [08:30.384 -> 09:03.504]
+13:18:36 [DEBUG] Processing segment at 00:00.000
+13:18:47 [DEBUG] Processing segment at 00:27.580
+13:18:59 [DEBUG] Processing segment at 00:55.080
+13:19:11 [DEBUG] Processing segment at 01:22.520
+13:19:22 [DEBUG] Processing segment at 01:43.520
+13:19:34 [DEBUG] Processing segment at 02:07.760
+13:19:47 [DEBUG] Processing segment at 02:36.500
+13:19:59 [DEBUG] Processing segment at 03:06.000
+13:20:10 [DEBUG] Processing segment at 03:23.200
+13:20:21 [DEBUG] Processing segment at 03:44.680
+13:20:34 [DEBUG] Processing segment at 04:12.200
+13:20:47 [DEBUG] Processing segment at 04:41.780
+13:20:59 [DEBUG] Processing segment at 05:07.660
+13:21:11 [DEBUG] Processing segment at 05:33.100
+13:21:24 [DEBUG] Processing segment at 06:00.640
+13:21:37 [DEBUG] Processing segment at 06:29.880
+13:21:49 [DEBUG] Processing segment at 06:56.620
+13:22:00 [DEBUG] Processing segment at 07:15.940
+13:22:12 [DEBUG] Processing segment at 07:41.940
+13:22:25 [DEBUG] Processing segment at 08:10.940
+13:22:37 [DEBUG] Processing segment at 08:31.940
+13:22:45 [DEBUG] Processing segment at 08:37.940
+13:22:55 [DEBUG] Processing segment at 08:47.940
+13:23:05 [INFO] [10/27] OK BV1hfkrBGEu6 (271s, RTF 0.498)
+13:23:05 [INFO] [11/27] BV1i3SeB2EWH...
+13:23:06 [INFO] Processing audio with duration 09:22.736
+13:23:06 [INFO] VAD filter removed 00:03.360 of audio
+13:23:06 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 01:52.144], [01:52.144 -> 01:53.040], [01:53.040 -> 06:02.352], [06:02.352 -> 09:19.376]
+13:23:07 [DEBUG] Processing segment at 00:00.000
+13:23:19 [DEBUG] Processing segment at 00:29.380
+13:23:31 [DEBUG] Processing segment at 00:59.380
+13:23:39 [DEBUG] Processing segment at 01:04.100
+13:23:50 [DEBUG] Processing segment at 01:24.580
+13:24:00 [DEBUG] Processing segment at 01:43.300
+13:24:13 [DEBUG] Processing segment at 02:13.060
+13:24:26 [DEBUG] Processing segment at 02:43.020
+13:24:37 [DEBUG] Processing segment at 03:01.540
+13:24:45 [DEBUG] Processing segment at 03:06.260
+13:24:55 [DEBUG] Processing segment at 03:23.980
+13:25:05 [DEBUG] Processing segment at 03:38.220
+13:25:18 [DEBUG] Processing segment at 04:07.100
+13:25:30 [DEBUG] Processing segment at 04:34.940
+13:25:40 [DEBUG] Processing segment at 04:51.320
+13:25:52 [DEBUG] Processing segment at 05:17.840
+13:26:04 [DEBUG] Processing segment at 05:47.360
+13:26:15 [DEBUG] Processing segment at 06:01.960
+13:26:26 [DEBUG] Processing segment at 06:16.960
+13:26:36 [DEBUG] Processing segment at 06:35.960
+13:26:50 [DEBUG] Processing segment at 07:03.960
+13:27:03 [DEBUG] Processing segment at 07:32.960
+13:27:15 [DEBUG] Processing segment at 07:55.960
+13:27:27 [DEBUG] Processing segment at 08:19.960
+13:27:40 [DEBUG] Processing segment at 08:48.960
+13:27:55 [DEBUG] Processing segment at 09:16.960
+13:28:02 [INFO] [11/27] OK BV1i3SeB2EWH (297s, RTF 0.529)
+13:28:02 [INFO] [12/27] BV1jUF8zwECp...
+13:28:03 [INFO] Processing audio with duration 09:40.917
+13:28:04 [INFO] VAD filter removed 00:02.309 of audio
+13:28:04 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 05:34.128], [05:35.792 -> 05:51.664], [05:51.664 -> 09:40.272]
+13:28:04 [DEBUG] Processing segment at 00:00.000
+13:28:17 [DEBUG] Processing segment at 00:26.780
+13:28:31 [DEBUG] Processing segment at 00:54.920
+13:28:46 [DEBUG] Processing segment at 01:22.400
+13:29:00 [DEBUG] Processing segment at 01:47.940
+13:29:15 [DEBUG] Processing segment at 02:14.180
+13:29:29 [DEBUG] Processing segment at 02:39.640
+13:29:44 [DEBUG] Processing segment at 03:04.480
+13:29:58 [DEBUG] Processing segment at 03:29.780
+13:30:13 [DEBUG] Processing segment at 03:55.080
+13:30:27 [DEBUG] Processing segment at 04:19.680
+13:30:42 [DEBUG] Processing segment at 04:45.480
+13:30:57 [DEBUG] Processing segment at 05:10.060
+13:31:11 [DEBUG] Processing segment at 05:36.980
+13:31:25 [DEBUG] Processing segment at 06:06.980
+13:31:40 [DEBUG] Processing segment at 06:36.980
+13:31:54 [DEBUG] Processing segment at 07:06.980
+13:32:09 [DEBUG] Processing segment at 07:32.480
+13:32:23 [DEBUG] Processing segment at 07:56.180
+13:32:37 [DEBUG] Processing segment at 08:25.480
+13:32:52 [DEBUG] Processing segment at 08:50.760
+13:33:07 [DEBUG] Processing segment at 09:17.620
+13:33:20 [INFO] [12/27] OK BV1jUF8zwECp (318s, RTF 0.548)
+13:33:20 [INFO] [13/27] BV1KvfqBcENP...
+13:33:21 [INFO] Processing audio with duration 09:55.847
+13:33:22 [INFO] VAD filter removed 00:03.383 of audio
+13:33:22 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 09:52.464]
+13:33:22 [DEBUG] Processing segment at 00:00.000
+13:33:35 [DEBUG] Processing segment at 00:26.000
+13:33:49 [DEBUG] Processing segment at 00:54.360
+13:34:04 [DEBUG] Processing segment at 01:24.360
+13:34:17 [DEBUG] Processing segment at 01:52.040
+13:34:32 [DEBUG] Processing segment at 02:19.140
+13:34:46 [DEBUG] Processing segment at 02:43.840
+13:35:00 [DEBUG] Processing segment at 03:13.840
+13:35:15 [DEBUG] Processing segment at 03:41.260
+13:35:30 [DEBUG] Processing segment at 04:07.000
+13:35:44 [DEBUG] Processing segment at 04:32.760
+13:35:58 [DEBUG] Processing segment at 05:02.360
+13:36:13 [DEBUG] Processing segment at 05:32.360
+13:36:27 [DEBUG] Processing segment at 05:59.980
+13:36:42 [DEBUG] Processing segment at 06:29.540
+13:36:56 [DEBUG] Processing segment at 06:57.200
+13:37:10 [DEBUG] Processing segment at 07:26.080
+13:37:24 [DEBUG] Processing segment at 07:53.060
+13:37:39 [DEBUG] Processing segment at 08:19.420
+13:37:53 [DEBUG] Processing segment at 08:45.300
+13:38:06 [DEBUG] Processing segment at 09:13.240
+13:38:21 [DEBUG] Processing segment at 09:39.460
+13:38:32 [INFO] [13/27] OK BV1KvfqBcENP (311s, RTF 0.523)
+13:38:32 [INFO] [14/27] BV1orw7zNE9y...
+13:38:32 [INFO] Processing audio with duration 09:11.010
+13:38:33 [INFO] VAD filter removed 00:02.322 of audio
+13:38:33 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 03:53.632], [03:53.632 -> 04:21.552], [04:21.552 -> 09:08.688]
+13:38:33 [DEBUG] Processing segment at 00:00.000
+13:38:46 [DEBUG] Processing segment at 00:28.740
+13:39:00 [DEBUG] Processing segment at 00:54.320
+13:39:14 [DEBUG] Processing segment at 01:19.880
+13:39:29 [DEBUG] Processing segment at 01:47.040
+13:39:43 [DEBUG] Processing segment at 02:11.780
+13:39:57 [DEBUG] Processing segment at 02:35.440
+13:40:12 [DEBUG] Processing segment at 03:00.420
+13:40:26 [DEBUG] Processing segment at 03:26.620
+13:40:41 [DEBUG] Processing segment at 03:51.860
+13:40:55 [DEBUG] Processing segment at 04:21.860
+13:41:09 [DEBUG] Processing segment at 04:50.880
+13:41:24 [DEBUG] Processing segment at 05:18.620
+13:41:38 [DEBUG] Processing segment at 05:43.180
+13:41:52 [DEBUG] Processing segment at 06:11.460
+13:42:06 [DEBUG] Processing segment at 06:35.440
+13:42:20 [DEBUG] Processing segment at 07:03.600
+13:42:35 [DEBUG] Processing segment at 07:31.800
+13:42:49 [DEBUG] Processing segment at 08:01.180
+13:43:01 [DEBUG] Processing segment at 08:15.680
+13:43:15 [DEBUG] Processing segment at 08:42.840
+13:43:28 [INFO] [14/27] OK BV1orw7zNE9y (297s, RTF 0.539)
+13:43:28 [INFO] [15/27] BV1oxdNYdEDT...
+13:43:29 [INFO] Processing audio with duration 07:56.682
+13:43:30 [INFO] VAD filter removed 00:06.448 of audio
+13:43:30 [DEBUG] VAD filter kept the following audio segments: [00:00.560 -> 00:09.392], [00:12.368 -> 00:24.624], [00:26.288 -> 00:52.592], [00:52.880 -> 00:54.608], [00:54.864 -> 00:56.112], [00:56.208 -> 00:57.424], [00:57.936 -> 00:59.280], [00:59.344 -> 01:00.880], [01:00.912 -> 01:02.448], [01:02.448 -> 01:43.808], [01:43.808 -> 02:40.800], [02:40.800 -> 02:50.448], [02:50.448 -> 03:07.120], [03:07.120 -> 03:22.608], [03:22.608 -> 06:06.784], [06:06.784 -> 06:16.944], [06:16.944 -> 07:40.160], [07:40.160 -> 07:56.682]
+13:43:30 [DEBUG] Processing segment at 00:00.000
+13:43:43 [DEBUG] Processing segment at 00:26.540
+13:43:57 [DEBUG] Processing segment at 00:55.660
+13:44:12 [DEBUG] Processing segment at 01:22.840
+13:44:27 [DEBUG] Processing segment at 01:52.840
+13:44:42 [DEBUG] Processing segment at 02:21.180
+13:44:56 [DEBUG] Processing segment at 02:47.180
+13:45:11 [DEBUG] Processing segment at 03:14.100
+13:45:25 [DEBUG] Processing segment at 03:41.860
+13:45:40 [DEBUG] Processing segment at 04:11.160
+13:45:54 [DEBUG] Processing segment at 04:41.160
+13:46:09 [DEBUG] Processing segment at 05:08.380
+13:46:24 [DEBUG] Processing segment at 05:35.460
+13:46:38 [DEBUG] Processing segment at 06:03.760
+13:46:53 [DEBUG] Processing segment at 06:31.240
+13:47:08 [DEBUG] Processing segment at 06:57.340
+13:47:22 [DEBUG] Processing segment at 07:27.340
+13:47:35 [INFO] [15/27] OK BV1oxdNYdEDT (247s, RTF 0.519)
+13:47:35 [INFO] [16/27] BV1p7NXzJEGL...
+13:47:36 [INFO] Processing audio with duration 06:09.987
+13:47:36 [INFO] VAD filter removed 00:04.323 of audio
+13:47:36 [DEBUG] VAD filter kept the following audio segments: [00:00.112 -> 00:08.032], [00:08.032 -> 00:17.360], [00:17.360 -> 00:28.112], [00:29.200 -> 00:36.656], [00:36.656 -> 00:42.160], [00:42.192 -> 01:14.768], [01:14.768 -> 01:17.264], [01:17.520 -> 01:19.296], [01:19.296 -> 01:35.280], [01:35.664 -> 01:37.712], [01:37.712 -> 01:40.496], [01:40.528 -> 01:52.656], [01:52.880 -> 01:57.856], [01:57.856 -> 02:34.864], [02:34.864 -> 02:50.528], [02:50.528 -> 03:14.672], [03:14.672 -> 03:21.072], [03:21.072 -> 03:52.832], [03:52.832 -> 04:01.920], [04:01.920 -> 04:13.024], [04:13.024 -> 04:27.072], [04:27.072 -> 05:12.064], [05:12.064 -> 06:03.408], [06:04.560 -> 06:08.944]
+13:47:36 [DEBUG] Processing segment at 00:00.000
+13:47:48 [DEBUG] Processing segment at 00:29.980
+13:48:01 [DEBUG] Processing segment at 00:59.700
+13:48:11 [DEBUG] Processing segment at 01:15.540
+13:48:24 [DEBUG] Processing segment at 01:38.380
+13:48:38 [DEBUG] Processing segment at 02:08.140
+13:48:51 [DEBUG] Processing segment at 02:37.120
+13:49:03 [DEBUG] Processing segment at 02:57.140
+13:49:13 [DEBUG] Processing segment at 03:12.480
+13:49:27 [DEBUG] Processing segment at 03:42.200
+13:49:40 [DEBUG] Processing segment at 04:10.400
+13:49:50 [DEBUG] Processing segment at 04:24.560
+13:50:03 [DEBUG] Processing segment at 04:51.760
+13:50:17 [DEBUG] Processing segment at 05:20.500
+13:50:30 [DEBUG] Processing segment at 05:48.760
+13:50:41 [DEBUG] Processing segment at 06:05.180
+13:50:50 [DEBUG] Compression ratio threshold is not met with temperature 0.0 (4.931034 > 2.400000)
+13:50:56 [DEBUG] Compression ratio threshold is not met with temperature 0.2 (9.710526 > 2.400000)
+13:51:01 [DEBUG] Compression ratio threshold is not met with temperature 0.4 (15.230769 > 2.400000)
+13:51:02 [DEBUG] Compression ratio threshold is not met with temperature 0.6 (2.800000 > 2.400000)
+13:51:02 [DEBUG] Log probability threshold is not met with temperature 0.6 (-1.214364 < -1.000000)
+13:51:07 [DEBUG] Compression ratio threshold is not met with temperature 0.8 (3.403509 > 2.400000)
+13:51:09 [DEBUG] Log probability threshold is not met with temperature 1.0 (-2.748000 < -1.000000)
+13:51:09 [DEBUG] Reset prompt. prompt_reset_on_temperature threshold is met 1.000000 > 0.500000
+13:51:09 [INFO] [16/27] OK BV1p7NXzJEGL (214s, RTF 0.580)
+13:51:09 [INFO] [17/27] BV1qKQdB7Epp...
+13:51:10 [INFO] Processing audio with duration 11:44.052
+13:51:11 [INFO] VAD filter removed 00:02.468 of audio
+13:51:11 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 11:41.584]
+13:51:11 [DEBUG] Processing segment at 00:00.000
+13:51:23 [DEBUG] Processing segment at 00:26.520
+13:51:37 [DEBUG] Processing segment at 00:55.460
+13:51:49 [DEBUG] Processing segment at 01:18.500
+13:52:02 [DEBUG] Processing segment at 01:43.680
+13:52:16 [DEBUG] Processing segment at 02:12.400
+13:52:30 [DEBUG] Processing segment at 02:41.880
+13:52:44 [DEBUG] Processing segment at 03:10.780
+13:52:58 [DEBUG] Processing segment at 03:36.520
+13:53:12 [DEBUG] Processing segment at 04:03.040
+13:53:26 [DEBUG] Processing segment at 04:31.120
+13:53:41 [DEBUG] Processing segment at 04:58.800
+13:53:55 [DEBUG] Processing segment at 05:27.480
+13:54:09 [DEBUG] Processing segment at 05:56.380
+13:54:22 [DEBUG] Processing segment at 06:19.220
+13:54:36 [DEBUG] Processing segment at 06:47.600
+13:54:50 [DEBUG] Processing segment at 07:17.220
+13:55:05 [DEBUG] Processing segment at 07:40.800
+13:55:19 [DEBUG] Processing segment at 08:10.800
+13:55:34 [DEBUG] Processing segment at 08:38.140
+13:55:49 [DEBUG] Processing segment at 09:05.720
+13:56:03 [DEBUG] Processing segment at 09:34.020
+13:56:16 [DEBUG] Processing segment at 10:01.940
+13:56:28 [DEBUG] Processing segment at 10:24.340
+13:56:42 [DEBUG] Processing segment at 10:50.460
+13:56:57 [DEBUG] Processing segment at 11:18.340
+13:57:10 [DEBUG] Processing segment at 11:40.960
+13:57:18 [DEBUG] Log probability threshold is not met with temperature 0.0 (-1.178391 < -1.000000)
+13:57:23 [DEBUG] Compression ratio threshold is not met with temperature 0.2 (9.825000 > 2.400000)
+13:57:29 [DEBUG] Compression ratio threshold is not met with temperature 0.4 (15.900000 > 2.400000)
+13:57:35 [DEBUG] Compression ratio threshold is not met with temperature 0.6 (7.148148 > 2.400000)
+13:57:36 [DEBUG] Log probability threshold is not met with temperature 0.8 (-2.198972 < -1.000000)
+13:57:37 [DEBUG] Log probability threshold is not met with temperature 1.0 (-2.812294 < -1.000000)
+13:57:37 [DEBUG] Reset prompt. prompt_reset_on_temperature threshold is met 1.000000 > 0.500000
+13:57:37 [INFO] [17/27] OK BV1qKQdB7Epp (387s, RTF 0.550)
+13:57:37 [INFO] [18/27] BV1RQPezJE6o...
+13:57:37 [INFO] Processing audio with duration 11:21.181
+13:57:38 [INFO] VAD filter removed 00:02.381 of audio
+13:57:38 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:09.488], [00:09.488 -> 08:04.160], [08:04.160 -> 11:18.800]
+13:57:39 [DEBUG] Processing segment at 00:00.000
+13:57:50 [DEBUG] Processing segment at 00:27.900
+13:58:04 [DEBUG] Processing segment at 00:57.760
+13:58:18 [DEBUG] Processing segment at 01:23.860
+13:58:32 [DEBUG] Processing segment at 01:50.780
+13:58:47 [DEBUG] Processing segment at 02:20.460
+13:59:01 [DEBUG] Processing segment at 02:45.720
+13:59:16 [DEBUG] Processing segment at 03:12.500
+13:59:30 [DEBUG] Processing segment at 03:37.100
+13:59:45 [DEBUG] Processing segment at 04:02.720
+13:59:59 [DEBUG] Processing segment at 04:29.620
+14:00:13 [DEBUG] Processing segment at 04:57.100
+14:00:28 [DEBUG] Processing segment at 05:23.380
+14:00:42 [DEBUG] Processing segment at 05:50.560
+14:00:56 [DEBUG] Processing segment at 06:17.840
+14:01:11 [DEBUG] Processing segment at 06:44.960
+14:01:25 [DEBUG] Processing segment at 07:11.440
+14:01:40 [DEBUG] Processing segment at 07:40.600
+14:01:54 [DEBUG] Processing segment at 08:05.980
+14:02:08 [DEBUG] Processing segment at 08:35.080
+14:02:23 [DEBUG] Processing segment at 09:02.680
+14:02:37 [DEBUG] Processing segment at 09:30.920
+14:02:51 [DEBUG] Processing segment at 09:59.080
+14:03:06 [DEBUG] Processing segment at 10:25.640
+14:03:21 [DEBUG] Processing segment at 10:52.940
+14:03:35 [INFO] [18/27] OK BV1RQPezJE6o (358s, RTF 0.526)
+14:03:35 [INFO] [19/27] BV1RTn2zdEVg...
+14:03:36 [INFO] Processing audio with duration 17:36.369
+14:03:38 [INFO] VAD filter removed 00:07.873 of audio
+14:03:38 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:07.024], [00:07.024 -> 00:15.600], [00:15.792 -> 00:50.000], [00:50.000 -> 01:07.280], [01:07.280 -> 01:12.656], [01:12.656 -> 01:27.328], [01:27.328 -> 01:38.800], [01:38.800 -> 01:47.120], [01:47.120 -> 01:54.384], [01:54.416 -> 02:09.792], [02:09.792 -> 02:15.520], [02:15.520 -> 02:22.944], [02:22.944 -> 02:28.464], [02:28.688 -> 02:44.192], [02:44.192 -> 02:49.104], [02:49.104 -> 02:59.472], [02:59.792 -> 03:10.960], [03:11.088 -> 03:18.128], [03:18.128 -> 03:28.912], [03:28.976 -> 03:35.472], [03:35.888 -> 03:51.456], [03:51.456 -> 03:59.920], [03:59.920 -> 04:09.104], [04:09.104 -> 04:38.992], [04:38.992 -> 05:05.712], [05:07.184 -> 05:10.336], [05:10.336 -> 05:16.368], [05:16.368 -> 05:20.944], [05:20.944 -> 05:26.064], [05:26.064 -> 05:36.512], [05:36.512 -> 05:40.944], [05:40.944 -> 05:59.296], [05:59.296 -> 06:12.880], [06:13.168 -> 06:22.848], [06:22.848 -> 06:26.608], [06:26.608 -> 06:37.680], [06:37.744 -> 06:42.992], [06:42.992 -> 06:45.632], [06:45.632 -> 06:49.200], [06:49.200 -> 06:54.384], [06:54.384 -> 06:56.400], [06:56.880 -> 07:13.232], [07:13.232 -> 07:17.040], [07:17.040 -> 07:19.760], [07:19.952 -> 07:29.328], [07:29.424 -> 07:34.016], [07:34.016 -> 07:38.048], [07:38.048 -> 07:47.696], [07:47.888 -> 07:59.264], [07:59.264 -> 08:21.120], [08:21.120 -> 08:23.920], [08:23.920 -> 08:26.784], [08:26.784 -> 08:31.216], [08:31.216 -> 08:47.008], [08:47.008 -> 08:49.280], [08:49.280 -> 08:53.888], [08:53.888 -> 09:05.936], [09:05.936 -> 09:10.784], [09:10.784 -> 09:15.232], [09:15.232 -> 09:19.120], [09:19.152 -> 09:26.016], [09:26.016 -> 09:34.736], [09:34.736 -> 09:40.432], [09:40.688 -> 09:55.744], [09:55.744 -> 10:07.744], [10:07.744 -> 10:19.552], [10:19.552 -> 10:51.632], [10:51.632 -> 11:05.776], [11:05.776 -> 11:28.400], [11:28.560 -> 11:35.136], [11:35.136 -> 11:40.224], [11:40.224 -> 11:49.152], [11:49.152 -> 11:57.360], [11:57.360 -> 12:11.552], [12:11.552 -> 12:12.304], [12:13.360 -> 12:22.080], [12:22.080 -> 12:42.352], [12:42.352 -> 12:52.608], [12:52.608 -> 13:01.616], [13:01.616 -> 13:06.576], [13:06.576 -> 13:09.168], [13:09.168 -> 13:16.736], [13:16.736 -> 13:20.816], [13:20.912 -> 13:24.432], [13:24.528 -> 13:29.424], [13:29.424 -> 13:35.088], [13:35.280 -> 13:39.536], [13:39.632 -> 13:48.864], [13:48.864 -> 14:04.480], [14:04.480 -> 14:26.960], [14:27.024 -> 15:05.488], [15:05.488 -> 15:11.376], [15:11.376 -> 15:22.048], [15:22.048 -> 15:42.672], [15:42.704 -> 16:00.560], [16:00.560 -> 16:04.752], [16:05.200 -> 16:16.464], [16:16.464 -> 16:26.544], [16:26.544 -> 16:31.584], [16:31.584 -> 16:36.592], [16:36.656 -> 16:57.120], [16:57.120 -> 17:04.080], [17:04.176 -> 17:20.432], [17:20.752 -> 17:27.296], [17:27.296 -> 17:31.344], [17:31.344 -> 17:35.664]
+14:03:38 [DEBUG] Processing segment at 00:00.000
+14:03:49 [DEBUG] Processing segment at 00:28.160
+14:04:01 [DEBUG] Processing segment at 00:56.620
+14:04:13 [DEBUG] Processing segment at 01:24.200
+14:04:26 [DEBUG] Processing segment at 01:50.200
+14:04:37 [DEBUG] Processing segment at 02:14.760
+14:04:50 [DEBUG] Processing segment at 02:43.220
+14:05:03 [DEBUG] Processing segment at 03:12.960
+14:05:15 [DEBUG] Processing segment at 03:36.000
+14:05:26 [DEBUG] Processing segment at 04:01.500
+14:05:39 [DEBUG] Processing segment at 04:30.540
+14:05:51 [DEBUG] Processing segment at 04:58.680
+14:06:02 [DEBUG] Processing segment at 05:22.920
+14:06:14 [DEBUG] Processing segment at 05:47.080
+14:06:27 [DEBUG] Processing segment at 06:14.800
+14:06:40 [DEBUG] Processing segment at 06:43.660
+14:06:53 [DEBUG] Processing segment at 07:06.960
+14:07:04 [DEBUG] Processing segment at 07:26.780
+14:07:17 [DEBUG] Processing segment at 07:56.300
+14:07:30 [DEBUG] Processing segment at 08:24.640
+14:07:41 [DEBUG] Processing segment at 08:45.200
+14:07:53 [DEBUG] Processing segment at 09:10.860
+14:08:05 [DEBUG] Processing segment at 09:38.760
+14:08:18 [DEBUG] Processing segment at 10:06.840
+14:08:30 [DEBUG] Processing segment at 10:33.940
+14:08:43 [DEBUG] Processing segment at 11:03.580
+14:08:55 [DEBUG] Processing segment at 11:30.000
+14:09:07 [DEBUG] Processing segment at 11:56.120
+14:09:20 [DEBUG] Processing segment at 12:23.500
+14:09:32 [DEBUG] Processing segment at 12:51.500
+14:09:44 [DEBUG] Processing segment at 13:18.180
+14:09:56 [DEBUG] Processing segment at 13:45.160
+14:10:09 [DEBUG] Processing segment at 14:13.560
+14:10:22 [DEBUG] Processing segment at 14:41.400
+14:10:33 [DEBUG] Processing segment at 14:59.000
+14:10:45 [DEBUG] Processing segment at 15:27.940
+14:10:58 [DEBUG] Processing segment at 15:57.100
+14:11:11 [DEBUG] Processing segment at 16:24.360
+14:11:24 [DEBUG] Processing segment at 16:49.980
+14:11:35 [DEBUG] Processing segment at 17:13.180
+14:11:45 [INFO] [19/27] OK BV1RTn2zdEVg (490s, RTF 0.464)
+14:11:45 [INFO] [20/27] BV1S5PXztEkw...
+14:11:46 [INFO] Processing audio with duration 08:42.147
+14:11:46 [INFO] VAD filter removed 00:01.267 of audio
+14:11:46 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 08:09.408], [08:09.408 -> 08:36.848], [08:36.848 -> 08:40.880]
+14:11:47 [DEBUG] Processing segment at 00:00.000
+14:11:59 [DEBUG] Processing segment at 00:28.720
+14:12:13 [DEBUG] Processing segment at 00:58.060
+14:12:27 [DEBUG] Processing segment at 01:26.620
+14:12:41 [DEBUG] Processing segment at 01:53.740
+14:12:55 [DEBUG] Processing segment at 02:19.120
+14:13:10 [DEBUG] Processing segment at 02:45.740
+14:13:24 [DEBUG] Processing segment at 03:15.740
+14:13:39 [DEBUG] Processing segment at 03:40.060
+14:13:53 [DEBUG] Processing segment at 04:07.860
+14:14:07 [DEBUG] Processing segment at 04:37.320
+14:14:20 [DEBUG] Processing segment at 05:05.680
+14:14:32 [DEBUG] Processing segment at 05:23.200
+14:14:46 [DEBUG] Processing segment at 05:50.840
+14:15:01 [DEBUG] Processing segment at 06:18.020
+14:15:15 [DEBUG] Processing segment at 06:45.300
+14:15:29 [DEBUG] Processing segment at 07:12.680
+14:15:44 [DEBUG] Processing segment at 07:40.620
+14:15:58 [DEBUG] Processing segment at 08:08.980
+14:16:13 [DEBUG] Processing segment at 08:33.180
+14:16:22 [INFO] [20/27] OK BV1S5PXztEkw (277s, RTF 0.531)
+14:16:22 [INFO] [21/27] BV1uHqhBFEEx...
+14:16:23 [INFO] Processing audio with duration 10:30.074
+14:16:24 [INFO] VAD filter removed 00:03.145 of audio
+14:16:24 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:42.000], [00:42.000 -> 00:52.640], [00:52.640 -> 01:17.216], [01:17.216 -> 03:38.464], [03:38.464 -> 03:53.232], [03:53.232 -> 04:47.760], [04:47.760 -> 05:43.008], [05:43.008 -> 07:31.824], [07:31.824 -> 07:47.456], [07:47.456 -> 08:15.936], [08:15.936 -> 09:18.272], [09:18.272 -> 10:22.064], [10:22.064 -> 10:26.928]
+14:16:24 [DEBUG] Processing segment at 00:00.000
+14:16:36 [DEBUG] Processing segment at 00:28.120
+14:16:49 [DEBUG] Processing segment at 00:57.700
+14:17:04 [DEBUG] Processing segment at 01:25.520
+14:17:15 [DEBUG] Processing segment at 01:45.700
+14:17:28 [DEBUG] Processing segment at 02:13.020
+14:17:41 [DEBUG] Processing segment at 02:42.380
+14:17:52 [DEBUG] Processing segment at 03:04.140
+14:18:04 [DEBUG] Processing segment at 03:29.340
+14:18:17 [DEBUG] Processing segment at 03:59.080
+14:18:30 [DEBUG] Processing segment at 04:28.820
+14:18:41 [DEBUG] Processing segment at 04:44.900
+14:18:52 [DEBUG] Processing segment at 05:09.960
+14:19:05 [DEBUG] Processing segment at 05:38.440
+14:19:18 [DEBUG] Processing segment at 06:05.460
+14:19:28 [DEBUG] Processing segment at 06:22.280
+14:19:40 [DEBUG] Processing segment at 06:45.300
+14:19:53 [DEBUG] Processing segment at 07:14.220
+14:20:06 [DEBUG] Processing segment at 07:42.440
+14:20:17 [DEBUG] Processing segment at 08:01.240
+14:20:28 [DEBUG] Processing segment at 08:20.300
+14:20:42 [DEBUG] Processing segment at 08:50.280
+14:20:55 [DEBUG] Processing segment at 09:19.620
+14:21:07 [DEBUG] Processing segment at 09:44.480
+14:21:20 [DEBUG] Processing segment at 10:10.200
+14:21:30 [INFO] [21/27] OK BV1uHqhBFEEx (308s, RTF 0.489)
+14:21:30 [INFO] [22/27] BV1VN1WBTESo...
+14:21:31 [INFO] Processing audio with duration 10:48.440
+14:21:32 [INFO] VAD filter removed 00:00.272 of audio
+14:21:32 [DEBUG] VAD filter kept the following audio segments: [00:00.016 -> 00:05.520], [00:05.680 -> 00:30.016], [00:30.016 -> 01:06.176], [01:06.176 -> 02:42.608], [02:42.672 -> 02:53.440], [02:53.440 -> 03:00.656], [03:00.656 -> 05:18.832], [05:18.832 -> 07:17.216], [07:17.216 -> 08:18.288], [08:18.288 -> 08:28.688], [08:28.688 -> 08:51.488], [08:51.488 -> 08:55.856], [08:55.888 -> 09:14.256], [09:14.256 -> 10:14.336], [10:14.336 -> 10:32.672], [10:32.672 -> 10:48.440]
+14:21:32 [DEBUG] Processing segment at 00:00.000
+14:21:44 [DEBUG] Processing segment at 00:30.000
+14:21:56 [DEBUG] Processing segment at 00:58.220
+14:22:09 [DEBUG] Processing segment at 01:27.540
+14:22:20 [DEBUG] Processing segment at 01:47.280
+14:22:30 [DEBUG] Processing segment at 02:04.400
+14:22:43 [DEBUG] Processing segment at 02:32.880
+14:22:55 [DEBUG] Processing segment at 03:01.800
+14:23:04 [DEBUG] Processing segment at 03:11.000
+14:23:15 [DEBUG] Processing segment at 03:27.960
+14:23:23 [DEBUG] Processing segment at 03:30.600
+14:23:31 [DEBUG] Processing segment at 03:34.240
+14:23:39 [DEBUG] Processing segment at 03:37.880
+14:23:51 [DEBUG] Processing segment at 04:03.400
+14:24:04 [DEBUG] Processing segment at 04:33.360
+14:24:16 [DEBUG] Processing segment at 05:00.460
+14:24:29 [DEBUG] Processing segment at 05:21.580
+14:24:41 [DEBUG] Processing segment at 05:47.900
+14:24:53 [DEBUG] Processing segment at 06:14.940
+14:25:05 [DEBUG] Processing segment at 06:41.420
+14:25:17 [DEBUG] Processing segment at 07:09.420
+14:25:29 [DEBUG] Processing segment at 07:38.260
+14:25:40 [DEBUG] Processing segment at 07:58.100
+14:25:51 [DEBUG] Processing segment at 08:18.820
+14:26:04 [DEBUG] Processing segment at 08:47.660
+14:26:17 [DEBUG] Processing segment at 09:17.620
+14:26:29 [DEBUG] Processing segment at 09:44.340
+14:26:41 [DEBUG] Processing segment at 10:07.780
+14:26:53 [DEBUG] Processing segment at 10:33.980
+14:27:03 [INFO] [22/27] OK BV1VN1WBTESo (332s, RTF 0.513)
+14:27:03 [INFO] [23/27] BV1vqBMBCEPK...
+14:27:03 [INFO] Processing audio with duration 07:10.289
+14:27:04 [INFO] VAD filter removed 00:03.393 of audio
+14:27:04 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 01:45.104], [01:45.104 -> 02:48.240], [02:48.368 -> 03:01.456], [03:01.456 -> 03:25.392], [03:25.616 -> 03:58.688], [03:58.688 -> 05:23.408], [05:23.408 -> 05:43.008], [05:43.008 -> 05:48.768], [05:48.768 -> 06:52.448], [06:52.448 -> 07:07.248]
+14:27:04 [DEBUG] Processing segment at 00:00.000
+14:27:15 [DEBUG] Processing segment at 00:28.820
+14:27:27 [DEBUG] Processing segment at 00:58.420
+14:27:37 [DEBUG] Processing segment at 01:15.080
+14:27:48 [DEBUG] Processing segment at 01:35.980
+14:27:59 [DEBUG] Processing segment at 01:57.780
+14:28:11 [DEBUG] Processing segment at 02:26.980
+14:28:23 [DEBUG] Processing segment at 02:56.420
+14:28:35 [DEBUG] Processing segment at 03:24.840
+14:28:45 [DEBUG] Processing segment at 03:39.620
+14:28:57 [DEBUG] Processing segment at 04:07.080
+14:29:09 [DEBUG] Processing segment at 04:33.020
+14:29:21 [DEBUG] Processing segment at 04:58.780
+14:29:33 [DEBUG] Processing segment at 05:23.860
+14:29:46 [DEBUG] Processing segment at 05:53.120
+14:29:58 [DEBUG] Processing segment at 06:20.620
+14:30:09 [DEBUG] Processing segment at 06:43.080
+14:30:21 [DEBUG] Processing segment at 07:06.360
+14:30:29 [INFO] [23/27] OK BV1vqBMBCEPK (206s, RTF 0.479)
+14:30:29 [INFO] [24/27] BV1WfyVBxEB8...
+14:30:29 [INFO] Processing audio with duration 09:55.267
+14:30:30 [INFO] VAD filter removed 00:00.915 of audio
+14:30:30 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:26.640], [00:26.640 -> 03:46.832], [03:46.832 -> 07:04.048], [07:04.048 -> 07:16.464], [07:16.560 -> 09:54.448]
+14:30:30 [DEBUG] Processing segment at 00:00.000
+14:30:42 [DEBUG] Processing segment at 00:28.640
+14:30:54 [DEBUG] Processing segment at 00:57.280
+14:31:06 [DEBUG] Processing segment at 01:23.740
+14:31:19 [DEBUG] Processing segment at 01:49.740
+14:31:32 [DEBUG] Processing segment at 02:18.180
+14:31:46 [DEBUG] Processing segment at 02:47.300
+14:31:59 [DEBUG] Processing segment at 03:14.600
+14:32:11 [DEBUG] Processing segment at 03:39.600
+14:32:23 [DEBUG] Processing segment at 04:05.360
+14:32:36 [DEBUG] Processing segment at 04:31.880
+14:32:50 [DEBUG] Processing segment at 04:58.960
+14:33:03 [DEBUG] Processing segment at 05:26.980
+14:33:16 [DEBUG] Processing segment at 05:54.460
+14:33:28 [DEBUG] Processing segment at 06:16.460
+14:33:41 [DEBUG] Processing segment at 06:42.300
+14:33:54 [DEBUG] Processing segment at 07:11.420
+14:34:08 [DEBUG] Processing segment at 07:41.180
+14:34:20 [DEBUG] Processing segment at 08:02.300
+14:34:32 [DEBUG] Processing segment at 08:26.620
+14:34:46 [DEBUG] Processing segment at 08:56.540
+14:34:59 [DEBUG] Processing segment at 09:23.960
+14:35:08 [DEBUG] Processing segment at 09:28.760
+14:35:20 [DEBUG] Processing segment at 09:49.620
+14:35:28 [INFO] [24/27] OK BV1WfyVBxEB8 (299s, RTF 0.503)
+14:35:28 [INFO] [25/27] BV1WHiXB1EEN...
+14:35:28 [INFO] Processing audio with duration 09:07.318
+14:35:29 [INFO] VAD filter removed 00:02.166 of audio
+14:35:29 [DEBUG] VAD filter kept the following audio segments: [00:00.112 -> 00:09.504], [00:09.504 -> 01:00.880], [01:00.880 -> 05:14.592], [05:14.592 -> 05:53.056], [05:53.056 -> 06:14.032], [06:14.032 -> 08:21.296], [08:21.296 -> 08:52.288], [08:52.288 -> 09:01.280], [09:01.280 -> 09:05.264]
+14:35:29 [DEBUG] Processing segment at 00:00.000
+14:35:41 [DEBUG] Processing segment at 00:27.940
+14:35:54 [DEBUG] Processing segment at 00:55.880
+14:36:06 [DEBUG] Processing segment at 01:20.540
+14:36:18 [DEBUG] Processing segment at 01:42.780
+14:36:32 [DEBUG] Processing segment at 02:12.500
+14:36:45 [DEBUG] Processing segment at 02:42.020
+14:36:58 [DEBUG] Processing segment at 03:07.060
+14:37:10 [DEBUG] Processing segment at 03:30.420
+14:37:23 [DEBUG] Processing segment at 03:58.080
+14:37:36 [DEBUG] Processing segment at 04:27.440
+14:37:48 [DEBUG] Processing segment at 04:52.640
+14:38:01 [DEBUG] Processing segment at 05:20.360
+14:38:15 [DEBUG] Processing segment at 05:49.540
+14:38:29 [DEBUG] Processing segment at 06:19.240
+14:38:43 [DEBUG] Processing segment at 06:47.920
+14:38:57 [DEBUG] Processing segment at 07:16.660
+14:39:11 [DEBUG] Processing segment at 07:44.880
+14:39:23 [DEBUG] Processing segment at 08:06.860
+14:39:36 [DEBUG] Processing segment at 08:35.400
+14:39:50 [DEBUG] Processing segment at 09:04.640
+14:40:04 [DEBUG] Compression ratio threshold is not met with temperature 0.0 (12.000000 > 2.400000)
+14:40:08 [DEBUG] Compression ratio threshold is not met with temperature 0.2 (19.028571 > 2.400000)
+14:40:13 [DEBUG] Compression ratio threshold is not met with temperature 0.4 (19.028571 > 2.400000)
+14:40:16 [DEBUG] Compression ratio threshold is not met with temperature 0.6 (9.827586 > 2.400000)
+14:40:18 [DEBUG] Log probability threshold is not met with temperature 0.8 (-1.825695 < -1.000000)
+14:40:20 [DEBUG] Log probability threshold is not met with temperature 1.0 (-3.124025 < -1.000000)
+14:40:20 [DEBUG] Reset prompt. prompt_reset_on_temperature threshold is met 1.000000 > 0.500000
+14:40:20 [INFO] [25/27] OK BV1WHiXB1EEN (292s, RTF 0.534)
+14:40:20 [INFO] [26/27] BV1XEzfBQECA...
+14:40:21 [INFO] Processing audio with duration 09:45.886
+14:40:21 [INFO] VAD filter removed 00:03.790 of audio
+14:40:21 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:04.144], [00:04.432 -> 09:36.304], [09:37.520 -> 09:43.600]
+14:40:22 [DEBUG] Processing segment at 00:00.000
+14:40:35 [DEBUG] Processing segment at 00:28.660
+14:40:50 [DEBUG] Processing segment at 00:54.320
+14:41:04 [DEBUG] Processing segment at 01:20.900
+14:41:18 [DEBUG] Processing segment at 01:46.180
+14:41:33 [DEBUG] Processing segment at 02:13.380
+14:41:47 [DEBUG] Processing segment at 02:41.620
+14:42:02 [DEBUG] Processing segment at 03:10.940
+14:42:16 [DEBUG] Processing segment at 03:36.920
+14:42:31 [DEBUG] Processing segment at 04:00.320
+14:42:45 [DEBUG] Processing segment at 04:23.960
+14:43:00 [DEBUG] Processing segment at 04:47.540
+14:43:15 [DEBUG] Processing segment at 05:09.940
+14:43:29 [DEBUG] Processing segment at 05:34.840
+14:43:43 [DEBUG] Processing segment at 06:00.380
+14:43:58 [DEBUG] Processing segment at 06:23.940
+14:44:12 [DEBUG] Processing segment at 06:50.820
+14:44:27 [DEBUG] Processing segment at 07:20.820
+14:44:42 [DEBUG] Processing segment at 07:48.200
+14:44:56 [DEBUG] Processing segment at 08:15.840
+14:45:10 [DEBUG] Processing segment at 08:40.220
+14:45:25 [DEBUG] Processing segment at 09:08.960
+14:45:40 [DEBUG] Processing segment at 09:36.640
+14:45:48 [DEBUG] Processing segment at 09:41.640
+14:46:02 [DEBUG] Compression ratio threshold is not met with temperature 0.0 (8.102564 > 2.400000)
+14:46:04 [INFO] [26/27] OK BV1XEzfBQECA (343s, RTF 0.587)
+14:46:04 [INFO] [27/27] BV1yJPjzEEzt...
+14:46:04 [INFO] Processing audio with duration 10:34.276
+14:46:05 [INFO] VAD filter removed 00:01.396 of audio
+14:46:05 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 10:32.880]
+14:46:05 [DEBUG] Processing segment at 00:00.000
+14:46:18 [DEBUG] Processing segment at 00:27.440
+14:46:32 [DEBUG] Processing segment at 00:56.340
+14:46:46 [DEBUG] Processing segment at 01:22.500
+14:47:01 [DEBUG] Processing segment at 01:49.280
+14:47:15 [DEBUG] Processing segment at 02:14.880
+14:47:29 [DEBUG] Processing segment at 02:41.320
+14:47:43 [DEBUG] Processing segment at 03:07.760
+14:47:57 [DEBUG] Processing segment at 03:37.760
+14:48:12 [DEBUG] Processing segment at 04:03.860
+14:48:26 [DEBUG] Processing segment at 04:30.660
+14:48:40 [DEBUG] Processing segment at 05:00.660
+14:48:55 [DEBUG] Processing segment at 05:30.660
+14:49:09 [DEBUG] Processing segment at 05:56.340
+14:49:23 [DEBUG] Processing segment at 06:19.100
+14:49:38 [DEBUG] Processing segment at 06:45.580
+14:49:52 [DEBUG] Processing segment at 07:08.180
+14:50:07 [DEBUG] Processing segment at 07:33.420
+14:50:21 [DEBUG] Processing segment at 08:01.400
+14:50:35 [DEBUG] Processing segment at 08:29.840
+14:50:50 [DEBUG] Processing segment at 08:53.900
+14:51:03 [DEBUG] Processing segment at 09:18.540
+14:51:17 [DEBUG] Processing segment at 09:45.080
+14:51:31 [DEBUG] Processing segment at 10:10.820
+14:51:44 [INFO] [27/27] OK BV1yJPjzEEzt (340s, RTF 0.537)
+14:51:44 [INFO] Transcription done: 27 succeeded, 0 failed, 2 skipped.
+14:51:44 [INFO] Wrote C:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\lunbardibaojie\full_text.txt
+14:51:44 [INFO] collect complete
+14:51:44 [DEBUG] close.started
+14:51:44 [DEBUG] close.complete
+# Filter 结果预览
+
+Expression: `latest:29`
+Pool: 29 -> exclusions -> 29 -> final -> 29
+
+## Selected 29 videos
+
+| # | BV | 播放量 | 时长 | 日期 | 标题 |
+|---|---|---|---|---|---|
+| 1 | BV1DeDvBCEtb | 2,377 | 14min 29s | 2026-04 | 一口气了解原油：全球最复杂大宗商品的定价逻辑 |
+| 2 | BV1EGXeBoE5S | 1,124 | 10min 32s | 2026-03 | 灰产还是风口？2026年你必须了解的GEO商业真相！ |
+| 3 | BV1qKQdB7Epp | 6,321 | 11min 44s | 2026-03 | 五年的密码：教你看懂十五五的时间节律，抓住下一个产业爆发的节奏 |
+| 4 | BV1orw7zNE9y | 2,169 | 9min 11s | 2026-03 | 伊朗货币崩溃启示录：崩盘原因以及普通人逃生舱分析 |
+| 5 | BV1S5PXztEkw | 1,498 | 8min 42s | 2026-03 | 当AI开始“优化”我们，一场新型的经济危机即将来袭 |
+| 6 | BV1RQPezJE6o | 1,180 | 11min 21s | 2026-03 | 从金条到美债，再到石油，世界玩了快100年为什么现在要先掀桌？ |
+| 7 | BV1yJPjzEEzt | 1,440 | 10min 34s | 2026-03 | 经济下行的商业密码：解码千亿零食巨头背后的“折扣生意” |
+| 8 | BV1KvfqBcENP | 45,420 | 9min 55s | 2026-02 | 聊聊春晚选中的合肥，为什么是2026年最值得关注的城市？ |
+| 9 | BV19EcbzdEW4 | 3,947 | 10min 56s | 2026-02 | 黄金爱马仕“老铺黄金”：它卖的黄金比别家贵40%，为什么越贵越有人排队？ |
+| 10 | BV1jUF8zwECp | 5,153 | 9min 40s | 2026-02 | 电子产品集体涨价：内存暴涨的周期规律和垄断真相 |
+| 11 | BV1XEzfBQECA | 9,128 | 9min 45s | 2026-01 | 一张宝可梦卡值4000万元！比泡泡玛特更疯狂的赛道来了！ |
+| 12 | BV1ETzsBAEyU | 23,751 | 9min 49s | 2026-01 | 比黄金涨得更疯！深扒白银这次史无前例牛市背后的数据 |
+| 13 | BV1WHiXB1EEN | 23,382 | 9min 7s | 2026-01 | 2026，财富逻辑将被改写？美联储主席换人背后的独立性危机 |
+| 14 | BV1FyvaBjEBF | 17,696 | 11min 0s | 2025-12 | 替代英伟达？国产GPU商业化残酷真相！ |
+| 15 | BV1vqBMBCEPK | 5,734 | 7min 10s | 2025-12 | 年赚1亿美元：揭秘全球首个进医保的算法避孕APP |
+| 16 | BV1uHqhBFEEx | 16,620 | 10min 30s | 2025-12 | 韩国，为什么成为全球最极端的赌徒国家？ |
+| 17 | BV19r2DBJESd | 3,746 | 11min 9s | 2025-12 | 比特币还有百倍投资机会吗？一次性讲清供需逻辑关键转变 |
+| 18 | BV1i3SeB2EWH | 3,441 | 9min 22s | 2025-12 | 杠杆、循环贷、黑暗Curator…拆解稳定币集体暴雷背后的金融游戏 |
+| 19 | BV1WfyVBxEB8 | 71,856 | 9min 55s | 2025-11 | 颠覆赌博，估值百亿！“合法赌场”赛道出现超级独角兽 |
+| 20 | BV1hfkrBGEu6 | 1,398 | 9min 4s | 2025-11 | 【前沿】x402协议引爆AI圈支付革命，普通人有什么参与机会？ |
+| 21 | BV1VN1WBTESo | 6,918 | 10min 48s | 2025-11 | 深度拆解：全球人均最赚钱公司纪录刷新！11人创造78亿年收，Hyperliqui... |
+| 22 | BV1a51NB7E6r | 2,086 | 10min 54s | 2025-10 | 【商业拆解】27岁年轻人靠一个网站获得640亿元估值，点燃预测市场赛道 ｜Pol... |
+| 23 | BV1RTn2zdEVg | 2,446 | 17min 36s | 2025-09 | 【深度】稳定币十年风云史：一位意大利整形医生如何掀起货币革命 |
+| 24 | BV1EFeJz9Ehs | 1,663 | 11min 25s | 2025-08 | 【硬核科普】RWA现实资产代币化：为何说它是吞噬华尔街与Crypto的下一场金融... |
+| 25 | BV1p7NXzJEGL | 1,777 | 6min 9s | 2025-06 | 一个程序员凭一个发X的AI，3个月制造10亿美元 |
+| 26 | BV1dmTXz1EDA | 3,338 | 3min 25s | 2025-06 | Web3亚洲中心新加坡，为什么开始驱赶Web3游民？ |
+| 27 | BV15wEXzqE6d | 1,434 | 11min 10s | 2025-05 | 总统家族币圈敛财术：狂捞币圈数十亿，竟敢这么赚？ |
+| 28 | BV1oxdNYdEDT | 3,071 | 7min 56s | 2025-04 | 全球人均最赚钱的公司：百来号人造千亿利润 |
+| 29 | BV19YoeYqEYK | 6,506 | 7min 30s | 2025-03 | 让90%用户亏钱的小网站，却让三个大学生一年赚40亿 ｜Pump.fun是个什么... |
+
+## 成本估算
+
+- 总时长: 4h 50min
+- 预计 Whisper 耗时: ~1h 12min (RTF 0.25x on turbo+DirectML)
+- 预计磁盘: ~545MB audio + ~29MB transcripts
+
