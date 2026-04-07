@@ -1,0 +1,125 @@
+{
+  "bvid": "BV1KJySBfEjW",
+  "comments": [
+    {
+      "like": 118,
+      "content": "我基本抛弃了cc[吃瓜]转向codex了"
+    },
+    {
+      "like": 214,
+      "content": "其实你讲了半天，要实现的就是\n1.先做好PRD (product requirement document)\n2. 执行完后，保存完成记录，以便claudecode知道已经进行到哪一步了\n3.节省token消耗\n4.给做好的东西设置类似于index的东西，让claudecode知道已经完成了什么，新功能如何去实现最合理，有没有代码可以复用"
+    },
+    {
+      "like": 201,
+      "content": "claude code确实很强大但是Claude贵不说，限额那是能正常用的吗"
+    },
+    {
+      "like": 33,
+      "content": "思路还不错，但是为啥放弃cursor呢，没感觉claude有什么优势啊"
+    },
+    {
+      "like": 96,
+      "content": "java后端。用cursor+claude4.5模型好久了。已经能满足日常百分之90开发。想问问这种命令行式的ai真的比cursor好用吗。好用在哪。"
+    },
+    {
+      "like": 56,
+      "content": "奉劝各位 cc 的 中转站和纯正版差距还是很大的，虽然正版很麻烦，但只要是吃这碗饭的你就得去自己捣鼓，目前是用 cc 的第 5 个月，只能说帮助巨大，"
+    },
+    {
+      "like": 32,
+      "content": "我是claude写90%，cursor写9%。双修[doge_金箍]"
+    },
+    {
+      "like": 28,
+      "content": "讲的真的很细,不像别人只是教你工具怎么用.而是教你应该如何思考去更好的使用AI工具"
+    },
+    {
+      "like": 22,
+      "content": "claud+glm4.6，好用又快，20人民币包月随便用"
+    },
+    {
+      "like": 23,
+      "content": "用 claudecode 需要科学上网吗"
+    },
+    {
+      "like": 17,
+      "content": "cursor所在的ide不是可以调用claude吗"
+    },
+    {
+      "like": 13,
+      "content": "大家在用的时候，真的比自己开发更轻松吗？我试了下，调试的时间比开发还久，而且结果没成功，领导面前就是0"
+    },
+    {
+      "like": 13,
+      "content": "我用豆包的话，是不是走错地方了？[笑哭]我是做点小app自己用，最近写flutter，各种报错就是，不知道是知识库太老旧，还是逻辑就是不对。"
+    },
+    {
+      "like": 12,
+      "content": "cursor和cc哪个适合阅读项目代码啊，对多文件，复杂项目的理解能力更好"
+    },
+    {
+      "like": 17,
+      "content": "我今天还和智谱的厂商聊了下 vibe coding 。我们一致的结论是，短期内这套东西无法支撑企业级方案。如果没有历史包袱的可以。一旦有了中台，微服务。vibe 这套东西就只能当玩具了"
+    },
+    {
+      "like": 11,
+      "content": "没回答最重要的问题呀。为啥抛弃“cursor”，不是集成了claude 吗？"
+    },
+    {
+      "like": 11,
+      "content": "受教了，虽然代码不是自己写，但是代码整体结构自己很了解，我之前都是一股脑让他写"
+    },
+    {
+      "like": 12,
+      "content": "95%国内程序员用不了。需要你有一个非常高质量的美帝梯子，ip跑一次，直接封"
+    },
+    {
+      "like": 14,
+      "content": "智谱的套餐平替claude了[星星眼]"
+    },
+    {
+      "like": 9,
+      "content": "不是放弃了cursor，是放弃了自己"
+    },
+    {
+      "like": 118,
+      "content": "我基本抛弃了cc[吃瓜]转向codex了"
+    },
+    {
+      "like": 214,
+      "content": "其实你讲了半天，要实现的就是\n1.先做好PRD (product requirement document)\n2. 执行完后，保存完成记录，以便claudecode知道已经进行到哪一步了\n3.节省token消耗\n4.给做好的东西设置类似于index的东西，让claudecode知道已经完成了什么，新功能如何去实现最合理，有没有代码可以复用"
+    },
+    {
+      "like": 201,
+      "content": "claude code确实很强大但是Claude贵不说，限额那是能正常用的吗"
+    },
+    {
+      "like": 33,
+      "content": "思路还不错，但是为啥放弃cursor呢，没感觉claude有什么优势啊"
+    },
+    {
+      "like": 96,
+      "content": "java后端。用cursor+claude4.5模型好久了。已经能满足日常百分之90开发。想问问这种命令行式的ai真的比cursor好用吗。好用在哪。"
+    },
+    {
+      "like": 56,
+      "content": "奉劝各位 cc 的 中转站和纯正版差距还是很大的，虽然正版很麻烦，但只要是吃这碗饭的你就得去自己捣鼓，目前是用 cc 的第 5 个月，只能说帮助巨大，"
+    },
+    {
+      "like": 32,
+      "content": "我是claude写90%，cursor写9%。双修[doge_金箍]"
+    },
+    {
+      "like": 28,
+      "content": "讲的真的很细,不像别人只是教你工具怎么用.而是教你应该如何思考去更好的使用AI工具"
+    },
+    {
+      "like": 22,
+      "content": "claud+glm4.6，好用又快，20人民币包月随便用"
+    },
+    {
+      "like": 23,
+      "content": "用 claudecode 需要科学上网吗"
+    }
+  ]
+}

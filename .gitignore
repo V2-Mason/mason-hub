@@ -22,9 +22,15 @@ logs/archive/
 # Credentials (never commit)
 .credentials/
 .env
+cookies.txt
 tools/trendradar/
 logs/trendradar.log
 tools/trendradar-config/reports/
+
+# Office 临时文件
+~$*.docx
+~$*.xlsx
+~$*.pptx
 
 # SQLite databases (runtime data, not code)
 *.db

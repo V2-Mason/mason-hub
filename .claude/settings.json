@@ -1,4 +1,33 @@
 {
+  "permissions": {
+    "allow": [
+      "Edit(~/.claude/skills/video-clip-select/**)",
+      "Edit(~/.claude/skills/video-script-breakdown/**)",
+      "Edit(~/.claude/skills/video-production/**)",
+      "WebFetch(domain:www.qbitai.com)",
+      "WebFetch(domain:www.stcn.com)",
+      "WebFetch(domain:36kr.com)",
+      "WebFetch(domain:www.xiaohongshu.com)",
+      "WebFetch(domain:www.thepaper.cn)",
+      "WebFetch(domain:news.qq.com)",
+      "WebFetch(domain:research.szltech.com)",
+      "WebFetch(domain:www.sdyanbao.com)",
+      "WebFetch(domain:www.zhihu.com)",
+      "WebFetch(domain:www.gamersky.com)",
+      "WebFetch(domain:www.fxbaogao.com)",
+      "WebFetch(domain:www.36kr.com)",
+      "WebFetch(domain:www.vzkoo.com)",
+      "WebFetch(domain:www.shobserver.com)",
+      "WebFetch(domain:www.opp2.com)",
+      "WebFetch(domain:www.douban.com)",
+      "WebFetch(domain:www.newrank.cn)",
+      "Edit(~/.claude/skills/video-review/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\hangn\\.claude\\skills\\video-clip-select",
+      "C:\\Users\\hangn\\.claude"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
