@@ -1,0 +1,65 @@
+{
+  "_doc": "Mapping from Media XX precomp to actual clip file. Used by 3_fill_template.jsx.",
+  "_version": "2",
+  "_generated": "2026-04-07",
+  "_strategy": {
+    "v2_change": "Hero layoff clips moved to Media 05/07/08/09 to align with template's 12-13.75s close-up sequence (Meta -> Amazon -> Google -> Chegg). Original Media 01-04 slots filled with fill clips.",
+    "Media_05": "Meta layoff (1st close-up at 12.00s)",
+    "Media_07": "Google layoff (3rd close-up at 12.83s, due to template layer order Media 05/08/07/09)",
+    "Media_08": "Amazon layoff (2nd close-up at 12.42s)",
+    "Media_09": "Chegg crash -48% (4th close-up at 13.25s, visual climax)",
+    "Media_06_and_others": "fill clips, mostly used in mosaic backgrounds"
+  },
+
+  "main_comp": "Render",
+  "save_as": "Multiscreen Intro filled v1.aep",
+
+  "placeholder_layer_pattern": "Placeholder %02d",
+  "placeholder_strategy": "disable",
+  "fit_strategy": "scale_to_comp",
+
+  "panel_mappings": [
+    { "comp_name": "Media 01", "clip_path": "fill_clips/fill_17_en_C5_news18_ibm_7800.mp4",           "tier": "fill" },
+    { "comp_name": "Media 02", "clip_path": "fill_clips/fill_07_en_B1_cnbc_anthropic_30b.mp4",        "tier": "fill" },
+    { "comp_name": "Media 03", "clip_path": "fill_clips/fill_09_en_B4_cnbc_trillion_deals.mp4",       "tier": "fill" },
+    { "comp_name": "Media 04", "clip_path": "fill_clips/fill_11_en_B6_bloomberg_deepseek_shocks.mp4", "tier": "fill" },
+    { "comp_name": "Media 05", "clip_path": "clips/03_en_C2_meta_11000.mp4",                          "tier": "hero" },
+
+    { "comp_name": "Media 06", "clip_path": "fill_clips/fill_01_en_A1_google_gemini_era.mp4",         "tier": "fill" },
+    { "comp_name": "Media 07", "clip_path": "fill_clips/fill_07_en_B1_cnbc_anthropic_30b.mp4",        "tier": "fill" },
+    { "comp_name": "Media 08", "clip_path": "clips/01_en_C4_amzn_10000.mp4",                          "tier": "hero" },
+    { "comp_name": "Media 09", "clip_path": "fill_clips/fill_09_en_B4_cnbc_trillion_deals.mp4",       "tier": "fill" },
+    { "comp_name": "Media 10", "clip_path": "clips/05_en_C3_msft_10000.mp4",                          "tier": "hero" },
+    { "comp_name": "Media 11", "clip_path": "fill_clips/fill_02_en_A3_openai_sora.mp4",               "tier": "fill" },
+    { "comp_name": "Media 12", "clip_path": "fill_clips/fill_03_en_A5_nvidia_gtc26.mp4",              "tier": "fill" },
+    { "comp_name": "Media 13", "clip_path": "fill_clips/fill_4_en_A6_anthropic_opus46.mp4",           "tier": "fill" },
+    { "comp_name": "Media 14", "clip_path": "fill_clips/fill_05_en_A8_cnbc_deepseek_breakthrough.mp4","tier": "fill" },
+    { "comp_name": "Media 15", "clip_path": "fill_clips/fill_6_cn_A13_cctv_ai_videogen.mp4",          "tier": "fill" },
+    { "comp_name": "Media 16", "clip_path": "fill_clips/fill_8_en_B3_cnbc_nvidia_1t.mp4",             "tier": "fill" },
+    { "comp_name": "Media 17", "clip_path": "fill_clips/fill_10_en_B4b_bloomberg_openai_msft.mp4",    "tier": "fill" },
+    { "comp_name": "Media 18", "clip_path": "fill_clips/fill_2_en_B7_cnbc_deepseek_chip_selloff.mp4", "tier": "fill" },
+    { "comp_name": "Media 19", "clip_path": "fill_clips/fill_3_en_B8_bloomberg_nvidia_465b_wipeout.mp4","tier":"fill" },
+    { "comp_name": "Media 20", "clip_path": "fill_clips/fill_4_cn_B10_36kr_deepseek.mp4",             "tier": "fill" },
+    { "comp_name": "Media 21", "clip_path": "fill_clips/fill_5_cn_B11_jiqizhixin_nvidia_gtc.mp4",     "tier": "fill" },
+    { "comp_name": "Media 22", "clip_path": "fill_clips/fill_16_cn_B12_jiqizhixin_deepseek_nature.mp4","tier":"fill" },
+
+    { "comp_name": "Media 23", "clip_path": "fill_clips/fill_17_en_C5_news18_ibm_7800.mp4",           "tier": "loop" },
+    { "comp_name": "Media 24", "clip_path": "fill_clips/fill_07_en_B1_cnbc_anthropic_30b.mp4",        "tier": "loop" },
+    { "comp_name": "Media 25", "clip_path": "fill_clips/fill_09_en_B4_cnbc_trillion_deals.mp4",       "tier": "loop" },
+    { "comp_name": "Media 26", "clip_path": "fill_clips/fill_11_en_B6_bloomberg_deepseek_shocks.mp4", "tier": "loop" },
+    { "comp_name": "Media 27", "clip_path": "fill_clips/fill_01_en_A1_google_gemini_era.mp4",         "tier": "loop" },
+    { "comp_name": "Media 28", "clip_path": "fill_clips/fill_02_en_A3_openai_sora.mp4",               "tier": "loop" },
+    { "comp_name": "Media 29", "clip_path": "fill_clips/fill_03_en_A5_nvidia_gtc26.mp4",              "tier": "loop" },
+    { "comp_name": "Media 30", "clip_path": "fill_clips/fill_4_en_A6_anthropic_opus46.mp4",           "tier": "loop" },
+    { "comp_name": "Media 31", "clip_path": "fill_clips/fill_05_en_A8_cnbc_deepseek_breakthrough.mp4","tier": "loop" },
+    { "comp_name": "Media 32", "clip_path": "fill_clips/fill_6_cn_A13_cctv_ai_videogen.mp4",          "tier": "loop" },
+    { "comp_name": "Media 33", "clip_path": "fill_clips/fill_8_en_B3_cnbc_nvidia_1t.mp4",             "tier": "loop" },
+    { "comp_name": "Media 34", "clip_path": "fill_clips/fill_10_en_B4b_bloomberg_openai_msft.mp4",    "tier": "loop" },
+    { "comp_name": "Media 35", "clip_path": "fill_clips/fill_2_en_B7_cnbc_deepseek_chip_selloff.mp4", "tier": "loop" },
+    { "comp_name": "Media 36", "clip_path": "fill_clips/fill_3_en_B8_bloomberg_nvidia_465b_wipeout.mp4","tier":"loop" },
+    { "comp_name": "Media 37", "clip_path": "fill_clips/fill_4_cn_B10_36kr_deepseek.mp4",             "tier": "loop" },
+    { "comp_name": "Media 38", "clip_path": "fill_clips/fill_5_cn_B11_jiqizhixin_nvidia_gtc.mp4",     "tier": "loop" },
+    { "comp_name": "Media 39", "clip_path": "fill_clips/fill_16_cn_B12_jiqizhixin_deepseek_nature.mp4","tier":"loop" },
+    { "comp_name": "Media 40", "clip_path": "fill_clips/fill_17_en_C5_news18_ibm_7800.mp4",           "tier": "loop" }
+  ]
+}

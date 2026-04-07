@@ -89,3 +89,57 @@
 | v1 (4-check) | 2026-04-06 | Initial selection: C7, C1, C2, C6, C3 |
 | v2 (5-check) | 2026-04-06 | Re-verified with v5. C7 REJECTED. C4 替代 C7. 全部 5 clips 重切. |
 | v3 (Hero+Fill) | 2026-04-06 | Added 17 fill clips using v7 Phase 3-Fill (PySceneDetect-based, 3-check F1/F2/F3). Replaces ffmpeg scene detect with PySceneDetect for better shot boundary accuracy. |
+| v4 (Whisper) | 2026-04-07 | Re-cut Meta + Amazon to exact sentence boundaries using Whisper word_timestamps. Originals preserved as `*.original.mp4`. |
+
+## Appendix: Whisper Word-Level Transcripts (2026-04-07)
+
+> Use this data when stretching close-up timing or generating subtitles.
+> Generated with: `faster-whisper small, word_timestamps=True, language=en`
+
+### 01_en_C4_amzn_10000.mp4 (re-cut to 3.54s)
+
+```
+0.00 - 0.08    that
+0.08 - 0.46    Amazon
+0.46 - 0.92    is
+0.92 - 1.28    planning
+1.28 - 1.48    to
+1.48 - 1.78    cut
+1.78 - 2.68    10
+2.68 - 3.04   ,000
+3.04 - 3.46    workers.
+3.74 - 3.98    So...      ← cut at 3.50, this was next sentence
+```
+
+**Full sentence**: "that Amazon is planning to cut 10,000 workers."
+**Key beat**: "10,000 workers" at 1.78 - 3.46s
+
+### 03_en_C2_meta_11000.mp4 (re-cut to 5.00s)
+
+```
+0.00 - 0.14    And
+0.14 - 0.52    happening
+0.52 - 0.82    today,
+0.94 - 1.20    another
+1.20 - 1.70    major
+1.70 - 2.02    tech
+2.02 - 2.44    giant
+2.44 - 2.66    is
+2.66 - 2.92    planning
+2.92 - 3.16    to
+3.16 - 3.30    lay
+3.30 - 3.46    off
+3.46 - 4.04    thousands
+4.04 - 4.50    of
+4.50 - 4.64    its
+4.64 - 4.96    workers.
+```
+
+**Full sentence**: "And happening today, another major tech giant is planning to lay off thousands of its workers."
+**Key beat**: "lay off thousands" at 3.16 - 4.04s
+
+### Lesson
+
+Any "what time is X said" question → run Whisper word_timestamps first. Don't guess from CUT_SHEET old timecodes (they're from the original YouTube video, not the ffmpeg-cut version).
+
+See: [[learnings/whisper-first-for-audio-timing]]

@@ -215,3 +215,12 @@ skills/*/
 **/content/**/*.jpeg
 **/content/**/temp/
 tools/email-patrol/email_patrol_mcp.egg-info/
+
+# AE projects (binary, large)
+**/*.aep
+**/Adobe After Effects Auto-Save/
+**/inspect_output.txt
+**/diagnose_output.txt
+**/*.original.mp4
+# AE script run logs (regenerated each run)
+**/scripts/*_log.txt
