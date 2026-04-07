@@ -1,0 +1,220 @@
+12:19:54 [INFO] === Phase 2: Select ===
+12:19:54 [INFO] Wrote C:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\lunbardibaojie\selected.tsv and C:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\lunbardibaojie\filter_used.yaml
+12:19:54 [INFO] === Phase 3: Download Audio ===
+12:19:54 [INFO] [1/29] SKIP BV1DeDvBCEtb (already downloaded)
+12:19:54 [INFO] [2/29] SKIP BV1EGXeBoE5S (already downloaded)
+12:19:54 [INFO] [3/29] downloading BV1qKQdB7Epp...
+12:20:28 [INFO] [3/29] OK BV1qKQdB7Epp
+12:20:28 [INFO] [4/29] downloading BV1orw7zNE9y...
+12:21:05 [INFO] [4/29] OK BV1orw7zNE9y
+12:21:05 [INFO] [5/29] downloading BV1S5PXztEkw...
+12:21:23 [INFO] [5/29] OK BV1S5PXztEkw
+12:21:23 [INFO] [6/29] downloading BV1RQPezJE6o...
+12:22:01 [INFO] [6/29] OK BV1RQPezJE6o
+12:22:01 [INFO] [7/29] downloading BV1yJPjzEEzt...
+12:22:29 [INFO] [7/29] OK BV1yJPjzEEzt
+12:22:29 [INFO] [8/29] downloading BV1KvfqBcENP...
+12:22:47 [INFO] [8/29] OK BV1KvfqBcENP
+12:22:47 [INFO] [9/29] downloading BV19EcbzdEW4...
+12:23:06 [INFO] [9/29] OK BV19EcbzdEW4
+12:23:06 [INFO] [10/29] downloading BV1jUF8zwECp...
+12:23:32 [INFO] [10/29] OK BV1jUF8zwECp
+12:23:32 [INFO] [11/29] downloading BV1XEzfBQECA...
+12:23:46 [INFO] [11/29] OK BV1XEzfBQECA
+12:23:46 [INFO] [12/29] downloading BV1ETzsBAEyU...
+12:24:28 [INFO] [12/29] OK BV1ETzsBAEyU
+12:24:28 [INFO] [13/29] downloading BV1WHiXB1EEN...
+12:25:08 [INFO] [13/29] OK BV1WHiXB1EEN
+12:25:08 [INFO] [14/29] downloading BV1FyvaBjEBF...
+12:25:32 [INFO] [14/29] OK BV1FyvaBjEBF
+12:25:32 [INFO] [15/29] downloading BV1vqBMBCEPK...
+12:25:52 [INFO] [15/29] OK BV1vqBMBCEPK
+12:25:52 [INFO] [16/29] downloading BV1uHqhBFEEx...
+12:26:19 [INFO] [16/29] OK BV1uHqhBFEEx
+12:26:19 [INFO] [17/29] downloading BV19r2DBJESd...
+12:26:48 [INFO] [17/29] OK BV19r2DBJESd
+12:26:48 [INFO] [18/29] downloading BV1i3SeB2EWH...
+12:27:23 [INFO] [18/29] OK BV1i3SeB2EWH
+12:27:23 [INFO] [19/29] downloading BV1WfyVBxEB8...
+12:27:52 [INFO] [19/29] OK BV1WfyVBxEB8
+12:27:52 [INFO] [20/29] downloading BV1hfkrBGEu6...
+12:28:33 [INFO] [20/29] OK BV1hfkrBGEu6
+12:28:33 [INFO] [21/29] downloading BV1VN1WBTESo...
+12:29:13 [INFO] [21/29] OK BV1VN1WBTESo
+12:29:13 [INFO] [22/29] downloading BV1a51NB7E6r...
+12:29:58 [INFO] [22/29] OK BV1a51NB7E6r
+12:29:58 [INFO] [23/29] downloading BV1RTn2zdEVg...
+12:30:51 [INFO] [23/29] OK BV1RTn2zdEVg
+12:30:51 [INFO] [24/29] downloading BV1EFeJz9Ehs...
+12:31:46 [INFO] [24/29] OK BV1EFeJz9Ehs
+12:31:46 [INFO] [25/29] downloading BV1p7NXzJEGL...
+12:32:04 [INFO] [25/29] OK BV1p7NXzJEGL
+12:32:04 [INFO] [26/29] downloading BV1dmTXz1EDA...
+12:32:11 [INFO] [26/29] OK BV1dmTXz1EDA
+12:32:11 [INFO] [27/29] downloading BV15wEXzqE6d...
+12:32:35 [INFO] [27/29] OK BV15wEXzqE6d
+12:32:35 [INFO] [28/29] downloading BV1oxdNYdEDT...
+12:32:50 [INFO] [28/29] OK BV1oxdNYdEDT
+12:32:50 [INFO] [29/29] downloading BV19YoeYqEYK...
+12:33:12 [INFO] [29/29] OK BV19YoeYqEYK
+12:33:12 [INFO] Done. 27 succeeded, 2 skipped, 0 failed of 29.
+12:33:12 [INFO] === Phase 4: Transcribe ===
+12:33:12 [INFO] SKIP BV1DeDvBCEtb (already transcribed)
+12:33:12 [INFO] SKIP BV1EGXeBoE5S (already transcribed)
+12:33:12 [INFO] Loading Whisper turbo model...
+12:33:14 [DEBUG] connect_tcp.started host='huggingface.co' port=443 local_address=None timeout=None socket_options=None
+12:33:14 [DEBUG] connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002B581B80230>
+12:33:14 [DEBUG] start_tls.started ssl_context=<ssl.SSLContext object at 0x000002B581CE7AD0> server_hostname='huggingface.co' timeout=None
+12:33:14 [DEBUG] start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002B581798FE0>
+12:33:14 [DEBUG] send_request_headers.started request=<Request [b'GET']>
+12:33:14 [DEBUG] send_request_headers.complete
+12:33:14 [DEBUG] send_request_body.started request=<Request [b'GET']>
+12:33:14 [DEBUG] send_request_body.complete
+12:33:14 [DEBUG] receive_response_headers.started request=<Request [b'GET']>
+12:33:14 [DEBUG] receive_response_headers.complete return_value=(b'HTTP/1.1', 307, b'Temporary Redirect', [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'103'), (b'Connection', b'keep-alive'), (b'Date', b'Tue, 07 Apr 2026 16:33:14 GMT'), (b'Location', b'/api/models/dropbox-dash/faster-whisper-large-v3-turbo/revision/main'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-69d531ca-292637e7736a709622856089;56972919-83e5-4d3e-9ae8-c5880249d186'), (b'RateLimit', b'"api";r=499;t=231'), (b'RateLimit-Policy', b'"fixed window";"api";q=500;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin, Accept'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 e96ed109dde78412c6b4651755281804.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'IAD55-P8'), (b'X-Amz-Cf-Id', b'8GJYontw_7LRua43jKTcmtP5sicaGiGjz8viYe3GdTMjiroyx_Ga3A==')])
+12:33:14 [INFO] HTTP Request: GET https://huggingface.co/api/models/mobiuslabsgmbh/faster-whisper-large-v3-turbo/revision/main "HTTP/1.1 307 Temporary Redirect"
+12:33:14 [DEBUG] receive_response_body.started request=<Request [b'GET']>
+12:33:14 [DEBUG] receive_response_body.complete
+12:33:14 [DEBUG] response_closed.started
+12:33:14 [DEBUG] response_closed.complete
+12:33:14 [DEBUG] send_request_headers.started request=<Request [b'GET']>
+12:33:14 [DEBUG] send_request_headers.complete
+12:33:14 [DEBUG] send_request_body.started request=<Request [b'GET']>
+12:33:14 [DEBUG] send_request_body.complete
+12:33:14 [DEBUG] receive_response_headers.started request=<Request [b'GET']>
+12:33:14 [DEBUG] receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Type', b'application/json; charset=utf-8'), (b'Content-Length', b'763'), (b'Connection', b'keep-alive'), (b'Date', b'Tue, 07 Apr 2026 16:33:14 GMT'), (b'ETag', b'W/"2fb-O+jQC/7AhmsWr+RCas3RettjjsA"'), (b'X-Powered-By', b'huggingface-moon'), (b'X-Request-Id', b'Root=1-69d531ca-5bef597d52424d2e3ab6911f;56972919-83e5-4d3e-9ae8-c5880249d186'), (b'RateLimit', b'"api";r=498;t=231'), (b'RateLimit-Policy', b'"fixed window";"api";q=500;w=300'), (b'cross-origin-opener-policy', b'same-origin'), (b'Referrer-Policy', b'strict-origin-when-cross-origin'), (b'Access-Control-Max-Age', b'86400'), (b'Access-Control-Allow-Origin', b'https://huggingface.co'), (b'Vary', b'Origin'), (b'Access-Control-Expose-Headers', b'X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Linked-Size,X-Linked-ETag,X-Xet-Hash'), (b'X-Cache', b'Miss from cloudfront'), (b'Via', b'1.1 e96ed109dde78412c6b4651755281804.cloudfront.net (CloudFront)'), (b'X-Amz-Cf-Pop', b'IAD55-P8'), (b'X-Amz-Cf-Id', b'NN3pa30alkDdif7WERyYPs7RzwDEslh4rrGWddvk78kb7U-KZnd1qw==')])
+12:33:14 [INFO] HTTP Request: GET https://huggingface.co/api/models/dropbox-dash/faster-whisper-large-v3-turbo/revision/main "HTTP/1.1 200 OK"
+12:33:14 [DEBUG] receive_response_body.started request=<Request [b'GET']>
+12:33:14 [DEBUG] receive_response_body.complete
+12:33:14 [DEBUG] response_closed.started
+12:33:14 [DEBUG] response_closed.complete
+12:33:16 [INFO] Model loaded. Transcribing 27 files (2 skipped).
+12:33:16 [INFO] [1/27] BV15wEXzqE6d...
+12:33:17 [INFO] Processing audio with duration 11:10.337
+12:33:18 [INFO] VAD filter removed 00:04.929 of audio
+12:33:18 [DEBUG] VAD filter kept the following audio segments: [00:00.016 -> 00:08.672], [00:08.672 -> 00:18.128], [00:18.128 -> 00:21.824], [00:21.824 -> 00:24.672], [00:24.672 -> 01:08.144], [01:08.144 -> 01:17.776], [01:17.776 -> 01:27.936], [01:27.936 -> 04:21.648], [04:21.648 -> 04:38.448], [04:38.448 -> 04:52.784], [04:52.784 -> 06:53.840], [06:53.840 -> 07:02.480], [07:02.480 -> 07:05.776], [07:05.776 -> 07:11.888], [07:12.016 -> 08:03.488], [08:03.488 -> 08:19.808], [08:19.808 -> 09:20.864], [09:20.864 -> 09:23.648], [09:23.648 -> 09:52.128], [09:52.128 -> 09:58.304], [09:58.304 -> 10:17.408], [10:17.408 -> 10:34.864], [10:34.864 -> 10:59.216], [10:59.216 -> 11:05.552]
+12:33:18 [DEBUG] Processing segment at 00:00.000
+12:33:31 [DEBUG] Processing segment at 00:28.420
+12:33:45 [DEBUG] Processing segment at 00:57.760
+12:33:59 [DEBUG] Processing segment at 01:22.280
+12:34:13 [DEBUG] Processing segment at 01:49.140
+12:34:27 [DEBUG] Processing segment at 02:18.760
+12:34:42 [DEBUG] Processing segment at 02:47.920
+12:34:56 [DEBUG] Processing segment at 03:17.380
+12:35:11 [DEBUG] Processing segment at 03:45.920
+12:35:26 [DEBUG] Processing segment at 04:12.360
+12:35:40 [DEBUG] Processing segment at 04:40.440
+12:35:55 [DEBUG] Processing segment at 05:08.980
+12:36:09 [DEBUG] Processing segment at 05:38.360
+12:36:24 [DEBUG] Processing segment at 06:05.500
+12:36:38 [DEBUG] Processing segment at 06:34.760
+12:36:52 [DEBUG] Processing segment at 07:03.840
+12:37:05 [DEBUG] Processing segment at 07:30.480
+12:37:18 [DEBUG] Processing segment at 07:57.060
+12:37:31 [DEBUG] Processing segment at 08:26.900
+12:37:46 [DEBUG] Processing segment at 08:56.160
+12:38:00 [DEBUG] Processing segment at 09:23.160
+12:38:14 [DEBUG] Processing segment at 09:48.740
+12:38:27 [DEBUG] Processing segment at 10:16.900
+12:38:41 [DEBUG] Processing segment at 10:46.000
+12:38:53 [DEBUG] Processing segment at 11:04.940
+12:39:01 [INFO] [1/27] OK BV15wEXzqE6d (345s, RTF 0.515)
+12:39:01 [INFO] [2/27] BV19EcbzdEW4...
+12:39:02 [INFO] Processing audio with duration 10:56.521
+12:39:03 [INFO] VAD filter removed 00:03.097 of audio
+12:39:03 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 03:00.976], [03:00.976 -> 07:27.504], [07:27.504 -> 08:33.840], [08:34.576 -> 10:54.160]
+12:39:03 [DEBUG] Processing segment at 00:00.000
+12:39:16 [DEBUG] Processing segment at 00:23.440
+12:39:31 [DEBUG] Processing segment at 00:49.480
+12:39:45 [DEBUG] Processing segment at 01:18.220
+12:39:59 [DEBUG] Processing segment at 01:43.020
+12:40:13 [DEBUG] Processing segment at 02:06.260
+12:40:28 [DEBUG] Processing segment at 02:29.260
+12:40:42 [DEBUG] Processing segment at 02:59.260
+12:40:56 [DEBUG] Processing segment at 03:28.200
+12:41:11 [DEBUG] Processing segment at 03:58.200
+12:41:26 [DEBUG] Processing segment at 04:21.540
+12:41:40 [DEBUG] Processing segment at 04:51.540
+12:41:55 [DEBUG] Processing segment at 05:21.540
+12:42:10 [DEBUG] Processing segment at 05:46.120
+12:42:25 [DEBUG] Processing segment at 06:09.060
+12:42:40 [DEBUG] Processing segment at 06:30.900
+12:42:54 [DEBUG] Processing segment at 06:55.280
+12:43:09 [DEBUG] Processing segment at 07:22.560
+12:43:25 [DEBUG] Processing segment at 07:52.560
+12:43:40 [DEBUG] Processing segment at 08:18.800
+12:43:55 [DEBUG] Processing segment at 08:43.220
+12:44:10 [DEBUG] Processing segment at 09:07.140
+12:44:24 [DEBUG] Processing segment at 09:31.940
+12:44:39 [DEBUG] Processing segment at 09:54.920
+12:44:53 [DEBUG] Processing segment at 10:19.960
+12:45:08 [DEBUG] Processing segment at 10:46.860
+12:45:18 [INFO] [2/27] OK BV19EcbzdEW4 (377s, RTF 0.574)
+12:45:18 [INFO] [3/27] BV19r2DBJESd...
+12:45:18 [INFO] Processing audio with duration 11:09.037
+12:45:19 [INFO] VAD filter removed 00:03.165 of audio
+12:45:19 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:22.400], [00:22.400 -> 05:49.072], [05:49.072 -> 07:08.672], [07:08.672 -> 07:58.960], [07:59.440 -> 10:03.200], [10:03.200 -> 11:06.352]
+12:45:20 [DEBUG] Processing segment at 00:00.000
+12:45:32 [DEBUG] Processing segment at 00:29.240
+12:45:44 [DEBUG] Processing segment at 00:58.120
+12:45:56 [DEBUG] Processing segment at 01:22.340
+12:46:07 [DEBUG] Processing segment at 01:42.280
+12:46:21 [DEBUG] Processing segment at 02:11.360
+12:46:33 [DEBUG] Processing segment at 02:39.340
+12:46:45 [DEBUG] Processing segment at 03:06.920
+12:46:58 [DEBUG] Processing segment at 03:35.540
+12:47:12 [DEBUG] Processing segment at 04:04.740
+12:47:25 [DEBUG] Processing segment at 04:31.180
+12:47:38 [DEBUG] Processing segment at 04:59.360
+12:47:52 [DEBUG] Processing segment at 05:28.700
+12:48:05 [DEBUG] Processing segment at 05:57.880
+12:48:17 [DEBUG] Processing segment at 06:22.480
+12:48:30 [DEBUG] Processing segment at 06:44.080
+12:48:43 [DEBUG] Processing segment at 07:13.780
+12:48:56 [DEBUG] Processing segment at 07:43.000
+12:49:10 [DEBUG] Processing segment at 08:08.820
+12:49:23 [DEBUG] Processing segment at 08:33.460
+12:49:36 [DEBUG] Processing segment at 09:00.420
+12:49:48 [DEBUG] Processing segment at 09:29.640
+12:50:02 [DEBUG] Processing segment at 09:58.000
+12:50:15 [DEBUG] Processing segment at 10:26.200
+12:50:29 [DEBUG] Processing segment at 10:55.060
+12:50:39 [INFO] [3/27] OK BV19r2DBJESd (321s, RTF 0.480)
+12:50:39 [INFO] [4/27] BV19YoeYqEYK...
+12:50:39 [INFO] Processing audio with duration 07:30.815
+12:50:40 [INFO] VAD filter removed 00:00.287 of audio
+12:50:40 [DEBUG] VAD filter kept the following audio segments: [00:00.080 -> 04:51.472], [04:51.472 -> 05:14.992], [05:14.992 -> 05:48.848], [05:48.848 -> 06:16.064], [06:16.064 -> 06:20.416], [06:20.416 -> 06:24.272], [06:24.272 -> 06:37.408], [06:37.408 -> 07:06.048], [07:06.048 -> 07:19.312], [07:19.312 -> 07:25.104], [07:25.104 -> 07:30.608]
+12:50:40 [DEBUG] Processing segment at 00:00.000
+12:50:54 [DEBUG] Processing segment at 00:29.340
+12:51:08 [DEBUG] Processing segment at 00:57.360
+12:51:23 [DEBUG] Processing segment at 01:27.200
+12:51:38 [DEBUG] Processing segment at 01:53.480
+12:51:52 [DEBUG] Processing segment at 02:21.180
+12:52:08 [DEBUG] Processing segment at 02:47.720
+12:52:23 [DEBUG] Processing segment at 03:13.640
+12:52:38 [DEBUG] Processing segment at 03:40.680
+12:52:53 [DEBUG] Processing segment at 04:10.680
+12:53:07 [DEBUG] Processing segment at 04:39.540
+12:53:23 [DEBUG] Processing segment at 05:08.900
+12:53:37 [DEBUG] Processing segment at 05:37.020
+12:53:52 [DEBUG] Processing segment at 06:03.600
+12:54:08 [DEBUG] Processing segment at 06:31.880
+12:54:23 [DEBUG] Processing segment at 07:01.140
+12:54:36 [DEBUG] Processing segment at 07:30.140
+12:54:48 [DEBUG] Compression ratio threshold is not met with temperature 0.0 (4.125000 > 2.400000)
+12:54:53 [DEBUG] Compression ratio threshold is not met with temperature 0.2 (5.644737 > 2.400000)
+12:54:57 [DEBUG] Compression ratio threshold is not met with temperature 0.4 (3.551724 > 2.400000)
+12:54:57 [DEBUG] Log probability threshold is not met with temperature 0.4 (-1.039256 < -1.000000)
+12:55:01 [DEBUG] Log probability threshold is not met with temperature 0.6 (-1.789177 < -1.000000)
+12:55:04 [DEBUG] Log probability threshold is not met with temperature 0.8 (-3.133363 < -1.000000)
+12:55:06 [DEBUG] Log probability threshold is not met with temperature 1.0 (-3.201605 < -1.000000)
+12:55:06 [DEBUG] Reset prompt. prompt_reset_on_temperature threshold is met 1.000000 > 0.500000
+12:55:06 [INFO] [4/27] OK BV19YoeYqEYK (268s, RTF 0.595)
+12:55:06 [INFO] [5/27] BV1a51NB7E6r...
+12:55:07 [INFO] Processing audio with duration 10:54.547
+12:55:08 [INFO] VAD filter removed 00:08.771 of audio
+12:55:08 [DEBUG] VAD filter kept the following audio segments: [00:00.000 -> 00:51.056], [00:51.056 -> 00:54.672], [00:54.672 -> 01:15.888], [01:15.920 -> 01:31.984], [01:31.984 -> 01:40.176], [01:40.176 -> 01:50.496], [01:50.496 -> 01:58.384], [01:58.640 -> 02:13.264], [02:13.616 -> 02:19.520], [02:19.520 -> 02:24.576], [02:24.576 -> 02:41.536], [02:41.536 -> 03:05.552], [03:05.552 -> 03:12.656], [03:12.656 -> 03:19.664], [03:20.048 -> 03:25.904], [03:25.904 -> 03:36.144], [03:36.144 -> 03:41.408], [03:41.408 -> 03:47.440], [03:47.600 -> 03:52.368], [03:52.368 -> 04:01.872], [04:01.872 -> 04:03.104], [04:03.104 -> 04:06.528], [04:06.528 -> 04:09.920], [04:09.920 -> 04:13.008], [04:13.072 -> 04:24.672], [04:24.672 -> 04:29.728], [04:29.728 -> 04:41.488], [04:41.488 -> 05:06.896], [05:06.896 -> 05:11.232], [05:11.232 -> 05:15.168], [05:15.168 -> 05:20.208], [05:20.208 -> 05:29.440], [05:29.440 -> 05:32.592], [05:32.592 -> 05:36.976], [05:36.976 -> 05:46.464], [05:46.464 -> 05:51.328], [05:51.328 -> 05:59.568], [05:59.568 -> 06:01.536], [06:01.536 -> 06:05.056], [06:05.056 -> 06:13.200], [06:14.832 -> 06:18.256], [06:18.256 -> 06:21.456], [06:21.456 -> 06:29.008], [06:29.168 -> 06:35.440], [06:35.440 -> 06:48.176], [06:48.400 -> 06:53.744], [06:53.904 -> 07:11.552], [07:11.552 -> 07:14.816], [07:14.816 -> 07:23.888], [07:24.176 -> 07:28.688], [07:28.688 -> 07:40.368], [07:40.816 -> 07:46.368], [07:46.368 -> 07:55.216], [07:55.728 -> 08:04.688], [08:04.720 -> 08:09.712], [08:09.808 -> 08:14.112], [08:14.112 -> 08:28.096], [08:28.096 -> 08:31.600], [08:31.792 -> 08:41.696], [08:41.696 -> 08:59.680], [08:59.680 -> 09:05.136], [09:05.136 -> 09:09.808], [09:10.128 -> 09:12.848], [09:12.848 -> 09:20.080], [09:20.112 -> 09:28.128], [09:28.128 -> 09:35.120], [09:35.120 -> 09:39.792], [09:41.072 -> 09:43.696], [09:43.728 -> 09:47.936], [09:47.936 -> 09:53.744], [09:53.744 -> 09:57.072], [09:58.000 -> 10:08.144], [10:08.336 -> 10:13.072], [10:13.104 -> 10:20.288], [10:20.288 -> 10:37.136], [10:37.136 -> 10:42.736], [10:43.280 -> 10:49.712], [10:49.712 -> 10:54.128]
+12:55:09 [DEBUG] Processing segment at 00:00.000
+12:55:20 [DEBUG] Processing segment at 00:28.960
+12:55:32 [DEBUG] Processing segment at 00:57.460
+12:55:44 [DEBUG] Processing segment at 01:19.820

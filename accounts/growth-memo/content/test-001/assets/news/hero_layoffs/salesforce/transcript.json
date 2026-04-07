@@ -1,0 +1,206 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=fFS0xBBvDRE",
+  "source_title": "Salesforce CEO confirms 4,000 layoffs because I need less heads with AI",
+  "uploader": "NBC Bay Area",
+  "uploader_id": "@NBCBayArea",
+  "clip_file": "en_layoff_salesforce_001_nbc_bay_area.mp4",
+  "clip_start_s": 0.0,
+  "clip_end_s": 5.11,
+  "clip_text": "one of the biggest employers in the Bay Area is cutting thousands of jobs because of AI.",
+  "topic_keywords_matched": [
+    "cutting...jobs",
+    "AI"
+  ],
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 5.48,
+      "text": " one of the biggest employers in the Bay Area is cutting thousands of jobs because of AI. So",
+      "words": [
+        {
+          "word": " one",
+          "start": 0.0,
+          "end": 0.26
+        },
+        {
+          "word": " of",
+          "start": 0.26,
+          "end": 0.34
+        },
+        {
+          "word": " the",
+          "start": 0.34,
+          "end": 0.42
+        },
+        {
+          "word": " biggest",
+          "start": 0.42,
+          "end": 0.58
+        },
+        {
+          "word": " employers",
+          "start": 0.58,
+          "end": 1.3
+        },
+        {
+          "word": " in",
+          "start": 1.3,
+          "end": 1.52
+        },
+        {
+          "word": " the",
+          "start": 1.52,
+          "end": 1.62
+        },
+        {
+          "word": " Bay",
+          "start": 1.62,
+          "end": 1.8
+        },
+        {
+          "word": " Area",
+          "start": 1.8,
+          "end": 2.06
+        },
+        {
+          "word": " is",
+          "start": 2.06,
+          "end": 2.38
+        },
+        {
+          "word": " cutting",
+          "start": 2.38,
+          "end": 2.72
+        },
+        {
+          "word": " thousands",
+          "start": 2.72,
+          "end": 3.24
+        },
+        {
+          "word": " of",
+          "start": 3.24,
+          "end": 3.48
+        },
+        {
+          "word": " jobs",
+          "start": 3.48,
+          "end": 3.86
+        },
+        {
+          "word": " because",
+          "start": 3.86,
+          "end": 4.58
+        },
+        {
+          "word": " of",
+          "start": 4.58,
+          "end": 4.78
+        },
+        {
+          "word": " AI.",
+          "start": 4.78,
+          "end": 4.96
+        },
+        {
+          "word": " So",
+          "start": 5.34,
+          "end": 5.48
+        }
+      ]
+    },
+    {
+      "start": 5.48,
+      "end": 10.44,
+      "text": " what should you be doing if you're worried about losing your job? Let's bring in our business",
+      "words": [
+        {
+          "word": " what",
+          "start": 5.48,
+          "end": 5.82
+        },
+        {
+          "word": " should",
+          "start": 5.82,
+          "end": 6.04
+        },
+        {
+          "word": " you",
+          "start": 6.04,
+          "end": 6.22
+        },
+        {
+          "word": " be",
+          "start": 6.22,
+          "end": 6.36
+        },
+        {
+          "word": " doing",
+          "start": 6.36,
+          "end": 6.8
+        },
+        {
+          "word": " if",
+          "start": 6.8,
+          "end": 7.16
+        },
+        {
+          "word": " you're",
+          "start": 7.16,
+          "end": 7.32
+        },
+        {
+          "word": " worried",
+          "start": 7.32,
+          "end": 7.6
+        },
+        {
+          "word": " about",
+          "start": 7.6,
+          "end": 7.82
+        },
+        {
+          "word": " losing",
+          "start": 7.82,
+          "end": 8.34
+        },
+        {
+          "word": " your",
+          "start": 8.34,
+          "end": 8.7
+        },
+        {
+          "word": " job?",
+          "start": 8.7,
+          "end": 9.1
+        },
+        {
+          "word": " Let's",
+          "start": 9.54,
+          "end": 9.82
+        },
+        {
+          "word": " bring",
+          "start": 9.82,
+          "end": 9.96
+        },
+        {
+          "word": " in",
+          "start": 9.96,
+          "end": 10.12
+        },
+        {
+          "word": " our",
+          "start": 10.12,
+          "end": 10.24
+        },
+        {
+          "word": " business",
+          "start": 10.24,
+          "end": 10.44
+        }
+      ]
+    }
+  ],
+  "full_transcript_segments": 43
+}

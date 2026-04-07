@@ -1,0 +1,11 @@
+filter_expression: latest:29
+parsed:
+  selector:
+    kind: top
+    n: 29
+    by: date
+applied_at: '2026-04-07T12:19:54'
+total_pool: 29
+after_exclusions: 29
+final_selected: 29
+video_list_tsv_sha256: 9ff435f03e274d52be61b55cbe36b0b6942d2448891323a7c0c0cb624e6e7e4e

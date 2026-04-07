@@ -1,0 +1,1308 @@
+[
+  {
+    "start": 0.0,
+    "end": 1.74,
+    "text": " Some breaking news just a moment to go on Microsoft.",
+    "words": [
+      {
+        "word": " Some",
+        "start": 0.0,
+        "end": 0.24
+      },
+      {
+        "word": " breaking",
+        "start": 0.24,
+        "end": 0.42
+      },
+      {
+        "word": " news",
+        "start": 0.42,
+        "end": 0.68
+      },
+      {
+        "word": " just",
+        "start": 0.68,
+        "end": 0.84
+      },
+      {
+        "word": " a",
+        "start": 0.84,
+        "end": 0.94
+      },
+      {
+        "word": " moment",
+        "start": 0.94,
+        "end": 1.04
+      },
+      {
+        "word": " to",
+        "start": 1.04,
+        "end": 1.2
+      },
+      {
+        "word": " go",
+        "start": 1.2,
+        "end": 1.28
+      },
+      {
+        "word": " on",
+        "start": 1.28,
+        "end": 1.42
+      },
+      {
+        "word": " Microsoft.",
+        "start": 1.42,
+        "end": 1.74
+      }
+    ]
+  },
+  {
+    "start": 2.12,
+    "end": 2.76,
+    "text": " Kayleigh Lyons has more.",
+    "words": [
+      {
+        "word": " Kayleigh",
+        "start": 2.12,
+        "end": 2.22
+      },
+      {
+        "word": " Lyons",
+        "start": 2.22,
+        "end": 2.44
+      },
+      {
+        "word": " has",
+        "start": 2.44,
+        "end": 2.56
+      },
+      {
+        "word": " more.",
+        "start": 2.56,
+        "end": 2.76
+      }
+    ]
+  },
+  {
+    "start": 2.92,
+    "end": 3.2,
+    "text": " Hey, Kayleigh.",
+    "words": [
+      {
+        "word": " Hey,",
+        "start": 2.92,
+        "end": 2.92
+      },
+      {
+        "word": " Kayleigh.",
+        "start": 2.98,
+        "end": 3.2
+      }
+    ]
+  },
+  {
+    "start": 3.44,
+    "end": 6.1,
+    "text": " Yeah, 10,000 jobs being cut by Microsoft",
+    "words": [
+      {
+        "word": " Yeah,",
+        "start": 3.44,
+        "end": 3.54
+      },
+      {
+        "word": " 10",
+        "start": 3.68,
+        "end": 3.94
+      },
+      {
+        "word": ",000",
+        "start": 3.94,
+        "end": 4.5
+      },
+      {
+        "word": " jobs",
+        "start": 4.5,
+        "end": 4.98
+      },
+      {
+        "word": " being",
+        "start": 4.98,
+        "end": 5.26
+      },
+      {
+        "word": " cut",
+        "start": 5.26,
+        "end": 5.5
+      },
+      {
+        "word": " by",
+        "start": 5.5,
+        "end": 5.66
+      },
+      {
+        "word": " Microsoft",
+        "start": 5.66,
+        "end": 6.1
+      }
+    ]
+  },
+  {
+    "start": 6.1,
+    "end": 9.04,
+    "text": " are roughly 5% of the company's workforce.",
+    "words": [
+      {
+        "word": " are",
+        "start": 6.1,
+        "end": 6.34
+      },
+      {
+        "word": " roughly",
+        "start": 6.34,
+        "end": 6.6
+      },
+      {
+        "word": " 5",
+        "start": 6.6,
+        "end": 7.02
+      },
+      {
+        "word": "%",
+        "start": 7.02,
+        "end": 7.46
+      },
+      {
+        "word": " of",
+        "start": 7.46,
+        "end": 8.04
+      },
+      {
+        "word": " the",
+        "start": 8.04,
+        "end": 8.2
+      },
+      {
+        "word": " company's",
+        "start": 8.2,
+        "end": 8.7
+      },
+      {
+        "word": " workforce.",
+        "start": 8.7,
+        "end": 9.04
+      }
+    ]
+  },
+  {
+    "start": 9.36,
+    "end": 11.08,
+    "text": " And the company will take a rather large charge",
+    "words": [
+      {
+        "word": " And",
+        "start": 9.36,
+        "end": 9.38
+      },
+      {
+        "word": " the",
+        "start": 9.38,
+        "end": 9.44
+      },
+      {
+        "word": " company",
+        "start": 9.44,
+        "end": 9.66
+      },
+      {
+        "word": " will",
+        "start": 9.66,
+        "end": 9.9
+      },
+      {
+        "word": " take",
+        "start": 9.9,
+        "end": 10.1
+      },
+      {
+        "word": " a",
+        "start": 10.1,
+        "end": 10.24
+      },
+      {
+        "word": " rather",
+        "start": 10.24,
+        "end": 10.38
+      },
+      {
+        "word": " large",
+        "start": 10.38,
+        "end": 10.78
+      },
+      {
+        "word": " charge",
+        "start": 10.78,
+        "end": 11.08
+      }
+    ]
+  },
+  {
+    "start": 11.08,
+    "end": 13.36,
+    "text": " in relation to this of about $1.2 billion",
+    "words": [
+      {
+        "word": " in",
+        "start": 11.08,
+        "end": 11.26
+      },
+      {
+        "word": " relation",
+        "start": 11.26,
+        "end": 11.46
+      },
+      {
+        "word": " to",
+        "start": 11.46,
+        "end": 11.76
+      },
+      {
+        "word": " this",
+        "start": 11.76,
+        "end": 11.92
+      },
+      {
+        "word": " of",
+        "start": 11.92,
+        "end": 12.02
+      },
+      {
+        "word": " about",
+        "start": 12.02,
+        "end": 12.22
+      },
+      {
+        "word": " $1",
+        "start": 12.22,
+        "end": 12.46
+      },
+      {
+        "word": ".2",
+        "start": 12.46,
+        "end": 12.98
+      },
+      {
+        "word": " billion",
+        "start": 12.98,
+        "end": 13.36
+      }
+    ]
+  },
+  {
+    "start": 13.88,
+    "end": 15.12,
+    "text": " in the second quarter.",
+    "words": [
+      {
+        "word": " in",
+        "start": 13.78,
+        "end": 14.02
+      },
+      {
+        "word": " the",
+        "start": 14.02,
+        "end": 14.5
+      },
+      {
+        "word": " second",
+        "start": 14.5,
+        "end": 14.8
+      },
+      {
+        "word": " quarter.",
+        "start": 14.8,
+        "end": 15.12
+      }
+    ]
+  },
+  {
+    "start": 15.26,
+    "end": 17.16,
+    "text": " That's about a 12 cent negative impact",
+    "words": [
+      {
+        "word": " That's",
+        "start": 15.26,
+        "end": 15.4
+      },
+      {
+        "word": " about",
+        "start": 15.4,
+        "end": 15.52
+      },
+      {
+        "word": " a",
+        "start": 15.52,
+        "end": 15.62
+      },
+      {
+        "word": " 12",
+        "start": 15.62,
+        "end": 15.9
+      },
+      {
+        "word": " cent",
+        "start": 15.9,
+        "end": 16.24
+      },
+      {
+        "word": " negative",
+        "start": 16.24,
+        "end": 16.68
+      },
+      {
+        "word": " impact",
+        "start": 16.68,
+        "end": 17.16
+      }
+    ]
+  },
+  {
+    "start": 17.16,
+    "end": 19.44,
+    "text": " to earnings per share according to Microsoft.",
+    "words": [
+      {
+        "word": " to",
+        "start": 17.16,
+        "end": 17.68
+      },
+      {
+        "word": " earnings",
+        "start": 17.68,
+        "end": 17.96
+      },
+      {
+        "word": " per",
+        "start": 17.96,
+        "end": 18.16
+      },
+      {
+        "word": " share",
+        "start": 18.16,
+        "end": 18.34
+      },
+      {
+        "word": " according",
+        "start": 18.34,
+        "end": 18.68
+      },
+      {
+        "word": " to",
+        "start": 18.68,
+        "end": 18.98
+      },
+      {
+        "word": " Microsoft.",
+        "start": 18.98,
+        "end": 19.44
+      }
+    ]
+  },
+  {
+    "start": 19.64,
+    "end": 20.7,
+    "text": " Remember Bloomberg reported yesterday",
+    "words": [
+      {
+        "word": " Remember",
+        "start": 19.64,
+        "end": 19.72
+      },
+      {
+        "word": " Bloomberg",
+        "start": 19.72,
+        "end": 20.04
+      },
+      {
+        "word": " reported",
+        "start": 20.04,
+        "end": 20.44
+      },
+      {
+        "word": " yesterday",
+        "start": 20.44,
+        "end": 20.7
+      }
+    ]
+  },
+  {
+    "start": 20.7,
+    "end": 22.92,
+    "text": " that Microsoft was planning to cut jobs",
+    "words": [
+      {
+        "word": " that",
+        "start": 20.7,
+        "end": 21.0
+      },
+      {
+        "word": " Microsoft",
+        "start": 21.0,
+        "end": 21.3
+      },
+      {
+        "word": " was",
+        "start": 21.3,
+        "end": 21.66
+      },
+      {
+        "word": " planning",
+        "start": 21.66,
+        "end": 21.98
+      },
+      {
+        "word": " to",
+        "start": 21.98,
+        "end": 22.24
+      },
+      {
+        "word": " cut",
+        "start": 22.24,
+        "end": 22.6
+      },
+      {
+        "word": " jobs",
+        "start": 22.6,
+        "end": 22.92
+      }
+    ]
+  },
+  {
+    "start": 22.92,
+    "end": 24.76,
+    "text": " in engineering divisions today.",
+    "words": [
+      {
+        "word": " in",
+        "start": 22.92,
+        "end": 23.44
+      },
+      {
+        "word": " engineering",
+        "start": 23.44,
+        "end": 23.98
+      },
+      {
+        "word": " divisions",
+        "start": 23.98,
+        "end": 24.36
+      },
+      {
+        "word": " today.",
+        "start": 24.36,
+        "end": 24.76
+      }
+    ]
+  },
+  {
+    "start": 24.88,
+    "end": 26.32,
+    "text": " Now we have a better understanding, perhaps,",
+    "words": [
+      {
+        "word": " Now",
+        "start": 24.88,
+        "end": 24.98
+      },
+      {
+        "word": " we",
+        "start": 24.98,
+        "end": 25.1
+      },
+      {
+        "word": " have",
+        "start": 25.1,
+        "end": 25.24
+      },
+      {
+        "word": " a",
+        "start": 25.24,
+        "end": 25.32
+      },
+      {
+        "word": " better",
+        "start": 25.32,
+        "end": 25.46
+      },
+      {
+        "word": " understanding,",
+        "start": 25.46,
+        "end": 25.92
+      },
+      {
+        "word": " perhaps,",
+        "start": 25.92,
+        "end": 26.32
+      }
+    ]
+  },
+  {
+    "start": 26.46,
+    "end": 28.16,
+    "text": " of the magnitude of those cuts.",
+    "words": [
+      {
+        "word": " of",
+        "start": 26.46,
+        "end": 26.86
+      },
+      {
+        "word": " the",
+        "start": 26.86,
+        "end": 26.96
+      },
+      {
+        "word": " magnitude",
+        "start": 26.96,
+        "end": 27.38
+      },
+      {
+        "word": " of",
+        "start": 27.38,
+        "end": 27.74
+      },
+      {
+        "word": " those",
+        "start": 27.74,
+        "end": 27.96
+      },
+      {
+        "word": " cuts.",
+        "start": 27.96,
+        "end": 28.16
+      }
+    ]
+  },
+  {
+    "start": 28.26,
+    "end": 29.44,
+    "text": " And just on that magnitude, John,",
+    "words": [
+      {
+        "word": " And",
+        "start": 28.26,
+        "end": 28.32
+      },
+      {
+        "word": " just",
+        "start": 28.32,
+        "end": 28.44
+      },
+      {
+        "word": " on",
+        "start": 28.44,
+        "end": 28.64
+      },
+      {
+        "word": " that",
+        "start": 28.64,
+        "end": 28.78
+      },
+      {
+        "word": " magnitude,",
+        "start": 28.78,
+        "end": 29.18
+      },
+      {
+        "word": " John,",
+        "start": 29.34,
+        "end": 29.44
+      }
+    ]
+  },
+  {
+    "start": 29.44,
+    "end": 31.4,
+    "text": " remember Microsoft already has been trimming back",
+    "words": [
+      {
+        "word": " remember",
+        "start": 29.44,
+        "end": 29.7
+      },
+      {
+        "word": " Microsoft",
+        "start": 29.7,
+        "end": 30.06
+      },
+      {
+        "word": " already",
+        "start": 30.06,
+        "end": 30.54
+      },
+      {
+        "word": " has",
+        "start": 30.54,
+        "end": 30.78
+      },
+      {
+        "word": " been",
+        "start": 30.78,
+        "end": 30.9
+      },
+      {
+        "word": " trimming",
+        "start": 30.9,
+        "end": 31.12
+      },
+      {
+        "word": " back",
+        "start": 31.12,
+        "end": 31.4
+      }
+    ]
+  },
+  {
+    "start": 31.4,
+    "end": 32.34,
+    "text": " its workforce.",
+    "words": [
+      {
+        "word": " its",
+        "start": 31.4,
+        "end": 31.92
+      },
+      {
+        "word": " workforce.",
+        "start": 31.92,
+        "end": 32.34
+      }
+    ]
+  },
+  {
+    "start": 32.56,
+    "end": 35.06,
+    "text": " It cut about 1% of its 200,000 person workforce",
+    "words": [
+      {
+        "word": " It",
+        "start": 32.56,
+        "end": 32.56
+      },
+      {
+        "word": " cut",
+        "start": 32.56,
+        "end": 32.7
+      },
+      {
+        "word": " about",
+        "start": 32.7,
+        "end": 32.86
+      },
+      {
+        "word": " 1",
+        "start": 32.86,
+        "end": 33.14
+      },
+      {
+        "word": "%",
+        "start": 33.14,
+        "end": 33.44
+      },
+      {
+        "word": " of",
+        "start": 33.44,
+        "end": 33.62
+      },
+      {
+        "word": " its",
+        "start": 33.62,
+        "end": 33.72
+      },
+      {
+        "word": " 200",
+        "start": 33.72,
+        "end": 33.98
+      },
+      {
+        "word": ",000",
+        "start": 33.98,
+        "end": 34.44
+      },
+      {
+        "word": " person",
+        "start": 34.44,
+        "end": 34.74
+      },
+      {
+        "word": " workforce",
+        "start": 34.74,
+        "end": 35.06
+      }
+    ]
+  },
+  {
+    "start": 35.06,
+    "end": 37.06,
+    "text": " in October and also in July.",
+    "words": [
+      {
+        "word": " in",
+        "start": 35.06,
+        "end": 35.34
+      },
+      {
+        "word": " October",
+        "start": 35.34,
+        "end": 35.68
+      },
+      {
+        "word": " and",
+        "start": 35.68,
+        "end": 35.94
+      },
+      {
+        "word": " also",
+        "start": 35.94,
+        "end": 36.26
+      },
+      {
+        "word": " in",
+        "start": 36.26,
+        "end": 36.82
+      },
+      {
+        "word": " July.",
+        "start": 36.82,
+        "end": 37.06
+      }
+    ]
+  },
+  {
+    "start": 37.24,
+    "end": 39.18,
+    "text": " Obviously, these cuts today with about 5%",
+    "words": [
+      {
+        "word": " Obviously,",
+        "start": 37.24,
+        "end": 37.58
+      },
+      {
+        "word": " these",
+        "start": 37.74,
+        "end": 37.9
+      },
+      {
+        "word": " cuts",
+        "start": 37.9,
+        "end": 38.1
+      },
+      {
+        "word": " today",
+        "start": 38.1,
+        "end": 38.34
+      },
+      {
+        "word": " with",
+        "start": 38.34,
+        "end": 38.5
+      },
+      {
+        "word": " about",
+        "start": 38.5,
+        "end": 38.68
+      },
+      {
+        "word": " 5",
+        "start": 38.68,
+        "end": 38.9
+      },
+      {
+        "word": "%",
+        "start": 38.9,
+        "end": 39.18
+      }
+    ]
+  },
+  {
+    "start": 39.18,
+    "end": 40.86,
+    "text": " of the workforce are much larger.",
+    "words": [
+      {
+        "word": " of",
+        "start": 39.18,
+        "end": 39.32
+      },
+      {
+        "word": " the",
+        "start": 39.32,
+        "end": 39.38
+      },
+      {
+        "word": " workforce",
+        "start": 39.38,
+        "end": 39.66
+      },
+      {
+        "word": " are",
+        "start": 39.66,
+        "end": 40.26
+      },
+      {
+        "word": " much",
+        "start": 40.26,
+        "end": 40.48
+      },
+      {
+        "word": " larger.",
+        "start": 40.48,
+        "end": 40.86
+      }
+    ]
+  },
+  {
+    "start": 40.96,
+    "end": 42.48,
+    "text": " The company also taking action",
+    "words": [
+      {
+        "word": " The",
+        "start": 40.96,
+        "end": 41.0
+      },
+      {
+        "word": " company",
+        "start": 41.0,
+        "end": 41.22
+      },
+      {
+        "word": " also",
+        "start": 41.22,
+        "end": 41.58
+      },
+      {
+        "word": " taking",
+        "start": 41.58,
+        "end": 42.12
+      },
+      {
+        "word": " action",
+        "start": 42.12,
+        "end": 42.48
+      }
+    ]
+  },
+  {
+    "start": 42.48,
+    "end": 43.64,
+    "text": " on the real estate footprint.",
+    "words": [
+      {
+        "word": " on",
+        "start": 42.48,
+        "end": 42.72
+      },
+      {
+        "word": " the",
+        "start": 42.72,
+        "end": 42.84
+      },
+      {
+        "word": " real",
+        "start": 42.84,
+        "end": 43.08
+      },
+      {
+        "word": " estate",
+        "start": 43.08,
+        "end": 43.34
+      },
+      {
+        "word": " footprint.",
+        "start": 43.34,
+        "end": 43.64
+      }
+    ]
+  },
+  {
+    "start": 43.88,
+    "end": 45.78,
+    "text": " Microsoft is consolidating its leases",
+    "words": [
+      {
+        "word": " Microsoft",
+        "start": 43.88,
+        "end": 44.2
+      },
+      {
+        "word": " is",
+        "start": 44.2,
+        "end": 44.44
+      },
+      {
+        "word": " consolidating",
+        "start": 44.44,
+        "end": 45.16
+      },
+      {
+        "word": " its",
+        "start": 45.16,
+        "end": 45.4
+      },
+      {
+        "word": " leases",
+        "start": 45.4,
+        "end": 45.78
+      }
+    ]
+  },
+  {
+    "start": 45.78,
+    "end": 48.1,
+    "text": " to create higher density offices.",
+    "words": [
+      {
+        "word": " to",
+        "start": 45.78,
+        "end": 46.3
+      },
+      {
+        "word": " create",
+        "start": 46.3,
+        "end": 46.62
+      },
+      {
+        "word": " higher",
+        "start": 46.62,
+        "end": 46.98
+      },
+      {
+        "word": " density",
+        "start": 46.98,
+        "end": 47.52
+      },
+      {
+        "word": " offices.",
+        "start": 47.52,
+        "end": 48.1
+      }
+    ]
+  },
+  {
+    "start": 48.22,
+    "end": 50.26,
+    "text": " And we heard from the CEO Satya Nadella",
+    "words": [
+      {
+        "word": " And",
+        "start": 48.22,
+        "end": 48.32
+      },
+      {
+        "word": " we",
+        "start": 48.32,
+        "end": 48.4
+      },
+      {
+        "word": " heard",
+        "start": 48.4,
+        "end": 48.6
+      },
+      {
+        "word": " from",
+        "start": 48.6,
+        "end": 48.74
+      },
+      {
+        "word": " the",
+        "start": 48.74,
+        "end": 48.86
+      },
+      {
+        "word": " CEO",
+        "start": 48.86,
+        "end": 49.2
+      },
+      {
+        "word": " Satya",
+        "start": 49.2,
+        "end": 49.9
+      },
+      {
+        "word": " Nadella",
+        "start": 49.9,
+        "end": 50.26
+      }
+    ]
+  },
+  {
+    "start": 50.26,
+    "end": 52.66,
+    "text": " at the World Economic Forum in Davos today",
+    "words": [
+      {
+        "word": " at",
+        "start": 50.26,
+        "end": 50.52
+      },
+      {
+        "word": " the",
+        "start": 50.52,
+        "end": 50.64
+      },
+      {
+        "word": " World",
+        "start": 50.64,
+        "end": 50.78
+      },
+      {
+        "word": " Economic",
+        "start": 50.78,
+        "end": 51.06
+      },
+      {
+        "word": " Forum",
+        "start": 51.06,
+        "end": 51.52
+      },
+      {
+        "word": " in",
+        "start": 51.52,
+        "end": 52.06
+      },
+      {
+        "word": " Davos",
+        "start": 52.06,
+        "end": 52.42
+      },
+      {
+        "word": " today",
+        "start": 52.42,
+        "end": 52.66
+      }
+    ]
+  },
+  {
+    "start": 52.66,
+    "end": 54.62,
+    "text": " talking, frankly, about softening demand,",
+    "words": [
+      {
+        "word": " talking,",
+        "start": 52.66,
+        "end": 53.04
+      },
+      {
+        "word": " frankly,",
+        "start": 53.16,
+        "end": 53.4
+      },
+      {
+        "word": " about",
+        "start": 53.5,
+        "end": 53.72
+      },
+      {
+        "word": " softening",
+        "start": 53.72,
+        "end": 54.28
+      },
+      {
+        "word": " demand,",
+        "start": 54.28,
+        "end": 54.62
+      }
+    ]
+  },
+  {
+    "start": 54.78,
+    "end": 56.98,
+    "text": " how they are going to have to do more with less.",
+    "words": [
+      {
+        "word": " how",
+        "start": 54.78,
+        "end": 54.86
+      },
+      {
+        "word": " they",
+        "start": 54.86,
+        "end": 55.02
+      },
+      {
+        "word": " are",
+        "start": 55.02,
+        "end": 55.12
+      },
+      {
+        "word": " going",
+        "start": 55.12,
+        "end": 55.28
+      },
+      {
+        "word": " to",
+        "start": 55.28,
+        "end": 55.4
+      },
+      {
+        "word": " have",
+        "start": 55.4,
+        "end": 55.58
+      },
+      {
+        "word": " to",
+        "start": 55.58,
+        "end": 55.72
+      },
+      {
+        "word": " do",
+        "start": 55.72,
+        "end": 55.88
+      },
+      {
+        "word": " more",
+        "start": 55.88,
+        "end": 56.24
+      },
+      {
+        "word": " with",
+        "start": 56.24,
+        "end": 56.72
+      },
+      {
+        "word": " less.",
+        "start": 56.72,
+        "end": 56.98
+      }
+    ]
+  },
+  {
+    "start": 57.12,
+    "end": 58.5,
+    "text": " It seems to be about efficiency, John.",
+    "words": [
+      {
+        "word": " It",
+        "start": 57.12,
+        "end": 57.16
+      },
+      {
+        "word": " seems",
+        "start": 57.16,
+        "end": 57.34
+      },
+      {
+        "word": " to",
+        "start": 57.34,
+        "end": 57.46
+      },
+      {
+        "word": " be",
+        "start": 57.46,
+        "end": 57.56
+      },
+      {
+        "word": " about",
+        "start": 57.56,
+        "end": 57.74
+      },
+      {
+        "word": " efficiency,",
+        "start": 57.74,
+        "end": 58.1
+      },
+      {
+        "word": " John.",
+        "start": 58.34,
+        "end": 58.5
+      }
+    ]
+  },
+  {
+    "start": 58.5,
+    "end": 60.94,
+    "text": " And for Microsoft, that means 10,000 job cuts",
+    "words": [
+      {
+        "word": " And",
+        "start": 58.5,
+        "end": 58.62
+      },
+      {
+        "word": " for",
+        "start": 58.62,
+        "end": 58.74
+      },
+      {
+        "word": " Microsoft,",
+        "start": 58.74,
+        "end": 59.18
+      },
+      {
+        "word": " that",
+        "start": 59.44,
+        "end": 59.66
+      },
+      {
+        "word": " means",
+        "start": 59.66,
+        "end": 59.82
+      },
+      {
+        "word": " 10",
+        "start": 59.82,
+        "end": 60.14
+      },
+      {
+        "word": ",000",
+        "start": 60.14,
+        "end": 60.5
+      },
+      {
+        "word": " job",
+        "start": 60.5,
+        "end": 60.7
+      },
+      {
+        "word": " cuts",
+        "start": 60.7,
+        "end": 60.94
+      }
+    ]
+  },
+  {
+    "start": 60.94,
+    "end": 61.92,
+    "text": " are planned for the company.",
+    "words": [
+      {
+        "word": " are",
+        "start": 60.94,
+        "end": 61.26
+      },
+      {
+        "word": " planned",
+        "start": 61.26,
+        "end": 61.46
+      },
+      {
+        "word": " for",
+        "start": 61.46,
+        "end": 61.64
+      },
+      {
+        "word": " the",
+        "start": 61.64,
+        "end": 61.72
+      },
+      {
+        "word": " company.",
+        "start": 61.72,
+        "end": 61.92
+      }
+    ]
+  }
+]
