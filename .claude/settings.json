@@ -21,7 +21,9 @@
       "WebFetch(domain:www.opp2.com)",
       "WebFetch(domain:www.douban.com)",
       "WebFetch(domain:www.newrank.cn)",
-      "Edit(~/.claude/skills/video-review/**)"
+      "Edit(~/.claude/skills/video-review/**)",
+      "Edit(~/.claude/skills/bilibili-creator-dive/**)",
+      "Edit(~/.claude/skills/video-asset-collect/**)"
     ],
     "additionalDirectories": [
       "c:\\Users\\hangn\\.claude\\skills\\video-clip-select",

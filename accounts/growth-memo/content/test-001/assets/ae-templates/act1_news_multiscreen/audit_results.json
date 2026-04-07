@@ -1,0 +1,1757 @@
+[
+  {
+    "name": "01_en_C4_amzn_10000.mp4",
+    "path": "clips\\01_en_C4_amzn_10000.mp4",
+    "tier_current": "hero",
+    "duration": 3.537,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "that Amazon is planning to cut 10,000 workers.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.08,
+        "word": " that"
+      },
+      {
+        "start": 0.08,
+        "end": 0.46,
+        "word": " Amazon"
+      },
+      {
+        "start": 0.46,
+        "end": 0.92,
+        "word": " is"
+      },
+      {
+        "start": 0.92,
+        "end": 1.28,
+        "word": " planning"
+      },
+      {
+        "start": 1.28,
+        "end": 1.5,
+        "word": " to"
+      },
+      {
+        "start": 1.5,
+        "end": 1.78,
+        "word": " cut"
+      },
+      {
+        "start": 1.78,
+        "end": 2.66,
+        "word": " 10"
+      },
+      {
+        "start": 2.66,
+        "end": 3.04,
+        "word": ",000"
+      },
+      {
+        "start": 3.04,
+        "end": 3.34,
+        "word": " workers."
+      }
+    ],
+    "brands_found": [
+      "amazon"
+    ],
+    "numbers_found": [
+      "10,000"
+    ],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": true,
+      "C5_key_data": true
+    },
+    "frames": [
+      "audit_frames\\01_en_C4_amzn_10000\\frame_1_t0.10s.jpg",
+      "audit_frames\\01_en_C4_amzn_10000\\frame_2_t0.88s.jpg",
+      "audit_frames\\01_en_C4_amzn_10000\\frame_3_t1.77s.jpg",
+      "audit_frames\\01_en_C4_amzn_10000\\frame_4_t2.65s.jpg",
+      "audit_frames\\01_en_C4_amzn_10000\\frame_5_t3.44s.jpg"
+    ]
+  },
+  {
+    "name": "02_en_C1_google_12000.mp4",
+    "path": "clips\\02_en_C1_google_12000.mp4",
+    "tier_current": "hero",
+    "duration": 7.007,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 5,
+    "scene_cuts_timestamps": [
+      0.467,
+      0.5,
+      0.567,
+      0.667,
+      0.767
+    ],
+    "transcript": "this morning the company announced it's cutting 12,000 job shares are higher by three and a half percent. Steve Kovac is here to talk about.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.12,
+        "word": " this"
+      },
+      {
+        "start": 0.12,
+        "end": 0.32,
+        "word": " morning"
+      },
+      {
+        "start": 0.32,
+        "end": 0.46,
+        "word": " the"
+      },
+      {
+        "start": 0.46,
+        "end": 0.7,
+        "word": " company"
+      },
+      {
+        "start": 0.7,
+        "end": 1.0,
+        "word": " announced"
+      },
+      {
+        "start": 1.0,
+        "end": 1.34,
+        "word": " it's"
+      },
+      {
+        "start": 1.34,
+        "end": 1.6,
+        "word": " cutting"
+      },
+      {
+        "start": 1.6,
+        "end": 2.0,
+        "word": " 12"
+      },
+      {
+        "start": 2.0,
+        "end": 2.54,
+        "word": ",000"
+      },
+      {
+        "start": 2.54,
+        "end": 2.86,
+        "word": " job"
+      },
+      {
+        "start": 2.86,
+        "end": 3.24,
+        "word": " shares"
+      },
+      {
+        "start": 3.24,
+        "end": 3.82,
+        "word": " are"
+      },
+      {
+        "start": 3.82,
+        "end": 4.2,
+        "word": " higher"
+      },
+      {
+        "start": 4.2,
+        "end": 4.58,
+        "word": " by"
+      },
+      {
+        "start": 4.58,
+        "end": 4.88,
+        "word": " three"
+      },
+      {
+        "start": 4.88,
+        "end": 5.02,
+        "word": " and"
+      },
+      {
+        "start": 5.02,
+        "end": 5.02,
+        "word": " a"
+      },
+      {
+        "start": 5.02,
+        "end": 5.2,
+        "word": " half"
+      },
+      {
+        "start": 5.2,
+        "end": 5.4,
+        "word": " percent."
+      },
+      {
+        "start": 5.5,
+        "end": 5.64,
+        "word": " Steve"
+      },
+      {
+        "start": 5.64,
+        "end": 5.98,
+        "word": " Kovac"
+      },
+      {
+        "start": 5.98,
+        "end": 6.12,
+        "word": " is"
+      },
+      {
+        "start": 6.12,
+        "end": 6.22,
+        "word": " here"
+      },
+      {
+        "start": 6.22,
+        "end": 6.34,
+        "word": " to"
+      },
+      {
+        "start": 6.34,
+        "end": 6.5,
+        "word": " talk"
+      },
+      {
+        "start": 6.5,
+        "end": 6.68,
+        "word": " about."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [
+      "12,000"
+    ],
+    "auto_checks": {
+      "C1_single_shot": false,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": true
+    },
+    "frames": [
+      "audit_frames\\02_en_C1_google_12000\\frame_1_t0.10s.jpg",
+      "audit_frames\\02_en_C1_google_12000\\frame_2_t1.75s.jpg",
+      "audit_frames\\02_en_C1_google_12000\\frame_3_t3.50s.jpg",
+      "audit_frames\\02_en_C1_google_12000\\frame_4_t5.25s.jpg",
+      "audit_frames\\02_en_C1_google_12000\\frame_5_t6.91s.jpg"
+    ]
+  },
+  {
+    "name": "03_en_C2_meta_11000.mp4",
+    "path": "clips\\03_en_C2_meta_11000.mp4",
+    "tier_current": "hero",
+    "duration": 5.005,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 1,
+    "scene_cuts_timestamps": [
+      4.705
+    ],
+    "transcript": "And happening today, another major tech giant is planning to lay off thousands of its workers.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.14,
+        "word": " And"
+      },
+      {
+        "start": 0.14,
+        "end": 0.5,
+        "word": " happening"
+      },
+      {
+        "start": 0.5,
+        "end": 0.84,
+        "word": " today,"
+      },
+      {
+        "start": 0.96,
+        "end": 1.18,
+        "word": " another"
+      },
+      {
+        "start": 1.18,
+        "end": 1.7,
+        "word": " major"
+      },
+      {
+        "start": 1.7,
+        "end": 2.0,
+        "word": " tech"
+      },
+      {
+        "start": 2.0,
+        "end": 2.44,
+        "word": " giant"
+      },
+      {
+        "start": 2.44,
+        "end": 2.66,
+        "word": " is"
+      },
+      {
+        "start": 2.66,
+        "end": 2.92,
+        "word": " planning"
+      },
+      {
+        "start": 2.92,
+        "end": 3.16,
+        "word": " to"
+      },
+      {
+        "start": 3.16,
+        "end": 3.3,
+        "word": " lay"
+      },
+      {
+        "start": 3.3,
+        "end": 3.46,
+        "word": " off"
+      },
+      {
+        "start": 3.46,
+        "end": 4.02,
+        "word": " thousands"
+      },
+      {
+        "start": 4.02,
+        "end": 4.5,
+        "word": " of"
+      },
+      {
+        "start": 4.5,
+        "end": 4.64,
+        "word": " its"
+      },
+      {
+        "start": 4.64,
+        "end": 4.86,
+        "word": " workers."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": false,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\03_en_C2_meta_11000\\frame_1_t0.10s.jpg",
+      "audit_frames\\03_en_C2_meta_11000\\frame_2_t1.25s.jpg",
+      "audit_frames\\03_en_C2_meta_11000\\frame_3_t2.50s.jpg",
+      "audit_frames\\03_en_C2_meta_11000\\frame_4_t3.75s.jpg",
+      "audit_frames\\03_en_C2_meta_11000\\frame_5_t4.91s.jpg"
+    ]
+  },
+  {
+    "name": "04_en_C6_chegg_crash.mp4",
+    "path": "clips\\04_en_C6_chegg_crash.mp4",
+    "tier_current": "hero",
+    "duration": 6.506,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "Chuck is the first public company to blame AI and chat GBT for a major guide down and slower new user growth",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.3,
+        "word": " Chuck"
+      },
+      {
+        "start": 0.3,
+        "end": 0.48,
+        "word": " is"
+      },
+      {
+        "start": 0.48,
+        "end": 0.62,
+        "word": " the"
+      },
+      {
+        "start": 0.62,
+        "end": 0.88,
+        "word": " first"
+      },
+      {
+        "start": 0.88,
+        "end": 1.18,
+        "word": " public"
+      },
+      {
+        "start": 1.18,
+        "end": 1.6,
+        "word": " company"
+      },
+      {
+        "start": 1.6,
+        "end": 1.8,
+        "word": " to"
+      },
+      {
+        "start": 1.8,
+        "end": 2.26,
+        "word": " blame"
+      },
+      {
+        "start": 2.26,
+        "end": 2.66,
+        "word": " AI"
+      },
+      {
+        "start": 2.66,
+        "end": 2.96,
+        "word": " and"
+      },
+      {
+        "start": 2.96,
+        "end": 3.12,
+        "word": " chat"
+      },
+      {
+        "start": 3.12,
+        "end": 3.58,
+        "word": " GBT"
+      },
+      {
+        "start": 3.58,
+        "end": 3.78,
+        "word": " for"
+      },
+      {
+        "start": 3.78,
+        "end": 3.88,
+        "word": " a"
+      },
+      {
+        "start": 3.88,
+        "end": 4.06,
+        "word": " major"
+      },
+      {
+        "start": 4.06,
+        "end": 4.32,
+        "word": " guide"
+      },
+      {
+        "start": 4.32,
+        "end": 4.58,
+        "word": " down"
+      },
+      {
+        "start": 4.58,
+        "end": 4.98,
+        "word": " and"
+      },
+      {
+        "start": 4.98,
+        "end": 5.24,
+        "word": " slower"
+      },
+      {
+        "start": 5.24,
+        "end": 5.46,
+        "word": " new"
+      },
+      {
+        "start": 5.46,
+        "end": 5.78,
+        "word": " user"
+      },
+      {
+        "start": 5.78,
+        "end": 6.16,
+        "word": " growth"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\04_en_C6_chegg_crash\\frame_1_t0.10s.jpg",
+      "audit_frames\\04_en_C6_chegg_crash\\frame_2_t1.63s.jpg",
+      "audit_frames\\04_en_C6_chegg_crash\\frame_3_t3.25s.jpg",
+      "audit_frames\\04_en_C6_chegg_crash\\frame_4_t4.88s.jpg",
+      "audit_frames\\04_en_C6_chegg_crash\\frame_5_t6.41s.jpg"
+    ]
+  },
+  {
+    "name": "05_en_C3_msft_10000.mp4",
+    "path": "clips\\05_en_C3_msft_10000.mp4",
+    "tier_current": "hero",
+    "duration": 5.806,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "Yep, 10,000 jobs being cut by Microsoft, or roughly 5% of the company's workforce.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.16,
+        "word": " Yep,"
+      },
+      {
+        "start": 0.34,
+        "end": 0.52,
+        "word": " 10"
+      },
+      {
+        "start": 0.52,
+        "end": 1.12,
+        "word": ",000"
+      },
+      {
+        "start": 1.12,
+        "end": 1.58,
+        "word": " jobs"
+      },
+      {
+        "start": 1.58,
+        "end": 1.84,
+        "word": " being"
+      },
+      {
+        "start": 1.84,
+        "end": 2.1,
+        "word": " cut"
+      },
+      {
+        "start": 2.1,
+        "end": 2.26,
+        "word": " by"
+      },
+      {
+        "start": 2.26,
+        "end": 2.68,
+        "word": " Microsoft,"
+      },
+      {
+        "start": 2.9,
+        "end": 2.96,
+        "word": " or"
+      },
+      {
+        "start": 2.96,
+        "end": 3.22,
+        "word": " roughly"
+      },
+      {
+        "start": 3.22,
+        "end": 3.62,
+        "word": " 5"
+      },
+      {
+        "start": 3.62,
+        "end": 4.1,
+        "word": "%"
+      },
+      {
+        "start": 4.1,
+        "end": 4.64,
+        "word": " of"
+      },
+      {
+        "start": 4.64,
+        "end": 4.78,
+        "word": " the"
+      },
+      {
+        "start": 4.78,
+        "end": 5.3,
+        "word": " company's"
+      },
+      {
+        "start": 5.3,
+        "end": 5.58,
+        "word": " workforce."
+      }
+    ],
+    "brands_found": [
+      "microsoft"
+    ],
+    "numbers_found": [
+      "10,000",
+      "5%"
+    ],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": true,
+      "C5_key_data": true
+    },
+    "frames": [
+      "audit_frames\\05_en_C3_msft_10000\\frame_1_t0.10s.jpg",
+      "audit_frames\\05_en_C3_msft_10000\\frame_2_t1.45s.jpg",
+      "audit_frames\\05_en_C3_msft_10000\\frame_3_t2.90s.jpg",
+      "audit_frames\\05_en_C3_msft_10000\\frame_4_t4.35s.jpg",
+      "audit_frames\\05_en_C3_msft_10000\\frame_5_t5.71s.jpg"
+    ]
+  },
+  {
+    "name": "fill_01_en_A1_google_gemini_era.mp4",
+    "path": "fill_clips\\fill_01_en_A1_google_gemini_era.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "Allow me to re-",
+    "words": [
+      {
+        "start": 1.54,
+        "end": 1.94,
+        "word": " Allow"
+      },
+      {
+        "start": 1.94,
+        "end": 2.26,
+        "word": " me"
+      },
+      {
+        "start": 2.26,
+        "end": 2.46,
+        "word": " to"
+      },
+      {
+        "start": 2.46,
+        "end": 2.6,
+        "word": " re"
+      },
+      {
+        "start": 2.6,
+        "end": 2.72,
+        "word": "-"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_01_en_A1_google_gemini_era\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_01_en_A1_google_gemini_era\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_01_en_A1_google_gemini_era\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_01_en_A1_google_gemini_era\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_01_en_A1_google_gemini_era\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_02_en_A3_openai_sora.mp4",
+    "path": "fill_clips\\fill_02_en_A3_openai_sora.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "You",
+    "words": [
+      {
+        "start": 1.56,
+        "end": 2.26,
+        "word": " You"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_02_en_A3_openai_sora\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_02_en_A3_openai_sora\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_02_en_A3_openai_sora\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_02_en_A3_openai_sora\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_02_en_A3_openai_sora\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_03_en_A5_nvidia_gtc26.mp4",
+    "path": "fill_clips\\fill_03_en_A5_nvidia_gtc26.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "free it's not cheap enough and the reason for that",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.3,
+        "word": " free"
+      },
+      {
+        "start": 0.3,
+        "end": 0.58,
+        "word": " it's"
+      },
+      {
+        "start": 0.58,
+        "end": 0.72,
+        "word": " not"
+      },
+      {
+        "start": 0.72,
+        "end": 0.96,
+        "word": " cheap"
+      },
+      {
+        "start": 0.96,
+        "end": 1.22,
+        "word": " enough"
+      },
+      {
+        "start": 1.22,
+        "end": 2.28,
+        "word": " and"
+      },
+      {
+        "start": 2.28,
+        "end": 2.4,
+        "word": " the"
+      },
+      {
+        "start": 2.4,
+        "end": 2.66,
+        "word": " reason"
+      },
+      {
+        "start": 2.66,
+        "end": 2.88,
+        "word": " for"
+      },
+      {
+        "start": 2.88,
+        "end": 2.98,
+        "word": " that"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_03_en_A5_nvidia_gtc26\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_03_en_A5_nvidia_gtc26\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_03_en_A5_nvidia_gtc26\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_03_en_A5_nvidia_gtc26\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_03_en_A5_nvidia_gtc26\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_05_en_A8_cnbc_deepseek_breakthrough.mp4",
+    "path": "fill_clips\\fill_05_en_A8_cnbc_deepseek_breakthrough.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "upended so much of what we thought we knew.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.46,
+        "word": " upended"
+      },
+      {
+        "start": 0.46,
+        "end": 1.26,
+        "word": " so"
+      },
+      {
+        "start": 1.26,
+        "end": 1.68,
+        "word": " much"
+      },
+      {
+        "start": 1.68,
+        "end": 2.02,
+        "word": " of"
+      },
+      {
+        "start": 2.02,
+        "end": 2.2,
+        "word": " what"
+      },
+      {
+        "start": 2.2,
+        "end": 2.38,
+        "word": " we"
+      },
+      {
+        "start": 2.38,
+        "end": 2.66,
+        "word": " thought"
+      },
+      {
+        "start": 2.66,
+        "end": 2.86,
+        "word": " we"
+      },
+      {
+        "start": 2.86,
+        "end": 2.98,
+        "word": " knew."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_05_en_A8_cnbc_deepseek_breakthrough\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_05_en_A8_cnbc_deepseek_breakthrough\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_05_en_A8_cnbc_deepseek_breakthrough\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_05_en_A8_cnbc_deepseek_breakthrough\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_05_en_A8_cnbc_deepseek_breakthrough\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_07_en_B1_cnbc_anthropic_30b.mp4",
+    "path": "fill_clips\\fill_07_en_B1_cnbc_anthropic_30b.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "here with all the numbers. Anthropic is saying it's going.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.34,
+        "word": " here"
+      },
+      {
+        "start": 0.34,
+        "end": 0.6,
+        "word": " with"
+      },
+      {
+        "start": 0.6,
+        "end": 0.74,
+        "word": " all"
+      },
+      {
+        "start": 0.74,
+        "end": 0.86,
+        "word": " the"
+      },
+      {
+        "start": 0.86,
+        "end": 1.18,
+        "word": " numbers."
+      },
+      {
+        "start": 1.6,
+        "end": 2.12,
+        "word": " Anthropic"
+      },
+      {
+        "start": 2.12,
+        "end": 2.44,
+        "word": " is"
+      },
+      {
+        "start": 2.44,
+        "end": 2.68,
+        "word": " saying"
+      },
+      {
+        "start": 2.68,
+        "end": 2.94,
+        "word": " it's"
+      },
+      {
+        "start": 2.94,
+        "end": 2.98,
+        "word": " going."
+      }
+    ],
+    "brands_found": [
+      "anthropic"
+    ],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": true,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_07_en_B1_cnbc_anthropic_30b\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_07_en_B1_cnbc_anthropic_30b\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_07_en_B1_cnbc_anthropic_30b\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_07_en_B1_cnbc_anthropic_30b\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_07_en_B1_cnbc_anthropic_30b\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_09_en_B4_cnbc_trillion_deals.mp4",
+    "path": "fill_clips\\fill_09_en_B4_cnbc_trillion_deals.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "scale of artificial intelligence deals lately has been staggering.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.24,
+        "word": " scale"
+      },
+      {
+        "start": 0.24,
+        "end": 0.46,
+        "word": " of"
+      },
+      {
+        "start": 0.46,
+        "end": 0.8,
+        "word": " artificial"
+      },
+      {
+        "start": 0.8,
+        "end": 1.38,
+        "word": " intelligence"
+      },
+      {
+        "start": 1.38,
+        "end": 1.64,
+        "word": " deals"
+      },
+      {
+        "start": 1.64,
+        "end": 1.98,
+        "word": " lately"
+      },
+      {
+        "start": 1.98,
+        "end": 2.3,
+        "word": " has"
+      },
+      {
+        "start": 2.3,
+        "end": 2.46,
+        "word": " been"
+      },
+      {
+        "start": 2.46,
+        "end": 2.76,
+        "word": " staggering."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_09_en_B4_cnbc_trillion_deals\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_09_en_B4_cnbc_trillion_deals\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_09_en_B4_cnbc_trillion_deals\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_09_en_B4_cnbc_trillion_deals\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_09_en_B4_cnbc_trillion_deals\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_10_en_B4b_bloomberg_openai_msft.mp4",
+    "path": "fill_clips\\fill_10_en_B4b_bloomberg_openai_msft.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "Not-for-profit will still oversee opening eyes.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.08,
+        "word": " Not"
+      },
+      {
+        "start": 0.08,
+        "end": 0.18,
+        "word": "-for"
+      },
+      {
+        "start": 0.18,
+        "end": 0.46,
+        "word": "-profit"
+      },
+      {
+        "start": 0.46,
+        "end": 0.68,
+        "word": " will"
+      },
+      {
+        "start": 0.68,
+        "end": 0.94,
+        "word": " still"
+      },
+      {
+        "start": 0.94,
+        "end": 1.56,
+        "word": " oversee"
+      },
+      {
+        "start": 1.56,
+        "end": 2.12,
+        "word": " opening"
+      },
+      {
+        "start": 2.12,
+        "end": 2.44,
+        "word": " eyes."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_10_en_B4b_bloomberg_openai_msft\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_10_en_B4b_bloomberg_openai_msft\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_10_en_B4b_bloomberg_openai_msft\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_10_en_B4b_bloomberg_openai_msft\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_10_en_B4b_bloomberg_openai_msft\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_11_en_B6_bloomberg_deepseek_shocks.mp4",
+    "path": "fill_clips\\fill_11_en_B6_bloomberg_deepseek_shocks.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "and potentially already using themselves, right?",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.32,
+        "word": " and"
+      },
+      {
+        "start": 0.32,
+        "end": 0.98,
+        "word": " potentially"
+      },
+      {
+        "start": 0.98,
+        "end": 1.28,
+        "word": " already"
+      },
+      {
+        "start": 1.28,
+        "end": 1.6,
+        "word": " using"
+      },
+      {
+        "start": 1.6,
+        "end": 2.08,
+        "word": " themselves,"
+      },
+      {
+        "start": 2.3,
+        "end": 2.46,
+        "word": " right?"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_11_en_B6_bloomberg_deepseek_shocks\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_11_en_B6_bloomberg_deepseek_shocks\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_11_en_B6_bloomberg_deepseek_shocks\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_11_en_B6_bloomberg_deepseek_shocks\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_11_en_B6_bloomberg_deepseek_shocks\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_16_cn_B12_jiqizhixin_deepseek_nature.mp4",
+    "path": "fill_clips\\fill_16_cn_B12_jiqizhixin_deepseek_nature.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "zh",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "但是二一的研究 刚刚登上了那场分辨",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.18,
+        "word": "但是"
+      },
+      {
+        "start": 0.18,
+        "end": 0.36,
+        "word": "二"
+      },
+      {
+        "start": 0.36,
+        "end": 0.5,
+        "word": "一"
+      },
+      {
+        "start": 0.5,
+        "end": 0.58,
+        "word": "的"
+      },
+      {
+        "start": 0.58,
+        "end": 0.74,
+        "word": "研"
+      },
+      {
+        "start": 0.74,
+        "end": 0.92,
+        "word": "究"
+      },
+      {
+        "start": 0.92,
+        "end": 1.12,
+        "word": "刚"
+      },
+      {
+        "start": 1.12,
+        "end": 1.34,
+        "word": "刚"
+      },
+      {
+        "start": 1.34,
+        "end": 1.44,
+        "word": "登"
+      },
+      {
+        "start": 1.44,
+        "end": 1.6,
+        "word": "上"
+      },
+      {
+        "start": 1.6,
+        "end": 1.72,
+        "word": "了"
+      },
+      {
+        "start": 1.72,
+        "end": 1.8,
+        "word": "那"
+      },
+      {
+        "start": 1.8,
+        "end": 1.94,
+        "word": "场"
+      },
+      {
+        "start": 1.94,
+        "end": 2.12,
+        "word": "分"
+      },
+      {
+        "start": 2.12,
+        "end": 2.3,
+        "word": "辨"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_16_cn_B12_jiqizhixin_deepseek_nature\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_16_cn_B12_jiqizhixin_deepseek_nature\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_16_cn_B12_jiqizhixin_deepseek_nature\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_16_cn_B12_jiqizhixin_deepseek_nature\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_16_cn_B12_jiqizhixin_deepseek_nature\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_17_en_C5_news18_ibm_7800.mp4",
+    "path": "fill_clips\\fill_17_en_C5_news18_ibm_7800.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "7,800 job roles, 7,800.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.32,
+        "word": " 7"
+      },
+      {
+        "start": 0.32,
+        "end": 0.32,
+        "word": ",800"
+      },
+      {
+        "start": 0.32,
+        "end": 0.66,
+        "word": " job"
+      },
+      {
+        "start": 0.66,
+        "end": 1.04,
+        "word": " roles,"
+      },
+      {
+        "start": 1.26,
+        "end": 1.78,
+        "word": " 7"
+      },
+      {
+        "start": 1.78,
+        "end": 2.64,
+        "word": ",800."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [
+      "7,800"
+    ],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": true
+    },
+    "frames": [
+      "audit_frames\\fill_17_en_C5_news18_ibm_7800\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_17_en_C5_news18_ibm_7800\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_17_en_C5_news18_ibm_7800\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_17_en_C5_news18_ibm_7800\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_17_en_C5_news18_ibm_7800\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_2_en_B7_cnbc_deepseek_chip_selloff.mp4",
+    "path": "fill_clips\\fill_2_en_B7_cnbc_deepseek_chip_selloff.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "hedge fund manager also capturing the attention of leaders.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.26,
+        "word": " hedge"
+      },
+      {
+        "start": 0.26,
+        "end": 0.48,
+        "word": " fund"
+      },
+      {
+        "start": 0.48,
+        "end": 0.9,
+        "word": " manager"
+      },
+      {
+        "start": 0.9,
+        "end": 1.54,
+        "word": " also"
+      },
+      {
+        "start": 1.54,
+        "end": 1.92,
+        "word": " capturing"
+      },
+      {
+        "start": 1.92,
+        "end": 2.08,
+        "word": " the"
+      },
+      {
+        "start": 2.08,
+        "end": 2.32,
+        "word": " attention"
+      },
+      {
+        "start": 2.32,
+        "end": 2.5,
+        "word": " of"
+      },
+      {
+        "start": 2.5,
+        "end": 2.74,
+        "word": " leaders."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_2_en_B7_cnbc_deepseek_chip_selloff\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_2_en_B7_cnbc_deepseek_chip_selloff\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_2_en_B7_cnbc_deepseek_chip_selloff\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_2_en_B7_cnbc_deepseek_chip_selloff\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_2_en_B7_cnbc_deepseek_chip_selloff\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_3_en_B8_bloomberg_nvidia_465b_wipeout.mp4",
+    "path": "fill_clips\\fill_3_en_B8_bloomberg_nvidia_465b_wipeout.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "says that as something becomes cheaper.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.2,
+        "word": " says"
+      },
+      {
+        "start": 0.2,
+        "end": 0.48,
+        "word": " that"
+      },
+      {
+        "start": 0.48,
+        "end": 1.1,
+        "word": " as"
+      },
+      {
+        "start": 1.1,
+        "end": 1.76,
+        "word": " something"
+      },
+      {
+        "start": 1.76,
+        "end": 2.14,
+        "word": " becomes"
+      },
+      {
+        "start": 2.14,
+        "end": 2.5,
+        "word": " cheaper."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_3_en_B8_bloomberg_nvidia_465b_wipeout\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_3_en_B8_bloomberg_nvidia_465b_wipeout\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_3_en_B8_bloomberg_nvidia_465b_wipeout\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_3_en_B8_bloomberg_nvidia_465b_wipeout\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_3_en_B8_bloomberg_nvidia_465b_wipeout\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_4_cn_B10_36kr_deepseek.mp4",
+    "path": "fill_clips\\fill_4_cn_B10_36kr_deepseek.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "zh",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "2048张H800对成本和算力",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.18,
+        "word": "20"
+      },
+      {
+        "start": 0.18,
+        "end": 0.98,
+        "word": "48"
+      },
+      {
+        "start": 0.98,
+        "end": 1.2,
+        "word": "张"
+      },
+      {
+        "start": 1.2,
+        "end": 1.44,
+        "word": "H"
+      },
+      {
+        "start": 1.44,
+        "end": 1.78,
+        "word": "800"
+      },
+      {
+        "start": 1.78,
+        "end": 2.06,
+        "word": "对"
+      },
+      {
+        "start": 2.06,
+        "end": 2.28,
+        "word": "成"
+      },
+      {
+        "start": 2.28,
+        "end": 2.44,
+        "word": "本"
+      },
+      {
+        "start": 2.44,
+        "end": 2.54,
+        "word": "和"
+      },
+      {
+        "start": 2.54,
+        "end": 2.7,
+        "word": "算"
+      },
+      {
+        "start": 2.7,
+        "end": 2.86,
+        "word": "力"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_4_cn_B10_36kr_deepseek\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_4_cn_B10_36kr_deepseek\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_4_cn_B10_36kr_deepseek\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_4_cn_B10_36kr_deepseek\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_4_cn_B10_36kr_deepseek\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_4_en_A6_anthropic_opus46.mp4",
+    "path": "fill_clips\\fill_4_en_A6_anthropic_opus46.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "",
+    "words": [],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": false,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_4_en_A6_anthropic_opus46\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_4_en_A6_anthropic_opus46\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_4_en_A6_anthropic_opus46\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_4_en_A6_anthropic_opus46\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_4_en_A6_anthropic_opus46\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_5_cn_B11_jiqizhixin_nvidia_gtc.mp4",
+    "path": "fill_clips\\fill_5_cn_B11_jiqizhixin_nvidia_gtc.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "zh",
+    "scene_cuts_count": 1,
+    "scene_cuts_timestamps": [
+      1.7
+    ],
+    "transcript": "达正在构建三种AI基础设施",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.16,
+        "word": "达"
+      },
+      {
+        "start": 0.16,
+        "end": 0.34,
+        "word": "正"
+      },
+      {
+        "start": 0.34,
+        "end": 0.52,
+        "word": "在"
+      },
+      {
+        "start": 0.52,
+        "end": 0.7,
+        "word": "构"
+      },
+      {
+        "start": 0.7,
+        "end": 0.92,
+        "word": "建"
+      },
+      {
+        "start": 0.92,
+        "end": 1.16,
+        "word": "三"
+      },
+      {
+        "start": 1.16,
+        "end": 1.42,
+        "word": "种"
+      },
+      {
+        "start": 1.42,
+        "end": 1.7,
+        "word": "AI"
+      },
+      {
+        "start": 1.7,
+        "end": 1.98,
+        "word": "基"
+      },
+      {
+        "start": 1.98,
+        "end": 2.14,
+        "word": "础"
+      },
+      {
+        "start": 2.14,
+        "end": 2.34,
+        "word": "设"
+      },
+      {
+        "start": 2.34,
+        "end": 2.64,
+        "word": "施"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": false,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_5_cn_B11_jiqizhixin_nvidia_gtc\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_5_cn_B11_jiqizhixin_nvidia_gtc\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_5_cn_B11_jiqizhixin_nvidia_gtc\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_5_cn_B11_jiqizhixin_nvidia_gtc\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_5_cn_B11_jiqizhixin_nvidia_gtc\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_6_cn_A13_cctv_ai_videogen.mp4",
+    "path": "fill_clips\\fill_6_cn_A13_cctv_ai_videogen.mp4",
+    "tier_current": "fill",
+    "duration": 3.0,
+    "resolution": "1920x1080",
+    "language": "zh",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "改旗舰模型GLM5",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.1,
+        "word": "改"
+      },
+      {
+        "start": 0.1,
+        "end": 0.38,
+        "word": "旗"
+      },
+      {
+        "start": 0.38,
+        "end": 0.54,
+        "word": "舰"
+      },
+      {
+        "start": 0.54,
+        "end": 0.7,
+        "word": "模"
+      },
+      {
+        "start": 0.7,
+        "end": 0.98,
+        "word": "型"
+      },
+      {
+        "start": 0.98,
+        "end": 1.6,
+        "word": "GL"
+      },
+      {
+        "start": 1.6,
+        "end": 2.14,
+        "word": "M"
+      },
+      {
+        "start": 2.14,
+        "end": 2.52,
+        "word": "5"
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_6_cn_A13_cctv_ai_videogen\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_6_cn_A13_cctv_ai_videogen\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_6_cn_A13_cctv_ai_videogen\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_6_cn_A13_cctv_ai_videogen\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_6_cn_A13_cctv_ai_videogen\\frame_5_t2.90s.jpg"
+    ]
+  },
+  {
+    "name": "fill_8_en_B3_cnbc_nvidia_1t.mp4",
+    "path": "fill_clips\\fill_8_en_B3_cnbc_nvidia_1t.mp4",
+    "tier_current": "fill",
+    "duration": 3.003,
+    "resolution": "1920x1080",
+    "language": "en",
+    "scene_cuts_count": 0,
+    "scene_cuts_timestamps": [],
+    "transcript": "the math thought maybe the acceleration really wasn't there.",
+    "words": [
+      {
+        "start": 0.0,
+        "end": 0.1,
+        "word": " the"
+      },
+      {
+        "start": 0.1,
+        "end": 0.38,
+        "word": " math"
+      },
+      {
+        "start": 0.38,
+        "end": 0.66,
+        "word": " thought"
+      },
+      {
+        "start": 0.66,
+        "end": 0.96,
+        "word": " maybe"
+      },
+      {
+        "start": 0.96,
+        "end": 1.08,
+        "word": " the"
+      },
+      {
+        "start": 1.08,
+        "end": 1.54,
+        "word": " acceleration"
+      },
+      {
+        "start": 1.54,
+        "end": 2.0,
+        "word": " really"
+      },
+      {
+        "start": 2.0,
+        "end": 2.42,
+        "word": " wasn't"
+      },
+      {
+        "start": 2.42,
+        "end": 2.6,
+        "word": " there."
+      }
+    ],
+    "brands_found": [],
+    "numbers_found": [],
+    "auto_checks": {
+      "C1_single_shot": true,
+      "C3_has_speech": true,
+      "C4_company_named": false,
+      "C5_key_data": false
+    },
+    "frames": [
+      "audit_frames\\fill_8_en_B3_cnbc_nvidia_1t\\frame_1_t0.10s.jpg",
+      "audit_frames\\fill_8_en_B3_cnbc_nvidia_1t\\frame_2_t0.75s.jpg",
+      "audit_frames\\fill_8_en_B3_cnbc_nvidia_1t\\frame_3_t1.50s.jpg",
+      "audit_frames\\fill_8_en_B3_cnbc_nvidia_1t\\frame_4_t2.25s.jpg",
+      "audit_frames\\fill_8_en_B3_cnbc_nvidia_1t\\frame_5_t2.90s.jpg"
+    ]
+  }
+]
