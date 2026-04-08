@@ -1,0 +1,4 @@
+file 'c:/Users/hangn/projects/mason-hub/accounts/growth-memo/content/test-001/assets/news/hero_layoffs/scene_ready/scene01_amazon.mp4'
+file 'c:/Users/hangn/projects/mason-hub/accounts/growth-memo/content/test-001/assets/news/hero_layoffs/scene_ready/scene07_google.mp4'
+file 'c:/Users/hangn/projects/mason-hub/accounts/growth-memo/content/test-001/assets/news/hero_layoffs/scene_ready/scene13_meta.mp4'
+file 'c:/Users/hangn/projects/mason-hub/accounts/growth-memo/content/test-001/assets/news/hero_layoffs/scene_ready/scene15_salesforce.mp4'

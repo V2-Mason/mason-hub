@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "version": "v1",
+    "strategy": "text_only_intro",
+    "purpose": "Render 5-scene text-only intro for Growth Memo #001",
+    "notes": [
+      "PlaceHolder_1..16 all disabled (no videos in intro)",
+      "Scene 6..17 disabled in *RENDER ME (we only use Scene 1-5)",
+      "TextHolder_1..5 text updated per narrative plan",
+      "Total intro duration ≈ Scene 1-5 timeline: 0.00 - 17.56s"
+    ]
+  },
+  "template_aep": "Documental Political FullHD/Documental Political FullHD (converted).aep",
+  "save_as": "Documental Political FullHD/intro_textonly_v1.aep",
+
+  "text_holders": [
+    {
+      "comp_name": "TextHolder_1",
+      "scene": "Scene 1",
+      "scene_duration": 4.64,
+      "text_1": "2025",
+      "text_2": "年"
+    },
+    {
+      "comp_name": "TextHolder_2",
+      "scene": "Scene 2",
+      "scene_duration": 3.44,
+      "text_1": "大厂",
+      "text_2": ""
+    },
+    {
+      "comp_name": "TextHolder_3",
+      "scene": "Scene 3",
+      "scene_duration": 3.24,
+      "text_1": "裁员",
+      "text_2": "潮"
+    },
+    {
+      "comp_name": "TextHolder_4",
+      "scene": "Scene 4",
+      "scene_duration": 3.48,
+      "text_1": "因为",
+      "text_2": "AI"
+    },
+    {
+      "comp_name": "TextHolder_5",
+      "scene": "Scene 5",
+      "scene_duration": 3.28,
+      "text_1": "成长",
+      "text_2": "备忘录"
+    }
+  ],
+
+  "disable_scenes_in_render": [
+    "Scene 6",
+    "Scene 7",
+    "Scene 8",
+    "Scene 9",
+    "Scene 10",
+    "Scene 11",
+    "Scene 12",
+    "Scene 13",
+    "Scene 14",
+    "Scene 15",
+    "Scene 16",
+    "Scene 17"
+  ],
+
+  "disable_placeholders_in_scenes": [
+    "Scene 1",
+    "Scene 2",
+    "Scene 3",
+    "Scene 4",
+    "Scene 5"
+  ],
+
+  "render_work_area": {
+    "start": 0.00,
+    "end": 17.56,
+    "note": "Scene 1 starts at 0.00, Scene 5 ends at 17.56 in *RENDER ME timeline"
+  }
+}

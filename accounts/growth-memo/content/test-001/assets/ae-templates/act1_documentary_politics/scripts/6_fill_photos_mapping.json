@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "version": "v1",
+    "strategy": "photos_plus_captions",
+    "purpose": "Fill PlaceHolder_1..5 with hero stills and update TextHolder_1..5 with D1 captions",
+    "reference": "Help PDF pages 1-2: PlaceHolder = main image, TextHolder = caption overlay",
+    "notes": [
+      "Photo order follows narrative Z: Amazon/Meta/Google/Salesforce/Intel",
+      "D1 captions: 'The X / Y' structure matching template original 'YOU CAN BE / DIFFERENT'",
+      "Scene 6-17 disabled in *RENDER ME",
+      "PlaceHolders remain ENABLED (unlike previous wrong attempt)"
+    ]
+  },
+  "template_aep": "Documental Political FullHD/Documental Political FullHD (converted).aep",
+  "save_as": "Documental Political FullHD/filled_photos_v1.aep",
+
+  "placeholders": [
+    {
+      "comp_name": "PlaceHolder_1",
+      "scene": "Scene 1",
+      "photo_path": "intro_photos/scene1_amazon.jpg",
+      "description": "Amazon CNBC anchor - NEWS ALERT layoffs 2023"
+    },
+    {
+      "comp_name": "PlaceHolder_2",
+      "scene": "Scene 2",
+      "photo_path": "intro_photos/scene2_meta.jpg",
+      "description": "Meta Julia Boorstin CNBC - META SHARES JUMP chyron"
+    },
+    {
+      "comp_name": "PlaceHolder_3",
+      "scene": "Scene 3",
+      "photo_path": "intro_photos/scene3_google.jpg",
+      "description": "Google Nasdaq anchor - ALPHABET stock chart"
+    },
+    {
+      "comp_name": "PlaceHolder_4",
+      "scene": "Scene 4",
+      "photo_path": "intro_photos/scene4_salesforce.jpg",
+      "description": "Salesforce NBC Bay - LAYOFFS big logo"
+    },
+    {
+      "comp_name": "PlaceHolder_5",
+      "scene": "Scene 5",
+      "photo_path": "intro_photos/scene5_intel.jpg",
+      "description": "Intel CNBC anchor Rosenblatt Securities background"
+    }
+  ],
+
+  "text_holders": [
+    {
+      "comp_name": "TextHolder_1",
+      "scene": "Scene 1",
+      "text_1": "The Year",
+      "text_2": "2025"
+    },
+    {
+      "comp_name": "TextHolder_2",
+      "scene": "Scene 2",
+      "text_1": "The Players",
+      "text_2": "四家大厂"
+    },
+    {
+      "comp_name": "TextHolder_3",
+      "scene": "Scene 3",
+      "text_1": "The Number",
+      "text_2": "37,000"
+    },
+    {
+      "comp_name": "TextHolder_4",
+      "scene": "Scene 4",
+      "text_1": "The Reason",
+      "text_2": "Because of AI"
+    },
+    {
+      "comp_name": "TextHolder_5",
+      "scene": "Scene 5",
+      "text_1": "The Record",
+      "text_2": "成长备忘录"
+    }
+  ],
+
+  "disable_scenes_in_render": [
+    "Scene 6",
+    "Scene 7",
+    "Scene 8",
+    "Scene 9",
+    "Scene 10",
+    "Scene 11",
+    "Scene 12",
+    "Scene 13",
+    "Scene 14",
+    "Scene 15",
+    "Scene 16",
+    "Scene 17"
+  ],
+
+  "render_work_area": {
+    "start": 0.00,
+    "end": 17.56,
+    "note": "Scene 1 starts at 0.00, Scene 5 ends at 17.56 in *RENDER ME timeline"
+  }
+}

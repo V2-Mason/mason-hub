@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "version": "v7",
+    "template": "act1_documentary_politics / Documental Political FullHD",
+    "strategy": "C1_disable_unused",
+    "notes": [
+      "4 heros -> PlaceHolder_1 / PlaceHolder_7 / PlaceHolder_13 / PlaceHolder_15",
+      "Other 12 scenes disabled in *RENDER ME (scenes 2,3,4,5,6,8,9,10,11,12,14,16)",
+      "Scene 17 (Final Scene) kept for outro",
+      "Hero clips already tail-cropped to scene length in scene_ready/"
+    ]
+  },
+  "template_aep": "Documental Political FullHD/Documental Political FullHD (converted).aep",
+  "save_as": "Documental Political FullHD/filled_v1.aep",
+  "panel_mappings": [
+    {
+      "comp_name": "PlaceHolder_1",
+      "scene_name": "Scene 1",
+      "scene_duration": 4.64,
+      "hero": "Amazon",
+      "clip_path": "../../news/hero_layoffs/scene_ready/scene01_amazon.mp4",
+      "tier": "hero"
+    },
+    {
+      "comp_name": "PlaceHolder_7",
+      "scene_name": "Scene 7",
+      "scene_duration": 4.40,
+      "hero": "Google",
+      "clip_path": "../../news/hero_layoffs/scene_ready/scene07_google.mp4",
+      "tier": "hero"
+    },
+    {
+      "comp_name": "PlaceHolder_13",
+      "scene_name": "Scene 13",
+      "scene_duration": 4.64,
+      "hero": "Meta",
+      "clip_path": "../../news/hero_layoffs/scene_ready/scene13_meta.mp4",
+      "tier": "hero"
+    },
+    {
+      "comp_name": "PlaceHolder_15",
+      "scene_name": "Scene 15",
+      "scene_duration": 4.00,
+      "hero": "Salesforce",
+      "clip_path": "../../news/hero_layoffs/scene_ready/scene15_salesforce.mp4",
+      "tier": "hero"
+    }
+  ],
+  "disable_scenes": [
+    "Scene 2",
+    "Scene 3",
+    "Scene 4",
+    "Scene 5",
+    "Scene 6",
+    "Scene 8",
+    "Scene 9",
+    "Scene 10",
+    "Scene 11",
+    "Scene 12",
+    "Scene 14",
+    "Scene 16"
+  ]
+}
