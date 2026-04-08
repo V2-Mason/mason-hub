@@ -224,3 +224,8 @@ tools/email-patrol/email_patrol_mcp.egg-info/
 **/*.original.mp4
 # AE script run logs (regenerated each run)
 **/scripts/*_log.txt
+
+# Purchased AE templates (never commit, vendor assets)
+**/assets/ae-templates/*/Documental Political*/
+**/assets/ae-templates/*/Documental Political*.pdf
+
