@@ -1,0 +1,236 @@
+[01:19:26] [1/3] RETRY 程序员鱼皮 (UID=12890453, slug=tier1-programmer-yupi)
+01:19:28 [INFO] Probing UID 12890453 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier1-programmer-yupi
+01:19:29 [INFO] wbi keys fetched
+01:19:29 [INFO] Channel: 程序员鱼皮 (877,907 fans)
+01:19:29 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/12890453/upload/video (may take ~2s/video)
+01:29:05 [WARNING] yt-dlp had errors (returncode=1) but extracted 314 videos. Some videos may be deleted or geo-restricted.
+01:29:05 [INFO] Fetched 314 videos
+01:29:05 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier1-programmer-yupi\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 程序员鱼皮
+
+## Channel
+- UID: 12890453
+- 粉丝数: 877,907
+- 主页: https://space.bilibili.com/12890453
+- 签名: 前腾讯开发，用编程做些有趣的事 | 关注领取自学资源 | 我的编程学习网 codefather.cn
+- 视频总数: 314
+- 采集时间: 2026-04-08T01:29:05
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 113 |
+| 5-15min | 169 |
+| 15-30min | 23 |
+| 30-60min | 8 |
+| >60min | 1 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2018 | 1 |
+| 2021 | 87 |
+| 2022 | 44 |
+| 2023 | 44 |
+| 2024 | 42 |
+| 2025 | 78 |
+| 2026 | 18 |
+
+## 播放量分布 (分位)
+- P25: 53,810
+- P50: 128,976
+- P75: 257,202
+- P90: 379,363
+- Max: 3,084,612
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1sQBPBmEGU | 3,084,612 | 5:22 | 突发，快手被色情直播刷屏！背后的原因竟然是？ |
+| BV1YF411a75Y | 2,983,892 | 37:19 | 该无脑计算机吗？一个视频讲透计算机类所有专业！【框框的b站大学-计算机类专业上期... |
+| BV15g41157NK | 1,582,913 | 11:49 | 2025年最新Java学习路线，零基础到精通一条龙（万人收藏⭐️）告别迷茫 |
+| BV1tT4y1y7T4 | 1,532,144 | 4:48 | 托大家的福，网站又被攻击了，这次挂了！ |
+| BV1aM411K7tD | 1,139,098 | 6:48 | 我开业啦！ |
+| BV1iM411T7ey | 968,455 | 7:44 | 再见了，腾讯！你很好，但我必须离开 |
+| BV1xp2hYHEVn | 964,934 | 4:57 | 程序员攻占小猿口算，炸哭小学生！ |
+| BV1y3411r7pX | 836,832 | 9:03 | 我该学哪个编程语言？对比10+主流语言优劣，入门编程不迷茫！自学必看，Java、... |
+| BV1rU4y1J785 | 823,910 | 8:38 | 手把手带你从0搭建个人网站，小白可懂的保姆级教程 |  2种方法让你拥有个人博客... |
+| BV1nJCxBmEmi | 733,674 | 10:24 | 颜色网站为啥都收费？自己做个要花多少钱？ |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1ZB9EBmEAU | 2026-04-01 | 281,238 | 20:07 | 刚刚 Claude Code 源码泄露！我扒出了 11 个隐藏秘密 |
+| BV1kCQ2BcEgU | 2026-03-25 | 86,361 | 1:56 | 耗时一个月，我做了个免费 OpenClaw 自学网！1 分钟上手小龙虾 |
+| BV1UWw9zHE67 | 2026-03-17 | 20,209 | 0:47 | 一行命令装好 OpenClaw！有手就行，1 分钟爽用小龙虾 |
+| BV1QPcDz1ECF | 2026-03-13 | 38,765 | 8:51 | OpenClaw接入飞书保姆级教程，几分钟搞定手机养龙虾！ |
+| BV1D4wcz6EVV | 2026-03-11 | 310,869 | 11:41 | OpenClaw龙虾安装+接入QQ保姆级教程！附上门卸载服务 |
+| BV1mAAmzqEfP | 2026-02-27 | 55,709 | 3:30 | 做了个新项目，我要出海了！ |
+| BV1gkf1BtETY | 2026-02-24 | 78,885 | 14:09 | 什么是 Elasticsearch？都要学什么？傻子可懂，一个视频讲清楚 |
+| BV1xnZ3BDEXj | 2026-02-16 | 586,595 | 1:28 | 26年春晚魔术揭秘，给程序员看笑了！你也能变 |
+| BV15XZLBLEab | 2026-02-14 | 695,351 | 2:35 | 我用 OpenClaw 做了个女朋友！当程序员好幸福 |
+| BV1qxFSzUEwo | 2026-02-10 | 41,382 | 8:51 | 挑战用 AI 编程做动画视频，结局很卧槽！ |
+
+## 可疑条目 (建议人工复核)
+- 33 条 时长 < 60s -> BV1UWw9zHE67, BV1Pe411M7wh, BV1Pf4y1W75E_334424302, BV1Pf4y1W75E_334424321, BV1Pf4y1W75E_334424282, BV1Pf4y1W75E_334424193, BV1Pf4y1W75E_334424325, BV1Pf4y1W75E_334424286, BV1Pf4y1W75E_334424198, BV1Pf4y1W75E_334424327, BV1Pf4y1W75E_334424210, BV1Pf4y1W75E_334424329, BV1Pf4y1W75E_334424212, BV1Pf4y1W75E_334424333, BV1Pf4y1W75E_334424218, BV1Pf4y1W75E_334424334, BV1Pf4y1W75E_334424222, BV1Pf4y1W75E_334424341, BV1Pf4y1W75E_334424227, BV1Pf4y1W75E_334424344, BV1Pf4y1W75E_334424238, BV1Pf4y1W75E_334424346, BV1Pf4y1W75E_334424248, BV1Pf4y1W75E_334424352, BV1Pf4y1W75E_334424253, BV1Pf4y1W75E_334424288, BV1Pf4y1W75E_334424197, BV1Pf4y1W75E_334424290, BV1Pf4y1W75E_334424298, BV1DB4y1c7zZ_330189820, BV1DB4y1c7zZ_330189900, BV1DB4y1c7zZ_330189869, BV1Bv4y1f72c
+
+## 完整列表
+-> `video_list.tsv` (314 行, BV/标题/时长/日期/播放量)
+
+[01:29:06] [1/3] OK 程序员鱼皮 -- 314 videos in 579s
+[01:29:13] [2/3] RETRY ezindie小产品变现 (UID=395127673, slug=tier1-ezindie)
+01:29:14 [INFO] Probing UID 395127673 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier1-ezindie
+01:29:15 [INFO] wbi keys fetched
+01:29:16 [INFO] Channel: ezindie小产品变现 (53,270 fans)
+01:29:16 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/395127673/upload/video (may take ~2s/video)
+01:34:15 [WARNING] yt-dlp had errors (returncode=1) but extracted 147 videos. Some videos may be deleted or geo-restricted.
+01:34:15 [INFO] Fetched 147 videos
+01:34:15 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier1-ezindie\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - ezindie小产品变现
+
+## Channel
+- UID: 395127673
+- 粉丝数: 53,270
+- 主页: https://space.bilibili.com/395127673
+- 签名: 让小产品的变现更简单，训练营官网: ezindie.com
+- 视频总数: 147
+- 采集时间: 2026-04-08T01:34:15
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 20 |
+| 5-15min | 126 |
+| 15-30min | 1 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2021 | 6 |
+| 2022 | 52 |
+| 2023 | 34 |
+| 2024 | 40 |
+| 2025 | 1 |
+| 2026 | 14 |
+
+## 播放量分布 (分位)
+- P25: 2,708
+- P50: 4,715
+- P75: 11,252
+- P90: 19,244
+- Max: 79,163
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1uj411h7H2 | 79,163 | 14:56 | 独立开发变现周刊（第106期）：个人独立开发之旅，2年内从0到月收入4.5万美元 |
+| BV18t4y1M7kQ | 39,601 | 7:12 | 独立开发变现周刊（第78期）：建立一个佣金网站，每月赚4万美元 |
+| BV1th411K7ZQ | 39,265 | 6:59 | 独立开发变现周刊（第92期）：创建一个年收入350万美元的小工具，1000多万出... |
+| BV18M4y1e7Hh | 37,375 | 5:18 | 独立开发变现周刊（第89期）：一个AI小工具，两个月内赚7.3万美元 |
+| BV1tM41167N4 | 36,281 | 7:16 | 独立开发变现周刊（第82期）：开发一个在线PDF编辑器，年收入50万美元 |
+| BV1J34y1t72F | 27,879 | 4:40 | 独立开发变现周刊（第46期）：通过“Chrome 即服务”每月赚取4000美元 |
+| BV12S4y1J7yL | 26,318 | 8:38 | 独立开发变现周刊（第63期）： 一个爬虫类产品，4个月做到月收入3000美元 |
+| BV1AK411Z7xc | 24,651 | 8:31 | 独立开发变现周刊（第80期）：Notion页面转成网站客服小组件，月收入5K美金 |
+| BV1qC4y1S7WU | 23,576 | 8:39 | 独立开发变现周刊（第117期）：靠卖Notion模版赚了210万美元 |
+| BV1yZ4y1o7dr | 23,280 | 6:31 | 独立开发变现周刊（第41期）：一个开源项目一个人每月收入8万美金 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1dD9wBeESP | 2026-04-03 | 1,539 | 7:02 | 24小时赚12万美金！非程序员如何靠一个简单APP翻身？ #169 |
+| BV14hXEBbEFM | 2026-03-27 | 1,110 | 6:58 | 零基础小白，13天靠龙虾实现月入6万！#168 |
+| BV1qPA5zoE5W | 2026-03-20 | 1,958 | 5:58 | 月入25万美金！SaaS大神亲述 #167 |
+| BV1MXwwzkExk | 2026-03-13 | 1,511 | 7:04 | 从0到月入4万美金：只靠一个渠道！ #166 |
+| BV1CWPqzKE44 | 2026-03-06 | 23,052 | 6:52 | 靠一个“简陋”网页月入1.5万美金 #165 |
+| BV1iZArzvEeG | 2026-02-27 | 1,345 | 7:18 | 【搞钱实录】用 AI 制作年入百万美金的 Notion 模板生意 #164 |
+| BV1xocjzGENu | 2026-02-13 | 2,708 | 5:58 | 一周小产品变现热点#163 |
+| BV1h5FqzBEtp | 2026-02-06 | 1,064 | 5:07 | 独立开发者 50 万美金复盘：像买基金一样做产品 #162 |
+| BV1ZB6eBdEci | 2026-01-30 | 2,427 | 5:42 | 月入30万美金，程序员奶爸辞职做的AI育儿App #161 |
+| BV1McBfB3EZx | 2026-01-23 | 1,095 | 5:49 | 淘金框架：利用 AI 和 Reddit 挖掘价值百万想法 #160 |
+
+## 完整列表
+-> `video_list.tsv` (147 行, BV/标题/时长/日期/播放量)
+
+[01:34:16] [2/3] OK ezindie小产品变现 -- 147 videos in 302s
+[01:34:23] [3/3] RETRY 小Lin说 (UID=520819684, slug=tier2-xiaolin-shuo)
+01:34:25 [INFO] Probing UID 520819684 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-xiaolin-shuo
+01:34:26 [INFO] wbi keys fetched
+01:34:26 [INFO] Channel: 小Lin说 (7,098,857 fans)
+01:34:26 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/520819684/upload/video (may take ~2s/video)
+01:39:57 [WARNING] yt-dlp had errors (returncode=1) but extracted 177 videos. Some videos may be deleted or geo-restricted.
+01:39:57 [INFO] Fetched 177 videos
+01:39:57 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-xiaolin-shuo\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 小Lin说
+
+## Channel
+- UID: 520819684
+- 粉丝数: 7,098,857
+- 主页: https://space.bilibili.com/520819684
+- 签名: Whaat?! 人世间竟有如此有趣又有料的天仙!!
+北大->哥大->摩根大通->创业
+合作xiao_lin_shuo@163.com
+- 视频总数: 177
+- 采集时间: 2026-04-08T01:39:57
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 7 |
+| 5-15min | 61 |
+| 15-30min | 96 |
+| 30-60min | 12 |
+| >60min | 1 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 1 |
+| 2021 | 32 |
+| 2022 | 37 |
+| 2023 | 38 |
+| 2024 | 33 |
+| 2025 | 30 |
+| 2026 | 6 |
+
+## 播放量分布 (分位)
+- P25: 1,529,710
+- P50: 2,413,679
+- P75: 3,357,596
+- P90: 4,653,938
+- Max: 9,981,723
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV19EEizDEc4 | 9,981,723 | 19:12 | 全球第一网红，一边撒钱，一边赚钱，how？ |
+| BV19AyzYJE9s | 8,130,314 | 33:33 | 一口气了解洗钱，它能玩得有多花？ |
+| BV1v34y1j7Nu | 7,945,563 | 35:49 | 【硬核加长版】真正的做空 |
+| BV1Pho9YrEre | 7,669,433 | 17:26 | 美国刹不住的贸易逆差，根本原因是什么? |
+| BV11UQgYrEKp | 7,425,048 | 24:11 | 中国的"国库"竟然不止一个? 美国的国库竟然... |
+| BV1K19FYDEiR | 6,597,477 | 23:27 | 全球最有钱的政府们是怎么投资的？ |
+| BV1LW4y1Q75v | 6,448,159 | 19:57 | 【硬核】一口气了解国债，这么一直借下去真的可以么？ |
+| BV11X4y17722 | 6,408,948 | 24:03 | 一口气了解韩国经济 |
+| BV1qJAGebEuX | 6,003,051 | 28:19 | 一口气了解关税 |
+| BV1AcbVzwEEc | 5,841,232 | 20:27 | 机器人，真的要来了么...？ |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1crXzBVEw9 | 2026-03-31 | 1,513,894 | 12:10 | 十五五开局，两会给中国经济划了哪些重点？ |
+| BV1QGXABxEbq | 2026-03-24 | 3,057,322 | 21:00 | 伊朗战争，和全球能源格局 |
+| BV1ZDwHzyEFm | 2026-03-14 | 2,215,771 | 15:25 | 做自媒体6年了，我想说… |
+| BV19PcXzWEuc | 2026-03-11 | 2,611,183 | 13:40 | 消失的折痕，究竟经历了什么？ |
+| BV1MxfcBhEdo | 2026-02-23 | 2,699,024 | 19:35 | 黄金白银大崩盘，谁是幕后推手？ |
+| BV1xN6xBjEqy | 2026-02-01 | 3,212,526 | 34:19 | 坐拥金山，却变成人间炼狱，委内瑞拉到底经历了什么? |
+| BV111BeBPEaD | 2025-12-29 | 4,521,664 | 43:23 | 【年度总结】一口气了解过去一年的全球经济｜关税战新格局 |
+| BV1tnBZBBEmG | 2025-12-26 | 3,073,212 | 12:18 | "十五五" 规划里，藏了什么重点？ |
+| BV18KqpBMEiw | 2025-12-18 | 1,983,463 | 7:28 | 同一款药价格差3倍，中国药价体系背后有何玄机？ |
+| BV1ppmCBVEww | 2025-12-15 | 3,099,584 | 14:06 | 日本财团，背后有什么玄机？ |
+
+## 完整列表
+-> `video_list.tsv` (177 行, BV/标题/时长/日期/播放量)
+
+[01:39:59] [3/3] OK 小Lin说 -- 177 videos in 334s
+[01:40:04] RETRY DONE

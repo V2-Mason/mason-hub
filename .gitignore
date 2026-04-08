@@ -224,8 +224,17 @@ tools/email-patrol/email_patrol_mcp.egg-info/
 **/*.original.mp4
 # AE script run logs (regenerated each run)
 **/scripts/*_log.txt
+# AE output intermediates (.aac .m4v from split exports)
+**/output/**/*.aac
+**/output/**/*.m4v
 
 # Purchased AE templates (never commit, vendor assets)
 **/assets/ae-templates/*/Documental Political*/
 **/assets/ae-templates/*/Documental Political*.pdf
+
+# Batch Recon whisper 中间产物 (audio 已被 content mp3 规则过滤; 这里补 transcripts 和 full_text)
+# Rationale: transcripts/*.json 和 full_text.txt 是 whisper 中间输出, 可从 audio 重新生成
+# 真正的分析产物在 analysis/ 和 cross-comparison/ 下, 继续入 git
+**/reference/batch-*/**/transcripts/
+**/reference/batch-*/**/full_text.txt
 

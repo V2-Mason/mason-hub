@@ -1,0 +1,1233 @@
+[00:29:38] [1/12] Probing 程序员鱼皮 (UID=12890453, slug=tier1-programmer-yupi)
+00:29:39 [INFO] Probing UID 12890453 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier1-programmer-yupi
+00:29:39 [INFO] wbi keys fetched
+00:29:39 [INFO] Channel: 程序员鱼皮 (877,906 fans)
+00:29:39 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/12890453/upload/video (may take ~2s/video)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 237, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 223, in main
+    videos = fetch_video_list(uid, img_key, sub_key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\bili_api.py", line 173, in fetch_video_list
+    raise BiliAPIError(f"yt-dlp failed: {proc.stderr.strip()[:500]}")
+scripts.bili_api.BiliAPIError: yt-dlp failed: ERROR: [BiliBili] 1Ku411K7qH: This video may be deleted or geo-restricted. You might want to try a VPN or a proxy server (with --proxy)
+[00:35:42] [1/13] FAIL 程序员鱼皮 -- exit=1, no video_list.tsv after 574s
+[00:35:45] [2/13] Probing ezindie小产品变现 (UID=395127673, slug=tier1-ezindie)
+00:35:45 [INFO] Probing UID 395127673 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier1-ezindie
+00:35:46 [INFO] wbi keys fetched
+00:35:46 [INFO] Channel: ezindie小产品变现 (53,270 fans)
+00:35:46 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/395127673/upload/video (may take ~2s/video)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 237, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 223, in main
+    videos = fetch_video_list(uid, img_key, sub_key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hangn\.claude\skilTraceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 237, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 223, in main
+    videos = fetch_video_list(uid, img_key, sub_key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\bili_api.py", line 173, in fetch_video_list
+    raise BiliAPIError(f"yt-dlp failed: {proc.stderr.strip()[:500]}")
+scripts.bili_api.BiliAPIError: yt-dlp failed: ERROR: [BiliBili] 1HC4y1j7uX: This video may be deleted or geo-restricted. You might want to try a VPN or a proxy server (with --proxy)
+may take ~2s/video)
+00:43:47 [INFO] Fetched 97 videos
+00:43:47 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-he-tongxue\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 老师好我叫何同学
+
+## Channel
+- UID: 163637592
+- 粉丝数: 12,699,822
+- 主页: https://space.bilibili.com/163637592
+- 签名: 目标是做有意思的视频｜合作请联系xhaxx1123@163.com｜粉丝想做htxcontact@163.com 请留下vx或者手机号
+- 视频总数: 97
+- 采集时间: 2026-04-08T00:43:47
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 32 |
+| 5-15min | 52 |
+| 15-30min | 12 |
+| 30-60min | 0 |
+| >60min | 1 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2017 | 3 |
+| 2018 | 15 |
+| 2019 | 14 |
+| 2020 | 9 |
+| 2021 | 6 |
+| 2022 | 4 |
+| 2023 | 6 |
+| 2024 | 21 |
+| 2025 | 12 |
+| 2026 | 7 |
+
+## 播放量分布 (分位)
+- P25: 3,058,604
+- P50: 6,009,336
+- P75: 11,187,333
+- P90: 16,925,549
+- Max: 33,688,904
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1f4411M7QC | 33,688,904 | 7:33 | 【何同学】有多快？5G在日常使用中的真实体验 |
+| BV1W14y1b7Mq | 28,286,531 | 8:56 | 【何同学】我做了一个自己打字的键盘... |
+| BV19v411M7Rs | 26,042,125 | 7:47 | 【何同学】我做了苹果放弃的产品... |
+| BV1JDMQzUEwy | 23,747,103 | 5:13 | 【何同学】为了不用倒垃圾，我们做了这个... |
+| BV1d1vUBUE54 | 21,780,159 | 14:11 | 【何同学】我们做了台魔法钢琴… |
+| BV1oH4y1F7P9 | 18,589,663 | 13:00 | 【何同学】不用脚，你能把球踢多远？ |
+| BV1qw41177Da | 17,714,752 | 12:00 | 【何同学】我们做了条流水线… |
+| BV1Nt4y1D7pW_p1 | 17,338,356 | 7:56 | 【何同学】我拍了一张600万人的合影... p01 正片 |
+| BV1Nt4y1D7pW_p2 | 17,338,356 | 2:35 | 【何同学】我拍了一张600万人的合影... p02 教程 |
+| BV1Sk4y1471G | 16,925,549 | 9:29 | 【何同学】我们做了一台中文打字机... |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1LQwkzvEtZ | 2026-03-19 | 6,105,922 | 3:06 | 为了不熬夜玩手机，我们做了这个... |
+| BV191NFzJETW | 2026-03-10 | 4,417,801 | 9:25 | 诞生七年，折叠屏好用了吗？荣耀Magic V6首发体验 |
+| BV1CWcEzkECW | 2026-02-13 | 3,415,610 | 2:43 | 我们种了700朵记忆金属花... |
+| BV1HSzQBEEk8 | 2026-01-25 | 2,020,415 | 1:22 | 郎朗《土耳其进行曲》魔法钢琴版 |
+| BV1d2zCB7Eo8 | 2026-01-24 | 2,833,427 | 0:40 | 当郎朗来弹魔法钢琴… |
+| BV19QiFB5EMC | 2026-01-02 | 4,424,096 | 3:06 | 《花海》魔法钢琴版 |
+| BV1d1vUBUE54 | 2026-01-01 | 21,780,159 | 14:11 | 【何同学】我们做了台魔法钢琴… |
+| BV1G7yGBvEqs | 2025-11-20 | 2,011,044 | 3:30:55 | 【正片】何同学×罗永浩！青年何同学的骄傲与烦恼 |
+| BV17PygBiETq | 2025-11-18 | 2,170,332 | 6:19 | 为了帮粉丝放牛，我们做了这个... |
+| BV1uCptzTEt8 | 2025-09-17 | 6,294,489 | 19:50 | 【何同学】最听劝的一代，但是... iPhone 17系列首发体验 |
+
+## 可疑条目 (建议人工复核)
+- 3 条 时长 < 60s -> BV1d2zCB7Eo8, BV1Lp421o76H, BV1Xi4y1x7eM_p2
+- 1 条 时长 > 2h -> BV1G7yGBvEqs
+
+## 完整列表
+-> `video_list.tsv` (97 行, BV/标题/时长/日期/播放量)
+
+[00:43:48] [3/13] OK 老师好我叫何同学 -- 97 videos in 179s
+[00:43:51] [4/13] Probing Geek4Fun(原熠辉位置) (UID=28860626, slug=tier2-yihui-indiedev)
+00:43:51 [INFO] Probing UID 28860626 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-yihui-indiedev
+00:43:52 [INFO] wbi keys fetched
+00:43:52 [INFO] Channel: Geek4Fun (3,085 fans)
+00:43:52 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/28860626/upload/video (may take ~2s/video)
+00:44:15 [INFO] Fetched 12 videos
+00:44:15 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-yihui-indiedev\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - Geek4Fun
+
+## Channel
+- UID: 28860626
+- 粉丝数: 3,085
+- 主页: https://space.bilibili.com/28860626
+- 签名: - Google Researcher
+- 单人企业家/个人开发者
+- Designer/PM/全栈工程师
+- ex 微软/百度/阿里
+
+- 视频总数: 12
+- 采集时间: 2026-04-08T00:44:15
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 9 |
+| 5-15min | 3 |
+| 15-30min | 0 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2024 | 1 |
+| 2025 | 11 |
+
+## 播放量分布 (分位)
+- P25: 89,183
+- P50: 89,183
+- P75: 89,183
+- P90: 89,183
+- Max: 89,183
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1QuZAY2EW1_p1 | 89,183 | 1:18 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p2 | 89,183 | 1:47 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p3 | 89,183 | 1:34 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p4 | 89,183 | 2:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p5 | 89,183 | 4:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p6 | 89,183 | 5:31 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p7 | 89,183 | 5:49 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p8 | 89,183 | 4:22 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p9 | 89,183 | 1:35 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1g7LPzHEmH | 4,803 | 3:51 | 【课程补充】Cursor AI 编程小程序开发常见问题&解答&技巧 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1g7LPzHEmH | 2025-04-20 | 4,803 | 3:51 | 【课程补充】Cursor AI 编程小程序开发常见问题&解答&技巧 |
+| BV1QuZAY2EW1_p1 | 2025-03-29 | 89,183 | 1:18 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p2 | 2025-03-29 | 89,183 | 1:47 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p3 | 2025-03-29 | 89,183 | 1:34 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p4 | 2025-03-29 | 89,183 | 2:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p5 | 2025-03-29 | 89,183 | 4:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p6 | 2025-03-29 | 89,183 | 5:31 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p7 | 2025-03-29 | 89,183 | 5:49 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p8 | 2025-03-29 | 89,183 | 4:22 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p9 | 2025-03-29 | 89,183 | 1:35 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+
+## 可疑条目 (建议人工复核)
+- 1 条 时长 < 60s -> BV1HNRPYtEoj
+
+## 完整列表
+-> `video_list.tsv` (12 行, BV/标题/时长/日期/播放量)
+
+[00:44:16] [4/13] OK Geek4Fun(原熠辉位置) -- 12 videos in 25s
+[00:44:19] [5/13] Probing 未生AI (UID=351969226, slug=tier2-weisheng-ai)
+00:44:19 [INFO] Probing UID 351969226 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-weisheng-ai
+00:44:20 [INFO] wbi keys fetched
+00:44:20 [INFO] Channel: 未生AI (8,963 fans)
+00:44:20 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/351969226/upload/video (may take ~2s/video)
+00:45:11 [INFO] Fetched 29 videos
+00:45:11 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-weisheng-ai\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 未生AI
+
+## Channel
+- UID: 351969226
+- 粉丝数: 8,963
+- 主页: https://space.bilibili.com/351969226
+- 签名: 合作培训咨询: weisheng245；零基础cursor教程作者；专注AI编程和AI智能体
+- 视频总数: 29
+- 采集时间: 2026-04-08T00:45:11
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min 00:47:29 [INFO] Fetched 97 videos
+00:47:29 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-he-tongxue\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 老师好我叫何同学
+
+## Channel
+- UID: 163637592
+- 粉丝数: 12,699,825
+- 主页: https://space.bilibili.com/163637592
+- 签名: 目标是做有意思的视频｜合作请联系xhaxx1123@163.com｜粉丝想做htxcontact@163.com 请留下vx或者手机号
+- 视频总数: 97
+- 采集时间: 2026-04-08T00:47:29
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 32 |
+| 5-15min | 52 |
+| 15-30min | 12 |
+| 30-60min | 0 |
+| >60min | 1 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2017 | 3 |
+| 2018 | 15 |
+| 2019 | 14 |
+| 2020 | 9 |
+| 2021 | 6 |
+| 2022 | 4 |
+| 2023 | 6 |
+| 2024 | 21 |
+| 2025 | 12 |
+| 2026 | 7 |
+
+## 播放量分布 (分位)
+- P25: 3,058,604
+- P50: 6,009,340
+- P75: 11,187,333
+- P90: 16,925,550
+- Max: 33,688,909
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1f4411M7QC | 33,688,909 | 7:33 | 【何同学】有多快？5G在日常使用中的真实体验 |
+| BV1W14y1b7Mq | 28,286,532 | 8:56 | 【何同学】我做了一个自己打字的键盘... |
+| BV19v411M7Rs | 26,042,125 | 7:47 | 【何同学】我做了苹果放弃的产品... |
+| BV1JDMQzUEwy | 23,747,103 | 5:13 | 【何同学】为了不用倒垃圾，我们做了这个... |
+| BV1d1vUBUE54 | 21,780,174 | 14:11 | 【何同学】我们做了台魔法钢琴… |
+| BV1oH4y1F7P9 | 18,589,664 | 13:00 | 【何同学】不用脚，你能把球踢多远？ |
+| BV1qw41177Da | 17,714,752 | 12:00 | 【何同学】我们做了条流水线… |
+| BV1Nt4y1D7pW_p1 | 17,338,356 | 7:56 | 【何同学】我拍了一张600万人的合影... p01 正片 |
+| BV1Nt4y1D7pW_p2 | 17,338,356 | 2:35 | 【何同学】我拍了一张600万人的合影... p02 教程 |
+| BV1Sk4y1471G | 16,925,550 | 9:29 | 【何同学】我们做了一台中文打字机... |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1LQwkzvEtZ | 2026-03-19 | 6,106,188 | 3:06 | 为了不熬夜玩手机，我们做了这个... |
+| BV191NFzJETW | 2026-03-10 | 4,417,807 | 9:25 | 诞生七年，折叠屏好用了吗？荣耀Magic V6首发体验 |
+| BV1CWcEzkECW | 2026-02-13 | 3,415,612 | 2:43 | 我们种了700朵记忆金属花... |
+| BV1HSzQBEEk8 | 2026-01-25 | 2,020,431 | 1:22 | 郎朗《土耳其进行曲》魔法钢琴版 |
+| BV1d2zCB7Eo8 | 2026-01-24 | 2,833,431 | 0:40 | 当郎朗来弹魔法钢琴… |
+| BV19QiFB5EMC | 2026-01-02 | 4,424,099 | 3:06 | 《花海》魔法钢琴版 |
+| BV1d1vUBUE54 | 2026-01-01 | 21,780,174 | 14:11 | 【何同学】我们做了台魔法钢琴… |
+| BV1G7yGBvEqs | 2025-11-20 | 2,011,044 | 3:30:55 | 【正片】何同学×罗永浩！青年何同学的骄傲与烦恼 |
+| BV17PygBiETq | 2025-11-18 | 2,170,339 | 6:19 | 为了帮粉丝放牛，我们做了这个... |
+| BV1uCptzTEt8 | 2025-09-17 | 6,294,495 | 19:50 | 【何同学】最听劝的一代，但是... iPhone 17系列首发体验 |
+
+## 可疑条目 (建议人工复核)
+- 3 条 时长 < 60s -> BV1d2zCB7Eo8, BV1Lp421o76H, BV1Xi4y1x7eM_p2
+- 1 条 时长 > 2h -> BV1G7yGBvEqs
+
+## 完整列表
+-> `video_list.tsv` (97 行, BV/标题/时长/日期/播放量)
+
+ta from https://space.bilibili.com/1815948385/upload/video (may take ~2s/video)
+00:46:10 [INFO] Fetched 30 videos
+00:46:10 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-mark-tech\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 马克的技术工作坊
+
+## Channel
+- UID: 1815948385
+- 粉丝数: 170,241
+- 主页: https://space.bilibili.com/1815948385
+- 签名: 分享工具和方法、提升生产力
+- 视频总数: 30
+- 采集时间: 2026-04-08T00:46:10
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 0 |
+| 5-15min | 9 |
+| 15-30min | 16 |
+| 30-60min | 5 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2025 | 28 |
+| 2026 | 2 |
+
+## 播放量分布 (分位)
+- P25: 16,001
+- P50: 55,309
+- P75: 162,442
+- P90: 467,199
+- Max: 815,121
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV14rzQB9EJj | 815,121 | 44:44 | Claude Code 从 0 到 1 全攻略：MCP / SubAgent /... |
+| BV1E7wtzaEdq | 664,773 | 32:31 | 从 LLM 到 Agent Skill，一期视频带你打通底层逻辑！ |
+| BV1cGigBQE6n | 467,199 | 17:41 | Agent Skill 从使用到原理，一次讲清 |
+| BV1TSg7zuEqR | 367,659 | 28:06 | Agent 的概念、原理与构建模式 —— 从零打造一个简化版的 Claude C... |
+| BV18rF8e4E9R | 327,081 | 22:28 | DeepSeek-R1 真的那么强吗？客观评测 R1 与 o1 在编程、推理方面... |
+| BV1JLN2z4EZQ | 226,720 | 17:01 | RAG 工作机制详解——一个高质量知识库背后的技术全流程 |
+| BV1S5miBvEsu | 199,347 | 10:31 | Token 到底是什么？—— 揭秘大模型背后的“文字压缩术” |
+| BV1uronYREWR | 162,442 | 27:05 | MCP终极指南 - 从原理到实战，带你深入掌握MCP（基础篇） |
+| BV1PMcoeZEzE | 133,472 | 21:02 | Midjourney 2025 完全使用教程 |
+| BV1wc3izUEUb | 119,345 | 17:30 | 使用Python构建RAG系统 —— 用代码还原 RAG系统的每个细节 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1E7wtzaEdq | 2026-03-14 | 664,773 | 32:31 | 从 LLM 到 Agent Skill，一期视频带你打通底层逻辑！ |
+| BV14rzQB9EJj | 2026-01-25 | 815,121 | 44:44 | Claude Code 从 0 到 1 全攻略：MCP / SubAgent /... |
+| BV1cGigBQE6n | 2025-12-31 | 467,199 | 17:41 | Agent Skill 从使用到原理，一次讲清 |
+| BV1S5miBvEsu | 2025-12-14 | 199,347 | 10:31 | Token 到底是什么？—— 揭秘大模型背后的“文字压缩术” |
+| BV1taSFBNEG4 | 2025-11-29 | 30,878 | 17:27 | Temperature & Top-p：掌控大模型的创造力开关 |
+| BV11zbPzVEUe | 2025-08-10 | 41,658 | 15:15 | Context Engineering：概念与技术实现深度解析 |
+| BV1TSg7zuEqR | 2025-07-22 | 367,659 | 28:06 | Agent 的概念、原理与构建模式 —— 从零打造一个简化版的 Claude C... |
+| BV1wc3izUEUb | 2025-07-06 | 119,345 | 17:30 | 使用Python构建RAG系统 —— 用代码还原 RAG系统的每个细节 |
+| BV1JLN2z4EZQ | 2025-06-21 | 226,720 | 17:01 | RAG 工作机制详解——一个高质量知识库背后的技术全流程 |
+| BV1dRTRzUED3 | 2025-06-08 | 14,447 | 17:17 | A2A协议深度解析 - 第 2 部分：流式返回 + 多Agent场景 |
+
+## 完整列表
+-> `video_list.tsv` (30 行, BV/标题/时长/日期/播放量)
+
+[00:46:10] [6/13] OK 马克的技术工作坊 -- 30 videos in 55s
+[00:46:13] [7/13] Probing 小Lin说 (UID=520819684, slug=tier2-xiaolin-shuo)
+00:46:13 [INFO] Probing UID 520819684 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-xiaolin-shuo
+00:46:14 [INFO] wbi keys fetched
+00:46:14 [INFO] Channel: 小Lin说 (7,098,733 fans)
+00:46:14 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/520819684/upload/video (may take ~2s/video)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 237, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 223, in main
+    videos = fetch_video_list(uid, img_key, sub_key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\bili_api.py", line 173, in fetch_video_list
+    raise BiliAPIError(f"yt-dlp failed: {proc.stderr.strip()[:500]}")
+scripts.bili_api.BiliAPIError: yt-dlp failed: ERROR: [BiliBili] 1gM411A7YB: Unable to extract initial state; please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U
+
+- ex 微软/百度/阿里
+
+- 视频总数: 12
+- 采集时间: 2026-04-08T00:47:57
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 9 |
+| 5-15min | 3 |
+| 15-30min | 0 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2024 | 1 |
+| 2025 | 11 |
+
+## 播放量分布 (分位)
+- P25: 89,183
+- P50: 89,183
+- P75: 89,183
+- P90: 89,183
+- Max: 89,183
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1QuZAY2EW1_p1 | 89,183 | 1:18 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p2 | 89,183 | 1:47 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p3 | 89,183 | 1:34 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p4 | 89,183 | 2:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p5 | 89,183 | 4:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p6 | 89,183 | 5:31 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p7 | 89,183 | 5:49 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p8 | 89,183 | 4:22 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p9 | 89,183 | 1:35 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1g7LPzHEmH | 4,803 | 3:51 | 【课程补充】Cursor AI 编程小程序开发常见问题&解答&技巧 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1g7LPzHEmH | 2025-04-20 | 4,803 | 3:51 | 【课程补充】Cursor AI 编程小程序开发常见问题&解答&技巧 |
+| BV1QuZAY2EW1_p1 | 2025-03-29 | 89,183 | 1:18 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p2 | 2025-03-29 | 89,183 | 1:47 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p3 | 2025-03-29 | 89,183 | 1:34 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p4 | 2025-03-29 | 89,183 | 2:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p5 | 2025-03-29 | 89,183 | 4:09 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p6 | 2025-03-29 | 89,183 | 5:31 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p7 | 2025-03-29 | 89,183 | 5:49 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p8 | 2025-03-29 | 89,183 | 4:22 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+| BV1QuZAY2EW1_p9 | 2025-03-29 | 89,183 | 1:35 | 10 分钟！零基础彻底学会 Cursor AI 编程 | Cursor AI 编... |
+
+## 可疑条目 (建议人工复核)
+- 1 条 时长 < 60s -> BV1HNRPYtEoj
+
+## 完整列表
+-> `video_list.tsv` (12 行, BV/标题/时长/日期/播放量)
+
+[00:47:57] [4/12] OK Geek4Fun(原熠辉位置) -- 12 videos in 25s
+[00:48:00] [5/12] Probing 未生AI (UID=351969226, slug=tier2-weisheng-ai)
+00:48:00 [INFO] Probing UID 351969226 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-weisheng-ai
+00:48:01 [INFO] wbi keys fetched
+00:48:01 [INFO] Channel: 未生AI (8,963 fans)
+00:48:01 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/351969226/upload/video (may take ~2s/video)
+00:48:54 [INFO] Fetched 29 videos
+00:48:54 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-weisheng-ai\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 未生AI
+
+## Channel
+- UID: 351969226
+- 粉丝数: 8,963
+- 主页: https://space.bilibili.com/351969226
+- 签名: 合作培训咨询: weisheng245；零基础cursor教程作者；专注AI编程和AI智能体
+- 视频总数: 29
+- 采集时间: 2026-04-08T00:48:54
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 9 |
+| 5-15min | 19 |
+| 15-30min | 1 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 1 |
+| 2021 | 1 |
+| 2023 | 1 |
+| 2024 | 15 |
+| 2025 | 11 |
+
+## 播放量分布 (分位)
+- P25: 2,886
+- P50: 6,553
+- P75: 13,866
+- P90: 39,175
+- Max: 134,236
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1oF4TegEne | 134,236 | 7:02 | 手把手教小白如何8分钟用Cursor完成AI微信小程序的开发上线 |
+| BV18W1hYoEva | 65,192 | 15:50 | 10分钟手把手教你搭建Coze工作流 ：一个可接入微信小程序合规、可备案、可变现... |
+| BV16JEWzaEhy | 39,175 | 9:48 | 当我在大厂分享这个MCP神器时，全场工程师都沸腾了！ |
+| BV1RmyaYKEDk | 27,786 | 2:42 | 「小白Cursor教程02」Cursor的项目管理 |
+| BV1MLcyevEkA | 25,950 | 12:11 | 学会cursor后，给舅舅做个专属小程序 「拍照识别升糖指数」 |
+| BV1FhUaYXEEG | 25,506 | 11:00 | [小白cursor教程04 ]Cursor搭配Git做版本管理的零基础教程 |
+| BV1txyoYtEQ9 | 18,640 | 6:28 | 「Cursor落地」用Cursor制作的小程序2周开通流量主 |
+| BV1ia2BYbER7 | 13,866 | 3:09 | 我用Cursor做了个Cursor教程博客网站 |
+| BV1RNmTYzE9d | 13,543 | 2:29 | 「小白Cursor教程01」Cursor的界面快捷键演示说明 |
+| BV1sHDWYCEo5 | 10,743 | 5:10 | 「小白Cursor教程03」Composer & chat & Tab & cm... |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1wyKEzoE1v | 2025-06-25 | 385 | 7:17 | 家里第一个大学生？零成本用AI填报志愿全攻略 |
+| BV1MrM2znE7i | 2025-06-14 | 1,166 | 10:48 | 我去！Cursor还能做数据分析 ?！ |
+| BV1UV7WzkE3C | 2025-06-02 | 9,364 | 9:44 | 我又搞了个大事！这次解决了小程序调试全自动化问题，我的MCP工具再次进化 |
+| BV16JEWzaEhy | 2025-05-16 | 39,175 | 9:48 | 当我在大厂分享这个MCP神器时，全场工程师都沸腾了！ |
+| BV1qXGYzuEs9 | 2025-05-01 | 4,349 | 7:43 | ”抄袭“是小白最快制作小程序的方法 | 日入过千流量卡分销小程序 |
+| BV1JKZRY6EQp | 2025-04-04 | 1,764 | 9:18 | 【MCP入门到精通】零基础手把手教你开发一个自己的MCP服务 | 全网首个MCP... |
+| BV1MBo8YUE6e | 2025-03-25 | 4,147 | 12:36 | DeepSeekR1 编程能力详细测评 | 对比Claude3.7和旧版V3效果 |
+| BV1S2Q5YbEeF | 2025-03-12 | 1,481 | 11:39 | 最简单的Coze个人令牌30天过期解决方案 | Cursor零代码 | 飞书多维... |
+| BV1JGKgeTErA | 2025-02-15 | 9,031 | 13:48 | 【Cursor公开课06】手把手教小白如何将微信小程序接入Deepseek大模型 |
+| BV1apfSY7EtM | 2025-01-27 | 6,553 | 8:56 | 5分钟DeepSeek R1推理模型本地部署保姆教程【小白向】 |
+
+## 可疑条目 (建议人工复核)
+- 3 条 时长 < 60s -> BV1AkSqYCEq7, BV1Sp4y137EL, BV1Z34y1U7xi
+
+## 完整列表
+-> `video_list.tsv` (29 行, BV/标题/时长/日期/播放量)
+
+[00:48:54] [5/12] OK 未生AI -- 29 videos in 54s
+[00:48:58] [6/12] Probing 马克的技术工作坊 (UID=1815948385, slug=tier2-mark-tech)
+00:48:58 [INFO] Probing UID 1815948385 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-mark-tech
+00:48:58 [INFO] wbi keys fetched
+00:48:59 [INFO] Channel: 马克的技术工作坊 (170,247 fans)
+00:48:59 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/1815948385/upload/video (may take ~2s/video)
+00:49:53 [INFO] Fetched 30 videos
+00:49:53 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-mark-tech\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 马克的技术工作坊
+
+## Channel
+- UID: 1815948385
+- 粉丝数: 170,247
+- 主页: https://space.bilibili.com/1815948385
+- 签名: 分享工具和方法、提升生产力
+- 视频总数: 30
+- 采集时间: 2026-04-08T00:49:53
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 0 |
+| 5-15min | 9 |
+| 15-30min | 16 |
+| 30-60min | 5 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2025 | 28 |
+| 2026 | 2 |
+
+## 播放量分布 (分位)
+- P25: 16,001
+- P50: 55,309
+- P75: 162,444
+- P90: 467,206
+- Max: 815,150
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV14rzQB9EJj | 815,150 | 44:44 | Claude Code 从 0 到 1 全攻略：MCP / SubAgent /... |
+| BV1E7wtzaEdq | 664,820 | 32:31 | 从 LLM 到 Agent Skill，一期视频带你打通底层逻辑！ |
+| BV1cGigBQE6n | 467,206 | 17:41 | Agent Skill 从使用到原理，一次讲清 |
+| BV1TSg7zuEqR | 367,663 | 28:06 | Agent 的概念、原理与构建模式 —— 从零打造一个简化版的 Claude C... |
+| BV18rF8e4E9R | 327,082 | 22:28 | DeepSeek-R1 真的那么强吗？客观评测 R1 与 o1 在编程、推理方面... |
+| BV1JLN2z4EZQ | 226,726 | 17:01 | RAG 工作机制详解——一个高质量知识库背后的技术全流程 |
+| BV1S5miBvEsu | 199,347 | 10:31 | Token 到底是什么？—— 揭秘大模型背后的“文字压缩术” |
+| BV1uronYREWR | 162,444 | 27:05 | MCP终极指南 - 从原理到实战，带你深入掌握MCP（基础篇） |
+| BV1PMcoeZEzE | 133,472 | 21:02 | Midjourney 2025 完全使用教程 |
+| BV1wc3izUEUb | 119,347 | 17:30 | 使用Python构建RAG系统 —— 用代码还原 RAG系统的每个细节 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1E7wtzaEdq | 2026-03-14 | 664,820 | 32:31 | 从 LLM 到 Agent Skill，一期视频带你打通底层逻辑！ |
+| BV14rzQB9EJj | 2026-01-25 | 815,150 | 44:44 | Claude Code 从 0 到 1 全攻略：MCP / SubAgent /... |
+| BV1cGigBQE6n | 2025-12-31 | 467,206 | 17:41 | Agent Skill 从使用到原理，一次讲清 |
+| BV1S5miBvEsu | 2025-12-14 | 199,347 | 10:31 | Token 到底是什么？—— 揭秘大模型背后的“文字压缩术” |
+| BV1taSFBNEG4 | 2025-11-29 | 30,880 | 17:27 | Temperature & Top-p：掌控大模型的创造力开关 |
+| BV11zbPzVEUe | 2025-08-10 | 41,659 | 15:15 | Context Engineering：概念与技术实现深度解析 |
+| BV1TSg7zuEqR | 2025-07-22 | 367,663 | 28:06 | Agent 的概念、原理与构建模式 —— 从零打造一个简化版的 Claude C... |
+| BV1wc3izUEUb | 2025-07-06 | 119,347 | 17:30 | 使用Python构建RAG系统 —— 用代码还原 RAG系统的每个细节 |
+| BV1JLN2z4EZQ | 2025-06-21 | 226,726 | 17:01 | RAG 工作机制详解——一个高质量知识库背后的技术全流程 |
+| BV1dRTRzUED3 | 2025-06-08 | 14,447 | 17:17 | A2A协议深度解析 - 第 2 部分：流式返回 + 多Agent场景 |
+
+## 完整列表
+-> `video_list.tsv` (30 行, BV/标题/时长/日期/播放量)
+
+[00:49:53] [6/12] OK 马克的技术工作坊 -- 30 videos in 55s
+[00:49:56] [7/12] Probing 小Lin说 (UID=520819684, slug=tier2-xiaolin-shuo)
+00:49:56 [INFO] Probing UID 520819684 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-xiaolin-shuo
+00:49:57 [INFO] wbi keys fetched
+00:49:57 [INFO] Channel: 小Lin说 (7,098,748 fans)
+00:49:57 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/520819684/upload/video (may take ~2s/video)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 237, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 223, in main
+    videos = fetch_video_list(uid, img_key, sub_key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\bili_api.py", line 173, in fetch_video_list
+    raise BiliAPIError(f"yt-dlp failed: {proc.stderr.strip()[:500]}")
+scripts.bili_api.BiliAPIError: yt-dlp failed: ERROR: [BiliBili] 1gM411A7YB: Unable to extract initial state; please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U
+�分享理财知识
+- 视频总数: 79
+- 采集时间: 2026-04-08T00:54:06
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 28 |
+| 5-15min | 51 |
+| 15-30min | 0 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2022 | 14 |
+| 2023 | 55 |
+| 2024 | 10 |
+
+## 播放量分布 (分位)
+- P25: 26,873
+- P50: 41,658
+- P75: 76,418
+- P90: 261,264
+- Max: 667,416
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1cv4y1D7Vi | 667,416 | 2:58 | 100万怎么理财最划算，可以躺平吗？ |
+| BV1y14y1E7HL | 647,062 | 2:54 | 看完提升财商的四大纪录片 |
+| BV1jW4y1W7g4 | 553,251 | 1:52 | 什么时候能回本？最好明白这件事 |
+| BV1nB4y1k7TJ | 488,306 | 5:55 | 基金业三大坑，快看看自己有没有中招？ |
+| BV1Na41197jN | 292,970 | 1:09 | 失业的人有钱拿了，主动离职也能领补助金？ |
+| BV19a41137s7 | 279,695 | 3:14 | 年轻人找工作，都没有老年人抢手了？！ |
+| BV1yG411E7Tu | 266,849 | 2:33 | 收入不经花？你可能开通了“工资回收计划” |
+| BV1rXSDYVEbV | 261,264 | 7:54 | 《黑天鹅》01:世界的真相，为什么你的努力没能换来财富？ |
+| BV1fG4y117xg | 231,964 | 3:10 | 投资必看“圣经”，提前实现财富自由 |
+| BV1ht4y1L7Ub | 187,827 | 3:30 | 关于投资你必须了解的几件事，明白受益终身 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1bUD6YFEry | 2024-11-10 | 79,887 | 5:39 | 《黑天鹅》10:普通人如何利用黑天鹅机会，实现财富增值？ |
+| BV1KKDfYrEsV | 2024-11-09 | 77,887 | 5:29 | 《黑天鹅》09:赔钱真相，为什么懂得越多，反而亏得越狠？ |
+| BV1scDRYbEw6 | 2024-11-08 | 31,658 | 5:27 | 《黑天鹅》08:当意外遇上过度自信，人类的乐观有多盲目？ |
+| BV1U7D2YyEH1 | 2024-11-07 | 80,523 | 7:11 | 《黑天鹅》07:幸存者偏差是如何影响我们的？ |
+| BV1LnD3YdEQP | 2024-11-06 | 43,465 | 7:03 | 《黑天鹅》06:我们为什么会被直觉“欺骗”？ |
+| BV1JpD4Y6EPn | 2024-11-05 | 76,544 | 6:39 | 《黑天鹅》05:别让因果陷阱，误导你的人生，如何看透事情的真相？ |
+| BV1wNDnYZEjw | 2024-11-04 | 46,096 | 5:15 | 《黑天鹅》04:别人的成功经验，为什么我们学了没有用？ |
+| BV1cySyYxENk | 2024-11-03 | 40,154 | 6:26 | 《黑天鹅》03:小心被骗！为什么股市无法预测 |
+| BV1NfSoYeEAE | 2024-11-02 | 58,349 | 6:20 | 《黑天鹅》02:黑天鹅事件，决定了人类命运？ |
+| BV1rXSDYVEbV | 2024-11-01 | 261,264 | 7:54 | 《黑天鹅》01:世界的真相，为什么你的努力没能换来财富？ |
+
+## 完整列表
+-> `video_list.tsv` (79 行, BV/标题/时长/日期/播放量)
+
+[00:54:06] [8/13] OK 小A学财经 -- 79 videos in 147s
+[00:54:09] [9/13] Probing 巫师财经 (UID=472747194, slug=tier2-wushi-finance)
+00:54:09 [INFO] Probing UID 472747194 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-wushi-finance
+00:54:10 [INFO] wbi keys fetched
+00:54:10 [INFO] Channel: 巫师财经 (4,183,787 fans)
+00:54:10 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/472747194/upload/video (may take ~2s/video)
+00:57:04 [INFO] Fetched 97 videos
+00:57:04 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-wushi-finance\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 巫师财经
+
+## Channel
+- UID: 472747194
+- 粉丝数: 4,183,787
+- 主页: https://space.bilibili.com/472747194
+- 签名: 前中金分析师，合作：nef_mk，文字和图表都发在公众号了，自取随便用，就说是你写的
+- 视频总数: 97
+- 采集时间: 2026-04-08T0000:57:50 [INFO] Fetched 79 videos
+00:57:50 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-xiaoa-finance\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 小A学财经
+
+## Channel
+- UID: 531838578
+- 粉丝数: 198,418
+- 主页: https://space.bilibili.com/531838578
+- 签名: 公众号: 小A学财经｜无处安放的小A唯一大号，这里给你们分享理财知识
+- 视频总数: 79
+- 采集时间: 2026-04-08T00:57:50
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 28 |
+| 5-15min | 51 |
+| 15-30min | 0 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2022 | 14 |
+| 2023 | 55 |
+| 2024 | 10 |
+
+## 播放量分布 (分位)
+- P25: 26,873
+- P50: 41,658
+- P75: 76,418
+- P90: 261,264
+- Max: 667,416
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1cv4y1D7Vi | 667,416 | 2:58 | 100万怎么理财最划算，可以躺平吗？ |
+| BV1y14y1E7HL | 647,062 | 2:54 | 看完提升财商的四大纪录片 |
+| BV1jW4y1W7g4 | 553,252 | 1:52 | 什么时候能回本？最好明白这件事 |
+| BV1nB4y1k7TJ | 488,306 | 5:55 | 基金业三大坑，快看看自己有没有中招？ |
+| BV1Na41197jN | 292,970 | 1:09 | 失业的人有钱拿了，主动离职也能领补助金？ |
+| BV19a41137s7 | 279,695 | 3:14 | 年轻人找工作，都没有老年人抢手了？！ |
+| BV1yG411E7Tu | 266,849 | 2:33 | 收入不经花？你可能开通了“工资回收计划” |
+| BV1rXSDYVEbV | 261,264 | 7:54 | 《黑天鹅》01:世界的真相，为什么你的努力没能换来财富？ |
+| BV1fG4y117xg | 231,964 | 3:10 | 投资必看“圣经”，提前实现财富自由 |
+| BV1ht4y1L7Ub | 187,827 | 3:30 | 关于投资你必须了解的几件事，明白受益终身 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1bUD6YFEry | 2024-11-10 | 79,887 | 5:39 | 《黑天鹅》10:普通人如何利用黑天鹅机会，实现财富增值？ |
+| BV1KKDfYrEsV | 2024-11-09 | 77,887 | 5:29 | 《黑天鹅》09:赔钱真相，为什么懂得越多，反而亏得越狠？ |
+| BV1scDRYbEw6 | 2024-11-08 | 31,658 | 5:27 | 《黑天鹅》08:当意外遇上过度自信，人类的乐观有多盲目？ |
+| BV1U7D2YyEH1 | 2024-11-07 | 80,523 | 7:11 | 《黑天鹅》07:幸存者偏差是如何影响我们的？ |
+| BV1LnD3YdEQP | 2024-11-06 | 43,465 | 7:03 | 《黑天鹅》06:我们为什么会被直觉“欺骗”？ |
+| BV1JpD4Y6EPn | 2024-11-05 | 76,544 | 6:39 | 《黑天鹅》05:别让因果陷阱，误导你的人生，如何看透事情的真相？ |
+| BV1wNDnYZEjw | 2024-11-04 | 46,096 | 5:15 | 《黑天鹅》04:别人的成功经验，为什么我们学了没有用？ |
+| BV1cySyYxENk | 2024-11-03 | 40,154 | 6:26 | 《黑天鹅》03:小心被骗！为什么股市无法预测 |
+| BV1NfSoYeEAE | 2024-11-02 | 58,349 | 6:20 | 《黑天鹅》02:黑天鹅事件，决定了人类命运？ |
+| BV1rXSDYVEbV | 2024-11-01 | 261,264 | 7:54 | 《黑天鹅》01:世界的真相，为什么你的努力没能换来财富？ |
+
+## 完整列表
+-> `video_list.tsv` (79 行, BV/标题/时长/日期/播放量)
+
+ Probing UID 508709785 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-wuyifei
+00:57:09 [INFO] wbi keys fetched
+00:57:09 [INFO] Channel: 温义飞今天插旗了吗 (478,161 fans)
+00:57:09 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/508709785/upload/video (may take ~2s/video)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 237, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\probe_channel.py", line 223, in main
+    videos = fetch_video_list(uid, img_key, sub_key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hangn\.claude\skills\bilibili-creator-dive\scripts\bili_api.py", line 173, in fetch_video_list
+    
+scripts.bili_api.BiliAPIError: yt-dlp failed: ERROR: [BiliBili] 1Zd9MBsE28: This video may be deleted or geo-restricted. You might want to try a VPN or a proxy server (with --proxy)
+ERROR: [BiliBili] 12C411h7ka: This video may be deleted or geo-restricted. You might want to try a VPN or a proxy server (with --proxy)
+公众号了，自取随便用，就说是你写的
+- 视频总数: 97
+- 采集时间: 2026-04-08T01:00:47
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 6 |
+| 5-15min | 41 |
+| 15-30min | 30 |
+| 30-60min | 17 |
+| >60min | 3 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2019 | 10 |
+| 2020 | 4 |
+| 2022 | 4 |
+| 2023 | 7 |
+| 2024 | 17 |
+| 2025 | 42 |
+| 2026 | 13 |
+
+## 播放量分布 (分位)
+- P25: 816,689
+- P50: 1,257,738
+- P75: 2,225,297
+- P90: 3,430,965
+- Max: 5,746,806
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1J7411t7sL | 5,746,806 | 24:59 | 【巫师】疫情对经济的影响：专题报告【巫师经济学03】 |
+| BV1pJ411R7KZ | 5,156,594 | 31:01 | 【完整版】香港金融保卫战，国际巨鳄索罗斯做空英镑泰铢，决战香港 |
+| BV1XJ411i7MA | 4,893,665 | 13:13 | 【巫师】杨幂的资本博弈之路【资本与明星03】 |
+| BV1dYWVz6Emm | 4,788,530 | 13:53 | 【巫师】保健品行业的资本博弈，“资贼”是怎么出现的 |
+| BV1xQfWYaEV5 | 4,758,843 | 25:29 | 【巫师】万字解析春晚背后的资本博弈 |
+| BV1CDdWYHEtU | 4,200,334 | 12:27 | 【巫师】全球关税混战背后，是不能输的终局之战 |
+| BV1WE411y7ew | 3,756,392 | 16:25 | 蔡徐坤与资本的博弈，首个为蔡徐坤正逻辑的视频，【资本与明星02集】 |
+| BV14s9GYXEW7 | 3,640,619 | 13:25 | 【巫师】全球科技资本暗斗，“意外干掉”奔驰宝马奥迪 |
+| BV1Ja411N7zD | 3,624,735 | 4:26:55 | 【巫师】网红与资本简史 |
+| BV1Y5411t73s | 3,430,965 | 29:47 | 【巫师】日本经济崩盘始末【巫师经济学04】 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1BXXCBnEHN | 2026-03-31 | 334,165 | 9:58 | 【巫师】王一博资本博弈第二季，给“资本”调成什么样了？ |
+| BV1bnXUBmEnx | 2026-03-29 | 558,497 | 21:21 | 【巫师】TFBOYS单飞篇：三人谁最强，时代峰峻和时代少年团收入分析 |
+| BV1H1XnBoEMj | 2026-03-27 | 301,179 | 18:12 | 【巫师】TFBoys资本博弈，合体篇——创世神性和收入测算 |
+| BV1tDQiB1EQE | 2026-03-24 | 622,600 | 10:46 | 【巫师】智商在线逻辑拉满，这才是豆包专家模式的正确打开方式 |
+| BV1jLXFBoEZh | 2026-03-23 | 1,240,132 | 6:11 | 【巫师】崩了。 |
+| BV1xcwqzNEUc | 2026-03-19 | 1,369,119 | 9:31 | 【巫师】人均每周3晚无效睡眠，这个偷走你寿命的千亿级元凶，99%的人一无所知 |
+| BV1CYPCzWEi4 | 2026-03-05 | 898,222 | 7:53 | 【巫师】美国干伊朗02，藏着对我们的资本阴招儿 |
+| BV1i3PFzSEAR | 2026-03-03 | 1,270,173 | 10:14 | 【巫师】伊朗美国开打，资本暗涌如何影响我们 |
+| BV1YyP5zWEKu | 2026-03-03 | 763,256 | 12:48 | 【巫师】男色经济，和它的变种们 |
+| BV14eZMBLEdg | 2026-02-18 | 1,257,738 | 30:23 | 【巫师】吴亦凡的资本博弈，第一季 |
+
+## 可疑条目 (建议人工复核)
+- 1 条 时长 > 2h -> BV1Ja411N7zD
+
+## 完整列表
+-> `video_list.tsv` (97 行, BV/标题/时长/日期/播放量)
+
+[01:00:47] [9/12] OK 巫师财经 -- 97 videos in 174s
+[01:00:50] [10/12] Probing 温义飞今天插旗了吗 (UID=508709785, slug=tier2-wuyifei)
+01:00:50 [INFO] Probing UID 508709785 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-wuyifei
+01:00:51 [INFO] wbi keys fetched
+01:00:51 [INFO] Channel: 温义飞今天插旗了吗 (478,161 fans)
+01:00:51 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/508709785/upload/video (may take ~2s/video)
+01:08:45 [WARNING] yt-dlp had errors (returncode=1) but extracted 255 videos. Some videos may be deleted or geo-restricted.
+01:08:45 [INFO] Fetched 255 videos
+01:08:45 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-wuyifei\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 温义飞今天插旗了吗
+
+## Channel
+- UID: 508709785
+- 粉丝数: 478,161
+- 主页: https://space.bilibili.com/508709785
+- 签名: 财经作家，伦敦政经经济史硕士，Uof01:29:13 [INFO] Fetched 800 videos
+01:29:13 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-zhinan-finance\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 直男Talk
+
+## Channel
+- UID: 522557713
+- 粉丝数: 459,286
+- 主页: https://space.bilibili.com/522557713
+- 签名: 直男财经，深入人心
+商务：zhinanshangwu
+
+- 视频总数: 800
+- 采集时间: 2026-04-08T01:29:13
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 489 |
+| 5-15min | 277 |
+| 15-30min | 28 |
+| 30-60min | 5 |
+| >60min | 1 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 162 |
+| 2021 | 39 |
+| 2022 | 86 |
+| 2023 | 166 |
+| 2024 | 159 |
+| 2025 | 145 |
+| 2026 | 43 |
+
+## 播放量分布 (分位)
+- P25: 20,927
+- P50: 50,345
+- P75: 109,882
+- P90: 266,751
+- Max: 2,968,307
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1xe4y137kT | 2,968,307 | 6:14 | 米哈游那群疯子 |
+| BV1M24y117K3 | 1,720,005 | 5:18 | “史上最贵”的卡塔尔世界杯，到底壕成啥样了？ |
+| BV1ev411n7xy | 1,281,404 | 8:32 | 斗鱼虎牙合并被禁，腾讯15万亿的“鹅城”，要被拆城了？ |
+| BV1z541117j2 | 1,227,367 | 33:56 | 【互联网兴衰系列】最惨烈的互联网混战，二十年烧掉千亿现金，百度、阿里、腾讯兵败折... |
+| BV17SLbziEg4 | 1,219,930 | 4:34 | 京东外卖再放大招，商战背后是老板内卷，消费者打工人享福？ |
+| BV1zPLbzTEXS | 1,202,798 | 8:37 | 实地探访毒窟遇袭！！！从美国开国首都到毒品遍地，费城为何沦为美国最疼痛的伤疤？ |
+| BV1vQ4y1V77X | 1,098,766 | 4:43 | 深圳法院：安徽省南京市。江苏：？？？ |
+| BV124421Z7nA | 1,017,515 | 9:16 | 草台班子？鸡飞狗跳？巴黎奥运会到底啥情况 |
+| BV1mR5xzrEQe | 987,104 | 12:47 | 深入美利坚：它为什么一定要向全世界、尤其是向我们，发起这场疯狂关税战？ |
+| BV1Zs4y197sf | 961,913 | 3:29 | 工资都是数字人民币，是种什么体验？ |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1ANDYBdEPL | 2026-04-07 | 15,793 | 13:54 | 踩头世界霸主，仅成立两年的张雪摩托，凭什么那么狂？ |
+| BV1YLDKBPEUb | 2026-04-04 | 36,196 | 7:46 | 当硬骨头崩掉牙，乱成一锅粥的中东怎么收尾？又与我何瓜？ |
+| BV1HLXBBGELW | 2026-03-31 | 38,613 | 6:22 | 张雪的逆袭人生，从县城修车工到世界第一 |
+| BV1aZXTB3EGB | 2026-03-27 | 23,351 | 3:49 | 全球市场变猴市，竟然是因为特朗普的小作文？ |
+| BV1NVwez8Eab | 2026-03-19 | 123,018 | 17:21 | 卧底三个月，我们发现了料理包的真相 |
+| BV1PowezFE8e | 2026-03-19 | 45,966 | 14:21 | 中东大浩劫（三） 亲历机场袭击，距爆炸点几百米，猛男落泪？ |
+| BV1GrwezgEBR | 2026-03-18 | 119,223 | 13:02 | 中东大浩劫（二） 猛男财经带你直击霍尔木兹海峡大堵船现场，伊朗发起石油战争反击 |
+| BV1yYwYzdEp9 | 2026-03-18 | 77,616 | 17:31 | 中东大浩劫（一） 美以伊战争，全球油价大地震，猛男财经啥时候到中东？这不，我来了... |
+| BV1qfPQzBE4n | 2026-03-10 | 31,449 | 5:39 | 农民在国家经济建设中，贡献有多大？ |
+| BV1KSPdzwE4Z | 2026-03-10 | 45,012 | 6:12 | 黑色星期一：3月9号全球油价暴涨，凌晨特朗普宣布纷争很快结束，10号又再度下跌 |
+
+## 可疑条目 (建议人工复核)
+- 2 条 时长 < 60s -> BV1aP4y11713, BV1WV411f7Ak
+
+## 完整列表
+-> `video_list.tsv` (800 行, BV/标题/时长/日期/播放量)
+
+ [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-suozhang-linchao\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 所长林超
+
+## Channel
+- UID: 520155988
+- 粉丝数: 3,615,532
+- 主页: https://space.bilibili.com/520155988
+- 签名: 新书《开窍》和跨学科课均已上线 看科技&商业原理 合作：suozhang03
+- 视频总数: 124
+- 采集时间: 2026-04-08T01:12:39
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 5 |
+| 5-15min | 114 |
+| 15-30min | 5 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 39 |
+| 2021 | 38 |
+| 2022 | 22 |
+| 2023 | 17 |
+| 2024 | 8 |
+
+## 播放量分布 (分位)
+- P25: 518,315
+- P50: 743,619
+- P75: 1,300,705
+- P90: 2,278,392
+- Max: 7,639,543
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV11h411q7ag | 7,639,543 | 10:48 | 反垄断，砍培训，背后是影响每个人未来的大变局 |
+| BV1zU4y1p7L3 | 7,154,799 | 12:27 | 十四五规划65000字，课代表来了！拒绝咸鱼，国家带你飞！ |
+| BV1rp4y1Y7FC | 5,347,959 | 11:11 | 2020年之后，普通人的机会和危机 |
+| BV14f4y1q7NG | 5,274,850 | 10:47 | 2035国家大计，如何影响当代年轻人的一生 |
+| BV11Q4y1N7Ry | 5,252,722 | 13:15 | 疫情后的新世界，我们需要了解的五大趋势【所长.深度】 |
+| BV1rX4y1u7Tp | 2,952,927 | 10:29 | 中国的2021，牛转乾坤！ |
+| BV1nh41127Do | 2,825,323 | 10:19 | 钱收割人的年代，6大新生存法则【干货多到变态】 |
+| BV1H7411y7Hh | 2,745,242 | 19:27 | 年轻人如何抓住5G时代红利，中国未来发展机会超深度分析，纯干货建议收藏！【所长.... |
+| BV1964y1T7gR | 2,611,236 | 15:13 | 选专业求职必看，ai时代这些凉凉的行业就别去了【所长.深度】 |
+| BV1CW4y1i7Ci | 2,481,541 | 10:45 | 全世界都在薅欧洲羊毛！ |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1JssaeVE1s | 2024-09-24 | 469,916 | 9:25 | 中国或许正在迈入一个全新的周期 |
+| BV19f421D77A | 2024-06-12 | 397,380 | 3:38 | AI手机核弹袭来 |
+| BV16s421w77K | 2024-05-24 | 756,715 | 8:56 | 今天像极了200年前的世界 |
+| BV1Ds421A7Mj | 2024-05-17 | 834,438 | 3:15 | AI时代，真正要学的是做自己 |
+| BV1NE421L7FD | 2024-05-08 | 368,042 | 11:47 | 中美AI竞赛，2024开启下半场 |
+| BV1hK421x7Zy | 2024-03-12 | 230,094 | 7:36 | 安静的力量 |
+| BV1b2421c7mZ | 2024-02-06 | 366,600 | 11:02 | 2024，会好起来吗？ |
+| BV16a4y1k79c | 2024-01-25 | 456,723 | 7:07 | 世界为什么这么乱？ |
+| BV1bP411Y7z9 | 2023-08-31 | 401,741 | 12:12 | 新工科教育会成为这代人就业的解药吗？ |
+| BV1ZN411i7gb | 2023-08-28 | 134,873 | 13:24 | AI绘画超越人类的年代，美学还有意义吗？ |
+
+## 可疑条目 (建议人工复核)
+- 1 条 时长 < 60s -> BV1RV411C7En
+
+## 完整列表
+-> `video_list.tsv` (124 行, BV/标题/时长/日期/播放量)
+
+[01:12:40] [11/12] OK 所长林超 -- 124 videos in 229s
+[01:12:44] [12/12] Probing 花果山-大圣 (UID=26995758, slug=tier3-dasheng)
+01:12:45 [INFO] Probing UID 26995758 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier3-dasheng
+01:12:46 [INFO] wbi keys fetched
+01:12:47 [INFO] Channel: 花果山-大圣 (47,836 fans)
+01:12:47 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/26995758/upload/video (may take ~2s/video)
+01:18:06 [WARNING] yt-dlp had errors (returncode=1) but extracted 168 videos. Some videos may be deleted or geo-restricted.
+01:18:06 [INFO] Fetched 168 videos
+01:18:06 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier3-dasheng\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 花果山-大圣
+
+## Channel
+- UID: 26995758
+- 粉丝数: 47,836
+- 主页: https://space.bilibili.com/26995758
+- 签名: yuotube和X同名，私教课，1V1咨询请联系V: itdasheng168
+- 视频总数: 168
+- 采集时间: 2026-04-08T01:18:06
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 54 |
+| 5-15min | 55 |
+| 15-30min | 29 |
+| 30-60min | 13 |
+| >60min | 17 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 23 |
+| 2021 | 25 |
+| 2022 | 67 |
+| 2023 | 31 |
+| 2024 | 19 |
+| 2025 | 3 |
+
+## 播放量分布 (分位)
+- P25: 5,717
+- P50: 11,811
+- P75: 21,499
+- P90: 26,487
+- Max: 127,626
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1E24y1u7dT | 127,626 | 0:23 | 前端能干什么-不锈钢Button |
+| BV1qC4y18721 | 122,820 | 27:01 | 【Web前端会客厅】Vue之父尤雨溪深度解读Vue3.0的开发思路 |
+| BV1TY4y1p783 | 81,545 | 1:43:31 | 我看你Vue写的挺好的，10K五险一金考虑一下 | 不吃盒饭15K可以吗 【程序... |
+| BV191421r72t | 68,051 | 15:24 | 34岁程序员带全家离开北京 |
+| BV1CY411n7yr | 64,087 | 22:23 | “听说你做的网站经常被攻击？” 对线程序员鱼皮| 职业规划 | 知识星球 | 大... |
+| BV1SL411C7B3 | 62,648 | 7:05 | 程序员找国外远程工作资源网站分享--脱离卷的环境 |
+| BV1cV411Y77T | 61,254 | 26:21 | 【FunnyCoder第0期】非科班前端老司机从2K到40K之路 |
+| BV1AN4y1S7Zv | 45,452 | 20:13 | 放弃大厂百万年薪，海外remote现状，自由独立开发 |
+| BV1Wb4y1Q7Kd | 44,789 | 17:19 | “我用比特币，在北京买了房子”——【funnyCoder第三期】 |
+| BV15f4y1D7Fo | 43,845 | 26:20 | Javascript书籍全测评【前端必备】 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1VML3zrExq | 2025-04-24 | 5,389 | 13:05 | 35岁程序员感想｜Remote｜Github 解封｜阿森纳欧冠四强｜读评论 |
+| BV18GR5YYE7h | 2025-03-10 | 26,487 | 21:09 | 前端代码被篡改导致被盗15亿-怎么预防-谁说前端不重要的 |
+| BV132RGYaEPn | 2025-03-10 | 1,510 | 7:01 | 亚马逊 Nova 大模型详解：前沿智能 & 高性价比 AI |
+| BV1WYUmYiEZm | 2024-11-21 | 2,612 | 4:58 | 聊聊何同学侵权这件事 |
+| BV1CZSRYxEEv | 2024-11-01 | 13,361 | 15:51 | 小程序开发和AI会碰撞出什么火花 |
+| BV11CxnesErS | 2024-09-27 | 3,362 | 34:41 | 观众来信-计算机专业如何度过大学四年 |
+| BV1vPteejEVZ | 2024-09-17 | 17,749 | 17:26 | 英国生活三个月总结-工作职场和家庭 |
+| BV1RM4m1y79D | 2024-08-03 | 3,249 | 57:21 | funnyCoder14期 - 和david聊聊加拿大程序员职场和移民问题 |
+| BV1mS421X7ZD | 2024-07-30 | 4,253 | 1:47:53 | 第 10 集 | 花果山大圣聊职业选择、如何靠销售立足、房车之旅、以及英国的新生... |
+| BV1rW42197km | 2024-07-23 | 3,853 | 1:39 | 程序员面试街道足球队 |
+
+## 可疑条目 (建议人工复核)
+- 11 条 时长 < 60s -> BV1RP411q75n, BV1E24y1u7dT, BV1Qe4y1T7DX, BV1Ce411u7ew, BV1Xd4y1g7kq_p10, BV1p44y1s78o, BV16g411u7V3, BV1qv411H7Fu_p4, BV1VT4y1M7B4_p2, BV1VT4y1M7B4_p3, BV1jK4y1L7ti
+- 3 条 时长 > 2h -> BV1ne4y1i7uy, BV1LZ4y1Y7Gh, BV1244y1s7U7
+
+## 完整列表
+-> `video_list.tsv` (168 行, BV/标题/时长/日期/播放量)
+
+[01:18:07] [12/12] OK 花果山-大圣 -- 168 videos in 322s
+[01:18:10] BATCH PROBE DONE
+[01:29:16] [11/13] OK 直男Talk -- 800 videos in 1448s
+[01:29:22] [12/13] Probing 所长林超 (UID=520155988, slug=tier2-suozhang-linchao)
+01:29:25 [INFO] Probing UID 520155988 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-suozhang-linchao
+01:29:27 [INFO] wbi keys fetched
+01:29:27 [INFO] Channel: 所长林超 (3,615,525 fans)
+01:29:27 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/520155988/upload/video (may take ~2s/video)
+01:33:15 [WARNING] yt-dlp had errors (returncode=1) but extracted 124 videos. Some videos may be deleted or geo-restricted.
+01:33:15 [INFO] Fetched 124 videos
+01:33:15 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier2-suozhang-linchao\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 所长林超
+
+## Channel
+- UID: 520155988
+- 粉丝数: 3,615,525
+- 主页: https://space.bilibili.com/520155988
+- 签名: 新书《开窍》和跨学科课均已上线 看科技&商业原理 合作：suozhang03
+- 视频总数: 124
+- 采集时间: 2026-04-08T01:33:15
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 5 |
+| 5-15min | 114 |
+| 15-30min | 5 |
+| 30-60min | 0 |
+| >60min | 0 |
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 39 |
+| 2021 | 38 |
+| 2022 | 22 |
+| 2023 | 17 |
+| 2024 | 8 |
+
+## 播放量分布 (分位)
+- P25: 518,315
+- P50: 743,619
+- P75: 1,300,705
+- P90: 2,278,393
+- Max: 7,639,543
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV11h411q7ag | 7,639,543 | 10:48 | 反垄断，砍培训，背后是影响每个人未来的大变局 |
+| BV1zU4y1p7L3 | 7,154,806 | 12:27 | 十四五规划65000字，课代表来了！拒绝咸鱼，国家带你飞！ |
+| BV1rp4y1Y7FC | 5,347,959 | 11:11 | 2020年之后，普通人的机会和危机 |
+| BV14f4y1q7NG | 5,274,853 | 10:47 | 2035国家大计，如何影响当代年轻人的一生 |
+| BV11Q4y1N7Ry | 5,252,723 | 13:15 | 疫情后的新世界，我们需要了解的五大趋势【所长.深度】 |
+| BV1rX4y1u7Tp | 2,952,927 | 10:29 | 中国的2021，牛转乾坤！ |
+| BV1nh41127Do | 2,825,323 | 10:19 | 钱收割人的年代，6大新生存法则【干货多到变态】 |
+| BV1H7411y7Hh | 2,745,242 | 19:27 | 年轻人如何抓住5G时代红利，中国未来发展机会超深度分析，纯干货建议收藏！【所长.... |
+| BV1964y1T7gR | 2,611,236 | 15:13 | 选专业求职必看，ai时代这些凉凉的行业就别去了【所长.深度】 |
+| BV1CW4y1i7Ci | 2,481,542 | 10:45 | 全世界都在薅欧洲羊毛！ |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1JssaeVE1s | 2024-09-24 | 469,916 | 9:25 | 中国或许正在迈入一个全新的周期 |
+| BV19f421D77A | 2024-06-12 | 397,382 | 3:38 | AI手机核弹袭来 |
+| BV16s421w77K | 2024-05-24 | 756,716 | 8:56 | 今天像极了200年前的世界 |
+| BV1Ds421A7Mj | 2024-05-17 | 834,439 | 3:15 | AI时代，真正要学的是做自己 |
+| BV1NE421L7FD | 2024-05-08 | 368,043 | 11:47 | 中美AI竞赛，2024开启下半场 |
+| BV1hK421x7Zy | 2024-03-12 | 230,094 | 7:36 | 安静的力量 |
+| BV1b2421c7mZ | 2024-02-06 | 366,601 | 11:02 | 2024，会好起来吗？ |
+| BV16a4y1k79c | 2024-01-25 | 456,723 | 7:07 | 世界为什么这么乱？ |
+| BV1bP411Y7z9 | 2023-08-31 | 401,741 | 12:12 | 新工科教育会成为这代人就业的解药吗？ |
+| BV1ZN411i7gb | 2023-08-28 | 134,873 | 13:24 | AI绘画超越人类的年代，美学还有意义吗？ |
+
+## 可疑条目 (建议人工复核)
+- 1 条 时长 < 60s -> BV1RV411C7En
+
+## 完整列表
+-> `video_list.tsv` (124 行, BV/标题/时长/日期/播放量)
+
+[01:33:18] [12/13] OK 所长林超 -- 124 videos in 232s
+[01:33:23] [13/13] Probing 花果山-大圣 (UID=26995758, slug=tier3-dasheng)
+01:33:25 [INFO] Probing UID 26995758 -> c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier3-dasheng
+01:33:26 [INFO] wbi keys fetched
+01:33:27 [INFO] Channel: 花果山-大圣 (47,836 fans)
+01:33:27 [INFO] yt-dlp extracting full metadata from https://space.bilibili.com/26995758/upload/video (may take ~2s/video)
+01:38:39 [WARNING] yt-dlp had errors (returncode=1) but extracted 168 videos. Some videos may be deleted or geo-restricted.
+01:38:39 [INFO] Fetched 168 videos
+01:38:39 [INFO] Wrote c:\Users\hangn\projects\mason-hub\accounts\growth-memo\content\test-001\assets\reference\batch-2026-04\tier3-dasheng\video_list.tsv, META.md, probe_summary.md
+# Probe Summary - 花果山-大圣
+
+## Channel
+- UID: 26995758
+- 粉丝数: 47,836
+- 主页: https://space.bilibili.com/26995758
+- 签名: yuotube和X同名，私教课，1V1咨询请联系V: itdasheng168
+- 视频总数: 168
+- 采集时间: 2026-04-08T01:38:39
+
+## 时长分布
+| 桶 | 条数 |
+|---|---|
+| <5min | 54 |
+| 5-15min | 55 |
+| 15-30min | 29 |
+| 30-60min | 13 |
+| >60min | 17 |  <- 可能是直播回放, 建议 max_duration:60
+
+## 发布年份分布
+| 年 | 条数 |
+|---|---|
+| 2020 | 23 |
+| 2021 | 25 |
+| 2022 | 67 |
+| 2023 | 31 |
+| 2024 | 19 |
+| 2025 | 3 |
+
+## 播放量分布 (分位)
+- P25: 5,717
+- P50: 11,811
+- P75: 21,499
+- P90: 26,487
+- Max: 127,626
+
+## 最热 10 条 (by views)
+| BV | 播放量 | 时长 | 标题 |
+|---|---|---|---|
+| BV1E24y1u7dT | 127,626 | 0:23 | 前端能干什么-不锈钢Button |
+| BV1qC4y18721 | 122,820 | 27:01 | 【Web前端会客厅】Vue之父尤雨溪深度解读Vue3.0的开发思路 |
+| BV1TY4y1p783 | 81,545 | 1:43:31 | 我看你Vue写的挺好的，10K五险一金考虑一下 | 不吃盒饭15K可以吗 【程序... |
+| BV191421r72t | 68,051 | 15:24 | 34岁程序员带全家离开北京 |
+| BV1CY411n7yr | 64,087 | 22:23 | “听说你做的网站经常被攻击？” 对线程序员鱼皮| 职业规划 | 知识星球 | 大... |
+| BV1SL411C7B3 | 62,648 | 7:05 | 程序员找国外远程工作资源网站分享--脱离卷的环境 |
+| BV1cV411Y77T | 61,254 | 26:21 | 【FunnyCoder第0期】非科班前端老司机从2K到40K之路 |
+| BV1AN4y1S7Zv | 45,452 | 20:13 | 放弃大厂百万年薪，海外remote现状，自由独立开发 |
+| BV1Wb4y1Q7Kd | 44,789 | 17:19 | “我用比特币，在北京买了房子”——【funnyCoder第三期】 |
+| BV15f4y1D7Fo | 43,845 | 26:20 | Javascript书籍全测评【前端必备】 |
+
+## 最新 10 条
+| BV | 日期 | 播放量 | 时长 | 标题 |
+|---|---|---|---|---|
+| BV1VML3zrExq | 2025-04-24 | 5,389 | 13:05 | 35岁程序员感想｜Remote｜Github 解封｜阿森纳欧冠四强｜读评论 |
+| BV18GR5YYE7h | 2025-03-10 | 26,487 | 21:09 | 前端代码被篡改导致被盗15亿-怎么预防-谁说前端不重要的 |
+| BV132RGYaEPn | 2025-03-10 | 1,510 | 7:01 | 亚马逊 Nova 大模型详解：前沿智能 & 高性价比 AI |
+| BV1WYUmYiEZm | 2024-11-21 | 2,612 | 4:58 | 聊聊何同学侵权这件事 |
+| BV1CZSRYxEEv | 2024-11-01 | 13,361 | 15:51 | 小程序开发和AI会碰撞出什么火花 |
+| BV11CxnesErS | 2024-09-27 | 3,362 | 34:41 | 观众来信-计算机专业如何度过大学四年 |
+| BV1vPteejEVZ | 2024-09-17 | 17,749 | 17:26 | 英国生活三个月总结-工作职场和家庭 |
+| BV1RM4m1y79D | 2024-08-03 | 3,249 | 57:21 | funnyCoder14期 - 和david聊聊加拿大程序员职场和移民问题 |
+| BV1mS421X7ZD | 2024-07-30 | 4,253 | 1:47:53 | 第 10 集 | 花果山大圣聊职业选择、如何靠销售立足、房车之旅、以及英国的新生... |
+| BV1rW42197km | 2024-07-23 | 3,853 | 1:39 | 程序员面试街道足球队 |
+
+## 可疑条目 (建议人工复核)
+- 11 条 时长 < 60s -> BV1RP411q75n, BV1E24y1u7dT, BV1Qe4y1T7DX, BV1Ce411u7ew, BV1Xd4y1g7kq_p10, BV1p44y1s78o, BV16g411u7V3, BV1qv411H7Fu_p4, BV1VT4y1M7B4_p2, BV1VT4y1M7B4_p3, BV1jK4y1L7ti
+- 3 条 时长 > 2h -> BV1ne4y1i7uy, BV1LZ4y1Y7Gh, BV1244y1s7U7
+
+## 完整列表
+-> `video_list.tsv` (168 行, BV/标题/时长/日期/播放量)
+
+[01:38:42] [13/13] OK 花果山-大圣 -- 168 videos in 316s

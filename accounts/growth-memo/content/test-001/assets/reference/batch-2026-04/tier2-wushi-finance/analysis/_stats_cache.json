@@ -1,0 +1,930 @@
+{
+  "counts_a": {
+    "C1": {
+      "top": [
+        7,
+        12
+      ],
+      "mid": [
+        18,
+        33
+      ],
+      "bot": [
+        4,
+        12
+      ],
+      "mid_violate_pct": 0.45454545454545453,
+      "delta": 0.25000000000000006
+    },
+    "C2": {
+      "top": [
+        12,
+        12
+      ],
+      "mid": [
+        32,
+        33
+      ],
+      "bot": [
+        8,
+        12
+      ],
+      "mid_violate_pct": 0.030303030303030304,
+      "delta": 0.33333333333333337
+    },
+    "C3": {
+      "top": [
+        10,
+        12
+      ],
+      "mid": [
+        29,
+        33
+      ],
+      "bot": [
+        10,
+        12
+      ],
+      "mid_violate_pct": 0.8787878787878788,
+      "delta": 0.0
+    },
+    "C4": {
+      "top": [
+        9,
+        12
+      ],
+      "mid": [
+        25,
+        33
+      ],
+      "bot": [
+        6,
+        12
+      ],
+      "mid_violate_pct": 0.24242424242424243,
+      "delta": 0.25
+    },
+    "C5": {
+      "top": [
+        11,
+        12
+      ],
+      "mid": [
+        13,
+        33
+      ],
+      "bot": [
+        0,
+        12
+      ],
+      "mid_violate_pct": 0.6060606060606061,
+      "delta": 0.9166666666666666
+    },
+    "C6": {
+      "top": [
+        10,
+        12
+      ],
+      "mid": [
+        23,
+        33
+      ],
+      "bot": [
+        3,
+        12
+      ],
+      "mid_violate_pct": 0.30303030303030304,
+      "delta": 0.5833333333333334
+    }
+  },
+  "counts_b": {
+    "C1": {
+      "top": [
+        7,
+        12
+      ],
+      "mid": [
+        18,
+        33
+      ],
+      "bot": [
+        4,
+        12
+      ],
+      "mid_violate_pct": 0.45454545454545453,
+      "delta": 0.25000000000000006
+    },
+    "C2": {
+      "top": [
+        12,
+        12
+      ],
+      "mid": [
+        32,
+        33
+      ],
+      "bot": [
+        8,
+        12
+      ],
+      "mid_violate_pct": 0.030303030303030304,
+      "delta": 0.33333333333333337
+    },
+    "C3": {
+      "top": [
+        6,
+        12
+      ],
+      "mid": [
+        16,
+        33
+      ],
+      "bot": [
+        8,
+        12
+      ],
+      "mid_violate_pct": 0.48484848484848486,
+      "delta": -0.16666666666666663
+    },
+    "C4": {
+      "top": [
+        12,
+        12
+      ],
+      "mid": [
+        32,
+        33
+      ],
+      "bot": [
+        11,
+        12
+      ],
+      "mid_violate_pct": 0.030303030303030304,
+      "delta": 0.08333333333333337
+    },
+    "C5": {
+      "top": [
+        5,
+        12
+      ],
+      "mid": [
+        9,
+        33
+      ],
+      "bot": [
+        6,
+        12
+      ],
+      "mid_violate_pct": 0.2727272727272727,
+      "delta": -0.08333333333333331
+    },
+    "C6": {
+      "top": [
+        10,
+        12
+      ],
+      "mid": [
+        23,
+        33
+      ],
+      "bot": [
+        3,
+        12
+      ],
+      "mid_violate_pct": 0.30303030303030304,
+      "delta": 0.5833333333333334
+    },
+    "C7": {
+      "top": [
+        0,
+        12
+      ],
+      "mid": [
+        1,
+        33
+      ],
+      "bot": [
+        3,
+        12
+      ],
+      "mid_violate_pct": 0.030303030303030304,
+      "delta": -0.25
+    },
+    "C8": {
+      "top": [
+        10,
+        12
+      ],
+      "mid": [
+        28,
+        33
+      ],
+      "bot": [
+        11,
+        12
+      ],
+      "mid_violate_pct": 0.8484848484848485,
+      "delta": -0.08333333333333326
+    },
+    "C9": {
+      "top": [
+        0,
+        12
+      ],
+      "mid": [
+        1,
+        33
+      ],
+      "bot": [
+        0,
+        12
+      ],
+      "mid_violate_pct": 0.030303030303030304,
+      "delta": 0.0
+    }
+  },
+  "evidence_a": {
+    "C1": {
+      "top_pass": [
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV14s9GYXEW7",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1WE411y7ew",
+        "BV1Y5411t73s"
+      ],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C2": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1fm421V7Ar",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1T7421f7Wg",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C3": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1dYWVz6Emm",
+        "BV14s9GYXEW7"
+      ],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C4": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1Y5411t73s"
+      ],
+      "bot_pass": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj"
+      ],
+      "bot_fail": [
+        "BV1fm421V7Ar",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C5": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1Y5411t73s"
+      ],
+      "bot_pass": [],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C6": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1pJ411R7KZ",
+        "BV1DqYczQELH"
+      ],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    }
+  },
+  "evidence_b": {
+    "C1": {
+      "top_pass": [
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV14s9GYXEW7",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1WE411y7ew",
+        "BV1Y5411t73s"
+      ],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C2": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1fm421V7Ar",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1T7421f7Wg",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C3": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1WE411y7ew",
+        "BV1Y5411t73s",
+        "BV1DqYczQELH"
+      ],
+      "top_fail": [
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV14s9GYXEW7",
+        "BV1nq3azqEmj",
+        "BV1mPSMBxEVb"
+      ],
+      "bot_pass": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1Es4y1c7Ry",
+        "BV1r5411v7PV"
+      ],
+      "bot_fail": [
+        "BV1fm421V7Ar",
+        "BV1qP411x7BF",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ]
+    },
+    "C4": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [],
+      "bot_pass": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ],
+      "bot_fail": [
+        "BV1r5411v7PV"
+      ]
+    },
+    "C5": {
+      "top_pass": [
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV1nq3azqEmj"
+      ],
+      "top_fail": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1xQfWYaEV5",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C6": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1pJ411R7KZ",
+        "BV1DqYczQELH"
+      ],
+      "bot_pass": [
+        "BV1AkmpY8EwD",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C7": {
+      "top_pass": [],
+      "top_fail": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "bot_pass": [
+        "BV1T7421f7Wg",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1r5411v7PV"
+      ]
+    },
+    "C8": {
+      "top_pass": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "top_fail": [
+        "BV1dYWVz6Emm",
+        "BV14s9GYXEW7"
+      ],
+      "bot_pass": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf"
+      ],
+      "bot_fail": [
+        "BV1r5411v7PV"
+      ]
+    },
+    "C9": {
+      "top_pass": [],
+      "top_fail": [
+        "BV1J7411t7sL",
+        "BV1pJ411R7KZ",
+        "BV1XJ411i7MA",
+        "BV1dYWVz6Emm",
+        "BV1xQfWYaEV5",
+        "BV1CDdWYHEtU",
+        "BV1WE411y7ew",
+        "BV14s9GYXEW7",
+        "BV1Y5411t73s",
+        "BV1nq3azqEmj",
+        "BV1DqYczQELH",
+        "BV1mPSMBxEVb"
+      ],
+      "bot_pass": [],
+      "bot_fail": [
+        "BV1Zc411X7Sb",
+        "BV1AkmpY8EwD",
+        "BV1524y187LY",
+        "BV1fm421V7Ar",
+        "BV1T7421f7Wg",
+        "BV1BXXCBnEHN",
+        "BV1H1XnBoEMj",
+        "BV1qP411x7BF",
+        "BV1Es4y1c7Ry",
+        "BV1Yb4y1V7Z3",
+        "BV1Yz42187Bf",
+        "BV1r5411v7PV"
+      ]
+    }
+  },
+  "bv_bucket": {
+    "BV1J7411t7sL": "top",
+    "BV1pJ411R7KZ": "top",
+    "BV1XJ411i7MA": "top",
+    "BV1dYWVz6Emm": "top",
+    "BV1xQfWYaEV5": "top",
+    "BV1CDdWYHEtU": "top",
+    "BV1WE411y7ew": "top",
+    "BV14s9GYXEW7": "top",
+    "BV1Y5411t73s": "top",
+    "BV1nq3azqEmj": "top",
+    "BV1DqYczQELH": "top",
+    "BV1mPSMBxEVb": "top",
+    "BV1MJ411J7xV": "mid",
+    "BV1WE411C7UJ": "mid",
+    "BV1pUNieyEYz": "mid",
+    "BV1LiypBAEAQ": "mid",
+    "BV1yE411f7XM": "mid",
+    "BV1fJ411s7Vd": "mid",
+    "BV1BD5CzME34": "mid",
+    "BV11DyHYWEV3": "mid",
+    "BV16yanzREeZ": "mid",
+    "BV1xcwqzNEUc": "mid",
+    "BV17M4y1Y7kt": "mid",
+    "BV1orCFBiE6F": "mid",
+    "BV1vJ411U72z": "mid",
+    "BV18M411U7RX": "mid",
+    "BV1G4zLBtEAn": "mid",
+    "BV1i3PFzSEAR": "mid",
+    "BV14eZMBLEdg": "mid",
+    "BV1jLXFBoEZh": "mid",
+    "BV12GB7BQEJz": "mid",
+    "BV1rhpRzFEHx": "mid",
+    "BV1J1BNBrEFf": "mid",
+    "BV1ege6zqE5v": "mid",
+    "BV1qyyJBFE2r": "mid",
+    "BV1o64PzREaK": "mid",
+    "BV1QonvzXEwg": "mid",
+    "BV1sii4BgEoY": "mid",
+    "BV1Wn4y1f7wM": "mid",
+    "BV1kCkcYDEJb": "mid",
+    "BV1fhR2Y6EyZ": "mid",
+    "BV1tk4y1w7Cg": "mid",
+    "BV1tDQiB1EQE": "mid",
+    "BV1oYZJYNEA5": "mid",
+    "BV1bnXUBmEnx": "mid",
+    "BV1Zc411X7Sb": "bot",
+    "BV1AkmpY8EwD": "bot",
+    "BV1524y187LY": "bot",
+    "BV1fm421V7Ar": "bot",
+    "BV1T7421f7Wg": "bot",
+    "BV1BXXCBnEHN": "bot",
+    "BV1H1XnBoEMj": "bot",
+    "BV1qP411x7BF": "bot",
+    "BV1Es4y1c7Ry": "bot",
+    "BV1Yb4y1V7Z3": "bot",
+    "BV1Yz42187Bf": "bot",
+    "BV1r5411v7PV": "bot"
+  },
+  "bv_title": {
+    "BV1J7411t7sL": "【巫师】疫情对经济的影响：专题报告【巫师经济学03】",
+    "BV1pJ411R7KZ": "【完整版】香港金融保卫战，国际巨鳄索罗斯做空英镑泰铢，决战香港",
+    "BV1XJ411i7MA": "【巫师】杨幂的资本博弈之路【资本与明星03】",
+    "BV1dYWVz6Emm": "【巫师】保健品行业的资本博弈，“资贼”是怎么出现的",
+    "BV1xQfWYaEV5": "【巫师】万字解析春晚背后的资本博弈",
+    "BV1CDdWYHEtU": "【巫师】全球关税混战背后，是不能输的终局之战",
+    "BV1WE411y7ew": "蔡徐坤与资本的博弈，首个为蔡徐坤正逻辑的视频，【资本与明星02集】",
+    "BV14s9GYXEW7": "【巫师】全球科技资本暗斗，“意外干掉”奔驰宝马奥迪",
+    "BV1Y5411t73s": "【巫师】日本经济崩盘始末【巫师经济学04】",
+    "BV1nq3azqEmj": "【巫师】十年之期已到，特斯拉走下神坛背后的中国阳谋",
+    "BV1DqYczQELH": "【巫师】范冰冰的资本博弈，第一季",
+    "BV1mPSMBxEVb": "【巫师】AI下一个要搞死的行业是什么",
+    "BV1MJ411J7xV": "【巫师】2019-2020资本市场年度回顾，经济金融大事件盘点，【巫师经济学02】",
+    "BV1WE411C7UJ": "逆风翻盘！保时捷&大众的恶意并购【资本战争02集】，本期硬核预警",
+    "BV1pUNieyEYz": "【巫师】中文互联网：不是，我成净土了？",
+    "BV1LiypBAEAQ": "【巫师】赵薇的资本博弈",
+    "BV1yE411f7XM": "【第二版】杨超越与资本博弈之路，起底幕后老板和资本运作，【资本与明星01集】",
+    "BV1fJ411s7Vd": "【巫师】血腥捕食的LV资本帝国，【资本战争04】",
+    "BV1BD5CzME34": "【巫师】深度复盘鹿晗：被困住的旧神（明星与资本系列）",
+    "BV11DyHYWEV3": "【巫师】蔡徐坤资本博弈 第三季，依旧是内娱唯一真神，旧神余生和奢侈品行业",
+    "BV16yanzREeZ": "【巫师】阅兵背后的军贸，中国装备出口全球排第几",
+    "BV1xcwqzNEUc": "【巫师】人均每周3晚无效睡眠，这个偷走你寿命的千亿级元凶，99%的人一无所知",
+    "BV17M4y1Y7kt": "【巫师】蔡徐坤的资本博弈，但是第二季",
+    "BV1orCFBiE6F": "【巫师】对外卖行业的低估背后，是一个个打破“猜忌链”的外卖小哥",
+    "BV1vJ411U72z": "香港金融保卫战，国际巨鳄索罗斯做空英镑泰铢，决战香港",
+    "BV18M411U7RX": "【巫师】万字梳理近三年的华为，如何换道超车",
+    "BV1G4zLBtEAn": "【巫师】赵露思的资本博弈，第一季",
+    "BV1i3PFzSEAR": "【巫师】伊朗美国开打，资本暗涌如何影响我们",
+    "BV14eZMBLEdg": "【巫师】吴亦凡的资本博弈，第一季",
+    "BV1jLXFBoEZh": "【巫师】崩了。",
+    "BV12GB7BQEJz": "【巫师】财经跨年：中国财经年度盘点Top10",
+    "BV1rhpRzFEHx": "【巫师】世纪白银操纵案",
+    "BV1J1BNBrEFf": "【巫师】2025财经大坑Top5，你躲过去几个",
+    "BV1ege6zqE5v": "【巫师】在车企资本大逃杀中逆行",
+    "BV1qyyJBFE2r": "【巫师】汽车行业的“微信和QQ”显现，背后利益格局如何变化",
+    "BV1o64PzREaK": "【巫师】中美再次开战的背后：关税战05，青春没有售价，All-in就在当下",
+    "BV1QonvzXEwg": "【巫师】重庆反超广州，“车都”名号易手，旧神广汽如何破局",
+    "BV1sii4BgEoY": "【巫师】焦虑的国家队：三大手机运营商，如何避免被拍死在沙滩上？",
+    "BV1Wn4y1f7wM": "大健康生态：泰康摸着石头过河，险企跟着泰康过河",
+    "BV1kCkcYDEJb": "【巫师】上市公司“一根筋”，连亏十二年，究竟在执着什么",
+    "BV1fhR2Y6EyZ": "【巫师】法拉利的种姓制度和资本游戏，身份图腾轮回的野望",
+    "BV1tk4y1w7Cg": "【巫师】谁终结了中国企业海外并购连败战绩？",
+    "BV1tDQiB1EQE": "【巫师】智商在线逻辑拉满，这才是豆包专家模式的正确打开方式",
+    "BV1oYZJYNEA5": "【巫师】军工航空产业拆解，81192，如你所愿，（国防军工行业01）",
+    "BV1bnXUBmEnx": "【巫师】TFBOYS单飞篇：三人谁最强，时代峰峻和时代少年团收入分析",
+    "BV1Zc411X7Sb": "【巫师】短视频基金销售牌照后续，基金跑马圈地的窗口期",
+    "BV1AkmpY8EwD": "【巫师】LVMH后续，财报发布股价跳水，奢侈品行业的中国地位",
+    "BV1524y187LY": "【金融机构新媒体01】为什么做的这么烂，财经内容的下坡路",
+    "BV1fm421V7Ar": "【巫师x丸子妹】关于内容生产/商业化变现/心态/平台差异，财经IP的成长之路",
+    "BV1T7421f7Wg": "【巫师】一年只更新5个视频的我怎么盈利，IP孵化，代运营，巫师Tube商业模式【我是怎么赚钱的01】",
+    "BV1BXXCBnEHN": "【巫师】王一博资本博弈第二季，给“资本”调成什么样了？",
+    "BV1H1XnBoEMj": "【巫师】TFBoys资本博弈，合体篇——创世神性和收入测算",
+    "BV1qP411x7BF": "【巫师 X 银行螺丝钉】银行人&基金圈，如何用新媒体脱颖而出",
+    "BV1Es4y1c7Ry": "【金融机构新媒体02】金融从业者为什么纷纷入局新媒体",
+    "BV1Yb4y1V7Z3": "【巫师】Vlog：金融机构线上品宣+营销玩法沙龙",
+    "BV1Yz42187Bf": "【巫师】汇报一下近期的线下工作",
+    "BV1r5411v7PV": "【巫师】年度服务商mvp结算画面流出"
+  },
+  "bv_views": {
+    "BV1J7411t7sL": 5746806,
+    "BV1pJ411R7KZ": 5156594,
+    "BV1XJ411i7MA": 4893665,
+    "BV1dYWVz6Emm": 4788530,
+    "BV1xQfWYaEV5": 4758843,
+    "BV1CDdWYHEtU": 4200334,
+    "BV1WE411y7ew": 3756392,
+    "BV14s9GYXEW7": 3640619,
+    "BV1Y5411t73s": 3430965,
+    "BV1nq3azqEmj": 3113454,
+    "BV1DqYczQELH": 3065032,
+    "BV1mPSMBxEVb": 2976103,
+    "BV1MJ411J7xV": 2950456,
+    "BV1WE411C7UJ": 2879000,
+    "BV1pUNieyEYz": 2845372,
+    "BV1LiypBAEAQ": 2809107,
+    "BV1yE411f7XM": 2689302,
+    "BV1fJ411s7Vd": 2640448,
+    "BV1BD5CzME34": 2620684,
+    "BV11DyHYWEV3": 1638487,
+    "BV16yanzREeZ": 1480782,
+    "BV1xcwqzNEUc": 1369119,
+    "BV17M4y1Y7kt": 1361923,
+    "BV1orCFBiE6F": 1350430,
+    "BV1vJ411U72z": 1344388,
+    "BV18M411U7RX": 1329042,
+    "BV1G4zLBtEAn": 1297531,
+    "BV1i3PFzSEAR": 1270173,
+    "BV14eZMBLEdg": 1257738,
+    "BV1jLXFBoEZh": 1240132,
+    "BV12GB7BQEJz": 1146223,
+    "BV1rhpRzFEHx": 1125161,
+    "BV1J1BNBrEFf": 1117073,
+    "BV1ege6zqE5v": 1099374,
+    "BV1qyyJBFE2r": 1094984,
+    "BV1o64PzREaK": 1090790,
+    "BV1QonvzXEwg": 1082034,
+    "BV1sii4BgEoY": 1081610,
+    "BV1Wn4y1f7wM": 652509,
+    "BV1kCkcYDEJb": 644382,
+    "BV1fhR2Y6EyZ": 641284,
+    "BV1tk4y1w7Cg": 630700,
+    "BV1tDQiB1EQE": 622600,
+    "BV1oYZJYNEA5": 619838,
+    "BV1bnXUBmEnx": 558497,
+    "BV1Zc411X7Sb": 416358,
+    "BV1AkmpY8EwD": 385585,
+    "BV1524y187LY": 380480,
+    "BV1fm421V7Ar": 368623,
+    "BV1T7421f7Wg": 343143,
+    "BV1BXXCBnEHN": 334165,
+    "BV1H1XnBoEMj": 301179,
+    "BV1qP411x7BF": 268925,
+    "BV1Es4y1c7Ry": 249997,
+    "BV1Yb4y1V7Z3": 115305,
+    "BV1Yz42187Bf": 107335,
+    "BV1r5411v7PV": 96301
+  }
+}
