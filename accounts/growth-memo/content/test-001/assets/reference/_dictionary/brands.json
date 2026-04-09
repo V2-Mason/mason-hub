@@ -1,0 +1,1282 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-04-08",
+  "source": "round1 272 deduped comments from 15 Top videos (2026-04-06)",
+  "total_brands_detected": 12,
+  "brands": [
+    {
+      "brand": "Cursor",
+      "total_mentions": 76,
+      "unique_videos": 5,
+      "bvid_coverage": [
+        "BV1KJySBfEjW",
+        "BV1QEJ6zcEpe",
+        "BV1WBG9zgECp",
+        "BV1eSrYBpEMv",
+        "BV1yorUYWEGD"
+      ],
+      "sentiment": {
+        "positive": 6,
+        "negative": 5,
+        "question": 23,
+        "neutral": 42
+      },
+      "top_comments": [
+        {
+          "like": 735,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "感谢阿婆主，这是我看过听得进去的教程，辛苦阿婆主了！！！  技巧思路 1. 避免Ai幻觉：     * 每次让Ai复述需求再做答复 2. 避免代码屎山：     * 先Chat，后Composer         * 例：想要实现什么？实现的技术方案有哪些？它们的优缺点是什么？我该如何选择？怎么安装/发布？     * 先Save，再检查，后Accept     * 善用Chekpoint回滚 3. Feature笔记:      * Chat拆分功能需求     * 记录多个Notepad     * Composer中@对应笔记去完成子功能 4. Debug:      * 生成中出问题，记一份Notepad问题集     * Chat中@问题集做咨询，并更新解决方案     * Composer中@问题集方案继续生成 5. 项目前置准备：     * 索引忽略：生成.Cursorignore，编辑完善，设置-Features-SYNC     * Docs：项目相关在线文档 【需求文档|接口文档|技术文档..】     * 项目规则：生成.Cursorrules，编辑完善；建议Chat中@各文档，检索整项目，生成后人工修正         * 基于项目约束Ai范围使其尽量精准 6. 封存项目文档：     * Notepad属于缓存无法长期保留，项目结束后，建议多个Notepad进行归纳后整理成Docs封存，以备回顾或下次项目检索使用",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 550,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "适合有经验的程序员偷懒，反倒不适合新人。因为考验你如何提问修改，以及取舍修改。还有会改bug，以及在命名和逻辑上保持和cursor一致。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 508,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "打开推特、找到马斯克的账号主页、下滑第一条帖子  你可以通过自动化脚本（如Selenium）实现以下操作：打开推特（Twitter）官网。搜索并进入马斯克（Elon Musk）的账号主页。自动下滑到第一条帖子的位置。下面是详细的Python Selenium自动化脚本示例：   我的cursor提示这个",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 417,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "一些地方还是要微调的，等微调的时候就痛苦了，要是AI能替代一切，那客户要你干嘛，要真想职业的话，还是老老实实去学吧[笑哭]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 395,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "学习Cursor的第一天 首次配置 1、编辑器 2、恢复语言语言 欢迎 1、汉化：扩展》chinese，安装后重启 2、打开一个文件作为根目录 3、开发环...",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 272,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "我用 Cursor 做了一个音乐网站的爬虫，功能上是正常的。但有几个关于 Cursor 的问题要强调一下，首先 Cursor 并不像想象中的哪样编写的代码可以一步到位，我们依旧需要和 Curosr 进行反复的拉扯，而且写出的代码可能还是需要人为介入进行修改。",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 247,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "看了吐槽视频过来的。这波流量因祸得福了属于是[笑哭]",
+          "sentiment": {
+            "positive": false,
+            "negative": true,
+            "question": false
+          }
+        },
+        {
+          "like": 231,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "有一种AI越发展，越来越多的不是特别懂代码的人都能开始靠AI写代码之后，感觉还是会造成一定的冲击[笑哭]起码我现在就是不会编程就靠问gpt写了几个能用的代码干活",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 230,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "玩了3个小时",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 214,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "其实你讲了半天，要实现的就是 1.先做好PRD (product requirement document) 2. 执行完后，保存完成记录，以便claudecode知道已经进行到哪一步了 3.节省token消耗 4.给做好的东西设置类似于index的东西，让claudecode知道已经完成了什么，新功能如何去实现最合理，有没有代码可以复用",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 201,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "claude code确实很强大但是Claude贵不说，限额那是能正常用的吗",
+          "sentiment": {
+            "positive": true,
+            "negative": true,
+            "question": false
+          }
+        },
+        {
+          "like": 196,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "好家伙，Windows版本，得通过Ctrl+Shift+X调用扩展页面。。。才能找到那个chinese安装",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 196,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "更新一波视频资料，脚本下载、脚本问题、主题样式、布局修改以及 Cursor 新版本重置无效还有一些比较多的私信问题，都放文档中了哈，先自行查看一下，如果还有其他问题再私信，不然我回不过来，精力有限，见谅：https://kxcbxprh5yy.feishu.cn/wiki/YG1twgE87i9JoEkUbZdcYPuAn9e?from=bilibili",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 192,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "这个确实是目前最好用的，就是收费太贵了，一个月 快 140 了，",
+          "sentiment": {
+            "positive": true,
+            "negative": true,
+            "question": false
+          }
+        },
+        {
+          "like": 176,
+          "bvid": "BV1WBG9zgECp",
+          "title": "史上最强 AI 编程工具免费啦！Cursor 保姆级使用教程",
+          "content": "不知道你们怎么用的这么流畅的。上下文都给的齐齐全全，生成个sql，传的是endTime, sql里是eTime。明明给的俩个类都是MessageFomatter, 喊他照着写，他给你换成MessageFormat，代码嵌套的又多，错误又不大，字符串有部分对不上，我找了半个小时啊，明明debug变量值都没问题，我都质疑起后端是不是也有缓存了😡😡",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 162,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "看完up主的视频，用cursor写了个小程序，完美解决我在我家小卖部记住价格的问题（因为我家是超级传统的小卖部没扫码枪），我就弄了个手机版扫码枪。微信小程序叫“我的物品录”，有需要的可以去看看，欢迎各位使用，哈哈哈哈。个人弄个小程序名字都卡的死死的，连“商品”两个字都不能有，不然就叫“我的商品录”了。最后，欢迎各位使用“我的物品录”，感谢up主的视屏",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 158,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "以前怕带实习生，现在怕带 AI，因为它犯错的时候比实习生自信多了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 129,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "AI 居然给我的代码写了句注释：“这里逻辑很奇怪，但不要动，动了会崩”",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 118,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "我基本抛弃了cc[吃瓜]转向codex了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 96,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "java后端。用cursor+claude4.5模型好久了。已经能满足日常百分之90开发。想问问这种命令行式的ai真的比cursor好用吗。好用在哪。",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "Claude Code",
+      "total_mentions": 38,
+      "unique_videos": 3,
+      "bvid_coverage": [
+        "BV1B1XrB7EqZ",
+        "BV1KJySBfEjW",
+        "BV1S9AdzeEqH"
+      ],
+      "sentiment": {
+        "positive": 3,
+        "negative": 1,
+        "question": 10,
+        "neutral": 24
+      },
+      "top_comments": [
+        {
+          "like": 457,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "此时的Trae[doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 347,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "cursor不就是个壳子吗，用的大模型还是GPT，Claude那些吧",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 339,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "但我要的是方形，你给我一个原是什么意思",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 240,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "你是想说，只有codelama的符合原始需求吗",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 214,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "其实你讲了半天，要实现的就是 1.先做好PRD (product requirement document) 2. 执行完后，保存完成记录，以便claudecode知道已经进行到哪一步了 3.节省token消耗 4.给做好的东西设置类似于index的东西，让claudecode知道已经完成了什么，新功能如何去实现最合理，有没有代码可以复用",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 201,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "claude code确实很强大但是Claude贵不说，限额那是能正常用的吗",
+          "sentiment": {
+            "positive": true,
+            "negative": true,
+            "question": false
+          }
+        },
+        {
+          "like": 118,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "我基本抛弃了cc[吃瓜]转向codex了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 96,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "java后端。用cursor+claude4.5模型好久了。已经能满足日常百分之90开发。想问问这种命令行式的ai真的比cursor好用吗。好用在哪。",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 88,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "骗你的，这个是烧钱速度",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 56,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "奉劝各位 cc 的 中转站和纯正版差距还是很大的，虽然正版很麻烦，但只要是吃这碗饭的你就得去自己捣鼓，目前是用 cc 的第 5 个月，只能说帮助巨大，",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 53,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "[doge]现在开发， ai时代一定要先打磨好文档， 以及基于tdd驱动开发。 其次模型也重要， 最好的是claudecode，其次codex， gemini，其他[doge][doge]打死也不用，当然指的是最近几个月不用，未来不确定[doge][doge][doge]。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 39,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "可我要的是方形😡",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 38,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "法老：就你推个球过来建我金字塔啊？[生气]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 36,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "用汇编的： 将左边方块的原子一个一个的搬到右边[doge][doge][doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 33,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "思路还不错，但是为啥放弃cursor呢，没感觉claude有什么优势啊",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 32,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "我是claude写90%，cursor写9%。双修[doge_金箍]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 28,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "讲的真的很细,不像别人只是教你工具怎么用.而是教你应该如何思考去更好的使用AI工具",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 23,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "如果你要盖房子你用圆的怎么盖",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 23,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "用 claudecode 需要科学上网吗",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 22,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "claud+glm4.6，好用又快，20人民币包月随便用",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "Vibe Coding",
+      "total_mentions": 20,
+      "unique_videos": 2,
+      "bvid_coverage": [
+        "BV1KJySBfEjW",
+        "BV1S9AdzeEqH"
+      ],
+      "sentiment": {
+        "positive": 1,
+        "negative": 0,
+        "question": 1,
+        "neutral": 18
+      },
+      "top_comments": [
+        {
+          "like": 809,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "算了，我还是用本地部署的0.8B大模型去造福公司吧。[星星眼]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 243,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "vibe给我一种既全自动又手动的感觉",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 111,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "骗你的4.6opus也这样，感觉只有5.3好使",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 109,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "Vibe coding很恶心，有时候看到ai写的那一坨想吐，还是得提前做好整体架构设计，然后再添砖加瓦",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 53,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "[doge]现在开发， ai时代一定要先打磨好文档， 以及基于tdd驱动开发。 其次模型也重要， 最好的是claudecode，其次codex， gemini，其他[doge][doge]打死也不用，当然指的是最近几个月不用，未来不确定[doge][doge][doge]。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 49,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 30,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "高情商:vibe coding 低情商:俺寻思能跑",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 29,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "别扯了，我用5.4呢，一样会犯错",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 17,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "我今天还和智谱的厂商聊了下 vibe coding 。我们一致的结论是，短期内这套东西无法支撑企业级方案。如果没有历史包袱的可以。一旦有了中台，微服务。vibe 这套东西就只能当玩具了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 14,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "ai写的代码我看完满脑子都是何意味[笑哭]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 10,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "骗你的codex也这样[doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 10,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "geminicli最近也很可以 其他的吹得再好写稍微复杂点的都一言难尽 尤其是那个kimi k2.5😅",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 9,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "有些人过度神化AI了，现在AI某些场合却是很强，但说什么有了AI就万事大吉了，程序员可以都不要了，这种挺搞笑的。 之前好多公司用AI开发，裁了一批人，结果菜鸟员工用AI搞出来工程事故，后面又开始招人去检查AI的代码。 要记住，现在AI让很多人失业，不是因为AI能代替人，而是资本是逐利的。就算没有AI，在这个经济下行的时期，它们也会裁人，AI只不过当了挡箭牌而已。 另外就是很多人吹的“AI进步神速，很快就能超过人了”，怎么说呢，也有可能吧。但是从0分到60分很简单，从60分到80分就困难一些了，从80分到100分则只有少部分能达到。现在AI也只不过接近60分的水平，后面怎么样还是未知数呢。",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "每次看到ai信誓旦旦说他已经发现问题并且自己改正，我就知道又要报错了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "opus做工具和bot还是很给劲的，但是需要本人思维严谨，prompt有条理质量高。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 6,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "现在还是做不到放心地把代码全给ai，还是要自己负责检查的部分和测试的部分[笑哭][笑哭]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 6,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "我的英语作文词穷但又想向改卷老师表达一些东西belike：",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 5,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "看力竭了[笑哭]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 4,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "MC大型红石做完后不检查的后果。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 4,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "写代码不测试的下场[doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "Trae",
+      "total_mentions": 19,
+      "unique_videos": 1,
+      "bvid_coverage": [
+        "BV1eSrYBpEMv"
+      ],
+      "sentiment": {
+        "positive": 2,
+        "negative": 1,
+        "question": 3,
+        "neutral": 13
+      },
+      "top_comments": [
+        {
+          "like": 158,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "以前怕带实习生，现在怕带 AI，因为它犯错的时候比实习生自信多了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 129,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "AI 居然给我的代码写了句注释：“这里逻辑很奇怪，但不要动，动了会崩”",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 36,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "省流：trae的商单",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 32,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "现在的我已经废了，一旦断网，连个 Hello World 都不敢自信手写",
+          "sentiment": {
+            "positive": false,
+            "negative": true,
+            "question": false
+          }
+        },
+        {
+          "like": 29,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "现在的感觉就是：懂原理的人用 AI 是如虎添翼，不懂原理的人用 AI 就是在埋雷[吃瓜]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 17,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "越发觉得AI编程太强了，一个下午完成微信小程序蓝牙读写设备功能，一个晚上完成嵌入式端完善的PID控制加热设备和蓝牙读写功能，并联动使用。 感觉明天就可以发布小程序直接使用了，外观，功能，操作逻辑经过几次调试直接很好用。 感觉好用同时也焦虑了😟，目前我主要就是烧录代码，反馈结果和需求，有些参与感。如果后续AI加上摄像头+机械臂，直接调试嵌入式设备并优化，我真的就只需要说需求直接拿产品了",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 12,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "我用trae写了一个自己专用的模具销售系统。。。   前几天又新添加了一个外加工记录功能 ，，，    以前用Excel，一不小心就会把表格高乱套，， 复杂的函数自己也不会，每次都要百度或者问豆包。。。  小白完全不懂代码 从头到尾都是用trae写的   python的代码   包括下载解释器  各种库   都是用trae[笑哭] 因为我完全不懂 只能由它来完成所有工作。。    这工具就是个超级神器。。。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 11,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "我发现只要对 AI 说话客气点，带上“请”和“谢谢”，代码质量好像真的会高一点？[doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 9,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "Trae用着不错，之前最大的问题是不能自定义第三方ai服务商，只能使用内置的几个服务商",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 9,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "熟练的掌握ai只是为了证明自己还有剩余价值",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 9,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "增加 19% 时间的那个论文，有没有考虑过是因为 AI 生成的代码质量太高，开发者在欣赏？",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "光是trae不能用Claude就被吊打了",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "这俩底层都是哪家的模型啊[笑哭]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "我用 trae.cn，全免费",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "cursor绝对的王，我用Claude+cursor是真的香",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 7,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "三年前阴差阳错选了人工智能专业，我不敢想没有ai的话cv，nlp这些代码我得敲多久[呆]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 7,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "没测agent嘛，提示词工程做的怎么样？需要很精确的 Prompt 吗[doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 4,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "沙发。我毕设的前后端都是ai的ide写的，全靠ai活的。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 4,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "自从用了 AI，我的 Ctrl+C 和 Ctrl+V 键帽磨损速度是以前的三倍[doge]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "Doubao 豆包",
+      "total_mentions": 5,
+      "unique_videos": 4,
+      "bvid_coverage": [
+        "BV1KJySBfEjW",
+        "BV1S9AdzeEqH",
+        "BV1YpRsYiENZ",
+        "BV1eSrYBpEMv"
+      ],
+      "sentiment": {
+        "positive": 1,
+        "negative": 0,
+        "question": 3,
+        "neutral": 1
+      },
+      "top_comments": [
+        {
+          "like": 358,
+          "bvid": "BV1YpRsYiENZ",
+          "title": "5分钟理解编程，并开发你第一个AI应用！【小白入门】",
+          "content": "作为一个程序员，写了几年代码，这两年ai工具也用了一些，通义，豆包，之前大火的ds。说句实话，简单的代码确实可以用ai来处理，能够节省不少时间，但是逻辑复杂点的代码或者专业性比较强的东西就差强人意了，多数时候ai会把自己绕进去，代码量越写越复杂，越复杂错误越多，最后陷入一个恶性循环。而且ai很多时候也会给出错误的答案，导致调试不能通过，ai不是万能的，用的时候要细细甄别。 小白想要做游戏，做app等，还是要自己学习编程知识，最起码可以分辨ai代码的方向是对是错，再说直白点，不会编程有时候你都不知道该怎么去问ai，ai还是很轴的，需要你去引导提问。做设计也是一样，ai只是干活的，活干的怎么样需要你具备相应的水平去评判。",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 49,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 21,
+          "bvid": "BV1YpRsYiENZ",
+          "title": "5分钟理解编程，并开发你第一个AI应用！【小白入门】",
+          "content": "是不是挂个梯就能用海外版了？正经人谁用豆包[思考]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 13,
+          "bvid": "BV1KJySBfEjW",
+          "title": "我抛弃了 Cursor，用 Claude Code 写了 9",
+          "content": "我用豆包的话，是不是走错地方了？[笑哭]我是做点小app自己用，最近写flutter，各种报错就是，不知道是知识库太老旧，还是逻辑就是不对。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 12,
+          "bvid": "BV1eSrYBpEMv",
+          "title": "AI 编程真的有用吗？Cursor｜TRAE 深度实测！",
+          "content": "我用trae写了一个自己专用的模具销售系统。。。   前几天又新添加了一个外加工记录功能 ，，，    以前用Excel，一不小心就会把表格高乱套，， 复杂的函数自己也不会，每次都要百度或者问豆包。。。  小白完全不懂代码 从头到尾都是用trae写的   python的代码   包括下载解释器  各种库   都是用trae[笑哭] 因为我完全不懂 只能由它来完成所有工作。。    这工具就是个超级神器。。。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "OpenAI (org)",
+      "total_mentions": 4,
+      "unique_videos": 3,
+      "bvid_coverage": [
+        "BV1iPAZz2EUT",
+        "BV1uj411h7H2",
+        "BV1yorUYWEGD"
+      ],
+      "sentiment": {
+        "positive": 0,
+        "negative": 0,
+        "question": 1,
+        "neutral": 3
+      },
+      "top_comments": [
+        {
+          "like": 318,
+          "bvid": "BV1iPAZz2EUT",
+          "title": "程序员转行AI应用开发，千万不要瞎吃苦",
+          "content": "作为一线在做agent开发的程序员给的建议，对于大部分人来说（程序员or非程序员），最值的就是开通个OpenAI会员，然后把它当老师去问就行",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 49,
+          "bvid": "BV1uj411h7H2",
+          "title": "",
+          "content": "AI课代表的笔记：这个视频讲述了一位叫Tony的开发者从零开始独立开发并在两年内实现了每月4.5万美元的收入。Tony在失业后决定为自己工作，并成功创建了四个产品，其中一个叫Black Magic，采用订阅定价模式。他通过Twitter建立了庞大的粉丝群体，并利用推特获取用户和持续流量。然而，由于Twitter API的定价变化，Tony不得不出售Black Magic。他后来又成功开发了另一个产品叫Tapping Mind，并通过OpenAI的API实现了更好的用户界面。目前，他的产品每月收入约为3万美元。   - 0:00 🚀独立开发之旅 - 3:43 📈流量增加与推特网红 - 7:25 🔒黑客工具与定价策略 - 11:11 💡应用开发故事与建议  本内容由AI课代表自动生成，关注并 @AI课代表呀 总结其它视频吧~（课代表认为本视频是精品，主动前来分享）",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        },
+        {
+          "like": 25,
+          "bvid": "BV1yorUYWEGD",
+          "title": "普通人也可以看的 AI 编程指南 | Cursor 教程｜C",
+          "content": "up 您好，我请教一个问题：关于 cursor 如何进行本地已有代码库的分析 您在“核心功能”这一 P 提到的 语义拆解成为小代码块，利用 openAI Embedding API 进行嵌入，发送到服务器……这一流程是您的推测还是确实有明确的证据支持？ 因为个人其实一直在思考 cursor 是如何建立起 对已有项目的分析结果的 一个抽象化表示。 一些已有的 基于 repo-level 的代码 进行代码补全和代码生成 的工作是建立 依赖图（如 GraphCoder、RepoGraph等），但是近期一些 cursor 的合作研究 https://codegpt.co 似乎又表明 cursor 并没有这么做，那么 cursor 是通过什么方式（比如说就是对整个项目建立一个抽象语法树？）来进行分析的呢？这个您有了解嘛[Neuro sama动态表情包_害羞]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 6,
+          "bvid": "BV1uj411h7H2",
+          "title": "",
+          "content": "这么说吧，大秦的自媒体平台涉及到营销的基本审核g了，没g要么运气好，要么大up，年初我就做了个APP，调用的chatgpt接口，发b，审核不过，视频删减到1min都不过，只要带ai就不通过，我就放弃了，但那时候别的大点的up都能发，我连openai和chatgpt都没提到，都不给过。其他什么小程序提到竞争的平台也g了，无奈只能删删减减功能，然后个人小程序功能有限。现在APP和小程序都像域名一样要beian。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "Qwen 千问/通义",
+      "total_mentions": 3,
+      "unique_videos": 3,
+      "bvid_coverage": [
+        "BV1B1XrB7EqZ",
+        "BV1S9AdzeEqH",
+        "BV1YpRsYiENZ"
+      ],
+      "sentiment": {
+        "positive": 1,
+        "negative": 0,
+        "question": 2,
+        "neutral": 0
+      },
+      "top_comments": [
+        {
+          "like": 358,
+          "bvid": "BV1YpRsYiENZ",
+          "title": "5分钟理解编程，并开发你第一个AI应用！【小白入门】",
+          "content": "作为一个程序员，写了几年代码，这两年ai工具也用了一些，通义，豆包，之前大火的ds。说句实话，简单的代码确实可以用ai来处理，能够节省不少时间，但是逻辑复杂点的代码或者专业性比较强的东西就差强人意了，多数时候ai会把自己绕进去，代码量越写越复杂，越复杂错误越多，最后陷入一个恶性循环。而且ai很多时候也会给出错误的答案，导致调试不能通过，ai不是万能的，用的时候要细细甄别。 小白想要做游戏，做app等，还是要自己学习编程知识，最起码可以分辨ai代码的方向是对是错，再说直白点，不会编程有时候你都不知道该怎么去问ai，ai还是很轴的，需要你去引导提问。做设计也是一样，ai只是干活的，活干的怎么样需要你具备相应的水平去评判。",
+          "sentiment": {
+            "positive": true,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 49,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 8,
+          "bvid": "BV1B1XrB7EqZ",
+          "title": "Cursor对比Claude Code！",
+          "content": "千问：方块在哪？",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        }
+      ]
+    },
+    {
+      "brand": "OpenAI GPT",
+      "total_mentions": 2,
+      "unique_videos": 2,
+      "bvid_coverage": [
+        "BV1S9AdzeEqH",
+        "BV1uj411h7H2"
+      ],
+      "sentiment": {
+        "positive": 0,
+        "negative": 0,
+        "question": 1,
+        "neutral": 1
+      },
+      "top_comments": [
+        {
+          "like": 49,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        },
+        {
+          "like": 6,
+          "bvid": "BV1uj411h7H2",
+          "title": "",
+          "content": "这么说吧，大秦的自媒体平台涉及到营销的基本审核g了，没g要么运气好，要么大up，年初我就做了个APP，调用的chatgpt接口，发b，审核不过，视频删减到1min都不过，只要带ai就不通过，我就放弃了，但那时候别的大点的up都能发，我连openai和chatgpt都没提到，都不给过。其他什么小程序提到竞争的平台也g了，无奈只能删删减减功能，然后个人小程序功能有限。现在APP和小程序都像域名一样要beian。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "JetBrains",
+      "total_mentions": 1,
+      "unique_videos": 1,
+      "bvid_coverage": [
+        "BV1uj411h7H2"
+      ],
+      "sentiment": {
+        "positive": 0,
+        "negative": 0,
+        "question": 0,
+        "neutral": 1
+      },
+      "top_comments": [
+        {
+          "like": 91,
+          "bvid": "BV1uj411h7H2",
+          "title": "",
+          "content": "不要说国外人傻钱多类似的话，国内的很多人，公司思维就是不会为虚拟东西付费；尤其是软件；上大学的时候，大家都破解软件，没有谁会为软件付费；大学的时候没有收入，所以我的原则是能用教育邮箱申请软件使用，就用教育邮箱，所以申请了cad，navicat，idea，github，teminus，等一批软件。工作后一些几十块钱，一两百的软件我也会买，调查了身边同事他们会买游戏，充几千块钱，但是不会买软件。身为开发者，你自己都不愿意花钱买别人的软件，别人凭什么买你的软件，大家都是这么个思维，也不要说鹅厂软件核心技术少，全靠游戏圈钱，独立开发者在国内很难变现，还是要到国外找找机会。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "Google Gemini",
+      "total_mentions": 1,
+      "unique_videos": 1,
+      "bvid_coverage": [
+        "BV1S9AdzeEqH"
+      ],
+      "sentiment": {
+        "positive": 0,
+        "negative": 0,
+        "question": 0,
+        "neutral": 1
+      },
+      "top_comments": [
+        {
+          "like": 53,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "[doge]现在开发， ai时代一定要先打磨好文档， 以及基于tdd驱动开发。 其次模型也重要， 最好的是claudecode，其次codex， gemini，其他[doge][doge]打死也不用，当然指的是最近几个月不用，未来不确定[doge][doge][doge]。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    },
+    {
+      "brand": "DeepSeek",
+      "total_mentions": 1,
+      "unique_videos": 1,
+      "bvid_coverage": [
+        "BV1S9AdzeEqH"
+      ],
+      "sentiment": {
+        "positive": 0,
+        "negative": 0,
+        "question": 1,
+        "neutral": 0
+      },
+      "top_comments": [
+        {
+          "like": 49,
+          "bvid": "BV1S9AdzeEqH",
+          "title": "Vibe coding你非要用Claude opus 4.6",
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": true
+          }
+        }
+      ]
+    },
+    {
+      "brand": "VS Code",
+      "total_mentions": 1,
+      "unique_videos": 1,
+      "bvid_coverage": [
+        "BV1YpRsYiENZ"
+      ],
+      "sentiment": {
+        "positive": 0,
+        "negative": 0,
+        "question": 0,
+        "neutral": 1
+      },
+      "top_comments": [
+        {
+          "like": 44,
+          "bvid": "BV1YpRsYiENZ",
+          "title": "5分钟理解编程，并开发你第一个AI应用！【小白入门】",
+          "content": "AI编程这种事，还是需要一些编程基础的，不管是语法知识还是编程思维。之前试过用某里出品的插件，在VSCODE里编程。对于我这种只知道一点编程皮毛的人，if else这种，AI写的能看懂，也能跑通。但是复杂的指令，一旦出错都很难修改，只能全凭AI自己判断错误和修改了。",
+          "sentiment": {
+            "positive": false,
+            "negative": false,
+            "question": false
+          }
+        }
+      ]
+    }
+  ]
+}

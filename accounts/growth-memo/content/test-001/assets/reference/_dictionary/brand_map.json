@@ -1,0 +1,269 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-04-08",
+  "note": "Manual mapping of brand -> needs_model.md needs is TODO. For now contains brand + top 5 evidence comments for quick reference.",
+  "brand_to_needs": {
+    "Cursor": {
+      "mentions": 76,
+      "top_5_evidence": [
+        {
+          "like": 735,
+          "content": "感谢阿婆主，这是我看过听得进去的教程，辛苦阿婆主了！！！  技巧思路 1. 避免Ai幻觉：     * 每次让Ai复述需求再做答复 2. 避免代码屎山：     * 先Chat，后Composer         * 例：想要实现什么？实现的技术方案有哪些？它们的优缺点是什么？我该如何选择？怎么安装/发布？     * 先Save，再检查，后Accept     * 善用Chekpoint回滚 3",
+          "bvid": "BV1yorUYWEGD"
+        },
+        {
+          "like": 550,
+          "content": "适合有经验的程序员偷懒，反倒不适合新人。因为考验你如何提问修改，以及取舍修改。还有会改bug，以及在命名和逻辑上保持和cursor一致。",
+          "bvid": "BV1WBG9zgECp"
+        },
+        {
+          "like": 508,
+          "content": "打开推特、找到马斯克的账号主页、下滑第一条帖子  你可以通过自动化脚本（如Selenium）实现以下操作：打开推特（Twitter）官网。搜索并进入马斯克（Elon Musk）的账号主页。自动下滑到第一条帖子的位置。下面是详细的Python Selenium自动化脚本示例：   我的cursor提示这个",
+          "bvid": "BV1WBG9zgECp"
+        },
+        {
+          "like": 417,
+          "content": "一些地方还是要微调的，等微调的时候就痛苦了，要是AI能替代一切，那客户要你干嘛，要真想职业的话，还是老老实实去学吧[笑哭]",
+          "bvid": "BV1WBG9zgECp"
+        },
+        {
+          "like": 395,
+          "content": "学习Cursor的第一天 首次配置 1、编辑器 2、恢复语言语言 欢迎 1、汉化：扩展》chinese，安装后重启 2、打开一个文件作为根目录 3、开发环...",
+          "bvid": "BV1yorUYWEGD"
+        }
+      ],
+      "needs_links": []
+    },
+    "Claude Code": {
+      "mentions": 38,
+      "top_5_evidence": [
+        {
+          "like": 457,
+          "content": "此时的Trae[doge]",
+          "bvid": "BV1B1XrB7EqZ"
+        },
+        {
+          "like": 347,
+          "content": "cursor不就是个壳子吗，用的大模型还是GPT，Claude那些吧",
+          "bvid": "BV1B1XrB7EqZ"
+        },
+        {
+          "like": 339,
+          "content": "但我要的是方形，你给我一个原是什么意思",
+          "bvid": "BV1B1XrB7EqZ"
+        },
+        {
+          "like": 240,
+          "content": "你是想说，只有codelama的符合原始需求吗",
+          "bvid": "BV1B1XrB7EqZ"
+        },
+        {
+          "like": 214,
+          "content": "其实你讲了半天，要实现的就是 1.先做好PRD (product requirement document) 2. 执行完后，保存完成记录，以便claudecode知道已经进行到哪一步了 3.节省token消耗 4.给做好的东西设置类似于index的东西，让claudecode知道已经完成了什么，新功能如何去实现最合理，有没有代码可以复用",
+          "bvid": "BV1KJySBfEjW"
+        }
+      ],
+      "needs_links": []
+    },
+    "Vibe Coding": {
+      "mentions": 20,
+      "top_5_evidence": [
+        {
+          "like": 809,
+          "content": "算了，我还是用本地部署的0.8B大模型去造福公司吧。[星星眼]",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 243,
+          "content": "vibe给我一种既全自动又手动的感觉",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 111,
+          "content": "骗你的4.6opus也这样，感觉只有5.3好使",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 109,
+          "content": "Vibe coding很恶心，有时候看到ai写的那一坨想吐，还是得提前做好整体架构设计，然后再添砖加瓦",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 53,
+          "content": "[doge]现在开发， ai时代一定要先打磨好文档， 以及基于tdd驱动开发。 其次模型也重要， 最好的是claudecode，其次codex， gemini，其他[doge][doge]打死也不用，当然指的是最近几个月不用，未来不确定[doge][doge][doge]。",
+          "bvid": "BV1S9AdzeEqH"
+        }
+      ],
+      "needs_links": []
+    },
+    "Trae": {
+      "mentions": 19,
+      "top_5_evidence": [
+        {
+          "like": 158,
+          "content": "以前怕带实习生，现在怕带 AI，因为它犯错的时候比实习生自信多了",
+          "bvid": "BV1eSrYBpEMv"
+        },
+        {
+          "like": 129,
+          "content": "AI 居然给我的代码写了句注释：“这里逻辑很奇怪，但不要动，动了会崩”",
+          "bvid": "BV1eSrYBpEMv"
+        },
+        {
+          "like": 36,
+          "content": "省流：trae的商单",
+          "bvid": "BV1eSrYBpEMv"
+        },
+        {
+          "like": 32,
+          "content": "现在的我已经废了，一旦断网，连个 Hello World 都不敢自信手写",
+          "bvid": "BV1eSrYBpEMv"
+        },
+        {
+          "like": 29,
+          "content": "现在的感觉就是：懂原理的人用 AI 是如虎添翼，不懂原理的人用 AI 就是在埋雷[吃瓜]",
+          "bvid": "BV1eSrYBpEMv"
+        }
+      ],
+      "needs_links": []
+    },
+    "Doubao 豆包": {
+      "mentions": 5,
+      "top_5_evidence": [
+        {
+          "like": 358,
+          "content": "作为一个程序员，写了几年代码，这两年ai工具也用了一些，通义，豆包，之前大火的ds。说句实话，简单的代码确实可以用ai来处理，能够节省不少时间，但是逻辑复杂点的代码或者专业性比较强的东西就差强人意了，多数时候ai会把自己绕进去，代码量越写越复杂，越复杂错误越多，最后陷入一个恶性循环。而且ai很多时候也会给出错误的答案，导致调试不能通过，ai不是万能的，用的时候要细细甄别。 小白想要做游戏，做app",
+          "bvid": "BV1YpRsYiENZ"
+        },
+        {
+          "like": 49,
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 21,
+          "content": "是不是挂个梯就能用海外版了？正经人谁用豆包[思考]",
+          "bvid": "BV1YpRsYiENZ"
+        },
+        {
+          "like": 13,
+          "content": "我用豆包的话，是不是走错地方了？[笑哭]我是做点小app自己用，最近写flutter，各种报错就是，不知道是知识库太老旧，还是逻辑就是不对。",
+          "bvid": "BV1KJySBfEjW"
+        },
+        {
+          "like": 12,
+          "content": "我用trae写了一个自己专用的模具销售系统。。。   前几天又新添加了一个外加工记录功能 ，，，    以前用Excel，一不小心就会把表格高乱套，， 复杂的函数自己也不会，每次都要百度或者问豆包。。。  小白完全不懂代码 从头到尾都是用trae写的   python的代码   包括下载解释器  各种库   都是用trae[笑哭] 因为我完全不懂 只能由它来完成所有工作。。    这工具就是个超级",
+          "bvid": "BV1eSrYBpEMv"
+        }
+      ],
+      "needs_links": []
+    },
+    "OpenAI (org)": {
+      "mentions": 4,
+      "top_5_evidence": [
+        {
+          "like": 318,
+          "content": "作为一线在做agent开发的程序员给的建议，对于大部分人来说（程序员or非程序员），最值的就是开通个OpenAI会员，然后把它当老师去问就行",
+          "bvid": "BV1iPAZz2EUT"
+        },
+        {
+          "like": 49,
+          "content": "AI课代表的笔记：这个视频讲述了一位叫Tony的开发者从零开始独立开发并在两年内实现了每月4.5万美元的收入。Tony在失业后决定为自己工作，并成功创建了四个产品，其中一个叫Black Magic，采用订阅定价模式。他通过Twitter建立了庞大的粉丝群体，并利用推特获取用户和持续流量。然而，由于Twitter API的定价变化，Tony不得不出售Black Magic。他后来又成功开发了另一个产",
+          "bvid": "BV1uj411h7H2"
+        },
+        {
+          "like": 25,
+          "content": "up 您好，我请教一个问题：关于 cursor 如何进行本地已有代码库的分析 您在“核心功能”这一 P 提到的 语义拆解成为小代码块，利用 openAI Embedding API 进行嵌入，发送到服务器……这一流程是您的推测还是确实有明确的证据支持？ 因为个人其实一直在思考 cursor 是如何建立起 对已有项目的分析结果的 一个抽象化表示。 一些已有的 基于 repo-level 的代码 进行",
+          "bvid": "BV1yorUYWEGD"
+        },
+        {
+          "like": 6,
+          "content": "这么说吧，大秦的自媒体平台涉及到营销的基本审核g了，没g要么运气好，要么大up，年初我就做了个APP，调用的chatgpt接口，发b，审核不过，视频删减到1min都不过，只要带ai就不通过，我就放弃了，但那时候别的大点的up都能发，我连openai和chatgpt都没提到，都不给过。其他什么小程序提到竞争的平台也g了，无奈只能删删减减功能，然后个人小程序功能有限。现在APP和小程序都像域名一样要b",
+          "bvid": "BV1uj411h7H2"
+        }
+      ],
+      "needs_links": []
+    },
+    "Qwen 千问/通义": {
+      "mentions": 3,
+      "top_5_evidence": [
+        {
+          "like": 358,
+          "content": "作为一个程序员，写了几年代码，这两年ai工具也用了一些，通义，豆包，之前大火的ds。说句实话，简单的代码确实可以用ai来处理，能够节省不少时间，但是逻辑复杂点的代码或者专业性比较强的东西就差强人意了，多数时候ai会把自己绕进去，代码量越写越复杂，越复杂错误越多，最后陷入一个恶性循环。而且ai很多时候也会给出错误的答案，导致调试不能通过，ai不是万能的，用的时候要细细甄别。 小白想要做游戏，做app",
+          "bvid": "BV1YpRsYiENZ"
+        },
+        {
+          "like": 49,
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 8,
+          "content": "千问：方块在哪？",
+          "bvid": "BV1B1XrB7EqZ"
+        }
+      ],
+      "needs_links": []
+    },
+    "OpenAI GPT": {
+      "mentions": 2,
+      "top_5_evidence": [
+        {
+          "like": 49,
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "bvid": "BV1S9AdzeEqH"
+        },
+        {
+          "like": 6,
+          "content": "这么说吧，大秦的自媒体平台涉及到营销的基本审核g了，没g要么运气好，要么大up，年初我就做了个APP，调用的chatgpt接口，发b，审核不过，视频删减到1min都不过，只要带ai就不通过，我就放弃了，但那时候别的大点的up都能发，我连openai和chatgpt都没提到，都不给过。其他什么小程序提到竞争的平台也g了，无奈只能删删减减功能，然后个人小程序功能有限。现在APP和小程序都像域名一样要b",
+          "bvid": "BV1uj411h7H2"
+        }
+      ],
+      "needs_links": []
+    },
+    "JetBrains": {
+      "mentions": 1,
+      "top_5_evidence": [
+        {
+          "like": 91,
+          "content": "不要说国外人傻钱多类似的话，国内的很多人，公司思维就是不会为虚拟东西付费；尤其是软件；上大学的时候，大家都破解软件，没有谁会为软件付费；大学的时候没有收入，所以我的原则是能用教育邮箱申请软件使用，就用教育邮箱，所以申请了cad，navicat，idea，github，teminus，等一批软件。工作后一些几十块钱，一两百的软件我也会买，调查了身边同事他们会买游戏，充几千块钱，但是不会买软件。身为开",
+          "bvid": "BV1uj411h7H2"
+        }
+      ],
+      "needs_links": []
+    },
+    "Google Gemini": {
+      "mentions": 1,
+      "top_5_evidence": [
+        {
+          "like": 53,
+          "content": "[doge]现在开发， ai时代一定要先打磨好文档， 以及基于tdd驱动开发。 其次模型也重要， 最好的是claudecode，其次codex， gemini，其他[doge][doge]打死也不用，当然指的是最近几个月不用，未来不确定[doge][doge][doge]。",
+          "bvid": "BV1S9AdzeEqH"
+        }
+      ],
+      "needs_links": []
+    },
+    "DeepSeek": {
+      "mentions": 1,
+      "top_5_evidence": [
+        {
+          "like": 49,
+          "content": "DeepSeek分析需求，豆包设计UI，Claude写后端，Gemini写前端，GPT Codex改bug，千问写项目文档，再来个Grok提供情绪价值乐一乐[doge_金箍]",
+          "bvid": "BV1S9AdzeEqH"
+        }
+      ],
+      "needs_links": []
+    },
+    "VS Code": {
+      "mentions": 1,
+      "top_5_evidence": [
+        {
+          "like": 44,
+          "content": "AI编程这种事，还是需要一些编程基础的，不管是语法知识还是编程思维。之前试过用某里出品的插件，在VSCODE里编程。对于我这种只知道一点编程皮毛的人，if else这种，AI写的能看懂，也能跑通。但是复杂的指令，一旦出错都很难修改，只能全凭AI自己判断错误和修改了。",
+          "bvid": "BV1YpRsYiENZ"
+        }
+      ],
+      "needs_links": []
+    }
+  }
+}

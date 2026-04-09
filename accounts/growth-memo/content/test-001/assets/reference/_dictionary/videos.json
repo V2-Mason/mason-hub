@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-04-08",
+  "total_videos": 0,
+  "notes": "round1 的 301 原始视频清单尚未回填 (存在 scripts/recon_*.json 里). round2 开始后, 每爬一个视频的评论立刻写入这里.",
+  "import_pending": {
+    "round1_source": "scripts/recon_*.json (17 files)",
+    "status": "pending import",
+    "plan": "round2 开始后, 先做一个 import_round1.py 脚本, 把 17 个 recon json 的视频元数据去重导入到 videos.json"
+  },
+  "videos": []
+}

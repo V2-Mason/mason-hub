@@ -1,0 +1,1123 @@
+{
+  "schema_version": "0.1",
+  "generated": "2026-04-08",
+  "note": "Phase 1 extraction: 0 HTTP requests. Scanned titles + opening 30 lines + round1 272 comments for brand mentions. Brand list is a keyword dictionary; matches here need human verification for true 'sponsor' vs 'casual mention'.",
+  "data_sources": [
+    "程序员鱼皮",
+    "ezindie",
+    "小Lin说",
+    "巫师财经",
+    "网红小狗勾",
+    "round1 272 comments"
+  ],
+  "total_brands_detected": 38,
+  "brands": [
+    {
+      "brand": "ChatGPT / OpenAI",
+      "total_hits": 20,
+      "by_position": {
+        "title": 8,
+        "opening_speech": 6,
+        "opening_sponsor_speech": 1,
+        "comment": 5
+      },
+      "by_source_account": {
+        "程序员鱼皮": 6,
+        "ezindie": 5,
+        "小Lin说": 3,
+        "巫师财经": 1,
+        "round1 comments": 5
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV12h411u7s1",
+          "text": "新时代程序员必备技能，让ChatGPT替你打工！"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1WX4y1o7aL",
+          "text": "用 ChatGPT 自动解决问题，岂不美哉？！"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1wx4y1N7GN",
+          "text": "又火一个ChatGPT软件，完全免费！但问题也很明显"
+        },
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1ho4y1b75o",
+          "title": "AutoGPT傻瓜式使用教程+真实体验！",
+          "text": "就是ChatGPT我还没玩明白呢"
+        },
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1WX4y1o7aL",
+          "title": "用 ChatGPT 自动解决问题，岂不美哉？！",
+          "text": "并且使用OpenAI生成了回答"
+        },
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV14NyrBTEeB",
+          "title": "什么是 AI 网关？大厂 AI 开发神器有多强？",
+          "text": "先介入了OpenAI的GPT模型"
+        },
+        {
+          "position": "title",
+          "account": "ezindie",
+          "bvid": "BV1CpvdBmEkT",
+          "text": "20岁大学生靠ChatGPT赚到100万美金？"
+        },
+        {
+          "position": "title",
+          "account": "ezindie",
+          "bvid": "BV17h4y1R737",
+          "text": "独立开发变现周刊（第90期）：自学开发了一个36万美元/年的ChatGPT应用"
+        },
+        {
+          "position": "title",
+          "account": "ezindie",
+          "bvid": "BV1Dd4y1e76j",
+          "text": "7个基于ChatGPT的有意思小产品"
+        },
+        {
+          "position": "opening_speech",
+          "account": "ezindie",
+          "bvid": "BV18M4y1e7Hh",
+          "title": "独立开发变现周刊（第89期）：一个AI小工具，两个月内赚7.3万美元",
+          "text": "学习如何使用OpenAI的API"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "ezindie",
+          "bvid": "BV13v421r74r",
+          "title": "每周热点小产品变现第1期",
+          "text": "1.Chatbase,为你的网站定制ChatGPT"
+        },
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1ku4y1V7JV",
+          "text": "一个公司到底谁说了算？ | OpenAI背后权力的游戏"
+        },
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1rj41137cr",
+          "text": "一口气搞清楚ChatGPT | 牛X在哪？谁会失业？巨头商战..."
+        },
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1AcbVzwEEc",
+          "title": "机器人，真的要来了么...？",
+          "text": "通用机器人领域的ChatGPT时刻即将到来"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1mPSMBxEVb",
+          "title": "【巫师】AI下一个要搞死的行业是什么",
+          "text": "OpenAI推出AI浏览器Atlas的消息一出"
+        }
+      ]
+    },
+    {
+      "brand": "Cursor",
+      "total_hits": 10,
+      "by_position": {
+        "title": 3,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 7
+      },
+      "by_source_account": {
+        "程序员鱼皮": 3,
+        "round1 comments": 7
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1pAy5BXE5z",
+          "text": "7 个 Cursor AI 极限省钱大法，别花冤枉钱！"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1bBaBzXEae",
+          "text": "扒了下 Cursor 的提示词，太惊艳了！AI Prompt 隐藏技巧分享"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1q6TxziECu",
+          "text": "刚刚，Cursor 1.0炸裂发布！4大新功能体验 | Bugbot/Background Agent/Memories/MCP一键安装"
+        }
+      ]
+    },
+    {
+      "brand": "华为",
+      "total_hits": 9,
+      "by_position": {
+        "title": 3,
+        "opening_speech": 5,
+        "opening_sponsor_speech": 1,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 5,
+        "巫师财经": 4
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1hC4y1T7RG",
+          "text": "整天说华为国产替代，它究竟替代了什么？"
+        },
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1aH4y1S7oV",
+          "text": "华为炸裂！手机一波未平，平板一波又起～"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "小Lin说",
+          "bvid": "BV1Av421r7Ur",
+          "title": "我来巴塞罗那啦~这个MWC实在是太壮观了！",
+          "text": "华为"
+        },
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1G94y1U7n8",
+          "title": "科技研发的商业化之路【附清华美女博士访谈分享】",
+          "text": "华为则175亿欧元位居第二"
+        },
+        {
+          "position": "title",
+          "account": "巫师财经",
+          "bvid": "BV18M411U7RX",
+          "text": "【巫师】万字梳理近三年的华为，如何换道超车"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV18M411U7RX",
+          "title": "【巫师】万字梳理近三年的华为，如何换道超车",
+          "text": "你们自然会快速到美国19年起对华为的制裁"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1qyyJBFE2r",
+          "title": "【巫师】汽车行业的“微信和QQ”显现，背后利益格局如何变化",
+          "text": "之前说过六月广汽集团董事长冯兴亚赴深圳拜访华为乘人任正非"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1Wn4y1f7wM",
+          "title": "大健康生态：泰康摸着石头过河，险企跟着泰康过河",
+          "text": "华为发展至此也不只是卖通信设备"
+        }
+      ]
+    },
+    {
+      "brand": "苹果 Apple",
+      "total_hits": 7,
+      "by_position": {
+        "title": 3,
+        "opening_speech": 3,
+        "opening_sponsor_speech": 1,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 3,
+        "小Lin说": 3,
+        "巫师财经": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1KYwoevEit",
+          "text": "DeepSeek本地部署小白教程，2分钟搞定！Mac Mini 也能部署 DeepSeek？"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV14b411Z7QY",
+          "text": "Mac 和 Win，到底用哪个系统学编程？"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1sQBPBmEGU",
+          "title": "突发，快手被色情直播刷屏！背后的原因竟然是？",
+          "text": "据说这波快手APP直接冲到了苹果应用商店免费榜的第二名"
+        },
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1iP411y7Vs",
+          "text": "【硬核】苹果海外千亿税款如何避税 | 欧美政府税收反击战"
+        },
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1Ek4y177U8",
+          "title": "一口气了解印度的奇葩经济",
+          "text": "苹果也刚刚说"
+        }
+      ]
+    },
+    {
+      "brand": "豆包 字节",
+      "total_hits": 7,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 5
+      },
+      "by_source_account": {
+        "巫师财经": 2,
+        "round1 comments": 5
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "巫师财经",
+          "bvid": "BV1tDQiB1EQE",
+          "text": "【巫师】智商在线逻辑拉满，这才是豆包专家模式的正确打开方式"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1tDQiB1EQE",
+          "title": "【巫师】智商在线逻辑拉满，这才是豆包专家模式的正确打开方式",
+          "text": "豆包春晚刷屏"
+        }
+      ]
+    },
+    {
+      "brand": "DeepSeek",
+      "total_hits": 6,
+      "by_position": {
+        "title": 4,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 1
+      },
+      "by_source_account": {
+        "程序员鱼皮": 5,
+        "round1 comments": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1KbXQY8Ey6",
+          "text": "DeepSeek火了这么久，但是你根本不会用？DeepSeek隐藏技巧+信息差+保姆级教程汇总【建议收藏】"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1zVAHesEv7",
+          "text": "DeepSeek竟然还能这么用？吊打官方拒绝卡顿！满血版 DeepSeek API 使用教程"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1KYwoevEit",
+          "text": "DeepSeek本地部署小白教程，2分钟搞定！Mac Mini 也能部署 DeepSeek？"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1NYKPebEyT",
+          "text": "用DeepSeek给女朋友做个网站，她一定感动坏了。。"
+        },
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1KbXQY8Ey6",
+          "title": "DeepSeek火了这么久，但是你根本不会用？DeepSeek隐藏技巧+信息差+保姆级教程汇总【建议收藏】",
+          "text": "DeepSeek彻底火爆"
+        }
+      ]
+    },
+    {
+      "brand": "Claude Code",
+      "total_hits": 4,
+      "by_position": {
+        "title": 2,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 2
+      },
+      "by_source_account": {
+        "程序员鱼皮": 2,
+        "round1 comments": 2
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1ZB9EBmEAU",
+          "text": "刚刚 Claude Code 源码泄露！我扒出了 11 个隐藏秘密"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1MnpVzdETW",
+          "text": "用 AI 帮我读文档，岂不美哉？！Claude Code+Kimi开发文档助手网站"
+        }
+      ]
+    },
+    {
+      "brand": "淘宝 阿里",
+      "total_hits": 4,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 2,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1,
+        "巫师财经": 1,
+        "网红小狗勾": 2
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1JF2GYsE1s",
+          "text": "淘宝程序员没活硬整？在 Excel 和 VSCode 中购物！"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "网红小狗勾",
+          "bvid": "BV1pEwYeoENk",
+          "title": "MCN从业者深度观察：一口气说完2024年抖音【狗勾】",
+          "text": "比如说啊,京东跟美团向抖音跟淘宝学习,做直播带货"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "网红小狗勾",
+          "bvid": "BV1rW4y1U7DQ",
+          "title": "冤种账号，骗术集锦【自媒体从业者百态】",
+          "text": "然后自己呢又从淘宝花钱买流量"
+        }
+      ]
+    },
+    {
+      "brand": "小米",
+      "total_hits": 4,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 3,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 1,
+        "巫师财经": 3
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1fx4y1Z7GR",
+          "title": "卷王入局电动汽车，从哪下脚？｜新能源汽车产业格局",
+          "text": "小米造车"
+        },
+        {
+          "position": "title",
+          "account": "巫师财经",
+          "bvid": "BV1zx4y1x7bG",
+          "text": "【巫师】雷军的资本博弈，小米财报研究+解读"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1nq3azqEmj",
+          "title": "【巫师】十年之期已到，特斯拉走下神坛背后的中国阳谋",
+          "text": "小米预期18小时所担24万辆,对应至少608亿收入"
+        },
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1fhR2Y6EyZ",
+          "title": "【巫师】法拉利的种姓制度和资本游戏，身份图腾轮回的野望",
+          "text": "中国队的小米三年涨了133个B令"
+        }
+      ]
+    },
+    {
+      "brand": "JetBrains",
+      "total_hits": 3,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 1
+      },
+      "by_source_account": {
+        "程序员鱼皮": 2,
+        "round1 comments": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1DYmxBkEBV",
+          "text": "我去，IDEA 竟然免费了？！程序员狂喜"
+        },
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV11hx5euEbD",
+          "title": "我做了个程序员面试刷题工具，帮你吊打面试官！沉浸式摸鱼刷题",
+          "text": "开发了面试鸭的 JetBrains IDE插件"
+        }
+      ]
+    },
+    {
+      "brand": "Gemini (Google)",
+      "total_hits": 3,
+      "by_position": {
+        "title": 2,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 1
+      },
+      "by_source_account": {
+        "程序员鱼皮": 2,
+        "round1 comments": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1otUVBHEdM",
+          "text": "Gemini 3 炸裂发布！前端已死？？？"
+        },
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1LuKdzjEAc",
+          "text": "谷歌新AI工具杀疯了？免费，但有点坑！Gemini CLI 抢先实测"
+        }
+      ]
+    },
+    {
+      "brand": "网易游戏",
+      "total_hits": 3,
+      "by_position": {
+        "title": 2,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1,
+        "巫师财经": 1,
+        "网红小狗勾": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1KH4y1c7zc",
+          "text": "网易云音乐崩了，这次到底谁背锅？"
+        },
+        {
+          "position": "title",
+          "account": "巫师财经",
+          "bvid": "BV18XK7zaEMZ",
+          "text": "【巫师】15000字重扒网易暴雪资本博弈，背后是极致自私的个人利益"
+        },
+        {
+          "position": "opening_speech",
+          "account": "网红小狗勾",
+          "bvid": "BV1cb4y1N7xw",
+          "title": "【从业者访谈02】从年入10W到年入30W，小体量知识类博主如何实现收入逆袭？",
+          "text": "以前我是在一个公司网易那一边"
+        }
+      ]
+    },
+    {
+      "brand": "京东",
+      "total_hits": 3,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 2,
+        "opening_sponsor_speech": 1,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 1,
+        "巫师财经": 1,
+        "网红小狗勾": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV18G411f7kD",
+          "title": "韩国背后的三星王朝",
+          "text": "是阿里 加腾讯 加京东 加字节"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "网红小狗勾",
+          "bvid": "BV1pEwYeoENk",
+          "title": "MCN从业者深度观察：一口气说完2024年抖音【狗勾】",
+          "text": "比如说啊,京东跟美团向抖音跟淘宝学习,做直播带货"
+        }
+      ]
+    },
+    {
+      "brand": "通义千问 阿里",
+      "total_hits": 3,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 3
+      },
+      "by_source_account": {
+        "round1 comments": 3
+      },
+      "evidence": []
+    },
+    {
+      "brand": "VS Code",
+      "total_hits": 2,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 1
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1,
+        "round1 comments": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1JF2GYsE1s",
+          "text": "淘宝程序员没活硬整？在 Excel 和 VSCode 中购物！"
+        }
+      ]
+    },
+    {
+      "brand": "GitHub Copilot",
+      "total_hits": 2,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1,
+        "小Lin说": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1nZ4y1U7x8",
+          "text": "自动写代码插件火了，封神还是鸡肋？！Copilot 插件体验"
+        },
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1HM41157jD",
+          "title": "当办公遇上AI，会发生什么？",
+          "text": "Microsoft 365 Copilot"
+        }
+      ]
+    },
+    {
+      "brand": "腾讯云",
+      "total_hits": 2,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 2,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 2
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1xQ2WBZEgs",
+          "title": "紧急！全球服务器被挖矿入侵，我已经中招了。。React/Next.js逆天漏洞",
+          "text": "腾讯云给我发来了一条安全告警通知"
+        },
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1zVAHesEv7",
+          "title": "DeepSeek竟然还能这么用？吊打官方拒绝卡顿！满血版 DeepSeek API 使用教程",
+          "text": "腾讯云 阿里云 百度云 火山引擎等等"
+        }
+      ]
+    },
+    {
+      "brand": "Notion",
+      "total_hits": 2,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "ezindie": 2
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "ezindie",
+          "bvid": "BV1iZArzvEeG",
+          "text": "【搞钱实录】用 AI 制作年入百万美金的 Notion 模板生意 #164"
+        },
+        {
+          "position": "opening_speech",
+          "account": "ezindie",
+          "bvid": "BV1hH4y1c7Dj",
+          "title": "独立开发变现周刊（第143期）：一个每年收入30万美元的AI业务，成本不到50美元",
+          "text": "如Drive、Notion、Confluence"
+        }
+      ]
+    },
+    {
+      "brand": "荣耀",
+      "total_hits": 2,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 2
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1UG411i7Ha",
+          "text": "荣耀独立三年了，它过得还好么？"
+        },
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1UG411i7Ha",
+          "title": "荣耀独立三年了，它过得还好么？",
+          "text": "荣耀发了个公告"
+        }
+      ]
+    },
+    {
+      "brand": "美团",
+      "total_hits": 2,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 1,
+        "comment": 0
+      },
+      "by_source_account": {
+        "巫师财经": 1,
+        "网红小狗勾": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV12GB7BQEJz",
+          "title": "【巫师】财经跨年：中国财经年度盘点Top10",
+          "text": "2024季度可以看到市场上只有美团和阿里"
+        },
+        {
+          "position": "opening_sponsor_speech",
+          "account": "网红小狗勾",
+          "bvid": "BV1pEwYeoENk",
+          "title": "MCN从业者深度观察：一口气说完2024年抖音【狗勾】",
+          "text": "比如说啊,京东跟美团向抖音跟淘宝学习,做直播带货"
+        }
+      ]
+    },
+    {
+      "brand": "智谱 GLM",
+      "total_hits": 2,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 2
+      },
+      "by_source_account": {
+        "round1 comments": 2
+      },
+      "evidence": []
+    },
+    {
+      "brand": "飞书 Lark",
+      "total_hits": 1,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1QPcDz1ECF",
+          "text": "OpenClaw接入飞书保姆级教程，几分钟搞定手机养龙虾！"
+        }
+      ]
+    },
+    {
+      "brand": "Cloudflare",
+      "total_hits": 1,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1bwynBmEwm",
+          "text": "让全球网站挂掉一半！Cloudflare到底是什么？"
+        }
+      ]
+    },
+    {
+      "brand": "MCP (Anthropic)",
+      "total_hits": 1,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "程序员鱼皮",
+          "bvid": "BV1X4GGziEyr_p10",
+          "text": "Java开发AI项目，太爽了！LangChain4j实战教程保姆级 | 代码开源 p10 10、MCP 协议"
+        }
+      ]
+    },
+    {
+      "brand": "文心一言 百度",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": []
+    },
+    {
+      "brand": "百度智能云",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1rG411k7BQ",
+          "title": "重构云计算？大厂果然都在卷这个！",
+          "text": "百度智能云千番大模型平台吗"
+        }
+      ]
+    },
+    {
+      "brand": "阿里云",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1zVAHesEv7",
+          "title": "DeepSeek竟然还能这么用？吊打官方拒绝卡顿！满血版 DeepSeek API 使用教程",
+          "text": "腾讯云 阿里云 百度云 火山引擎等等"
+        }
+      ]
+    },
+    {
+      "brand": "火山引擎 字节",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "程序员鱼皮": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "程序员鱼皮",
+          "bvid": "BV1zVAHesEv7",
+          "title": "DeepSeek竟然还能这么用？吊打官方拒绝卡顿！满血版 DeepSeek API 使用教程",
+          "text": "腾讯云 阿里云 百度云 火山引擎等等"
+        }
+      ]
+    },
+    {
+      "brand": "Figma",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "ezindie": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "ezindie",
+          "bvid": "BV1Eq4y117jG",
+          "title": "独立开发变现周刊（第35期）：网页自动化工具，月收入2千美金",
+          "text": "像Figma它可以轻松的为你的视频、网站或应用程序创建动画"
+        }
+      ]
+    },
+    {
+      "brand": "欧莱雅",
+      "total_hits": 1,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1gM4m1S7ew",
+          "text": "收购狂魔欧莱雅，最近又在玩什么新花样？！"
+        }
+      ]
+    },
+    {
+      "brand": "芬达 可口可乐",
+      "total_hits": 1,
+      "by_position": {
+        "title": 1,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 1
+      },
+      "evidence": [
+        {
+          "position": "title",
+          "account": "小Lin说",
+          "bvid": "BV1R44y1i7uq",
+          "text": "【商业世纪大战】可口可乐 x 百事可乐 百年C位之争谁更胜一筹？"
+        }
+      ]
+    },
+    {
+      "brand": "瑞幸",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "小Lin说": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "小Lin说",
+          "bvid": "BV1v34y1j7Nu",
+          "title": "【硬核加长版】真正的做空",
+          "text": "滚水做空瑞幸咖啡中盖"
+        }
+      ]
+    },
+    {
+      "brand": "Perplexity",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "巫师财经": 1
+      },
+      "evidence": []
+    },
+    {
+      "brand": "联想",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 1,
+        "opening_sponsor_speech": 0,
+        "comment": 0
+      },
+      "by_source_account": {
+        "巫师财经": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_speech",
+          "account": "巫师财经",
+          "bvid": "BV1tk4y1w7Cg",
+          "title": "【巫师】谁终结了中国企业海外并购连败战绩？",
+          "text": "自04年联想收购IBM PC部门掀起浪潮"
+        }
+      ]
+    },
+    {
+      "brand": "企业微信",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 1,
+        "comment": 0
+      },
+      "by_source_account": {
+        "巫师财经": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_sponsor_speech",
+          "account": "巫师财经",
+          "bvid": "BV1Yb4y1V7Z3",
+          "title": "【巫师】Vlog：金融机构线上品宣+营销玩法沙龙",
+          "text": "请来是抖音商业化部门和企业微信部门的朋友"
+        }
+      ]
+    },
+    {
+      "brand": "支付宝",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 1,
+        "comment": 0
+      },
+      "by_source_account": {
+        "网红小狗勾": 1
+      },
+      "evidence": [
+        {
+          "position": "opening_sponsor_speech",
+          "account": "网红小狗勾",
+          "bvid": "BV14v411V7xv",
+          "title": "【头部MCN从业者深八】什么才是真实的网红世界？",
+          "text": "支付宝发起了一个微博活动"
+        }
+      ]
+    },
+    {
+      "brand": "Trae 字节",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 1
+      },
+      "by_source_account": {
+        "round1 comments": 1
+      },
+      "evidence": []
+    },
+    {
+      "brand": "Obsidian",
+      "total_hits": 1,
+      "by_position": {
+        "title": 0,
+        "opening_speech": 0,
+        "opening_sponsor_speech": 0,
+        "comment": 1
+      },
+      "by_source_account": {
+        "round1 comments": 1
+      },
+      "evidence": []
+    }
+  ]
+}
