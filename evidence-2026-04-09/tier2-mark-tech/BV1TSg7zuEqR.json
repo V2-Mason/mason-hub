@@ -1,0 +1,85 @@
+{
+  "bvid": "BV1TSg7zuEqR",
+  "comments": [
+    {
+      "like": 190,
+      "content": "兄弟们，我参考UP的，也搞了一个相关的agent，直接使用gemini的api实现本地对话问答，支持读写文件，控制台指令，web搜，以及coadact。欢迎大家学习使用。\n代码地址：https://github.com/LtdEdition-Peng/LLM_Auto_Agent"
+    },
+    {
+      "like": 125,
+      "content": "马克老师，投币后请教个问题：\n\nagent开发我遇到了两种模式，第一种是你视频中介绍的用复杂systemPrompt约束各类message和tools的方式，基于对话的技术实现。第二种是没有复杂杂systemPrompt，只是将各类tools注册给agent了(create_react_agent(tools=【.,.,.】))，让agent自己选择调用哪个。我理解第一种是手动模式，第二种是自动模式。\n\n请教老师，这两种模式的适用场景，可不可以用第二种模式替代第一种模式？"
+    },
+    {
+      "like": 70,
+      "content": "感谢up的分享，真的期期经典，入门到精通只看你一个就够了！好奇问下，up平时是怎么学习这些新知识的呢"
+    },
+    {
+      "like": 55,
+      "content": "如果我的工具量很大，不可能全部都告诉AI，我该如何让AI自己去找具体该用哪种方法[微笑]"
+    },
+    {
+      "like": 68,
+      "content": "本质就是提示词工程+字符串解析+脚本调用，说实话agent真是大噱头。"
+    },
+    {
+      "like": 59,
+      "content": "核心是使用提示工程词让大模型返回格式化的回复，用agent解析固定模式的回复"
+    },
+    {
+      "like": 33,
+      "content": "发现我前面就用的function call流程其实就是这个agent的流程，问AI明天出门需不需要带伞，AI就先要找你要你的地理位置信息，拿到之后又要用这个地理位置信息来找你调查询天气接口， 然后甚至AI还要找问你要日期[笑哭]（这步后来我默认直接就一开始就默认传）。就觉得这AI实现起来也太麻烦了，一个简单的问题要来来回回调用来调用去的。"
+    },
+    {
+      "like": 31,
+      "content": "三连了。大佬可以讲讲agent+mcp+数据库吗[打call]\n这样可以把\n1.如何在mcp服务器中部署资源\n2.如何在agent中部署mcp\n这两个难点都讲了。"
+    },
+    {
+      "like": 24,
+      "content": "尴尬的点就是要求大模型按格式返回时会出现格式错误的不稳定现象，json格式的出错几率大于xml。"
+    },
+    {
+      "like": 22,
+      "content": "能不能做一个可以调用两三个agent的agent"
+    },
+    {
+      "like": 18,
+      "content": "那我能不能理解这些Cursor claude code argument code 这些 其实就是他们的agent配置以及工具配置写得各有特色，看谁家写得好，谁家就更好用？"
+    },
+    {
+      "like": 18,
+      "content": "我愿称之为B站AI之光[吃瓜]"
+    },
+    {
+      "like": 17,
+      "content": "python看着真简洁啊，感觉java boy转agent开发方向挺有优势的"
+    },
+    {
+      "like": 16,
+      "content": "一个视频顶一些培训机构几堂课"
+    },
+    {
+      "like": 18,
+      "content": "这样reAct模式，token消耗量不得爆炸啊[笑哭]"
+    },
+    {
+      "like": 17,
+      "content": "程序员的工作，终于从ai生成代码，调速代码，变成了调速修改ai，门槛又提高了，终于不怕失业了"
+    },
+    {
+      "like": 15,
+      "content": "原来这个react模式就是agent吗\n我今年做小游戏时做过一些类似的东西，我把我的关卡结构做成可以用json来描述的形式。我会把我的玩法和json规则完整的发送给deepseek，让他根据我的具体需求来设计关卡(其实就是利用ai做pcg)。得到返回的json导入unity然后解析成关卡保存成游戏内的scriptableoject数据。流程是可以跑问题就是ai设计的关卡太差了，还不如我拿关卡编辑器1分钟随便点点手拼的。[藏狐]"
+    },
+    {
+      "like": 12,
+      "content": "我理解的agent几种模式：1.传统对话模式Ask，不调用工具；2.思考行动模式ReAct，用的最多的；3.计划模式Plan，先列计划，再按照计划执行；5.工作流模式Workflw，按照设定好的工作流执行;6.智能体团队模式agent team，主智能体拆解任务，分给不同的子智能体执行，最后整合;7.混合模式"
+    },
+    {
+      "like": 11,
+      "content": "我看了几周的Agent, 终于在这边打通了任督二脉，之前讲的都是不清不楚的，博主用几百行代码就完全讲清楚了"
+    },
+    {
+      "like": 190,
+      "content": "兄弟们，我参考UP的，也搞了一个相关的agent，直接使用gemini的api实现本地对话问答，支持读写文件，控制台指令，web搜，以及coadact。欢迎大家学习使用。\n代码地址：https://github.com/LtdEdition-Peng/LLM_Auto_Agent"
+    }
+  ]
+}

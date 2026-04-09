@@ -1,0 +1,85 @@
+{
+  "bvid": "BV14rzQB9EJj",
+  "comments": [
+    {
+      "like": 862,
+      "content": "现在公司统一使用claude，每个部门都有很多plugin和skills。架构部门还有公线skill和plugin。强制使用ai，有kpi考核，不计token消耗。\n现在问题是，一个需求来了，如何从从dcp（类似jira，公司自研），到sdoc技术文档（类似wiki，公司自研），然后再到代码，一整套流程下来，完全或者80% 70%让ai完成。\n但是实践下来发现，因为需求很复杂，往往调教 ai的时间比自己手写还长，如何才能让ai变得更聪明，写本地知识库吗（确实不喜欢写文档），求教，有kpi压着，必须用，还得玩出花"
+    },
+    {
+      "like": 229,
+      "content": "Claude现在用的特别多，公司统一购买的。目前是claude➕openspec结合使用。从今年开始，公司考核ai代码覆盖率了，感觉这并不是一个好事情。"
+    },
+    {
+      "like": 171,
+      "content": "太烧钱了，刚充了30美元，让它优化一下app结构和配色，修完错误直接给我烧完了"
+    },
+    {
+      "like": 87,
+      "content": "我能理解AI真的有用，能提效，能干活，但是作为一个基础的普通的coder一个码农，自己基础一般，精力不行，学习能力有限。心情真的很复杂，应用Ai，强制考核，降本增效，然后裁员，最终都是这个结果"
+    },
+    {
+      "like": 74,
+      "content": "视频看完，做个思维导图加深下印象，需要的可以自取"
+    },
+    {
+      "like": 49,
+      "content": "太干了！！！我去别的Up主讲的拖泥带水的一期视频10分钟能水8分钟以上的口水话。Up这期视频直接把当前Claude Code最最核心的功能串起来了，把对AI工具的滤镜破掉了[支持][支持][支持]"
+    },
+    {
+      "like": 42,
+      "content": "claud code、opencode 、 cursor有啥差异呀，哪个更好用？有大佬说下吗"
+    },
+    {
+      "like": 33,
+      "content": "有个问题啊，目前这些ai工具或者ai的ide写写b/s还行，c/s类的比如(安卓软件，小程序类(uniapp)，上位机类型的工业软件(c＃)，游戏领域的lua+ue/unity)怎么样呢因为我现在基本很少看到有教程或者分享开发除了web端的其他类型，另外就是很少看到ai帮助处理数据库方面的比如mysql+radis，rabbitmq处理高并发，这些都没有看到，只能写前端(还不是任何生态的前端仅针对js生态)不能深入到后端和数据库还有处理bug这样。。道阻且长阿，希望能发展的更好[笑哭][doge_金箍]"
+    },
+    {
+      "like": 17,
+      "content": "请顺便做个 Open Code 吧 谢谢[doge]"
+    },
+    {
+      "like": 28,
+      "content": "赛博菩萨啊，这期付费观看都值了"
+    },
+    {
+      "like": 34,
+      "content": "最新的Claude Code Tasks能不能讲解一下，跟workflow有什么区别啊"
+    },
+    {
+      "like": 31,
+      "content": "我的梯子实在是绕不开，无奈用不了claude了"
+    },
+    {
+      "like": 18,
+      "content": "纠正一下 有一个发音 Vite 的读音 https://vite.dev/guide/ 可以看下官网这里的读音是 /i/ 而不是视频里 up 主所读的 /æ/"
+    },
+    {
+      "like": 20,
+      "content": "我见过的讲解AI的最好的视频，没有之一！\n顺便转了文字版：https://mp.weixin.qq.com/s/45q-5Gzz-VlvqkxFI2vdIQ"
+    },
+    {
+      "like": 19,
+      "content": "https://api.code-relay.com/register?aff=E8It 这个网站可以白嫖30美金，可以免费使用Claude 4.5"
+    },
+    {
+      "like": 19,
+      "content": "请顺便做个 Cursor 吧 谢谢[doge]"
+    },
+    {
+      "like": 16,
+      "content": "nmd是真的卷啊，一直上千人在看[尴尬]"
+    },
+    {
+      "like": 18,
+      "content": "UPUP，我就一句话，给我生成一个 todo 软件，用的是 GLM，结果和你的基本一模一样，hhh。"
+    },
+    {
+      "like": 11,
+      "content": "设置终端使用代理的方法：\n\n在运行 Claude Code 之前设置以下环境变量（实际使用前请将 127.0.0.1:7890 替换为您实际的代理地址和端口）：\n\n# 设置 HTTPS 代理\nexport HTTPS_PROXY=http://127.0.0.1:7890\n\n# 或者 HTTP 代理\nexport HTTP_PROXY=http://127.0.0.1:7890\n\n# 然后运行安装命令\ncurl -fsSL https://claude.ai/install.sh | bash"
+    },
+    {
+      "like": 862,
+      "content": "现在公司统一使用claude，每个部门都有很多plugin和skills。架构部门还有公线skill和plugin。强制使用ai，有kpi考核，不计token消耗。\n现在问题是，一个需求来了，如何从从dcp（类似jira，公司自研），到sdoc技术文档（类似wiki，公司自研），然后再到代码，一整套流程下来，完全或者80% 70%让ai完成。\n但是实践下来发现，因为需求很复杂，往往调教 ai的时间比自己手写还长，如何才能让ai变得更聪明，写本地知识库吗（确实不喜欢写文档），求教，有kpi压着，必须用，还得玩出花"
+    }
+  ]
+}
